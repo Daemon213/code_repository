@@ -1,0 +1,12 @@
+%h2 Events
+- @events.each do |event|
+  .listing.first
+    .wrap.when
+      %span.month= event.date.strftime("%b")
+      %span.date= event.date.day
+    .wrap.details
+      .title
+        %h3= event.title
+      .excerpt
+        %p= event.info  
+

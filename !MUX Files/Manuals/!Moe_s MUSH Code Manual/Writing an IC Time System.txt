@@ -1,0 +1,369 @@
+ ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+|\ /| |\ /| |\ /|
+| \ / | | \ / | | \ / |
+| \/ |oe's | \/ |ushkode | \/ |anual
+~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
+LESSON 6 - WHAT TIME IS IT?
+
+In our previous five lessons, we have spent a lot of time
+establishing some basic guidelines for how to code. How to approach the
+construction of a command, how to store data, how to retrieve it, and how
+to cope with a set of commands that all work on the same data have been
+covered in this series of tutorials. What I'm going to do now is give you
+one method for how to make an IC time system.
+Previously, we'd done a multiple-item vendor, which is for many
+coders the jumping-off point as far as skills and projects go. Once you
+have something that works locally, the next logical step is to make things
+that work globally. While I don't think I'll get to every standard code
+system that is used in these lessons, I want to show you some of the
+things I can do and hope that from there, you'll know enough to go out on
+your own and do your own stuff.
+This lesson is going to be written a trifle differently than the
+previous five, because if you have read them, worked through the examples,
+and understood what I was talking about(no small task, particularly the
+last part.), you are going to have a more than functional lexicon of code
+knowledge. This lets me skim over a few of the general elements of the
+code logic I will present, and focus on some of the more precise details.
+What this means for you is that if you either a) don't have a
+solid grasp of what mushcode is, b) found this link in a websearch, or c)
+you're currently quite chemically inconvenienced...this is going to make
+little to no sense to you. I suggest that you read at least lessons one,
+two, and three, as those lay out the fundamental principles by which I
+code, and give you a sense of how I build commands and u-functions.
+The topic of this lesson is going to be the construction of an IC
+time system, that works on a faster-than-RL time scale. The one I am going
+to show you how to build has been used, successfully, on ten mushes so
+far, and easily accomodates a 2:1, 3:1, or higher(yipes) timescale. This
+particular system uses the vector math functions present in all of the
+major codebases, and is both easy to understand, and very easy to
+configure.
+
+VECTOR? THAT'S A CEREAL!!
+
+What follows is going to be a very brief, very informal, and quite
+likely imprecise definition of what vector math is. The purpose of this
+tutorial is to teach you to code, not to teach you higher math. The vector
+functions are used in this system because they facilitate the result. The
+end justifies the means.
+In science, specifically physics, there are two main kinds of
+physical quantities: Scalars and Vectors. A scalar is a quantity that is
+completely specified by a number with appropriate units. 10 degrees
+Fahrenheit. 4 inches. 100ml. Those are all scalar values. They completely
+specify the measurement. No direction is required.
+Vectors are not just a current state. They are the displacement of
+a thing, defined as a change in position. A plane, flying at 500mph, is
+going in a direction. Because of its state, its position is changing from
+one place to another. The cumulative description of both its speed and
+direction is a vector.
+How does this apply to time? Well, what we are going to do in our
+IC time system is establish a starting point, from which all IC time is
+calculated. Then, using the amount of RL time that has elapsed since then,
+we are going to determine how much change has occurred in the date. It is,
+in essence, a vector. We know that time will be passing at a measurable
+rate, and that it is going forward. A vector can be identified by
+isolating all of its components. We have now done this, and can move on.
+If you didn't understand this, either at all or partially, don't
+worry. The actual mechanics of using the vector functions is MUCH easier
+than understanding the math theory. For once, coding is easier than math.
+Call Kodak, it's a moment.
+
+IN THE BEGINNING....THERE WAS AN ATTRIBUTE. AND IT WAS GOOD.
+
+Like I said, we're going to establish a point in the past from
+which our IC time is calculated. This could be the point at which your
+game was first started, it could be your birthday. It's any arbitrary
+point in the past. For the purposes of this tutorial, I am going to pick
+Monday, January 1st, 2001. We'll start counting from noon, that day.
+All MUSHes are based on the Unix time system, which counts time
+from Wednesday, December 31, 1969, at 7pm. On your mush of choice, if you
+type: think secs(), you will get a very large number. This is the number
+of seconds that has elapsed since that point in the past. We're going to
+build our IC time system on a very similar principle. Again, on your mush
+of choice, type: think convtime(Mon Jan 01 12:00:00 2001)
+You will get the number: 978368400. This number is what we want to
+set as our starting point in time. Now, where do we set it? This is going
+to be a global system, and rather than getting into the theory of where
+global code should be kept, I am going to assume that it is all on the
+same object, which is in the master room. Please feel free to arrange
+things as you see fit.
+
+&start_time Object=978368400
+
+Now, that is one of two initial attributes that we need. The
+second one is the starting date for our time system. This is the IC date
+from which we are measuring. Again, it can be completely arbitrary. For
+the purposes of this tutorial, I am going to pick the date January 1,
+1200, at midnight. Midnight is chosen because it is the absolute start of
+the day. This date will be set a particular way, due to the math we are
+going to use to calculate elapsed time. I'll show you the syntax now, and
+explain why this is later.
+
+&start_date Object=1200 01 01 00 00 00
+
+At this point, believe it or not, our entire IC time system is
+only going to consist of four more attributes, and two of them are
+commands. We're going to keep the standard month names for the purposes of
+this tutorial, to show you how to convert the numerical to the full name,
+but you are free to do whatever months you would like. To do this
+conversion, we will construct a simple ufun that takes a number parameter
+passed to it, and returns the proper month name.
+
+&conv_month
+Object=[switch(%0,1,January,2,February,3,March,4,April,5,May,6,June,7,July,8,August,9,September,10,October,11,November,December)]
+
+December is the default month, because if it isn't 1-11, it should
+be 12, and if we wind up passing a number to this function that is larger
+than 12, we have bigger problems than returning the wrong month. Now, we
+have one ufunction and two commands to write. We could consolidate into
+one command, but the 'standard' is to have both a +date and +time command.
+So, that is what we shall do.
+
+TIME IS WHAT YOU MAKE IT
+
+Now, here's where we get to the fun stuff. The actual meat and
+potatoes of the time code. The theory, as I stated above, is that we will
+measure the amount of time that has elapsed from our arbitrary starting
+point, and then convert that into IC years, months, days, hours, minutes,
+seconds. This is done by mathematically divining how many of each division
+exist in the amount of elapsed time, starting from greatest and working to
+the smallest.
+This is why we set our start_date attr the way we did. That is the
+order we are going to be breaking down our time. Now, to do this, we need
+to know a couple bits of information. One, how much time has elapsed. This
+is relatively simple. The secs() function, referenced above, will tell you
+the current number of seconds that have elapsed since the system's start
+date. And we have, stored in our start_time attr, the number of seconds
+that existed when we started keeping track of time. We subtract the two,
+and voila...we have elapsed time.
+The next thing we need to know is how much time there is in each
+of the divisions of IC time. This varies, depending on timescale. In a
+standard RL day, there are 86400 seconds. This is 60 seconds X 60 minutes
+= 3600 seconds X 24 hours = 86400 seconds. This means that on a 2:1
+timescale, there are 43200 RL seconds in one IC day. On a 3:1 timescale,
+there are 28800 RL seconds in one IC day.
+Now, from this information, we can extrapolate a fair amount of
+information about our IC year. For the purposes of the tutorial, let's
+assume a 2:1 timescale. If we assume that there are 365 days in our year,
+then that means that there are 365 X 43200 = 15768000 seconds in one IC
+year. If we divide the number of seconds that has elapsed by the number of
+seconds in one IC year, we will know how many IC years have passed since
+we started measuring our time. Simple!
+The next challenge is to compute the number of months, days, etc.
+from the remaining time. This is where we get into the math functions,
+themselves. There are two dividing functions in mushcode, div() and mod().
+They do the same thing, divide one number into another, but they return
+different answers. div() returns the integer division, aka whole-number
+division. mod() returns the remainder, or fractional division. Here's a
+quick example:
+
+div(4,2) = 2
+mod(4,2) = 0
+div(5,2) = 2
+mod(5,2) = 1
+
+We would use div() to begin with on our year calculation. Now, we
+can use mod() on those same two numbers to get the remainder. This is the
+remainder of the time we have on which to calculate. Now we get to months.
+Some people may want to strive for exact chronological accuracy, with each
+month having the accurate number of days. This is easily doable, at the
+end of our calculations. For now, we should just calculate based on an
+average 30-day month. If one day is 43200 seconds, then 43200 X 30 =
+1296000 seconds.
+So, we divide our elapsed time by the number of seconds in a year.
+Then, we divide the remainder of that division by the number of seconds in
+an IC month. The next division is a day, which we know the amount for,
+followed by an hour(1800 seconds), a minute(30 seconds), and the final
+remainder is the seconds on the clock. Technically, yes, the seconds will
+be one off, as one RL second = two IC seconds...but when you're at that
+point, don't get picky. If it bothers you, don't report seconds. Stop your
+calculations at minutes.
+Once we have this list of numbers(years, months, days, hours,
+minutes, seconds), we will use the vadd() function to add that number as
+the vector to our start_date attribute. I've explained all this out, so
+now let's look at some actual code, to see how it's done.
+
+&make_time
+Object=[vadd(v(start_date),div(sub(secs(),v(start_time)),15768000)
+[div(mod(sub(secs(),v(start_time)),15768000),1296000)] <further code>)]
+
+This is the start of the make_time ufun, which will actually
+compute the new date. Already, we're starting to see some redundancy, so
+I'm going to start at this point to tell you that yes, you /should/ use a
+healthy number of setr()'s in this code. Otherwise, you will wind up
+having a huge string of nested math functions that will get extremely
+messy and exponentially increase your chance for parenthetical error.
+Let's look at the make_time code again, with that in mind:
+
+&make_time
+Object=[vadd(v(start_date),div(setr(0,sub(secs(),v(start_time))),15768000)
+[div(setr(0,mod(%q0,15768000)),1296000)]
+[div(setr(0,mod(%q0,1296000)),43200)] [div(setr(0,mod(%q0,43200)),1800)]
+[div(setr(0,mod(%q0,1800)),30)] [mod(%q0,30)])]
+
+Yes, I just kept reusing the %q0 register. We don't need to make 5
+different registers, if we don't have to. The old value is used each time
+before the new value is set, so it's a safe usage of one memory location.
+This looks like a lot of confusing code, but if you've followed so far, it
+should make at least nominal sense.
+An analogy I will make to how this code works is if you had 1982
+pennies, what would be the largest denominations of bills and coin you
+could translate that into? 1982 pennies is $19.82, which translates into a
+ten-dollar bill, a five-dollar bill, four one-dollar bills(or coins,
+depending on nationality), three quarters, a nickel, and two pennies. And
+yes, a fifty-cent piece is a valid answer, though obscure and only put
+forth by those determined to find loopholes.
+If we run the make_time function(a la: think u(object/make_time)
+), we will get back a list of numbers that represents the current date.
+From this list, we can further extrapolate our current date and time into
+displayable formats, using basic commands that would be on a global object
+in the master room.
+
+HEY BUDDY, YA GOTS THE TIME?
+
+Let's start with the +time command, just because. We know that
+when we get our output from make_time, the last three numbers are going to
+represent the hours, minutes, and seconds. We'll probably want to format
+the hours to AM/PM notation, unless it's a military game that likes
+24-hour formats. This is easily doable, and gives us a neat little coding
+exercise, so we'll put it in. To begin with, we need basic command syntax.
+I suggest:
+
+&cmd_time Object=$+time:@pemit %#=The current time is: <code>
+
+Anyone who doesn't understand any part of that definitely needs to
+be reading Lessons 1, 2 and 3. The first thing we will do is take a
+q-register, and put the last three values of our make_time function into
+it. This should be done in a setq() to obscure the output, since we don't
+want to show these numbers /just/ yet. setq(0,extract(u(make_time),4,3))
+will do just what we want. There shouldn't be any conflict with the %q0 in
+make_time, because again, the values are being used before they are being
+set again.
+A simple ifelse() on the first value in our %q0 will tell us
+whether we need to convert it to PM format or not:
+
+ifelse(gt(setr(1,first(%q0)),12),setq(1,sub(%q1,12))[setq(2,PM)],setq(2,AM))
+
+What this does is tests to see if the hours is greater than 12,
+meaning it's after noon on the clock. If it is, it subtracts 12, sets that
+new value into %q1, and places PM in a memory register for use later. If
+it isn't, %q1 is already set, and AM is saved for later. Our minutes don't
+need to be reconfigured, nor do our seconds. All we need to do now is
+format our display.
+
+&cmd_time Object=$+time:@pemit %#=The current time is:
+[setq(0,extract(u(make_time),4,3))]
+[ifelse(gt(setr(1,first(%q0)),12),setq(1,sub(%q1,12))[setq(2,PM)],setq(2,AM))]
+%q1:[extract(%q0,2,1)]:[last(%q0)] %q2
+
+And yes, that's all there is to +time. Now for +date. Much the
+same, with again only minor manipulation of the data that we receive from
+make_time. We know that the first three elements of our make_time output
+are the year, month, and date, respectively. We've already coded a method
+for converting our numerical month to the fullname, and we will use that.
+
+&cmd_date Object=$+date:@pemit %#=The current date is:
+[setq(0,extract(u(make_time),1,3))][u(conv_month,extract(%q0,2,1))]
+[last(%q0)], [first(%q0)]
+
+Yes, that's all there is to +date. It's even easier than +time,
+because there's no math involved. Month, day, year, and voila, you have a
+date. For those that are interested in the chronological accuracy of
+February having 28 days, and the ones with 31, I suggest a variety of
+methods. You can have a lookup table in a ufunction that when you pass the
+month and day to it, tests for the validity of the date, and returns the
+adjusted values. You can base your month's calculations on a 31-day
+system, and adjust the date in the +date display, as you need to for the
+other months. There are five months that are not 31 days long. It would be
+up to you to accomodate for the extra dates. And, of course, you can use a
+different IC time system.
+The best suggestion I can give, if you are pursuing this level of
+accuracy, is to have your make_time stop at or before the month level, and
+the last value returned is the remainder of seconds. From then, you may
+calculate the proper number of days each month should have, and the
+24-hour time from that point. It is a trifle more cumbersome, but if it
+achieves what you want, then it is worth the work.
+To give you an idea of how to do that, I have included code where
+I achieved precisely that. This code was done on a 1:1 timescale. It
+could be used for any other timescale, you would just need to alter the
+mathematical values accordingly. For your studying pleasure:
+
+&ELAPSED_TIME Object=[sub(secs(),v(start_time))]
+
+&MAKE_TIME Object=[vadd(div(setr(0,u(elapsed_time)),31536000)
+[first(setr(2,u(getmonth,div(setr(1,mod(%q0,31536000)),86400))),|)]
+[div(setr(0,sub(%q1,mul(last(%q2,|),86400))),86400)]
+[div(setr(0,mod(%q0,86400)),3600)] [div(setr(0,mod(%q0,3600)),60)]
+[mod(%q0,60)],v(start_date))]
+
+In this code, I took the elapsed time, and divided out the number
+of whole years that had passed. After that, I determined what my month was
+by discovering mathematically how many days had passed in my /current/
+year. Because there are a set number of days in each month(alterable every
+four years for leap year if you /really/ want or need to), the month is
+relatively easy to divine from this point. I used the getmonth ufunction:
+
+&GETMONTH
+Object=[switch(inc(%0),>334,12|334,>304,11|304,>273,10|273,>243,9|243,>212,8|212,>181
+,7|181,>151,6|151,>120,5|120,>90,4|90,>59,2|59,1|0)]
+
+What I do in this function is return both the month, and the
+number of days in the year that have passed UP TO this month. I use this
+to compute the precise date in that month. The method for doing this is to
+take the value of the mod of seconds in our current year, and subtract
+from that a number of seconds equal to the number of days that have passed
+before our current month. Please note the inc() used on %0. That
+guarantees that we are talking about the /current/ IC day, rather than the
+number of days that have passed /before/ today. What this leaves us with
+is a number of seconds that have passed in our /current/ month. This can
+easily be divided by 86400(number of seconds in a day), and it will give
+us the date for today.
+The remainder of the above make_time code is identical to what
+we've discussed before, determining hour, minutes, and seconds of
+time. Because the game I did this on is set in a year other than our
+current one, I continually fought with the issue of how to determine what
+the accurate day of the week was. It came to me that because the weeks are
+a repeating cycle of seven days, then the modulo of dividing the number of
+days that had passed in the year would be an easy determination of what
+the day of the week was.
+So, I developed the fun_day function, below, which does precisely
+this. This particular instance of it works for years in the 1905, 1916,
+1927, 1938, 1949, 1960, 1971, 1982, 1993, 2004, 2015, etc. sequence. The
+calendars repeat themselves every 11 years. If you wished to implement
+this on your own game, adjust the days according to the year you are on.
+The logic works as I outlined above. I take the elapsed time in my
+IC time system, and divide out the number of whole years. From that, I
+determine how many IC days have passed in my current year, and divide it
+by seven. The inc() is done to accomodate a vaguary of the calendar. You
+can not have a day 0 of your year, therefore you must have a 1-based
+system. The adding of 1 to the number of days accomodates for this.
+
+&FUN_DAY
+Object=[switch(mod(inc(div(mod(u(elapsed_time),31536000),86400)),7),0,Friday,1,S
+aturday,2,Sunday,3,Monday,4,Tuesday,5,Wednesday,Thursday)]
+
+
+
+SUMMARY
+
+I hope this tutorial has given you an insight into how to create a
+system like this. It could easily be used as 3:1, as well as a 60-day
+month, a 400-day year, or a 57-minute hour. It is up to you, as the coder,
+to plug in the divisions that represent /your/ game's IC time system. A
+version of this code that I have written uses a 3:1 timescale on a
+calendar that has eight major divisions, instead of 12 months. It's still
+a 24-hour day, but the dates are given as the ##th day of the Third
+Sabbat, for example.
+There are other applications of vector math as well, and I invite
+you to explore them, because they can be used in a variety of ways. I have
+seen XP systems, weather systems, and econ/financial systems that all used
+vector math to reflect the changes from one point to another, given
+quantity and direction.
+Lesson 7 of the MMM will cover debugging your code, and tracking
+down errors, and give you some basic things to look for that causes code
+to break, as well as the standard set of tools for debugging code. Quite
+often, the most magnificent-looking code doesn't work, and it falls on the
+coder to find the bugs and fix them. More often than that, a coder
+inherits something coded by someone else, that either a) wasn't done well,
+b) didn't port well, or c) never worked to begin with. And then the new
+coder has the onerous task of finding the bugs and fixing them.

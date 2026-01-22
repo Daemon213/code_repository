@@ -1,0 +1,827 @@
+ CLASS: MUSHCoding 201
+PART: 1
+DATE: 12/07/2002 TIME: 6 PM
+INSTRUCTOR: Luigi
+DESCRIPTION: The first class of MUSHCoding 201 ever held. Most of it has
+been left in its original state, though some parts of the log were edited
+to remove spam or correct a speaker's typo. A '*' has been placed in front
+of the speaker's name.
+
+----------------------------------------------------------------------------
+
+Luigi's Classroom
+..is a pit. @Dolists and iter()'s float about, encapsulating each other, and surrounding and being surrounded by a plethora of other functions and @commands. It's a mess. Some of the code here is scribbled on walls and notebook paper, while even more of it is written on the windows with crayons or scratched into the floors. Madness. You wonder how you'll ever learn how to code now.
+Contents:
+Link's Syllabus
+Genvieve
+XML
+Hikenin
+Mapping Droid
+Rhayden
+Faizah
+Link
+Clunk
+Blackboard
+Obvious exits:
+<O>ut
+* Luigi says, "Let me begin by saying welcome to MUSHCoding 201. A few things to know for those of you who haven't taken 101:"
+* Luigi says, "Rather, a few things you should know if you wish to understand this class. @Switch, @Listen, and @Ahear. If you understand these then you should be right where MUSHCoding 101 left off."
+* Luigi says, "If not, mail me and I'll try to get another 101 class going soon if there's enough interest."
+* Luigi says, "Today we are discussing a very important topic in MUSHCoding, Iteration."
+Faizah settles in, listens.
+* Luigi says, "What is Iteration? It is the doing of something in code a certain number of times. For those of you familiar with other programming languages, it is somewhat like a FOR loop. An example of simple iteration:"
+* Luigi types --> @dolist 1 2 3=say ##
+* Luigi says, "1"
+* Luigi says, "2"
+* Luigi says, "3"
+Glassbrain has arrived.
+Link shudders, loops.
+Genvieve uses think, so as not to spam ;>
+XML raises his hand.
+* Luigi says, "There are two forms of Iteration, via functions and via commands. Right now we will discuss how to iterate commands with @DOLIST."
+* Luigi says, "Yes XML?"
+XML says, "What's the equivilent of a elsif in MUSHcode?"
+Jade has arrived.
+XML <--- Perl prog.
+XML says, "elseif."
+Jade waves.
+Jade says, "Have I missed anything?"
+* Luigi says, "@Switch would be the ELSE IF equivilant, xml."
+Link says, "Only my mysteriousness."
+XML nods.
+* Luigi says, "We were discussing @Dolist Jade."
+XML says, "Gotcha."
+Jade says, "Ahh, ok."
+* Luigi says, "See previous class's logs for info on how to use @Switch."
+XML nods.
+Jade whips out notebook, and listens in.
+Jade says, "Ok."
+XML says, "I will."
+* Luigi says, "Now, @Dolist is used in the following way:"
+Link says, "You should put them on the page, later Luigi."
+* Luigi says, "@Dolist <list of words>={what to do with each word}"
+Link says, "Select Case?"
+* Luigi says, "Use {} like we did with @Switch so multiple commands work."
+* Luigi says, "@Switch is also the SELECT CASE equivilant, Link."
+* Luigi says, "@Switch does it all. Now, back to @Dolist.."
+XML raises hands again (sorry, curious).
+Link nods.
+* Luigi says, "As you may have noticed, much like in @Switch, ## is replaced with the current word in the list, in a @Dolist."
+* Luigi types --> @dolist corn dogs=say ##
+* Luigi says, "corn"
+* Luigi says, "dogs"
+XML says, "Can you, for example, use "%0", and "%1" and the like with @dolist?"
+* Luigi says, "Well, in switch it was #$ to show the thing switched on."
+XML says, "Ah, okay."
+"(xml's question answered in a bit) But let's try something."
+* Luigi says, "Everybody find an object to code on. @Create it, or use one you already have."
+Faizah nods
+* Luigi says, "This might be what you meant XML, tell me after we do it."
+Link says, "Ah, silence. no more annoying warnings in @wcheck."
+Jade still has plenty warnings. :/
+* Luigi types --> &addlist <that object>=$addlist * by *:@dolist %0=say add(##,%1)
+Faizah says, "Speak for yourself. I asked for a lot to be appraised, and got 12 lines of spam in my log now."
+Jade says, "Um."
+Faizah says, "The appraisal object which I never saw.. *shrug*"
+* Luigi says, "Set that attribute. Drop the object, test it, then pick it up."
+XML drops Moof!.
+Jade drops CodeFiesta.
+CodeFiesta says, "9"
+Moof! says, "9"
+CodeFiesta says, "#-1 ARGUMENTS MUST BE NUMBERS"
+Moof! says, "#-1 ARGUMENTS MUST BE NUMBERS"
+Rhayden drops TestObject.
+* Luigi says, "Try: addlist 1 2 3 by 10"
+Hikenin drops Test Object.
+Test Object says, "3"
+TestObject says, "3"
+CodeFiesta says, "3"
+Moof! says, "3"
+Test Object says, "11"
+Test Object says, "12"
+Test Object says, "13"
+CodeFiesta says, "11"
+CodeFiesta says, "12"
+CodeFiesta says, "13"
+Moof! says, "11"
+Moof! says, "12"
+Moof! says, "13"
+Test Object says, "133"
+CodeFiesta says, "133"
+Moof! says, "133"
+Genvieve drops Class Object.
+Rhayden takes TestObject.
+Class Object says, "11"
+Class Object says, "12"
+Class Object says, "13"
+Test Object says, "11"
+Test Object says, "12"
+Test Object says, "13"
+(Much of this type of spam)
+* Luigi says, "We're adding the %1 register to each item in the %0 register, via @Dolist. That what you meant, xml?"
+Class Object says, "11"
+Class Object says, "12"
+Class Object says, "13"
+(Much of this type of spam)
+Faizah says, "11"
+Faizah says, "12"
+Faizah says, "13"
+XML nods!
+Jade says, "It's looping!!"
+Class Object says, "11"
+Class Object says, "12"
+Class Object says, "13"
+(Much of this type of spam)
+Moof! says, "427"
+* Luigi says, "No it's not, people are just typing it a bunch. Please pick up the objects now."
+Genvieve takes Class Object.
+XML takes Moof!.
+Faizah takes FizBum.
+XML says, "Quiet, moof, or I shall have to kill you."
+Hikenin takes Test Object.
+Faizah says, "Set it on myself by mistake. Oops."
+Krang has arrived.
+Jade takes CodeFiesta.
+Tester says, "12"
+Tester says, "13"
+Tester says, "14"
+Tester says, "15"
+Tester says, "16"
+Tester says, "20"
+Krang gestures vaguely. "Did I miss anything?"
+* Luigi says, "Other common uses for @Dolist include displaying large amounts of data, which wouldn't fit into one @Pemit. When used in combination with the LNUM() function, a @Dolist number list can be automated."
+* Luigi types --> say lnum(1,10)
+* Luigi says, "1 2 3 4 5 6 7 8 9 10"
+Jade says, "1 2 3 4 5 6 7 8 9 10"
+* Luigi types --> @dolist lnum(1,10)={say ##;say second command}
+* Luigi says, "1"
+* Luigi says, "second command"
+* Luigi says, "2"
+* Luigi says, "second command"
+* Luigi says, "3"
+* Luigi says, "second command"
+* Luigi says, "4"
+* Luigi says, "second command"
+* Luigi says, "5"
+* Luigi says, "second command"
+* Luigi says, "6"
+* Luigi says, "second command"
+* Luigi says, "7"
+* Luigi says, "second command"
+* Luigi says, "8"
+* Luigi says, "second command"
+* Luigi says, "9"
+* Luigi says, "second command"
+* Luigi says, "10"
+* Luigi says, "second command"
+Jade says, "Ok. I get it."
+* Luigi says, "Any questions before we move on?"
+Rhayden mmmm, spammy
+Link says, "OH DEAR LORD"
+Jade says, "The 's help to group different....commands together?"
+Faizah says, "no questions. But it's going to be fun editing this log."
+Jade says, "{}"
+Jade nods. and how.
+* Luigi says, "Yes Jade. Just like in @Switch, it's a good idea always to use them."
+Jade nods.
+Link says, "Use lock them to yourself and use others in a think command."
+XML says, "luigi, is that the 'teach' command"
+* Luigi says, "Just get into the habit of using the {}'s. @Dolist <list>={<what to do with each item in list>}"
+* Luigi says, "Yes XML, I am using teach."
+XML says, "r"
+XML says, "e"
+XML says, "d"
+Faizah says, "FizBum is locked to me."
+Rhayden says, "faizah, @lock/use it to you"
+Faizah says, "I did"
+* Luigi says, "Next topic. Function iteration."
+Faizah nods attentively.
+* Luigi says, "Function iteration is very powerful. Like @Dolist, it does something a certain number of times. An example:"
+Jade listens.
+XML giggles.
+* Luigi types --> say iter(1 2 3,##!)
+* Luigi says, "1! 2! 3!"
+Faizah says, "1! 2! 3!"
+* Luigi types --> say iter(lnum(1,100),##)
+* Luigi says, "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100"
+Jade says, "1 2 3"
+XML says, "One! Two! Three! Heheh!"
+Jade says, "1@ 2@ 3@"
+XML says, "1!!! 2!!! 3!!! 4!!! 5!!! 6!!! 7!!! 8!!! 9!!! 10!!! 11!!! 12!!! 13!!! 14!!! 15!!! 16!!! 17!!! 18!!! 19!!! 20!!! 21!!! 22!!! 23!!! 24!!! 25!!! 26!!! 27!!! 28!!! 29!!! 30!!! 31!!! 32!!! 33!!! 34!!! 35!!! 36!!! 37!!! 38!!! 39!!! 40!!! 41!!! 42!!! 43!!! 44!!! 45!!! 46!!! 47!!! 48!!! 49!!! 50!!! 51!!! 52!!! 53!!! 54!!! 55!!! 56!!! 57!!! 58!!! 59!!! 60!!! 61!!! 62!!! 63!!! 64!!! 65!!! 66!!! 67!!! 68!!! 69!!! 70!!! 71!!! 72!!! 73!!! 74!!! 75!!! 76!!! 77!!! 78!!! 79!!! 80!!! 81!!! 82!!! 83!!! 84!!! 85!!! 86!!! 87!!! 88!!! 89!!! 90!!! 91!!! 92!!! 93!!! 94!!! 95!!! 96!!! 97!!! 98!!! 99!!! 100!!!"
+Jade says, "1 2 3"
+Faizah says, "1 2 3"
+Jade says, "1! 2! 3!"
+* Luigi says, "one two three four five six seven eight nine ten"
+Faizah says, "one two three"
+XML says, "#-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER #-1 ARGUMENT MUST BE NUMBER"
+XML says, "D'oh."
+Link says, "ichi! ni! san! chi!"
+Rhayden types --> say spellnum(2345243)
+Rhayden says, "two million three hundred forty-five thousand two hundred forty-three"
+Jade says, "one two three four five six seven eight nine ten"
+XML says, "#-1 OUT OF RANGE"
+Jade says, "eight million eight hundred thirty-eight thousand three hundred thirty-eight"
+Faizah says, "one hundred eleven two hundred twenty-two three hundred thirty-three"
+XML says, "nine hundred ninety-nine million nine hundred ninety-nine thousand nine hundred ninety-nine"
+Link smacks XML.
+Jade says, "eighty-eight million three hundred eighty-three thousand three hundred eighty-nine"
+* Luigi says, "Now, before we move on to some practical uses of Iteration, let us discuss Delimiters."
+Rhayden says, "FAIZAH"
+XML says, "six hundred sixty-six"
+Rhayden says, "Why does everything you say give off garbled text?"
+Link says, "she is using happy facy."
+Link says, "she is using happy facey."
+Rhayden grar
+Faizah eeps. The happy facey thing. Sorry. Won't do it again.
+XML says, "#! faizah! faizah#!"
+XML says, "#! geez! geez#!"
+XML says, "#! hehe! hehe#!"
+* Luigi says, "A "list" in MUSHCode is a series of words, seperated by something known as a delimiter."
+Link says, "Your client is inferior."
+* Luigi types --> say iter(1 2 3,##)
+* Luigi says, "1 2 3"
+Faizah says, "eleven twenty-two thirty-three"
+* Luigi says, "In this example, 1 2 3 is seperated by the ' ' (space) delimiter."
+XML says, "11 33 44 55"
+* Luigi types --> say iter(1|2|3,##,|)
+* Luigi says, "1 2 3"
+* Luigi says, "But in this example, '|' is the delimiter."
+XML says, "1|2|3|4|5#!"
+Rhayden says, "XML and Faizah, could you please "think" your examples to yourself?"
+Rhayden says, "It's getting confusing."
+XML says, "Okie."
+Link says, "Go vb."
+XML says, "Sorry."
+* Luigi says, "Iter() takes an option 3rd argument, which is what the list given to it is seperated by (the delimiter)."
+Faizah says, "OK"
+* Luigi says, "Iter() also takes an option 4th argument, with what to delimit the list being outputted with."
+* Luigi types --> say iter(1|2|3,##,|,|)
+* Luigi says, "1|2|3"
+* Luigi types --> say iter(1|2|3,##,|,*)
+* Luigi says, "1*2*3"
+* Luigi types --> say iter(1|2|3,##,|,%r)
+* Luigi says, "1
+2
+3"
+* Luigi says, "'%r' is a register which means a new line return. We will talk about registers in another class."
+* Luigi types --> say iter(1 2 3,##,,%r)
+* Luigi says, "1
+2
+3"
+* Luigi says, "In this example, I left the 3rd argument blank, to indicate the list given to it was delimited with spaces."
+Link says, "frmCalc.Top = (Screen.Height - frmCalc.Height) / 2
+frmCalc.Left = (Screen.Width - frmCalc.Width) / 2"
+Link says, "oops"
+* Luigi says, "This is the basis for most +who commands."
+Rhayden nods.
+Jade noddles.
+Jade says, "So that's part of how it's done. :)"
+* Luigi says, "I will show you how to make a very basic +who, after we discuss: DBREFS."
+XML cheers wildly
+Rhayden woo, dbrefs
+Genvieve says, "Hrm."
+Faizah says, "Whoo! Number thingies."
+* Luigi says, "Yes, very exciting!@?!@!@ :)"
+Link hmms.
+Genvieve says, "I may need to wait for 301 ;)"
+* Luigi says, "Every object in the game has a DBREF. It's simply a unique number used to reference it in code."
+Krang says, "dbrefz r yay"
+* Luigi types --> th num(me)
+Link clutch triforce of power.
+* Luigi says, "That is your DBREF. They come in the format #<number>. You may all know this but incase somebody doesn't there we go."
+XML says, ":raises hand"
+* Luigi says, "Yes XML?"
+XML says, "How do you manipulate dbrefs for things you don't own?"
+XML says, "dISPLAY THem, such as."
+XML says, "Is there a special way?"
+XML says, "Or is it just as if you were displaying something of your own's?"
+* Luigi says, "Well, a lot of functions return DBREF, such as NUM()."
+Faizah types --> th num(Faizah)
+* Luigi types --> say num(xml)
+* Luigi says, "#8364"
+XML says, "Oh, okay."
+* Luigi says, "Note, if you are trying to get the number of a player, using their name only works if they are in the same room. To get their name from afar, place a '*' in front of it."
+* Luigi types --> say num(SPamBot)
+* Luigi says, "#-1"
+* Luigi types --> say num(*SPamBot)
+* Luigi says, "#4014"
+* Luigi says, "That is called the Global Operator, or some such thing."
+* Luigi says, "Only works on player names, too."
+XML nods.
+Faizah drops FizBum.
+Krang says, "An operator version of pmatch.. 'tis yay."
+Faizah types --> say num(FizBum)
+Faizah says, "#13059"
+* Luigi says, "Now, another function that returns a DBREF, a list of them actually, is LCON(). This lists the contents of something."
+* Luigi says, "Let me show you how iter() can be used in this situation.."
+* Luigi types --> say lcon(here)
+* Luigi says, "#13059 #10000 #8298 #10508 #7215 #9860 #6342 #8364 #3146 #4184 #1000 #12460 #535 #12696 #9548 #9633 #5710 #4216"
+* Luigi types --> say iter(lcon(here),name(##),,%r)
+* Luigi says, "FizBum
+Krang
+Mapping Droid
+Jade
+Glassbrain
+Link's Syllabus
+Genvieve
+XML
+Hikenin
+Mapping Droid
+Luigi
+Rhayden
+Mapping Droid
+Faizah
+Mapping Droid
+Link
+Clunk
+Blackboard"
+Link raise hand.
+* Luigi says, "The NAME() function takes a single DBREF, and returns its name. We took the list, parsed it through ITER(), and changed the delimiter to %r."
+* Luigi says, "Yes Link?"
+XML hands Faizah a note
+Link says, "I have an object that teleports the user to another location via a command, but since I don't own the other room that the other object is in, it won't let them travel back through. How do I remedy this?"
+Rhayden says, "Use an exit instead of @teleport?"
+* Luigi says, "It won't let you @tel them back, you mean?"
+Link nods.
+* Luigi says, "Perhaps you have them ENTER the object and use an @AENTER."
+Link says, "an exit would mess up mine idea and make the rooms linkable."
+Rhayden says, "Make the object into an exit, or make an exit in the object."
+Link hmms
+* Luigi says, "Onward, there are a lot of functions that deal with DBREF.."
+* Luigi types --> say home(*Luigi)
+* Luigi says, "#10"
+* Luigi types --> say name(home(*Luigi))
+* Luigi says, "AnsiCity Town Square"
+Link has left.
+Rhayden chuckles
+* Luigi says, "Home() returns the home room of another player."
+Faizah says, "#11384"
+Faizah says, "Erp"
+Rhayden says, "You didn't link yourself to your castle, Luigi?"
+* Luigi says, "I have a $-command for that."
+Rhayden ah
+* Luigi says, "Another way to get a player's DBREF is through PMATCH(), as Krang hinted at."
+* Luigi types --> say pmatch(Rhayden)
+* Luigi says, "#12460"
+* Luigi types --> say pmatch(Yoda)
+* Luigi says, "#884"
+* Luigi says, "PMATCH doesn't require the * operator, but basically everything else does."
+Faizah says, "#-1"
+* Luigi says, "Though it WILL take it, it's not necessary."
+Rhayden says, "Is that the only advantage to pmatch() over num()/name()/etc?"
+* Luigi says, "Rhayden, PMATCH() is useful for things like +FINGER. Where someone enters a player name into a register, and you want to find out what the DBREF of that is. That is why it doesn't need the *."
+* Luigi says, "Now, the LWHO() function returns the list of DBREFS of everyone connected."
+* Luigi says, "So, a simple +who is contructed.."
+Rhayden ah
+* Luigi types --> say iter(lwho(),##)
+* Luigi says, "#5 #1000 #3146 #6407 #9633 #6342 #8364 #12460 #12696 #7215 #9545 #1048 #8471 #10000 #10508 #11298 #11728 #1971 #6 #4266 #10645 #884 #9558 #12743 #4014"
+* Luigi types --> say iter(lwho(),name(##),,%r)
+* Luigi says, "Hyacinth
+Luigi
+Hikenin
+Hermes
+Link
+Genvieve
+XML
+Rhayden
+Faizah
+Glassbrain
+mr.bear
+Kyna
+Kronus
+Krang
+Jade
+Jinx
+Krax
+Phoenyx
+Phil_Laco
+e
+MudNet
+Yoda
+mrs.zelda
+SpyBot
+SpamBot"
+XML raises hands
+Link says, "And that folks, is why Luigi... is King."
+* Luigi says, "To decorate it, you could use IDLE(), CONN(), and DOING(). All which take DBREFs or *playerName."
+* Luigi says, "Yes XML?"
+XML says, "Can you do reverse DBREF name lookup?"
+* Luigi says, "What do you mean?"
+XML says, "Get the name of something through a dbref"
+Shadow-Link has arrived.
+Rhayden says, "Rhayden"
+* Luigi types --> say num(*Yoda)
+* Luigi says, "#884"
+Genvieve says, "name(db#)"
+Rhayden types --> say name(#12460)
+Rhayden says, "Rhayden"
+* Luigi types --> say name(#884)
+* Luigi says, "Yoda"
+XML says, "Thanks"
+* Luigi says, "Gotta use the '#' when using DBREFs in code."
+XML nods.
+XML says, "I've got another Q, which I'll pose in a minute."
+Link says, "Can you give us your example of the +who?"
+* Luigi says, "Now, if you all remember when to use []'s.. they are used when more than 1 function is used in a command."
+Faizah says, "Shadow-Link 67
+Quaker 66
+Hyacinth 1178
+Luigi 8
+Hikenin 492
+Hermes 4623
+Link 10
+Genvieve 57
+XML 2
+Rhayden 52
+Faizah 0
+Glassbrain 648
+mr.bear 2771
+Kyna 4
+Kronus 191
+Krang 553
+Jade 417
+Jinx 3612
+Krax 16419
+Phoenyx 19964
+Phil_Laco 51
+e 14757
+MudNet 866
+Yoda 7
+mrs.zelda 52210
+SpyBot 62
+SpamBot 51216 "
+* Luigi says, "They can be used in ITER() like so.."
+Rhayden says, "FAIZAH"
+Genvieve says, "Think ;>"
+* Luigi types --> say iter(#884 #1000 #6,ljust(name(##),14) [timestring(conn(##))],,%r)
+* Luigi says, "Yoda 14h 29m 58s
+Luigi 45m 40s
+Phil_Laco 7h 59m 15s"
+Faizah says, "I didn't mean to! I forgot that I'd put a 'say' at the start of the command! *hides*"
+Krang says, "Sounds like somebody wants to be introduced to a possible use of repeat() and %r."
+Jade chuckles.
+Link says, "How about one using the +where function?"
+Link says, "or loc()?"
+XML raises hand, again (loser)
+* Luigi says, "Sorry, had a phone call."
+XML says, "This might be for 301, but still: How do you use the data you get from those commands and manipulate them into FANSI colors?"
+Link has left.
+XML says, "For instance: A device that shows colored bars for length of idle instead of the Idle column in a private +who"
+Rhayden says, "Oh grief"
+Rhayden says, "That's a lotta work"
+* Luigi says, "I'll show you later."
+XML nods
+Rhayden says, "Much use of switch() and if(), I would imagine"
+* Luigi says, "I used LJUST(), which left justifies text, making sure it's at least a certain length."
+* Luigi types --> say [ljust(corn,7)]<--
+* Luigi says, "corn <--"
+* Luigi types --> say [ljust(corn,6)]<--
+* Luigi says, "corn <--"
+Rhayden nods
+* Luigi says, "Like many functions, including ITER(), ljust can accept a Delimiter."
+Shadow-Link says, "Is it possible to have a +where that updates itself without loss of coinage?"
+* Luigi types --> say [ljust(corn,6,*)]<--
+* Luigi says, "corn**<--"
+* Luigi types --> say [ljust(corn,60,*)]<--
+* Luigi says, "corn********************************************************<--"
+* Luigi types --> say [ljust(corndogs,60,*)]<--
+* Luigi says, "corndogs****************************************************<--"
+* Luigi says, "I also used TIMESTRING(), which when placed around CONN() returns a time string of their connection time. We'll talk about TIME functions later, but here's a brief example:"
+* Luigi types --> say timestring(60)
+* Luigi says, " 1m 0s"
+* Luigi types --> say timestring(3600)
+* Luigi says, " 1h 0m 0s"
+* Luigi types --> say timestring(84585845)
+* Luigi says, "979d 0h 4m 5s"
+Rhayden says, "Nice"
+* Luigi types --> say conn(me)
+* Luigi says, "-1"
+* Luigi types --> say conn(Luigi)
+* Luigi says, "3003"
+XML says, "#-1 ARGUMENTS MUST BE POSITIVE INTEGERS"
+* Luigi types --> say timestring(conn(Luigi))
+* Luigi says, "50m 9s"
+XML says, "Oops"
+* Luigi says, "There. I've been connected 50 minutes, 9 seconds."
+* Luigi says, "TIME FUNCTIONS can be read about in the help files if you're interested. I will probably discuss them later in more depth."
+XML nods, and shares vanilla coke
+* Luigi says, "As for questions regarding +where. Basically it's the same as +who, only with NAME() and LOC()."
+Rhayden spits at the coke and takes a swig of Pepsi,.
+* Luigi says, "LOC() returns the location of a player. So.."
+* Luigi types --> say loc(me)
+* Luigi says, "#7358"
+* Luigi types --> say name(loc(me))
+* Luigi says, "Luigi's Classroom"
+Rhayden says, "Luigi's Classroom "
+* Luigi types --> say iter(lwho(),[ljust(name(##),16)][name(loc(##))],,%r)
+* Luigi says, "Shadow-Link Luigi's Classroom
+Quaker Weight Room
+Hyacinth Hyacinth's Humble Home
+Luigi Luigi's Classroom
+Hikenin Luigi's Classroom
+Hermes Mount Olympus
+Link Link's Igloo
+Genvieve Luigi's Classroom
+XML Luigi's Classroom
+Rhayden Luigi's Classroom
+Faizah Luigi's Classroom
+Glassbrain Luigi's Classroom
+mr.bear King's Throne Room
+Kyna A Colourful Cottage Garden
+Kronus Foyer
+Krang Luigi's Classroom
+Jade Luigi's Classroom
+Jinx JLA Watch Tower
+Krax Krax's Smurfy Mushroom
+Phoenyx Phoenyx's Mailbox
+Phil_Laco University -- Entrance Hall
+e e's hovel
+MudNet Safe Land
+Yoda Yoda's Home
+mrs.zelda Yard
+SpyBot AnsiCity Town Square
+SpamBot Holding Cell"
+XML says, "Rhayden..."
+XML says, "Remember to think your examples, please."
+Rhayden says, "Blahblahblah"
+Shadow-Link kackles.
+* Luigi says, "As you can see, +WHOs and +WHEREs really aren't that impressive code-wise."
+XML nods. Nope.
+* Luigi says, "Naturally you can color them up with ANSI() and put other crap in it. For a list of functions that deal with DBREFS, see HELP DBREF FUNCTIONS. Moving onwards.."
+* Luigi says, "Oh, about the +WHO. You'd also probably want to use an IDLE()."
+* Luigi says, "Well, I guess I do have Time Functions on today's lesson."
+XML plans on calling the command +graphwho
+XML says, "graphwho, rather"
+Shadow-Link kackles.
+XML says, "no +"
+* Luigi says, "Time functions basically revolve around time."
+* Luigi types --> say time()
+* Luigi says, "Sat Dec 07 19:01:01 2002"
+* Luigi says, "TIME() returns the current time."
+XML says, "Sat Dec 07 19:01:13 2002"
+XML says, "Oop"
+* Luigi says, "You can see your birthday, or the "Creation Time" of anything, with CTIME()."
+* Luigi types --> say ctime(me)
+* Luigi says, "Tue Apr 24 16:27:19 2001"
+* Luigi types --> say ctime(*Yoda)
+* Luigi says, "Tue Apr 24 23:08:36 2001"
+* Luigi types --> say ctime(#10000)
+* Luigi says, "Sat Jul 13 19:10:55 2002"
+Krang woo.
+Shadow-Link says, "ctime"
+* Luigi says, "Functions like TIMESTRING(), mentioned previously, deal in numbers. The number being "number of seconds"."
+* Luigi says, "So how do you work with TIME() and CTIME() in such a case?"
+* Luigi types --> say convtime(time())
+* Luigi says, "1039312942"
+* Luigi says, "Sat Dec 07 19:02:45 2002 was converted to the number of seconds since Jan 1, 1970."
+* Luigi says, "Which the MUSH can use in code, such as CONVSECS() which converts it back."
+* Luigi types --> say convsecs(12345)
+* Luigi says, "Wed Dec 31 20:25:45 1969"
+* Luigi types --> say convsecs(123456)
+* Luigi says, "Fri Jan 02 03:17:36 1970"
+XML says, "#-1 ARGUMENT MUST BE POSITIVE INTEGER"
+* Luigi types --> say convsecs(1234567)
+* Luigi says, "Wed Jan 14 23:56:07 1970"
+* Luigi types --> say convsecs(12345678)
+* Luigi says, "Sat May 23 15:21:18 1970"
+* Luigi types --> say convsecs(123456789)
+* Luigi says, "Thu Nov 29 14:33:09 1973"
+XML says, "Gah, opo."
+* Luigi types --> say convsecs(1234567899)
+* Luigi says, "Fri Feb 13 16:31:39 2009"
+Shadow-Link says, "Shadow-Link Luigi's Classroom0
+Quaker Weight Room556
+Hyacinth Hyacinth's Humble Home1917
+Luigi Luigi's Classroom0
+Hikenin Luigi's Classroom1231
+Hermes Mount Olympus5362
+Link Link's Igloo136
+Genvieve Luigi's Classroom285
+XML Luigi's Classroom0
+Rhayden Luigi's Classroom39
+Faizah Luigi's Classroom37
+Glassbrain Luigi's Classroom1387
+mr.bear King's Throne Room3510
+Kyna Kyna's Hidden Workshop0
+Kronus Foyer329
+Krang Luigi's Classroom106
+Jade Luigi's Classroom635
+Jinx JLA Watch Tower4351
+Krax Krax's Smurfy Mushroom17158
+Phoenyx Phoenyx's Mailbox20703
+Phil_Laco University -- Entrance Hall496
+e e's hovel15496
+MudNet Safe Land1605
+Yoda Yoda's Home39
+mrs.zelda Yard52949
+SpyBot AnsiCity Town Square801
+SpamBot Holding Cell51955"
+XML kik self
+* Luigi says, "But no need to bother doing CONVSECS(TIME()) when you have SECS()."
+* Luigi types --> say secs()
+* Luigi says, "1039313038"
+* Luigi says, "Notice how the number grows every second.."
+* Luigi types --> say secs()
+* Luigi says, "1039313053"
+* Luigi types --> say secs()
+* Luigi says, "1039313054"
+* Luigi types --> say secs()
+* Luigi says, "1039313056"
+* Luigi types --> say secs()
+* Luigi says, "1039313057"
+* Luigi says, "Every second the SECS() strong grows by one. One more second since Jan 1, 1970 has passed. So SECS() is a unique number for that second."
+XML raise hand
+* Luigi says, "You may or may not find use for TIME FUNCTIONS, see that help file for more functions dealing with them."
+* Luigi says, "Yes XML?"
+XML says, "Can you use secs as an identification for, say, a raffle?"
+XML says, "And store it?"
+* Luigi says, "You wouldn't want to, in case somebody bought more than one ticket in a second."
+XML nods.
+* Luigi says, "You could keep just a number in an attribute, and increase it every time someone bought a ticket."
+* Luigi says, "I wish to discuss one more @command before I wrap up tonight's lesson."
+Rhayden nods
+Faizah listens.
+* Luigi says, "Since we are talking about time, let's see a little thing called @Wait."
+XML says, "How long until the lession is done (stuff to do)?"
+* Luigi types --> @wait 5=say 5 seconds later
+* Luigi says, "5 seconds later"
+* Luigi says, "Use {} to group more than one command, like in @Switch and @Dolist."
+* Luigi says, "It's almost over XML."
+* Luigi types --> @wait 3={say hi;@wait 1={say hi}}
+* Luigi says, "hi"
+* Luigi says, "hi"
+Shadow-Link says, "How do you setup the say iter thing with 3 columns?"
+* Luigi says, "Let me give you the homework assignment for next class, so XML can go. And then I will tell you Link."
+Rhayden nods.
+Shadow-Link shrugs.
+* Luigi says, "PROJECT 1: Personal +Who"
+* Luigi says, "An object which allows you to 'addfriend <player>' and 'removefriend"
+* Luigi says, "<player>'. <player> should accept player name or number, via pmatch()."
+* Luigi says, "Then, by typing 'pwho' it will show to you a personal who, which"
+* Luigi says, "shows you which of your friends are currently online, how idle they"
+* Luigi says, "are, how long they have been connected, and what they have their"
+* Luigi says, "@doing set to."
+Shadow-Link plans evil thoughts.
+XML says, "kay. bye"
+* Luigi says, "To remove something (like a DBREF) from a list, check out REMOVE()."
+* Luigi says, "Any questions can be mailed to eightbitmush@Hotmail.com."
+* Luigi says, "Now, the 3-column who.."
+* Luigi types --> say iter(1 2 3 4,##,%r)
+* Luigi says, "1 2 3 4"
+* Luigi types --> say iter(1 2 3 4,##,,%r)
+* Luigi says, "1
+2
+3
+4"
+* Luigi says, "Alright, there's the standard format."
+* Luigi says, "But let's say we removed the delimiter."
+* Luigi types --> say iter(1 2 3 4,##,,)
+* Luigi says, "1234"
+* Luigi says, "Then we told it to only put a %r after ## on 2 and 4."
+* Luigi types --> @emit iter(1 2 3 4,##[space(1)][switch(mod(##,2),0,%r)],,)
+1 2
+3 4
+
+Genvieve says, "What bout using table()?"
+* Luigi says, "You can use table() too if you want. I don't like table, but you can use it. :)"
+
+Shadow-Link says, "Cryten W. Drakee St. (10-80 Block) #9992
+Shadow-Link Luigi's Classroom #7358
+Quaker Weight Room #13768
+Hyacinth Hyacinth's Humble Home #9584
+Luigi Luigi's Classroom #7358
+Hikenin Luigi's Classroom #7358
+Hermes Mount Olympus #2628
+Link Link's Igloo #4929
+Genvieve Luigi's Classroom #7358
+Rhayden Luigi's Classroom #7358
+Faizah Luigi's Classroom #7358
+Glassbrain Luigi's Classroom #7358
+mr.bear King's Throne Room #2487
+Kyna Kyna's Hidden Workshop #14028
+Kronus Foyer #4476
+Krang Luigi's Classroom #7358
+Jade Luigi's Classroom #7358
+Jinx JLA Watch Tower #7214
+Krax Krax's Smurfy Mushroom #11740
+Phoenyx Phoenyx's Mailbox #1894
+Phil_Laco University -- Entrance Hall #5718
+e e's hovel #4135
+MudNet Safe Land #13289
+Yoda Yoda's Home #9412
+mrs.zelda Yard #8698
+SpyBot AnsiCity Town Square #10
+SpamBot Holding Cell #9608"
+
+* Luigi says, "Oh, I guess I need to discuss #@ in order for this +where to work."
+* Luigi says, "#@, when used in an Iter(), returns the current number we are at in the list."
+* Luigi types --> say iter(red blue green,##)
+* Luigi says, "red blue green"
+* Luigi types --> say iter(red blue green,#@)
+* Luigi says, "1 2 3"
+* Luigi says, "So now we can build our +3who like so:"
+
+* Luigi types --> @emit iter(lwho(),ljust(name(##),15)[space(1)][switch(mod(#@,3),0,%r)],,)
+Cryten Shadow-Link Quaker
+Hyacinth Luigi Hikenin
+Hermes Link Genvieve
+Rhayden Faizah Glassbrain
+mr.bear Kyna Kronus
+Krang Jade Jinx
+Krax Phoenyx Phil_Laco
+e MudNet Yoda
+mrs.zelda SpyBot SpamBot
+
+Rhayden nods.
+* Luigi says, "I used the MOD() function, which is MODULUS, or remainder of the interger division of the first number by the second."
+* Luigi says, "integer*"
+* Luigi says, "Well, that's all I have for today. Any questions?"
+Rhayden says, "Nope"
+Rhayden says, "Looks good to me."
+Genvieve says, "What does one do if it turns out we're overqualified for the class?"
+* Luigi says, "Just not show up next time. You didn't have to pay for this one."
+Genvieve says, "Ok. Thanks :>"
+* Luigi says, "But we're going to be covering a lot of stuff in this course."
+* Luigi says, "Well, thank you all for coming."
+Genvieve says, "Thanks for teaching"
+Rhayden nods his thanks.
+Genvieve says, "I do have a personal question for you, Luigi :>"
+Hikenin nods thanks
+Hikenin goes home.
+Hikenin has left.
+Luigi tighten bowtie.
+(Some irrelevant commentary removed)
+Shadow-Link says, "so..."
+Shadow-Link types --> say iter(lwho(),[ljust(name(##),16)][name(loc(##))][space(1)][loc(##)],,%r)
+Shadow-Link says, "Shadow-Link Luigi's Classroom #7358
+Cryten W. Drakee St. (10-80 Block) #9992
+Quaker Weight Room #13768
+Hyacinth Hyacinth's Humble Home #9584
+Luigi Luigi's Classroom #7358
+Hikenin Kitchen #6614
+Hermes Mount Olympus #2628
+Genvieve Luigi's Classroom #7358
+Rhayden Luigi's Classroom #7358
+Faizah Luigi's Classroom #7358
+Glassbrain Luigi's Classroom #7358
+mr.bear King's Throne Room #2487
+Kyna Kyna's Hidden Workshop #14028
+Kronus Luigi's Classroom #7358
+Krang Luigi's Classroom #7358
+Jade Luigi's Classroom #7358
+Jinx JLA Watch Tower #7214
+Krax Krax's Smurfy Mushroom #11740
+Phoenyx Phoenyx's Mailbox #1894
+Phil_Laco University -- Entrance Hall #5718
+e e's hovel #4135
+MudNet Safe Land #13289
+Yoda Yoda's Home #9412
+mrs.zelda Yard #8698
+SpyBot AnsiCity Town Square #10
+SpamBot Holding Cell #9608"
+Genvieve says, "MUsh time"
+Kronus says, "Please do....."
+Kronus says, "What time is it now, MUSH time..."
+Rhayden types --> time((
+Rhayden says, "Er, time()"
+Kronus says, "WHat time did it start?"
+(Some commentary removed)
+Rhayden says, "6:05pm, MUSH time"
+Kronus says, "Oh see I thought it started at 7:00 Mush time... well darn...."
+Genvieve says, "I don't want to put you through trouble for a mirror :>"
+Shadow-Link says, "ACK"
+Shadow-Link hisses.
+Rhayden says, "Nice"
+Genvieve takes Mirror.
+(Some commentary removed)
+Shadow-Link says, "How does the idle function work for the list?"
+Kronus says, "Luigi, send me the log whenever you get the chance please..."
+Genvieve pops back.
+Genvieve goes home.
+Genvieve has left.
+Faizah goes home.
+Faizah has left.
+Jade pondrs.
+* Luigi types --> say idle(me)
+* Luigi says, "0"
+* Luigi types --> say idle(Link)
+* Luigi says, "54"
+Jade says, "I want to make a pickrand() function."
+* Luigi types --> say timestring(idle(*Link))
+* Luigi says, " 1m 2s"
+* Luigi says, "Link, you might also check out FIRST(), to shorten the list."
+Jade says, "Ahhh."
+Jade says, "On other codebases, it's pickrand. :)"
+Rhayden says, "pickrand() isn't an actual codebase function"
+Rhayden says, "It's a hack installed on a few places"
+Jade says, "Ahh."
+Jade says, "I didn't know that. Thanks. :)"
+Shadow-Link says, "what about a timestring(idle(lwho())]?"
+* Luigi says, "LWHO() returns a list of DBREFS. IDLE() only takes one DBREF."
+* Luigi says, "So use Iter()."
+* Luigi types --> say iter(lwho(),name(##)->[timestring(idle(##))])
+* Luigi says, "Link-> 3m 37s Shadow-Link-> 1m 5s Cryten->15m 4s Quaker-> 0s Hyacinth->55m 7s Luigi-> 0s Hikenin-> 9m 17s Hermes-> 1h 52m 32s Genvieve->39s Rhayden->15s Faizah-> 1m 2s Glassbrain->46m 17s mr.bear-> 1h 21m 40s Kyna-> 3s Kronus-> 3m 19s Krang-> 2m 3s Jade-> 1m 3s Jinx-> 1h 35m 41s Krax-> 5h 9m 8s Phoenyx-> 6h 8m 13s Phil_Laco-> 2m 32s e-> 4h 41m 26s MudNet->11m 3s Yoda->12s mrs.zelda->15h 5m 39s SpyBot-> 3m 49s SpamBot->14h 49m 5s"
+Rhayden says, "Luigi, I'll take a copy of that log too, if you don't mind."
+* Luigi says, "Well, it is time for be to depart."
+* Luigi says, "I will send the log out later once I format it."
+* Luigi waves.

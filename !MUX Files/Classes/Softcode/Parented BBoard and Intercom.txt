@@ -1,0 +1,302 @@
+ Topic: Parented BBoard/Intercom
+Author: Trispis
+Summary: Commands and information can be shared among many objects without
+duplication, thus reducing database space consumption. In this log, Trispis
+walks a player through the creation of an intercom messaging system.
+
+Log file from M*U*S*H.
+
+6/23/98 7:54:18 PM
+
+<Code> Xira says, "done (not logging to beginning)"
+
+<Code> Trispis nods.
+<Code> Trispis says, "Okay..."
+<Code> Trispis says, "Let's work with the bbs (message storage/retrieval)
+only..."
+<Code> Trispis says, "You want objects in specific locations which access a
+common set of messages. Right?"
+
+<Code> Xira says, "yes."
+
+<Code> Trispis says, "Do you wish to set any sort of limit on how many
+messages can be stored?"
+
+<Code> Xira says, "well, actually, perhaps after so many are stored it starts
+to delete the oldest"
+
+<Code> Trispis says, "Okay. Good. That simplifies things."
+<Code> Trispis says, "What we can do is make one object... which stores and
+displays messages. Then, make several other objects which are parented to that
+object (reducing code and thus dbspace)."
+<Code> Trispis says, "So... we'll begin with /one/ object.... and get it
+working."
+
+<Code> Xira says, "okay."
+
+<Code> Trispis says, "You really only need to do two basic commands for this
+(write and read, or whatever). And one bit of message counting to keep track
+of the messages."
+<Code> Trispis says, "Let's begin by setting our limit (which we can change at
+any time later) to 5 messages (remmber, we can change this later, but 5 is
+easy to fill up and test our rollover when we're debugging)."
+
+<Code> Trispis says, "That's about all the planning we can do before we
+actually start writing some code (lest we start forgetting what we're
+planning)."
+<Code> Trispis says, "So... you need to create your first object..."
+
+<Code> Xira says, "Bulletin Board DB?"
+
+<Code> Trispis says, "That's fine, or BB Parent (since that's what it'll
+become)."
+
+Created: Object #2329.
+
+<Code> Trispis says, "It's really irrelevant what you name it, cuz I'll be
+referring to it's #dbref after you make it. (:"
+
+<Code> Xira says, "created, #2329"
+
+<Code> Trispis says, "Okay."
+<Code> Trispis says, "do this..."
+<Code> Trispis says, "&msg.limit #2329=5"
+
+BB Parent/MSG.LIMIT - Set.
+
+<Code> Trispis says, "Then, do this..."
+<Code> Trispis says, "&current.msg #2329=1"
+
+BB Parent/CURRENT.MSG - Set.
+
+<Code> Xira says, "done."
+
+<Code> Trispis says, "Okay... Now, I /could/ have you go ahead and make five
+empty messages on there, but it's not necessary... the code we'll make will do
+this as needed."
+<Code> Trispis says, "Next, we need to make a command for 'writing' messages
+(later, we'll make ones to read them)."
+<Code> Trispis says, "So... do this...
+
+&cmd.write #2329=$write *:&msg.[u(#2329/current.msg)] #2329=%0;@set
+#2329=current.msg:[switch(u(#2329/current.msg),5,1,inc(u(#2329/current.msg)))]
+"
+
+...Pretend that's all on one line."
+
+BB Parent/CMD.WRITE - Set.
+
+<Code> Xira says, "set."
+
+<Code> Trispis cools.
+
+<Code> Xira says, "wait a sec, explain some of this to me."
+
+<Code> Trispis nods.
+<Code> Trispis says, "What it does is this..."
+
+<Code> Trispis says, "You use the command: write <message> ... and it stores
+<message> in an attribute named MSG.<current.msg>"
+
+<Code> Trispis says, "Then..."
+
+<Code> Trispis says, "It resets the value stored in CURRENT.MSG ... depending
+on what its current value is. If it's 5 (the limit), it resets it to 1.
+Otherwise, it increments it by one (current value plus 1)."
+
+<Code> Xira says, "what is %0?"
+
+<Code> Trispis says, "It's the * in the command portion ($write *)"
+
+<Code> Xira says, "i didn't think it was what i thought it was (that didn't
+make sense)"
+<Code> Xira says, "okay."
+
+<Code> Trispis says, "That's pretty much all that's necessary for message
+storage."
+<Code> Trispis says, "The next thing we need is message retrieval (reading)."
+<Code> Trispis says, "So, do this...
+
+&cmd.read #2329=$read
+*:[ifelse(and(isnum(%0),member(lnum(1,u(msg.limit)),%0)),
+pemit(%#,u(msg.[%0])),pemit(%#,Invalid input.)]"
+
+...Once again, pretend that was all one line."
+
+<Code> Xira says, "another question, what are the 'u's for?"
+
+<Code> Trispis says, "they're a short form of ufun() (They're covered in the
+ClassLog2.txt)."
+
+<Code> Xira says, "okay, i will run though it."
+
+<Code> Trispis says, "Now..."
+<Code> Trispis says, "@set #2329=!no_command"
+
+Flag reset.
+
+<Code> Xira says, "know what it does, no explanation."
+
+<Code> Trispis says, "Now do the following 5 commands..."
+
+<Code> Trispis says, "
+
+write Test message number one.
+
+write Test message number two.
+
+write Test message number three.
+
+write Test message number four.
+
+write Test message number five.
+
+"
+
+<Code> Xira says, "should i drop it first?"
+
+<Code> Trispis says, "Not necessary."
+
+<Code> Trispis says, "Just be sure to do all five of those."
+
+<Code> Xira says, "how come i get no message when i type something (did we
+forget a @emit?)"
+
+<Code> Trispis says, "Those are just fancy frills to be added later."
+<Code> Trispis says, "Okay... I see you're done."
+
+<Code> Xira says, "okay, i usually put them in to reassure myself."
+
+<Code> Trispis says, "Now... do this..."
+
+<Code> Trispis says, "write Test message number six."
+
+BB Parent(#2329)
+Type: Thing Flags:
+Owner: Xira Zone: *NOTHING* Ducats: 1
+Parent: *NOTHING*
+Powers:
+Warnings checked: none
+Created: Tue Jun 23 20:11:39 1998
+Last Modification: Tue Jun 23 20:36:22 1998
+
+MSG.5 [#2362$]: Test message number five.
+MSG.4 [#2362$]: Test message number four.
+MSG.3 [#2362$]: Test message number three.
+MSG.2 [#2362$]: Test message number two.
+MSG.1 [#2362$]: Test message number six.
+
+CMD.READ [#2362]: $read
+*:[ifelse(and(isnum(%0),member(lnum(1,u(msg.limit)),%0)),pemit(%#,u(msg.[%0]))
+,pemit(%#,Invalid input.)]
+
+CMD.WRITE [#2362]: $write *:&msg.[u(#2329/current.msg)] #2329=%0;@set
+#2329=current.msg:[switch(u(#2329/current..msg),5,1,inc(u(#2329/current.msg)))
+]
+
+CURRENT.MSG [#2362]: 2
+
+MSG.LIMIT [#2362]: 5
+
+Home: Omphalos Park(#0RtJN)
+Location: Xira(#2362PenAC)
+
+<Code> Xira says, "neat."
+
+<Code> Trispis says, "Okay... writing works."
+
+<Code> Trispis says, "Now try reading a few: read 1 or read 2 or whatever (1-5
+are valid numbers)."
+
+Test message number six.
+
+Test message number three.
+
+Test message number two.
+
+<Code> Xira says, "okay, and it throws one, out. That works."
+
+<Code> Trispis says, "It does what?"
+
+<Code> Xira says, "throws the first message out"
+
+<Code> Trispis says, "Right... it just goes back and replaces the oldest with
+the newest."
+
+<Code> Xira says, "what about replies and stuff?"
+
+<Code> Trispis erms.
+
+<Code> Trispis isn't about to try to write a message threader. What you have
+works as a single object. Our next step is to make it work as a parent (which
+it should do automatically after we parent a few objects to it).
+<Code> Trispis is working on functionality at the moment.
+<Code> Trispis is also running out of time...
+
+<Code> Xira says, "running out? got a date?"
+<Code> Xira says, "we can work on this tomorrow."
+
+<Code> Xira says, "a bulletin Board Relay system kinda thing."
+
+<Code> Trispis figures other people can probably help you with frills later.
+However. I want to get the parenting done first.
+<Code> Trispis says, "So... do this..."
+<Code> Trispis says, "@set #2329=no_command"
+
+Flag set.
+
+<Code> Trispis says, "@create BB Child"
+
+Created: Object #2359.
+
+<Code> Trispis says, "@parent BB Child=#2329"
+
+<Code> Trispis says, "@set bb child=!no_command."
+
+Parent changed.
+
+Flag reset.
+
+<Code> Trispis says, "Then, do the write command again (continuing with seven,
+eight, etc.) about 3 or 4 times."
+<Code> Trispis says, "eg: write Test message number seven."
+<Code> Trispis says, "It works. (:"
+<Code> Trispis says, "You can now parent as many objects as you'd like to
+#2329 and they'll all use the same five messages."
+
+BB Parent(#2329n)
+Type: Thing Flags: NO_COMMAND
+Owner: Xira Zone: *NOTHING* Ducats: 1
+Parent: *NOTHING*
+Powers:
+Warnings checked: none
+Created: Tue Jun 23 20:11:39 1998
+Last Modification: Tue Jun 23 20:43:50 1998
+
+MSG.5 [#2362$]: test message number 10
+MSG.4 [#2362$]: test message number nine
+MSG.3 [#2362$]: test message number eight
+MSG.2 [#2362$]: test message number seven
+MSG.1 [#2362$]: Test message number six.
+
+CMD.READ [#2362]: $read
+*:[ifelse(and(isnum(%0),member(lnum(1,u(msg.limit)),%0)),pemit(%#,u(msg.[%0]))
+,pemit(%#,Invalid input.)]
+
+CMD.WRITE [#2362]: $write *:&msg.[u(#2329/current.msg)] #2329=%0;@set
+#2329=current.msg:[switch(u(#2329/current.msg),5,1,inc(u(#2329/current.msg)))]
+
+CURRENT.MSG [#2362]: 1
+
+MSG.LIMIT [#2362]: 5
+
+Home: Omphalos Park(#0RtJN)
+Location: Xira(#2362PenAC)
+
+<Code> Trispis says, "If you want to save more messages, just change msg.limit
+to higher number."
+
+<Code> Xira says, "and they all read/write off the parent?"
+
+<Code> Trispis nods. That's right. (:
+<Code> Trispis has to bail. 

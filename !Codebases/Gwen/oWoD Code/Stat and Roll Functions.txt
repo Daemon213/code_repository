@@ -1,0 +1,35 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @@ Required for some of the WoD global code on my site. These must be set on a wiz inherit object.\
+@@ This code presumes you use Didi-style Chargen. Call them as user-defined functions off #1/God. \
+@@\
+@@ Rollz() allows you to simulate rolling WoD dice and get the proper pool and \
+@@ roll it, returning a positive or negative number that represents \
+@@ successes (0 is a fail and -1 and lower means botch results).\
+@@\
+@@ Statz() allows you to find stats on individual characters. It will either \
+@@ return a #-2 (not a valid stat), or the numeric value of a stat (0 through\
+@@ 10). It handles "pool" stats (willpower, rage, blood pool, etc), but, only \
+@@ returns the "permanent" rating in that stat. Requires you enter the character \
+@@ by dbref or use\'a0%#.\
+@@\
+@@ To use refer to the following syntax: \
+@@ statz(%#,Prime)\
+@@ rollz(statz(%#,Meditation),7) // (7 is the difficulty level of the roll)\
+@@ rollz(add(statz(%#,Perception),statz(%#,Meditation)),7) // (adding stats into 'pool') \
+@@\
+@@ Functions renamed to "statz()" and "rollz()" to work with SGP code (which has stat and roll functions)\
+@@\
+@@ edit #209 to be the number of your Freebie room, or, function holder for \
+@@ Chargen (where-ever chargen stat lists are stored)\
+\
+@create Function Object=10\
+&CREDITS Function Object=Coded by Creator@VenusMUSH\
+&FN_STATZ Function Object <GFO>=[setq(1,match(lcstr(get(#209/attrnames)),[lcstr(%1)]*))][setq(2,match(lcstr(get(#209/abilnames)),[lcstr(%1)]*))][setq(3,match(lcstr(get(#209/sabilnames)),[lcstr(%1)]*))][setq(4,match(lcstr(get(#209/pownames)),[lcstr(%1)]*))][setq(5,match(lcstr(get(#209/bgnames)),[lcstr(%1)]*))][setq(6,match(lcstr(get(#209/virtnames)),[lcstr(%1)]*))][setq(7,match(lcstr(get(#209/miscnames)),[lcstr(%1)]*))][setq(0,trim(iter(1 2 3 4 5 6 7,switch(r(##),0,,##))))][switch(strlen(%q0),0,#-2,1,[switch(%q0,1,setq(9,9),7,setq(9,9),[setq(9,match(u(*%0/[switch(%q0,2,abils,3,sabils,4,powers,5,bgnds,6,virts)]),[switch(%q0,2,%q2,3,%q3,4,%q4,5,%q5,6,%q6)]))])][switch(%q9,0,0,extract(u(*%0/[switch(%q0,1,tattr,2,abilvals,3,sabilvals,4,powvals,5,bgndvals,6,virtvals,7,extract(u(#209/miscids),%q7,1))]),switch(%q0,1,%q1,7,1,%q9),1))]\
+&FN_ROLLZ Function Object <GFO>=[setq(0,0)][trim([iter(lnum(%0),[setq(1,rand(10))][switch(1,gte(add(1,r(1)),%1),[setq(0,add(r(0),1))],eq(r(1),0),[setq(0,sub(r(0),1))])])][r(0)])]\
+}

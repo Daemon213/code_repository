@@ -1,0 +1,361 @@
+ Topic: Avoiding nested switches
+Author: Raevnos
+Summary: Raevnos illustrates how to avoid nesting the @switch command
+within itself.
+
+It's 08:48 pm on Thursday, August 02 in Chicago, IL, but in the world of
+M*U*S*H, it's day.
+
+Code Classroom(#1061RnJ)
+A chalkboard fills one wall, with an old beat-up lectern in front of it. The
+other three walls are painted off-white. A few long flourescent lights are
+attached to the ceiling making the room bright. Several chairs with attached
+desktop-like surfaces (standard classroom chairs) are scattered about the room
+
+in no particular order.
+
+Contents:
+Raveness(#3478PelACc)
+Reklaw(#6828np)
+The_Prof(#749PACc)
+Matt(#128PerACMc)
+Noltar(#1311PweACcm)
+Cheetah(#6388POaeACcm)
+Obvious exits:
+Hallway <O>
+
+Raevnos says, "Okay. Tonight I'll talk about nested @switches, why they're
+bad, and what to do about them. At times I'll ask for questions, so please
+save any till then."
+
+Raevnos says, "First question time. Anyone NOT know what @switch is?"
+
+Raevnos says, "Well, either you all do or you're idle. Good enough. :)"
+
+Reklaw is idle, that's for sure.
+
+Cheetah can sign for either category. Oh, we're not playing bingo?
+
+Raveness is not idle :)
+
+Raevnos says, "Nested @switches happen when a @switch's actions include
+further @switches. @switch test=val,something,{@switch test2=val2, something2,
+
+...} is a typical form."
+
+Raevnos will be using a basic mutter command as a working example.
+
+Raevnos mutters to Matt
+
+Matt icks at the code. :) Nestorama, dude. :)
+
+Naive @switch(#215V)
+Type: Thing Flags: VISUAL
+Owner: Raevnos Zone: *NOTHING* Ducats: 10
+Parent: *NOTHING*
+Powers:
+Warnings checked: none
+Created: Thu May 3 00:24:47 2001
+Last Modification: Thu Aug 2 20:53:36 2001
+MUTTER_CMD [#1622]: $mutter *=?*:@switch hastype(*%0, player)=#-1, @pemit
+%#=That's not a player, {@switch nearby(%#, *%0)=0, @pemit %#=You can't mutter
+
+to [obj(*%0)] here., {@switch %1=:, {@pemit/list %# [num(*%0)]=\[mutter\] %N
+%2; @pemit/list setdiff(lcon(%L), %# [num(*%0)])=%N mutters to [name(*%0)]},
+\;, {@pemit/list %# [num(*%0)]=%N%2; @pemit/list setdiff(lcon(%L), %#
+[num(*%0)])=%N mutters to \[name(*%0)]}, {@pemit %#=You mutter to [name(*%0)];
+
+@pemit *%0=%N mutters, "%1%2"; @pemit/list setdiff(lcon(%L), %# [num(*%0)])=%N
+
+mutters to [name(*%0)].}}}
+Home: Rec Room
+Location: Code Classroom
+
+Raevnos says, "The object is visual if you'd like to examine it."
+
+Raveness peeks.
+
+Cheetah tries to read the code, but decides to stop doing that 1/3 through.
+
+Raevnos says, "It's also rather an extreme case of nested switches, 3 levels
+deep."
+
+Raevnos says, "The first switch makes sure you try to mutter to a player. The
+second that you mutter to something nearby (No muttering across the mush!),
+and the third does the actual muttering, with the normal : and ;
+interpretation."
+
+Raevnos says, "It's big and ugly, but it works, so why bother to make it
+better?"
+
+Raevnos says, "Anyone?"
+
+Cheetah says, "To help other people understand it better."
+
+Raveness says, "to make it more easily upgradable?"
+
+Reklaw says, "to make it work faster, more reliable."
+
+Matt says, "To make it easier to change in the future (and to reduce your
+paracetamol intake)."
+
+Matt snaps Raveness.
+
+Raveness frowns.
+
+Matt errs, 'snaps' at. :)
+
+Raevnos says, "Reklaw and Raveness win."
+
+Cheetah says, "Chances are this'll be a global, and other admin will look at
+it too. And you'll have problems reading this yourself after a year too."
+
+Raevnos has problems reading it and he wrote it an hour ago! ;)
+
+Cheetah says, "Or earlier.. :)"
+
+Raveness says, "wouldn't this be better as a functioN?"
+
+Raveness says, "Switch()?"
+
+Cheetah says, "Or ifelse() is the situation lends iself for that."
+
+Raevnos says, "Let's talk about speed and reliablity now, since ya'll semm
+to have covered the maintainability bit without me. Each action argument that
+@switch executues gets put on the command queue, and actually happens at a
+later time, with up to a 1 second delay. So for that mutter, it takes up to 4
+queue entries (One for the initial mutter command, and one per @switch in it).
+
+Other commands can happen between the ones used by mutter. This isn't a
+problem with mutter, but it can be with some other things. ex naive/stat_cmd"
+
+STAT_CMD [#1622]: $strength:@switch hasflag(%#, fighter)=1, @pemit %#=You've
+already been set up with stats and stuff!, {@switch
+get(%#/strength)=>[get(stat database/max_strength)], @pemit %#=Your strength
+can't be raised any more., &strength %#=inc(default(%#/strength, 1))}
+
+Raevnos says, "That's a typical bit of code for a basic character generation,
+for increasing a stat. It does a check to make sure the player hasn't maxxed
+out the stat already, and if not, queues another command to raise it. If
+someone uses the strength command multiple times really quickly (Or by doing
+something like @force me={strength;strength;strength;strengh}, all the checks
+to see if the stat is maxxed will happen right after one another... and then
+it gets raised multiple times. It's easy to raise it above the max, which you
+don't want."
+
+Raevnos says, "In cases like that, you want the whole thing (Checking and
+setting) to happen in one atomic queue entry. For things like the mutter
+command, though, you just want to reduce the number of queue cycles. This next
+
+object takes one approach to it. Still uses @switch, but only one of them."
+
+Better @switch(#216Vn)
+Type: Thing Flags: VISUAL NO_COMMAND
+Owner: Raevnos Zone: *NOTHING* Ducats: 10
+Parent: *NOTHING*
+Powers:
+Warnings checked: none
+Created: Thu May 3 00:24:45 2001
+Last Modification: Thu Aug 2 19:35:38 2001
+MUTTER_CMD [#1622]: $mutter *=?*:@select 0=t(hastype(*%0, player)), @pemit
+%#=That's not a player, nearby(%#, *%0), @pemit %#=You can't mutter to
+[obj(*%0)] here., comp(%1, :), {@pemit/list %# [num(*%0)]=\[mutter\] %N %2;
+@pemit/list setdiff(lcon(%L), %# [num(*%0)])=%N mutters to [name(*%0)]},
+comp(%1, \;), {@pemit/list %# [num(*%0)]=%N%2; @pemit/list setdiff(lcon(%L),
+%# [num(*%0)])=%N mutters to \[name(*%0)]}, {@pemit %#=You mutter to
+[name(*%0)]; @pemit *%0=%N mutters, "%1%2"; @pemit/list setdiff(lcon(%L), %#
+[num(*%0)])=%N mutters to [name(*%0)].}
+Home: Rec Room
+Location: Code Classroom
+
+Raevnos says, "First big difference: It uses @select, not @switch. The two
+commands are very similar, with one small difference: @switch will queue every
+
+action argument who's value matches the test case. In '@switch 1=1, think Hi!,
+
+1, think Hello again!', both thinks happen. With @select (Also known as
+@switch/first), only the first matching case happens."
+
+Raevnos says, "This is important because of how the nested switches are
+eliminated. Instead of @switch test=value,code, value2,code2, we reverse the
+test and value arguments. The value you want to compare against is on the left
+
+of the =, and what you compute to compare against the value in the arguments
+to the right. Since multiple things can match, you normally only want the
+first. So, @select value=test1,code,test2,code."
+
+Raevnos says, "Anyone utterly lost and confused yet?"
+
+Raveness isn't sure if she's lost yet.
+
+Raveness is reading and rereading that one :)
+
+Cheetah says, "That's a clever way if doing it, actually.."
+
+Raveness says, "where is the peice that decides the ; and :"
+
+Raveness can't find it.
+
+Raveness says, "in the better."
+
+Raevnos says, "So, stepping through this version of the code. 0 is going to be
+
+compared against a variety of test cases, and the first one that matches has
+its action argument go off. First the player check happens.
+t(hastype(*%0, player)) will return 1 if the player argument to mutter is a
+player, and 0 otherwise. If it returns 0, the error message happens.
+Otherwise, the next check happens."
+
+Raevnos says, "That's the nearby() test. If nearby() returns 0, the two
+objects aren't close to each other. (You can see HELP NEARBY for the exact
+rules of what's considered close.) If it returns 1, they're nearby, so the
+next test happens."
+
+Raveness says, "Ah.. I see it now."
+
+Raevnos says, "Now the : and ; part. comp() is a function that returns 0 if
+its arguments are identical. And we're comparing these test cases against 0.
+In these cases, 0 is success, not failure."
+
+Raevnos says, "So it checks for a pose mutter and after that, a semipose one.
+Finally, if neither one match, the default case of the @select happens, which
+is normal speech."
+
+
+Raveness says, "I get it now."
+
+Raevnos says, "There is another, similar, way of getting rid of the nested
+@switches. Instead of '@select value=test,code,test2,code2', all of the tests
+are combined into one, with value patterns that look at the
+currently-important bit. Something like
+'@select test1|test2=value1|*,code,*|value2,code2'"
+
+Another better @switch(#232Vn)
+Type: Thing Flags: VISUAL
+Owner: Raevnos Zone: *NOTHING* Ducats: 10
+Parent: *NOTHING*
+Powers:
+Warnings checked: none
+Created: Thu May 3 00:24:43 2001
+Last Modification: Thu Aug 2 19:31:39 2001
+MUTTER_CMD [#1622]: $mutter *=?*:@select [hastype(*%0,player)]|[nearby(%#,
+*%0)]|%1=#-1|*, @pemit %#=That's not a player, *|0|*, @pemit %#=You can't
+mutter to [obj(*%0)] here., 1|1|:, {@pemit/list %# [num(*%0)]=\[mutter\] %N
+%2; @pemit/list setdiff(lcon(%L), %# [num(*%0)])=%N mutters to [name(*%0)]},
+1|1|\;, {@pemit/list %# [num(*%0)]=%N%2; @pemit/list setdiff(lcon(%L), %#
+[num(*%0)])=%N mutters to \[name(*%0)]}, 1|1|?, {@pemit %#=You mutter to
+[name(*%0)]; @pemit *%0=%N mutters, "%1%2"; @pemit/list setdiff(lcon(%L), %#
+[num(*%0)])=%N mutters to [name(*%0)].}
+Home: Rec Room
+Location: Code Classroom
+
+Raevnos says, "The player, nearby, and mutter-type tests are all evaluated and
+
+happen at the start of the switch. Then it looks at the result of the player
+test, ignoring the rest. Next the nearby test, ignoring the others. Then, the
+pose-type tests, ignoring the other tests."
+
+Raevnos says, "This works well, and is fairly common practice, but there are a
+
+few problems with it over the prior example. First, all the tests always
+happen, rather than the bare minimum needed. While this is nice when you
+expect the tests to normally succeed, understanding it takes more work. Since
+the tests and actions are seperated, instead of being right next to each
+other, it's harder to figure out what goes with what... especially if you have
+
+a problem with the matching patterns. You could think one bit checks to see if
+
+a given test succeeded when it's actually checking another test. Adding new
+tests at a later date is also tedious, because you have to check ever pattern
+to see if you need to change it to account for the extra test."
+
+Raevnos pauses for questions.
+
+The_Prof says, "So would then it not be best practice to use the second
+example... kind of like using cor() vs or()"
+
+Raevnos says, "Unless you use and are familiar with the potential maintence
+problems with it, yup, the first should be used in preference to the second."
+
+Raevnos says, "Okay. That about covers getting rid of those ugly nested
+@switches by compressing them into a single @switch. Now back to the
+stat-setting example, where any @switch at all presented problems."
+
+Eliminating @switch completely(#234Vn)
+Type: Thing Flags: VISUAL
+Owner: Raevnos Zone: *NOTHING* Ducats: 10
+Parent: *NOTHING*
+Powers:
+Warnings checked: none
+Created: Thu May 3 00:24:38 2001
+Last Modification: Thu Aug 2 21:37:11 2001
+MUTTER_CMD [#1622]: $mutter *=?*:@break switch(0, t(hastype(*%0, player)),
+pemit(%#, That's not a player.)1, nearby(%#, *%0), pemit(%#, You can't mutter
+to [obj(*%0)] here.)1, 0); @pemit/list setiff(lcon(%L), %# [num(*%0)])=%N
+mutters to [name(*%0)]; @break setq(0, switch(%1, :, \[mutter\] %N %2, \;,
+\[mutter\] %N%2))[if(%q0, 1[pemit(%# [num(*%0)], %q0)], 0)]; @pemit %#=You
+mutter to [name(*%0)]; @pemit *%0=%N mutters, "%1%2"
+STAT_CMD [#1622]: $strength:@break switch(1, hasflag(%#, fighter), pemit(%#,
+You're already set up with the combat system!), gte(get(%#/strength), get(stat
+database/max_strength)), pemit(%#, Your strength is maxxed out!)1, 0);
+&strength %#=inc(default(%#/strength, 1))
+Home: Rec Room(#1580RntA)
+Location: Code Classroom(#1061RnJ)
+
+Raevnos says, "PennMUSH (And RhostMUSH, and, in its next release, MUX) have a
+command called @break. It takes one argument. If that argument evaluates to a
+true value, any futher commands in the current ;-seperated list of them is
+ignored. Command processing just stops. If the argument is false, @break does
+nothing."
+
+Raevnos says, "This means you can get rid of the @switch, by using a @break
+that does all the error checking and halts command processing if any errors
+happened, and following it by the real work. Everything happens in one atomic
+queue cycle, so trying the same command over and over really fast won't cause
+timing problems."
+
+Raevnos says, "This error checking frequently involves a switch(), with the
+same nested-@switch-elimination techniques applied to it to avoid nested
+switch()'s."
+
+Raveness says, "Do you have to have a break between each thing or does
+it act sorta like @sel?"
+
+Raevnos says, "Mutter re-written to use @break is a bit complex. In order to
+avoid any @switch, it ends up using two @breaks. The strength command is much
+easier to follow."
+
+Raevnos says, "The @break would usually be the very first command."
+
+Raevnos says,, "Now, instead of using @break to get everything working in one
+queue cycle, I suppose you /could/ do it all in one command, with side-effect
+functions galore... but I don't like that, and won't go into it any more.
+@switch is the topic, after all. :)"
+
+Raevnos says, "Okay. Questions?"
+
+Raevnos checks pulses.
+
+Raevnos pronouces you all dead and sells your bodies to a medical school.
+Class over, thanks for coming! This will be up on Mush 101's web page
+sometime fairly soon.
+
+Cheetah gets woken up by Raev checking his pulse.
+
+Raevnos hits Cheetah on the head and sells him anways.
+
+Reklaw says, "Bring out your dead! Bring out your dead!"
+
+Cheetah shrugs it off and runs.
+
+Raveness laughs.
+
+Raevnos is going to stop logging now unless someone wakes up with a question.
+
+Raveness says, "I don't really have a question.. but I'm not clear on @break."
+
+Raveness says, "I guess I have to practice with it."
+
+Raevnos says, "Yup. Practice is good."
+
+Raevnos stops logging. 

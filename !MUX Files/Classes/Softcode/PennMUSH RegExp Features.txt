@@ -1,0 +1,294 @@
+ Topic: PennMUSH RegExp Features
+Author: Raevnos
+Summary: Raevnos presents an informational lecture as a followup to Javelin's
+RegExp Lecture.
+
+Raevnos cracks his knuckles and turns on the log. If you have questions,
+please raise your hand and I'll call on you when I get a chance. If you think
+I missed you, page.
+
+Code Classroom(#1061RnJ)
+
+A chalkboard fills one wall, with an old beat-up lectern in front of it.
+The other three walls are painted off-white. A few long flourescent lights are
+
+attached to the ceiling making the room bright. Several chairs with attached
+desktop-like surfaces (standard classroom chairs) are scattered about the room
+
+in no particular order.
+
+Contents:
+FettaS
+William
+Codex
+Pip
+China
+Obvious exits:
+Hallway <O>
+
+Raevnos says, "To start off with a little bit of history, regular expression
+support, in the form of regmatch() and the regexp attribute flag, were added
+in 1.7.2. In 1.7.3, the regular expression (I'll be using regexp as an
+abbreviation from now to save on typing), backend was changed to a more
+powerful one, and various new functions were added."
+
+Raevnos says, "I'll cover the new functions first, with a +help system as a
+working example, and then touch on some of the new features of the regexp
+backend."
+
+Spiffy Help(#7100V)
+Type: Thing Flags: VISUAL
+Spiffy +help. See +help +help
+Owner: Raevnos Zone: Raevnos' ZMO Ducats: 10
+Parent: *NOTHING*
+Basic Lock: =Raevnos
+Powers:
+Warnings checked: none
+Created: Thu Sep 21 18:45:53 2000
+Last Modification: Thu Sep 21 19:52:45 2000
+DISPLAY_HELP [#1622]: table(edit(%0, %b, |, _, %b), 19, 78, |)
+HELP_CMD [#1622]: $+help:@pemit %#=Help topics:%r[u(display_help,
+v(toplevel))]
+HELP_FIND_CMD [#1622]: $+help/find *:@pemit %#=Help topics matching
+%0:%r[u(display_help, graball(lattr(#7030), *%0*))]
+HELP_RFIND_CMD [#1622]: $+help/rfind *:@pemit %#=Help topics matching
+%0:%r[u(display_help, regraballi(lattr(#7030), %0))]
+HELP_RSEARCH_CMD [#1622]: $+help/rsearch *:@pemit %#=Help topics matching
+%0:%r[u(display_help, regrepi(#7030, *, %0))]
+HELP_SEARCH_CMD [#1622]: $+help/search *:@pemit %#=Help topics matching
+%0:%r[u(display_help, grepi(#7030, *, %0))]
+HELP_TOPIC2_CMD [#1622]: $+help2 *:@pemit %#=Help on
+%0:%r[udefault(#7030/[regeditall(%0, \\s+, _)], No such topic.)]
+HELP_TOPIC_CMD [#1622]: $+help *:@pemit %#=Help on
+%0:%r[udefault(#7030/[edit(%0, %b, _)], No such topic.)]
+TOPLEVEL [#1622]: +help +who
+Home: Rec Room -- Raevnos' House
+Location: Code Classroom(#1061RnJ)
+
+Raevnos says, "This is a +help system that supports searching through help
+entries and files. Useful if you're looking for something but don't know the
+exact name."
+
+Raevnos says, "We'll start with the regrab() and regrall() functions. They're
+just like grab() and graball(), except they use a regular expression instead
+of normal wildcards. To refresh, grab() returns the first element of a list
+that matches a certain pattern, and graball() returns every item from a list
+that matches. The re- versions do the same; they just treat the pattern
+differently."
+
+Raevnos says, "This help system has two commands to search through the names
+of help topics. +help/find <wildcard pattern> and +help/rfind <regexp>. You
+can examine Spiffy Help/help_find_cmd and help_rfind command to see the code.
+They're identical except for the function used to do the match."
+
+HELP_FIND_CMD [#1622]: $+help/find *:@pemit %#=Help topics matching
+%0:%r[u(display_help, graball(lattr(#7030), *%0*))]
+
+HELP_RFIND_CMD [#1622]: $+help/rfind *:@pemit %#=Help topics matching
+%0:%r[u(display_help, regraballi(lattr(#7030), %0))]
+
+Raevnos says, "Actually, it uses regraballi(), not regraball(). Regular
+expression functions who's names end in 'i' are the same as the versions that
+don't, except they are case insensitive. Normally, capitaliztion matters in
+regexps, which can be an inconvience."
+
+Raevnos says, "Any questions?"
+
+Raevnos says, "Okay. The next function is regrep(), which is a version of
+grep() that uses a regexp. grep() will search through attributes matching a
+pattern, and return the names of those who's text contains a third argument.
+It's case-sensitive. grepi() is the case-insenstive version, and there's a
+regrepi() also. regrep() treats the attribute-matching pattern the same was as
+
+grep() - a normal wildmatch pattern. It differs in looking for attribute text
+that matches a regular expression, instead of containing a string."
+
+Raevnos says, "This lets the +help system support searching through help files
+
+for something. +help/search <string> returns all help entries that contain
+<string>, and +help/rsearch <regexp> those that match the regexp. They're on
+Spiffy Help/help_search_cmd and help_rsearch_cmd. Once again, they're the same
+
+except for the function that odes the actual search."
+
+HELP_RSEARCH_CMD [#1622]: $+help/rsearch *:@pemit %#=Help topics matching
+%0:%r[u(display_help, regrepi(#7030, *, %0))]
+
+HELP_SEARCH_CMD [#1622]: $+help/search *:@pemit %#=Help topics matching
+%0:%r[u(display_help, grepi(#7030, *, %0))]
+
+Raevnos says, "The last, and probably most useful of the new functions is the
+regedit() family. There's four of them - regedit(), regeditall(), and the
+case-insenstive versions that end in i. If you're familar with perl, they do
+the same as s///, and are similar to edit() in mushcode. They search a string
+for a section matching a regexp, and replace it with a third argument.
+regedit() only replaces the first match, while regeditall() replaces every
+match."
+
+Raevnos shows an example.
+
+Raevnos types --> say regedit(this is a silly example, si.*y, good)
+Raevnos says, "this is a good example"
+
+Raevnos says, "Another example is in the +help code.
+Spiffy Help/help_topic_cmd has problems with help entries that are more than
+one word, if too many spaces are present."
+
+HELP_TOPIC2_CMD [#1622]: $+help2 *:@pemit %#=Help on
+%0:%r[udefault(#7030/[regeditall(%0, \\s+, _)], No such topic.)]
+
+HELP_TOPIC_CMD [#1622]: $+help *:@pemit %#=Help on
+%0:%r[udefault(#7030/[edit(%0, %b, _)], No such topic.)]
+
+Raevnos says, "Try this:"
+
+Raevnos types --> +help +who%b%b2
+
+Help on +who 2:
+No such topic.
+
+You say, "And then this:"
+
+Raevnos types --> +help +who 2
+
+Help on +who 2:
++3who: List connected players in a three-column format.
++idle: List connected players in a five-column format.
+
+Raevnos says, "Now, suppose you want the first example to work also.
+Spiffy Help/help_topic2_cmd uses regedit() to convert any number of spaces
+(And tabs, and newlines) into the single _ used in the actual help topic name
+(Because you can't have spaces in attribute names)."
+
+Raevnos types --> +help2 +who%b%b2
+Help on +who 2:
++3who: List connected players in a three-column format.
++idle: List connected players in a five-column format.
+
+Raevnos says, "The actual regexp it uses is \s+. \s is a special pair of
+characters that stands for 'Any whitespace characters, like space and tab',
+and is one of the new features of the regexp backend. The + just means 'One or
+
+more of the previous thing', so it matches one or more spaces. In the above
+examples, two spaces. But it also matches one, or three, or a %t."
+
+Raevnos says, "Lots of characters that have special meanings in regexps, like
+\ and [ also have special meanings to the mush parser, so they need to be
+escaped in code so the regexp backend sees them properly."
+
+Raevnos pauses a moment for questions, if there are any?
+
+FettaS shakes his head and has none
+
+Raevnos says, "Alrighty then. The regular expression backend the mush uses is
+very similar to the one used by the perl language, if you're familar with
+that. It has a bunch of neat features. I'll mention some of the more useful
+ones."
+
+Pip has disconnected.
+
+Raevnos mentioned \s already. There's a few other sequences: \d matches any
+number (0-9), and \w matches any 'word' character - Letters, numbers, and _.
+You can reverse what these match by capitalizing the letter. \D matches
+anything /but/ numbers, for example.
+
+Raevnos says, "You can get similar effects with character classes. [A-Za-z]
+will match any letter from A to Z or a to z. However, Penn can run in
+environments where other characters are valid letters. \w includes these
+automatically. Inside a character class that includes other things, you can
+use
+the \sequences, or more flexible ranges, with the [:NAME:] notation. For
+example, [[:lower:]] will match any lower-case letter, no matter the language.
+
+Note the doubled brackets - the outer ones are for the character class, the
+inner ones and :'s for a range. More than one of these can be in the same
+class, and they can be mixed with other things. See HELP REGEXP CLASSES for
+information on these."
+
+Raevnos says, "The next thing is non-capturing parenthesis. Normally, in a
+regexp, ()'s serve two purposes. 1, they 'capture' whatever matches their
+contents so it can be referred to later. 2, they 'group' the sub-regexp they
+contain so that it appears as one thing to modifiers like + and ?. 'foo?' will
+
+match 'fo' or 'foo', but '(foo)?' will match 'foo' or nothing."
+
+Raevnos says, "If you don't care what a parenthesis matches, but just want it
+for the second, grouping behaivor, you can use (?:) instead of plain ().
+With (?:), the match isn't kept for later use. This is most useful when you
+have a regexp command pattern, where every capturing () is copied to a
+%-variable. If you're never going to use what it matches, (?:) will prevent
+that useless. copying."
+
+Regexp Commands
+Type: Thing Flags: VISUAL
+Owner: Raevnos Zone: Raevnos' ZMO Ducats: 10
+Parent: *NOTHING*
+Basic Lock: =Raevnos
+Powers:
+Warnings checked: none
+Created: Thu Sep 21 19:06:06 2000
+Last Modification: Thu Sep 21 19:07:47 2000
+BAD [#1622R]: $^\+t(est)?$:@pemit %#=The bad test. %%0 is %0. %%1 is %1.
+GOOD [#1622R]: $^\+t(?\:est)?$:@pemit %#=The good test. %%0 is %0. %%1 is
+%1.
+Home: Code Classroom(#1061RnJ)
+Location: Code Classroom(#1061RnJ)
+
+Raevnos says, "The object I just dropped has two attributes that match the
+same thing, one with (), one with (?:). Try them:"
+
+Raevnos types --> +t
+
+The bad test. %0 is +t. %1 is .
+The good test. %0 is +t. %1 is .
+
+Raevnos types --> +test
+
+The bad test. %0 is +test. %1 is est.
+The good test. %0 is +test. %1 is .
+
+Raevnos says, "However, since : normally ends the pattern part of a command,
+it needs to be escaped with \ so it's taken as part of the pattern, not the
+end. You have to do the same thing with : in $-commands or ^-patterns that use
+
+wildcards instead of regexps."
+
+Raevnos says, "Examine the object if you haven't already to see how it looks."
+
+Raevnos says, "There are some special regexp characters that match a position,
+
+and not an actual character. ^ for the beginning of a string and $ for the end
+
+are two examples. Penn also has, among others, \b, which matches at a word
+boundry -- In between a character that matches \w and one that matches \W.
+Remember that \Capital reverses \lower, so that \b matches at the start or end
+
+of a normal word, but not in the middle."
+
+Raevnos says, "This applies to \b as well. \B matches at places that aren't at
+
+'word boundries'. Between two \w's or two \W's."
+
+Raevnos says, "The last nifty thing I'm going to cover tonight since this is
+turning out to be not-so-mini, is (?i). When this is found in a regexp,
+everything from then on is case-insensitive. For example, regmatchi(string,
+pattern) and regmatch(string, (?i)pattern) will both match the same thing.
+This is useful if you don't know until you actually match if the pattern
+should be case-sensitive or not."
+
+Raevnos says, "There's a lot more that I haven't covered. Some of it might be
+in HELP REGEXP along with the basics. Otherwise, find a copy of the perl
+language manual online, or read one of the books on perl or regular
+expressions in general. 'Mastering Regular Expressions', by Jeffrey Friedl,
+is a pretty good one."
+
+Raevnos asks for the last time, "Any questions?"
+
+FettaS shakes his head and has none.
+
+Codex shakes his head. "Thanks for the information"
+
+FettaS needs to tinker with Regexp before he gets some.
+China writes down the name of the book.
+
+Raevnos will turn off the log now, then. Thanks for coming! 

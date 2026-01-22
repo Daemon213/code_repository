@@ -1,0 +1,425 @@
+ROOMS:
+Entryway - Dark Angel Studio(#1166RJMU)
+Stairwell - Dark Angel Tower(#1618RU$)
+Gym - Dark Angel Tower(#4493RU)
+Conference Room - Dark Angel Tower(#5057RU)
+Executive Office - Dark Angel Tower(#7042RJU)
+Training Hall - Dark Angel Tower(#7100RU)
+Reception Hall - Dark Angel Tower(#7148RJU)
+Prop Room - Dark Angel Studio(#7904RU$)
+Sound Stage - Dark Angel Studio(#9470RM$)
+FX Studio - Dark Angel Tower(#9825RU)
+Dressing Rooms - Dark Angel Studio(#10442RU$)
+
+EXITS:
+Sound Stage <SS>;ss;sound;stage;sound stage(#27E) [from Entryway - Dark Angel Studio(#1166RJMU) to Sound Stage - Dark Angel Studio(#9470RM$)]
+Exit <EX>;exit;ex;x;out;o;leave;(#1144E) [from Entryway - Dark Angel Studio(#1166RJMU) to Financial District: Griffin and Jackson(#143RJs)]
+Dark Angel Studios <DAS>;dark angel studios;das;da;studios;dark;angel;studio(#1145E) [from Civic Center District: Akard and Wood(#10114RJhs) to Entryway - Dark Angel Studio(#1166RJMU)]
+First floor - Reception <OUT>;first floor - reception;first;1;1f;reception;out;o;exit;x;leave(#1606E) [from Stairwell - Dark Angel Tower(#1618RU$) to Reception Hall - Dark Angel Tower(#7148RJU)]
+Steel Door (Stairwell) <SD>;steel door;sd;steel;stairwell;stair;st(#1607E) [from Reception Hall - Dark Angel Tower(#7148RJU) to Stairwell - Dark Angel Tower(#1618RU$)]
+Reception Room <OUT>;reception room;rr;out;o;exit;ex;leave(#4472E) [from Gym - Dark Angel Tower(#4493RU) to Reception Hall - Dark Angel Tower(#7148RJU)]
+Gym <G>;gym;g(#4479E) [from Reception Hall - Dark Angel Tower(#7148RJU) to Gym - Dark Angel Tower(#4493RU)]
+Steel Door <SD>;steel door;sd;steel;stairwell;stair;st;out;o;exit;ex;leave(#5046E) [from Conference Room - Dark Angel Tower(#5057RU) to Stairwell - Dark Angel Tower(#1618RU$)]
+Basement - Conference <B>;basement - conference;basement;b;bf;conference(#5047E) [from Stairwell - Dark Angel Tower(#1618RU$) to Conference Room - Dark Angel Tower(#5057RU)]
+Street <O>;o;out;street(#6825E) [from Reception Hall - Dark Angel Tower(#7148RJU) to West End Market Place '97 Dallas(#299RJs)]
+Dark Angel Tower <DAT>;dark angel tower;dat;da;tower(#6828Ee) [from West End Market Place '97 Dallas(#299RJs) to Reception Hall - Dark Angel Tower(#7148RJU)]
+Entryway <OUT>;entryway;entry;en;e;out;o;exit;x;leave(#6912E) [from Dressing Rooms - Dark Angel Studio(#10442RU$) to Entryway - Dark Angel Studio(#1166RJMU)]
+Steel Door <SD>;steel door;sd;steel;stairwell;stair;st;out;o;exit;ex;leave(#6995E) [from Executive Office - Dark Angel Tower(#7042RJU) to Stairwell - Dark Angel Tower(#1618RU$)]
+Third floor - Office <3>;Third Floor - office;third;3;3f;office(#7036E$) [from Stairwell - Dark Angel Tower(#1618RU$) to Executive Office - Dark Angel Tower(#7042RJU)]
+Dressing Room <DR>;dr;dressing;room;dressing room(#7038E) [from Entryway - Dark Angel Studio(#1166RJMU) to Dressing Rooms - Dark Angel Studio(#10442RU$)]
+Training Hall <TH>;th;training;train(#7091Ee) [from Reception Hall - Dark Angel Tower(#7148RJU) to Training Hall - Dark Angel Tower(#7100RU)]
+Dark Angel Studio <DAS>;das;dark angel studio;dark angel;studio(#7109E) [from Financial District: Griffin and Jackson(#143RJs) to Entryway - Dark Angel Studio(#1166RJMU)]
+Entryway <OUT>;entryway;entry;ew;en;out;o;exit;x;leave;e(#7270E) [from Prop Room - Dark Angel Studio(#7904RU$) to Entryway - Dark Angel Studio(#1166RJMU)]
+Prop Room <PR>;prop;prop room;pr;prr(#7402E) [from Entryway - Dark Angel Studio(#1166RJMU) to Prop Room - Dark Angel Studio(#7904RU$)]
+Reception Room <OUT>;reception room;rr;out;o;exit;ex;leave(#8973E) [from Training Hall - Dark Angel Tower(#7100RU) to Reception Hall - Dark Angel Tower(#7148RJU)]
+Steel Door <SD>;steel door;sd;steel;stairwell;stair;st;out;o;exit;ex;leave(#9125E) [from FX Studio - Dark Angel Tower(#9825RU) to Stairwell - Dark Angel Tower(#1618RU$)]
+Second floor - FX <2>;Second Floor - FX;second;2;2f;fx(#9136E) [from Stairwell - Dark Angel Tower(#1618RU$) to FX Studio - Dark Angel Tower(#9825RU)]
+Entryway <OUT>;entryway;entry;en;e;out;o;exit;x;leave(#9808E) [from Sound Stage - Dark Angel Studio(#9470RM$) to Entryway - Dark Angel Studio(#1166RJMU)]
+
+OBJECTS:
+Brandon(#7775MVpq$) [owner: BLDR012(#8458PDcq)]
+Martha(#7870pz$) [owner: BLDR012(#8458PDcq)]
+sec(#8096DS) [owner: BLDR012(#8458PDcq)]
+Holder Object(#9019$) [owner: BLDR012(#8458PDcq)]
+
+PLAYERS:
+BLDR012(#8458PDcq)
+
+Found: Rooms: 11 Exits: 23 Objects: 4 Players: 1 Garbage: 0
+
+@dig/teleport Entryway - Dark Angel Studio
+@Desc here=[space(5)]Cool, climate-controlled air swirls past you at a comfortable 70 degrees as you come into the Entryway of Dark Angel Studio. Several desks have been arranged behind privacy baffles, leaving a cleared walkway that seems to lead to the Sound Stage doors. Security guards stand at attention in the corners, guns discreetly tucked at their hips. Benches are arranged near the exit for visitors to use ('tablehelp'). 
+&APPROVAL here=This room and all its exits were approved by Chernabog: Wed Jul 3 16:01:21 1996 
+&INSPECTED here=Yes #6759 #27 #1144 
+@lock here/INSPECTED 
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows are barred from the outside, and have additional security (#8096/windows). This building passes all requirements for commercial zoning, and includes handicapped access. In addition, there is special handling in place for volitile chemicals and other hazardous materials typically found on a movie set. Foam fire-extingushers will be triggered as well as water sprinklers, in case of open flames. The door into the sound stage has superior security (#8096/door_out), the doors into the other areas have standard security (#8096/door_in). Several key areas have infra-red protection (#8096/infra-red) (sound stage only) during off hours. There are three security guards on this lot at all times.
+&CLEANUPSEATSA here=^* has left.:@switch member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#)=>0,{[setq(0, [extract(iter(rest(lnum(add(v(maxplaces), 1))), [switch(words(v(place##names)), 0,, [repeat(%b##,words(v(place##names)))])]), member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#), 1)])];&place[r(0)]names me=[remove(v(place[r(0)]names), %#)];@dolist [v(place[r(0)]names)]={@pemit ##=%N stands, leaving the place.};@pemit %#=You stand, leaving your seat.}
+&CLEANUPSEATSB here=^* has disconnected.:@switch member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#)=>0,{[setq(0, [extract(iter(rest(lnum(add(v(maxplaces), 1))), [switch(words(v(place##names)), 0,, [repeat(%b##, words(v(place##names)))])]), member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#), 1)])];@dolist [v(place[r(0)]names)]={@pemit ##=%N stands, leaving the place.};&place[r(0)]names me=[remove(v(place[r(0)]names), %#)]}
+&MAXPLACES here=3 
+&MAXSEATS1 here=4 
+&PLACE1 here=Oak Bench 
+&MAXSEATS2 here=4 
+&PLACE2 here=Maple Bench 
+&MAXSEATS3 here=8 
+&PLACE3 here=Desk and Circle of Chairs 
+@set here=JUMP_OK 
+@set here=MONITOR 
+@set here=UNFINDABLE
+
+@dig/teleport Stairwell - Dark Angel Tower
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows are barred from the outside, and have additional security (#8096/windows). The door to the street has superior security (#8096/door_out). There is one security guard per floor in this building. There is a panic button (#8096/panic) near each guard station. This building passes all requirements for commercial zoning, and includes handicapped access.
+&APPROVAL here=This room and all its exits were approved by Maleficient: Sun May 12 10:20:50 1996 
+@Desc here=You're standing on long, twisting flights of steps that access all the floors of this building. The stairwell echoes every movement back to you, though the heavy steel fire doors seem to muffle the sounds within each level to silence. Each door has a sign on it indicating what level it is, and what area can be found on the other side. 
+&INSPECTED here=Yes #7036 #9136 #1606 #5047 
+@lock here/INSPECTED 
+&UNLOCK-CMD here=$unlock *:@switch [member(u(#9136/staff), %#)]=0,{@pemit %#=You don't have the key to that door.},{@switch %0=b,{@pemit/contents me=%N unlocks the Basement door.; @unlock #5047; @wait 20=@pemit/contents me=The Basement door shuts and is locked again.;@wait 21=@lock #5047=!staff-lock/0},fx,{@pemit/contents me=%N unlocks the door to the FX studo.; @unlock #9136; @wait 20=@pemit/contents me=The FX studio door shuts and is locked again.; @wait 21=@lock #9136=!staff-lock/0},{@pemit %#=Try 'unlock FX' or 'unlock B', instead.}} 
+@set here=UNFINDABLE 
+@set here=COMMANDS
+
+@dig/teleport Gym - Dark Angel Tower
+@Desc here=This large room is at least forty by sixty feet, with twenty feet high walls. The walls are a slightly irridescent shade of while, a shade that is quite relaxing to your eyes. Black rubber matting extends along the entire floor, which is divided into three rough 'areas'. The first is for weight-training, the second for aerobics and the third contains a selection of simulators (use +view for more). The long wall opposite the entrance is surfaced with gleaming mirrors, each one freshly polished. 
+&VIEW_WEIGHTS here=%rThis area is set up as a weight-training circut. A series of universal machines, a long rack of free weights, and several odd-looking imported machines are all assembled in a logical progression. 
+&VIEW_AEROBICS here=%rThe mats here are stippled with a series of bright yellow lines, marking the spaces for regular and step-aerobics. Stacked along one wall are a row of boxy step units, each one slightly scuffed looking from frequent use. 
+&VIEW_SIMULATORS here=%rLined up with military precision against the far wall are a neat row of exersize machines. Treadmills, Nordic Tracks, rowing machines, and others are included to subsitute for the sort of exersize most 'city' people don't get. 
+&JUDGENOTE here=The exercise equipment is all maintained properly, and repaired or replaced as needed. The mirrors are covered with a thin, transparent layer of Lexan (plexi-glass) to help protect from shattering - increases diff by 2. 
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows (and skylight) are barred from the outside, and have additional security (#8096/windows). The door to the street has superior security (#8096/door_out). There is one security guard per floor in this building. There is a panic button (#8096/panic) near each guard station. This building passes all requirements for commercial zoning, and includes handicapped access. &APPROVAL here=This room and all its exits were approved by Maleficient: Fri May 10 12:12:43 1996 &INSPECTED here=Yes #4472 @lock here/INSPECTED &JUDGENOTE-EMPLOYEES here=There are 6 NPC employees here for the gym. They represent Gislin's core of fitness instructors, PC's only fill out the 'extra' slots. There is 1 with Athetics of 3, and 5 with athletics: 2. ALL instructors have instruction: 2, Int, Dex, and Wits of 3 each. Also, each knows how to use the equipment to increase the physical attribures of a character. 
+@lock here/JUDGENOTE-EMPLOYEES 
+@set here=UNFINDABLE
+
+@dig/teleport Conference Room - Dark Angel Tower
+@Desc here=[space(5)]This is a large conference hall. It has a small stage at one end that stands two feet off the ground. There is a podium and microphone on this stage. Behind the stage to both sides are two large speakers. The walls and ceiling here look very thick, and appear to be soundproof. Rows of support pillars for the large level above break up the space. There are also two side tables and about fifty chairs, in five rows of ten facing the stage. The walls are painted blue, as is the ceiling. Other than that, this room is quite unremarkable. 
+&APPROVAL here=This room and all its exits were approved by Maleficient: Fri May 10 12:12:13 1996 
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows (and skylight) are barred from the outside, and have additional security (#8096/windows). The door to the street has superior security (#8096/door_out). There is one security guard per floor in this building. There is a panic button (#8096/panic) near each guard station. This building passes all requirements for commercial zoning, and includes handicapped access. 
+&INSPECTED here=Yes #5046 
+@lock here/INSPECTED 
+@set here=UNFINDABLE
+
+@dig/teleport Executive Office - Dark Angel Tower
+&APPROVAL here=This room and all its exits were approved by Maleficient: Fri May 10 12:11:39 1996 
+&VIEW_DOOR here=%rYou notice a colorful poster, depicting Tina Parker, the former Japanese World Champion Kickboxer doing her famous Whirlwind Combo on an unfortunate opponent. Her face seems grim, and she looks very intense, as she does her job.
+&VIEW_LETTER here=%rFramed over the desk is a letter on 'Dark Angel Productions' stationary. It reads:%r%r%tMy Dear Gislin:%r%rEnclosed is my draft of our new film, "The Fallen". I am sorry I have not been in contact much, but problems of a somewhat political nature have been keeping this poor Dancer busy. I hope you like the draft, and we'll talk soon.%r%rLove,%rLexi%r%r(This letter is dated a week before the fire that took the life of Alexi Tsaroff).%r 
+@Odrop here=enters from the room behind the Steel Door. 
+&VIEW_PLAQUE here=%r[space(5)]On the wall with the bathroom door is a subtly-lit large wood-backed plaque of some silver metal. Arranged on its front is a triptych of publicity stills for 'Kiss of the Vampyre'. To either side are closeup portraits of Gislin Dahl as the vampiress Nikki Romanov, the first a shot of Nikki watching her prey, a fleeting, candid glimpse of the predatory hunger within her eyes caught forever. The second closup is of Nikki in combat, moving to attack, the cold, powerful intensity of her gaze, and the graceful assurance of her carriage vivid, almost alive.%r[space(5)]The centerpiece is of Nikki standing over the fallen Duke, her Pack in train as she addresses the cowed assembly. Skin almost glowing, flush with the sweet blush of victory, her aura of dominance and complete authority wreathed about her like a cloak, still clearly palpable. 
+&VIEW_DRAWING here=%rImpressivly framed in brushed silver is a child's crayon drawing. It's a picture of three circles of various colors, each projecting four lines. They're almost like a set of flattened 4-legged stools. One is purple scribbled over with green (labeled 'Regan'), another royal blue scribbled over with the same color (labeled 'Angel'), and the final yellow scribbled over with turquoise (labeled 'Gislin'). A wavy green line along the bottom seems to represent grass, while a golden circle with dozens of staggered lines radiating from it is the sun. 
+&DESC-SPARE here=[space(5)]The ceiling here is about seven feet high, and is painted matte black. There's a perfect patch of bright blue sky during day or starry moonscape at night captured by a skylight cut into the ceiling. Through a slightly ajar door you see a tidy bathroom. Most striking is the strange artwork that covers each wall surface completely. The mural is a collection of wolves that flow and blend into each other. There is an arctic wolf chasing a white rabbit; a grey wolf standing majestically on a ledge overlooking a waterfall; a black wolf, almost invisible, stalking a shadow down a city block, and many more. All in all, while this room may be the smallest in the Tower, it's also be the most remarkable. 
+@Desc here=[space(5)]The empty room has been damaged recently, in a fire. Construction is underway to repair the damage. It appears nothing of value was burnt. 
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows (and skylight) are barred from the outside, and have additional security (#8096/windows). The door to the street has superior security (#8096/door_out). There is one security guard per floor in this building. There is a panic button (#8096/panic) near each guard station. This building passes all requirements for commercial zoning, and includes handicapped access.
+&VIEW_POEM here=%rProtected by a heavy black metal frame is a poem, if you can dignify the ridiculous collection of words with that description.%r%r[space(5)]Your face is like a rose, it's beautiful%r[space(5)]Your hair is like grass, it grows really fast.%r[space(5)]Your nose is so cute, do you play the flute?%r[space(5)]Why do you go to other men, when you know the truth?%r[space(5)]Come to me, I'm a real sleuth.%r%rThis unique work has been signed with the name 'Fred Phillips'.%r 
+&INSPECTED here=Yes #6995 
+@lock here/INSPECTED 
+@set here=JUMP_OK 
+@set here=UNFINDABLE
+
+@dig/teleport Training Hall - Dark Angel Tower
+@Desc here=This room is well lit, and is impressive compared to the stark reception room. Its dimensions are forty feet by sixty feet. The walls extend at least twenty feet off the matted floor, and they're painted a slightly irridescent white. On each wall, you notice a different mural (+view to see). This room is a room for the strong of heart. Only the weak will turn away. 
+&APPROVAL here=This room and all its exits were approved by Maleficient: Fri May 10 12:12:30 1996 
+&VIEW_GREEN here=On the wall to your right, there is a painting of a green dragon, in flight, holding a magnificent katana in its talons. On this side of the room, there is alot of gymnist equipment, highbars, horses, and spring vaults. There is also a rack of boken practice swords, made of fine quality wood. 
+&VIEW_BLUE here=On the wall to your left, is a picture of a blue dragon, sitting atop a pile of bones. The dragon looks extremely menacing and sinister. It sits there with a pride that is apparent from its reptilian features. On this side of the gym, there is an obstacle course set up. It looks rather difficult, and a sign advises that no one less than a brown belt try it. Also along this wall, are pamphlets, telling of ancient Japanese culture. 
+&VIEW_BLACK here=On the wall behind you, is a black dragon. The dragon is seen crawling through a midnight forest, it's muscles rippling. By this wall, there are four full sets of weights, including all types of universal and nautilus equipment. There are instructions posted next to each one, showing its proper use, and the results.
+&VIEW_RED here=What really attracts your attention, however, is the far wall. A red dragon faces you, it's mouth wide open. It looks beautiful, yet quite deadly. Where it's mouth should be, are steel 'fangs' supporting small batons. On either side of this dragon are two boxing rings, complete with pads and equipment. Also along this wall are a row of staffs of various lengths, all of them with padded ends. 
+&JUDGENOTE here=The equipment is all scrupulously maintained, and repaired or replaced when needed. The murals are covered over with a special layer of clear latex protectant. If they're vandilized, it will clean away without damaging them.
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows (and skylight) are barred from the outside, and have additional security (#8096/windows). The door to the street has superior security (#8096/door_out). There is one security guard per floor in this building. There is a panic button (#8096/panic) near each guard station. This building passes all requirements for commercial zoning, and includes handicapped access. 
+&INSPECTED here=Yes #8973 
+@lock here/INSPECTED 
+&JUDGENOTE-EMPLOYEES here=There are 8 NPC employees here for the kickboxing school. They represent Gislin's core of martial arts instructors, PC's only fill out the 'extra' slots. There is one with a brawl (spec: kickboxing) of 4, 3 with brawl: 3, and 4 with brawl: 2. ALL instructors have instruction: 2, Int, Dex, and Wits of 3 each.
+@lock here/JUDGENOTE-EMPLOYEES 
+@set here=UNFINDABLE
+
+@dig/teleport Reception Hall - Dark Angel Tower
+@Desc here=[space(5)]This is a reception hall. There is a reception desk in the center of the room, which looks to be fairly new. Seated behind the desk is a young woman, probably still in high school. Her face is hidden behind the latest issue of 'Teen Magazine'. You notice she's wearing a green shirt, monagrammed with with "Dark Angel Tower" in white, and a name tag that identifies her as 'Carrie'. In each of the corners, rest three-branched brass candlesticks holding five-foot jasmine-scented tapers. Aside from a row of small, barred windows, and a desklamp on the desk, the candles are the only other source of light in the room. To the left of the entrance are two varnished wooden benches that match the plank wood floor. The walls are painted a soothing light green. The ceiling is about twenty feet high, and is matte grey stucco. %r[space(5)]The only decorative features in this room are the logos on the wooden doors, and a map on one wall <+VIEW MAP>. 
+&CLEANUPSEATSA here=^* has left.:@switch member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#)=>0,{[setq(0, [extract(iter(rest(lnum(add(v(maxplaces), 1))), [switch(words(v(place##names)), 0,, [repeat(%b##,words(v(place##names)))])]), member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#), 1)])];&place[r(0)]names me=[remove(v(place[r(0)]names), %#)];@dolist [v(place[r(0)]names)]={@pemit ##=%N stands, leaving the place.};@pemit %#=You stand, leaving your seat.}
+&CLEANUPSEATSB here=^* has disconnected.:@switch member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#)=>0,{[setq(0, [extract(iter(rest(lnum(add(v(maxplaces), 1))), [switch(words(v(place##names)), 0,, [repeat(%b##, words(v(place##names)))])]), member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#), 1)])];@dolist [v(place[r(0)]names)]={@pemit ##=%N stands, leaving the place.};&place[r(0)]names me=[remove(v(place[r(0)]names), %#)]} 
+&MAXPLACES here=4 
+&MAXSEATS1 here=1 
+&PLACE1 here=place 1 
+&MAXSEATS2 here=6 
+&PLACE2 here=place 2 
+&MAXSEATS3 here=6 
+&PLACE3 here=place 3 
+&MAXSEATS4 here=2 
+&PLACE4 here=place 4 
+&APPROVAL here=This room and all its exits were approved by Maleficient: Sun May 12 10:20:30 1996 
+&INSPECTED here=Yes #6825 #7091 
+@lock here/INSPECTED 
+@Succ here=[space(5)]There are two sets of large wooden double-doors. One leads to the Kick Boxing Training Hall, the other to the Gym. The Stairwell leads to the other floors. 
+&VIEW_MAP here=%rThe floorplan of the building is laid out on one wall:%r%rBasement: Conference Room%r%rFirst Floor: Gym (Body Beautiful) and Training Hall (American Kickboxing)%r%rSecond Floor: FX Studio%r%rThird Floor: Executive Offices (Dark Angel Productions)%r 
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows are barred from the outside, and have additional security (#8096/windows). The door to the street has superior security (#8096/door_out). There is one security guard per floor in this building. There is a panic button (#8096/panic) near each guard station. This building passes all requirements for commercial zoning, and includes handicapped access. 
+@set here=JUMP_OK 
+@set here=UNFINDABLE
+
+@dig/teleport Prop Room - Dark Angel Studio
+@Desc here=[space(5)]This is a collection of storage cubicles, closets, shelves, and bins. Every imaginable prop is arranged in its proper place, as well as some racks of 'stock' costumes. Special locked fireproof safes store the firearms and expolsives required in the action-oriented scenes filmed in the Studio. Greco-Roman spears are stacked next to a collection of 1970's moon-suits, while Scottish bagpipes rest folded next to a bin of empty brass bird cages. Other oddities catch your eye, too many to list. Mixed scents of leather and plastic mingle in the air.%r[space(5)]Type 'sound stage' to go to the Sound Stage or 'dressing room' to get to the Dressing Room from here. 
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows are barred from the outside, and have additional security (#8096/windows). This building passes all requirements for commercial zoning, and includes handicapped access. In addition, there is special handling in place for volitile chemicals and other hazardous materials typically found on a movie set. Foam fire-extingushers will be triggered as well as water sprinklers, in case of open flames. The door into the sound stage has superior security (#8096/door_out), the doors into the other areas have standard security (#8096/door_in). Several key areas have infra-red protection (#8096/infra-red) (sound stage only) during off hours. There are three security guards on this lot at all times. 
+&SS here=$sound stage:@tel %#=#9470; @pemit/contents me=%N heads towards the Sound Stage (type 'sound stage' to follow).;@pemit/contents #9470=%N arrives from the Prop Room (type 'prop room' to head that way). 
+&DR here=$dressing room:@tel %#=#10442; @pemit/contents me=%N heads towards the Dressing Room (type 'dressing room' to follow).;@pemit/contents #10442=%N arrives from the Prop Room (type 'prop room' to head that way). 
+&APPROVAL here=This room and all its exits were approved by Chernabog: Wed Jul 3 16:01:42 1996 
+&INSPECTED here=Yes #7270 
+@lock here/INSPECTED 
+@set here=UNFINDABLE 
+@set here=COMMANDS
+
+@dig/teleport Sound Stage - Dark Angel Studio
+@Desc here=[space(5)]This is the main soundstage for Dark Angel Studio. It's so large, you can't see the far walls or the ceiling. Hanging from thick, snaky black cables, dozens of white and filtered lights dangle about 20 feet above the floor. Tucked in one brightly-lit corner is an air bag and high scaffolding, for stunt jumps and falls.%r[space(5)][u(#7870/set-use)]%r[space(5)]Type 'prop room' to go to the Prop Room or 'dressing room' to get to the Dressing Room from here. 
+&INSPECTED here=Yes #7038 #9808 
+@lock here/INSPECTED 
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows are barred from the outside, and have additional security (#8096/windows). This building passes all requirements for commercial zoning, and includes handicapped access. In addition, there is special handling in place for volitile chemicals and other hazardous materials typically found on a movie set. Foam fire-extingushers will be triggered as well as water sprinklers, in case of open flames. The door into the sound stage has superior security (#8096/door_out), the doors into the other areas have standard security (#8096/door_in). Several key areas have infra-red protection (#8096/infra-red) (sound stage only) during off hours. There are three security guards on this lot at all times. 
+&CLEANUPSEATSA here=^* has left.:@switch member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#)=>0,{[setq(0, [extract(iter(rest(lnum(add(v(maxplaces), 1))), [switch(words(v(place##names)), 0,, [repeat(%b##,words(v(place##names)))])]), member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#), 1)])];&place[r(0)]names me=[remove(v(place[r(0)]names), %#)];@dolist [v(place[r(0)]names)]={@pemit ##=%N stands, leaving the place.};@pemit %#=You stand, leaving your seat.}
+&CLEANUPSEATSB here=^* has disconnected.:@switch member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#)=>0,{[setq(0, [extract(iter(rest(lnum(add(v(maxplaces), 1))), [switch(words(v(place##names)), 0,, [repeat(%b##, words(v(place##names)))])]), member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#), 1)])];@dolist [v(place[r(0)]names)]={@pemit ##=%N stands, leaving the place.};&place[r(0)]names me=[remove(v(place[r(0)]names), %#)]} 
+&MAXPLACES here=2 
+&MAXSEATS1 here=5 
+&PLACE1 here=Shadowy Corner #1 
+&MAXSEATS2 here=5 
+&PLACE2 here=Shadowy Corner #2 
+&DR here=$dressing room:@tel %#=#10442; @pemit/contents me=%N heads towards the Dressing Room (type 'dressing room' to follow).;@pemit/contents #10442=%N arrives from the Sound Stage (type 'sound stage' to head that way). &PR here=$prop room:@tel %#=#7904; @pemit/contents me=%N heads towards the Prop Room (type 'prop room' to follow).;@pemit/contents #7904=%N arrives from the Sound Stage (type 'sound stage' to head that way). 
+&APPROVAL here=This room and all its exits were approved by Chernabog: Wed Jul 3 16:02:07 1996 
+@set here=MONITOR 
+@set here=COMMANDS
+
+@dig/teleport FX Studio - Dark Angel Tower
+@Desc here=[space(5)]This huge space (about 80' by 60') is broken up into two smaller areas by a long row of support pillars down the center of the room.%r[space(5)]To the left of the door is a computer center, twelve computer stations set up, each with a desk and chair, workstation, printer, oversized monitor, and other periferals. Squeezed in this area is also a film cutting station, to handle 35mm reels of film.%r[space(5)]To the right of the door is a 'creature shop'. Twelve desks are set up, each with a different horrific or beatific mask or creature being constructed from scratch. Drawers of materials, electronics, and colorants are arranged in a custom-built storage unit.%r[space(5)]The smell of latex and greasepaint thickens the air. 
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows are barred from the outside, and have additional security (#8096/windows). The door to the street has superior security (#8096/door_out). There is one security guard per floor in this building. There is a panic button (#8096/panic) near each guard station. This building passes all requirements for commercial zoning, and includes handicapped access. This room has additional fire protection, and volitile chemical storage procedures. 
+&APPROVAL here=This room and all its exits were approved by Maleficient: Fri May 10 12:11:52 1996 
+&INSPECTED here=Yes #9125 
+@lock here/INSPECTED 
+&JUDGENOTE-COMPUTERS here=There are 10 cutting-edge workstations set up here. They include all the necessary equipment to do animations for film or video production. There is an internal network between the 10 computers, but no connections to outside lines. All standard computer safety protocols are followed (regular backups, password protection, encryption, etc). 
+@lock here/JUDGENOTE-COMPUTERS 
+&JUDGENOTE-CREATURES here=The creature shop has strict handling procedures for anything hazardous or toxic. HEPA-approved air filters and cleaning equipment are standard throughout the room. All volitile chemicals are stored in a specially constructed series of safes that are fireproof. First aid kits/eyewash station/foam fire extingushers/etc are all standard as well, and all employees (including computer techs) have been given thorough training to deal with a variety of common emergencies. 
+@lock here/JUDGENOTE-CREATURES 
+&JUDGENOTE-EMPLOYEES here=There are 8 NPC employees here for the creature shop and animation department each( a total of 16). They represent Gislin's core of FX employees, PC's only fill out the 'extra' slots. There is one animator with a computer (spec: animation) of 4, 3 with comp: 3, and 4 with comp: 2. There is one FX tech with disguise (spec: FX makeup) of 4, 3 with disguise: 3, and 4 with disguise: 2. ALL FX techs (creature shop) have repair: 2 and all animators have tech: 2. ALL NPC employees have an artistry of from 1 to 3 and an Int and Dex of 3 each. 
+@lock here/JUDGENOTE-EMPLOYEES 
+@set here=UNFINDABLE
+
+@dig/teleport Dressing Rooms - Dark Angel Studio
+@Desc here=[space(5)]A long row of cubicles extends off the Dressing Room area, allowing some actors to change in private. The rest must jockey for position along a lengthy double-sided counter set with brightly lit mirrors. The whole setup has a vaguely thespian flare to it, as if the backstage area of a Broadway theater had been transplanted here. Racks of costumes have been lined up in the storage area, from a series of common film time periods, including Civil War blues and greys, fringed Flapper gowns from the Roaring Twenties, and garish Sixties apparel.%r[space(5)]Type 'sound stage' to go to the Sound Stage or 'prop room' to get to the Prop Room from here. 
+&APPROVAL here=This room and all its exits were approved by Chernabog: Wed Jul 3 16:01:33 1996 
+&INSPECTED here=Yes #6912 
+@lock here/INSPECTED 
+&JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows are barred from the outside, and have additional security (#8096/windows). This building passes all requirements for commercial zoning, and includes handicapped access. In addition, there is special handling in place for volitile chemicals and other hazardous materials typically found on a movie set. Foam fire-extingushers will be triggered as well as water sprinklers, in case of open flames. The door into the sound stage has superior security (#8096/door_out), the doors into the other areas have standard security (#8096/door_in). Several key areas have infra-red protection (#8096/infra-red) (sound stage only) during off hours. There are three security guards on this lot at all times. 
+&SS here=$sound stage:@tel %#=#9470; @pemit/contents me=%N heads towards the Sound Stage (type 'sound stage' to follow).;@pemit/contents #9470=%N arrives from the Dressing Room (type 'dressing room' to head that way). &PR here=$prop room:@tel %#=#7904; @pemit/contents me=%N heads towards the Prop Room (type 'prop room' to follow).;@pemit/contents #7904=%N arrives from the Dressing Room (type 'dressing room' to head that way). 
+@set here=UNFINDABLE 
+@set here=COMMANDS
+
+@open Sound Stage <SS>;ss;sound;stage;sound stage
+@Succ Sound Stage <SS>=You open the thick soundproof door, and enter the Sound Stage.
+@Osucc Sound Stage <SS>=opens the thick soundproof door, and enters the Sound Stage.
+@Odrop Sound Stage <SS>=arrives from the Entryway. 
+@Desc Sound Stage <SS>=A thick steel fire door, soundproofed with a series of flashing signs indicating it leads to a Sound Stage. 
+@Fail Sound Stage <SS>=You try the door finding it locked tightly. Looking up you notice the sign flashing "quiet" indicating that filming is in progress. 
+@Ofail Sound Stage <SS>=tries the door to the Sound Stage, but it is locked tightly.
+
+@open Exit <EX>;exit;ex;x;out;o;leave; 
+@Succ Exit <EX>=You leave Dark Angel Studio. 
+@Osucc Exit <EX>=leaves the Studio through the exit. 
+@Odrop Exit <EX>=arrives from Dark Angel Studio. 
+@Desc Exit <EX>=The exit from the studio. 
+@Fail Exit <EX>=The exit has been locked. You cannot leave that way at this time.
+@Ofail Exit <EX>=tries the exit but it has been locked. %N cannot leave that way at this time.
+
+@open Dark Angel Studios <DAS>;dark angel studios;das;da;studios;dark;angel;studio
+@lock Dark Angel Studios <DAS>=*BLDR012 
+@Desc Dark Angel Studios <DAS>=The building has been leveled. It's just an empty lot with a bare skeleton frame starting to go up for a new building. Not much to do here. @Succ Dark Angel Studios <DAS>=You open the door and enter the building. 
+@Osucc Dark Angel Studios <DAS>=approached the skeleton structure of Dark Angel Studios. 
+@Odrop Dark Angel Studios <DAS>=arrives from the street. 
+@Fail Dark Angel Studios <DAS>=This building has been leveled. 
+@Ofail Dark Angel Studios <DAS>=looks at the leveled remains of Dark Angel Studios, but does not enter the grounds.
+
+@open Steel Door %(Stairwell%) <SD>;steel door;sd;steel;stairwell;stair;stuc0 
+@Fail Steel Door (Stairwell) <SD>=You can't open the steel door to the Stairwell. It seems to be locked. 
+@Ofail Steel Door (Stairwell) <SD>=can't open the steel door to the Stairwell. It seems to be locked. 
+@Desc Steel Door (Stairwell) <SD>=A small steel door leading somewhere. A sign on it reads "Stairwell". 
+@Succ Steel Door (Stairwell) <SD>=You open the door to the Stairwell, and move through the doorway. 
+@Osucc Steel Door (Stairwell) <SD>=opens the door to the Stairwell, and move through the doorway. 
+@Odrop Steel Door (Stairwell) <SD>=enters from the reception area.
+
+@dig/teleport Reception Hall - Dark Angel Tower
+@Desc here=[space(5)]This is a reception hall. There is a reception desk in the center of the room, which looks to be fairly new. Seated behind the desk is a young woman, probably still in high school. Her face is hidden behind the latest issue of 'Teen Magazine'. You notice she's wearing a green shirt, monagrammed with with "Dark Angel Tower" in white, and a name tag that identifies her as 'Carrie'. In each of the corners, rest three-branched brass candlesticks holding five-foot jasmine-scented tapers. Aside from a row of small, barred windows, and a desklamp on the desk, the candles are the only other source of light in the room. To the left of the entrance are two varnished wooden benches that match the plank wood floor. The walls are painted a soothing light green. The ceiling is about twenty feet high, and is matte grey stucco. %r[space(5)]The only decorative features in this room are the logos on the wooden doors, and a map on one wall <+VIEW MAP>. 
+&CLEANUPSEATSA here=^* has left.:@switch member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#)=>0,{[setq(0, [extract(iter(rest(lnum(add(v(maxplaces), 1))), [switch(words(v(place##names)), 0,, [repeat(%b##,words(v(place##names)))])]), member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#), 1)])];&place[r(0)]names me=[remove(v(place[r(0)]names), %#)];@dolist [v(place[r(0)]names)]={@pemit ##=%N stands, leaving the place.};@pemit %#=You stand, leaving your seat.}&CLEANUPSEATSB here=^* has disconnected.:@switch member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#)=>0,{[setq(0, [extract(iter(rest(lnum(add(v(maxplaces), 1))), [switch(words(v(place##names)), 0,, [repeat(%b##, words(v(place##names)))])]), member(iter(rest(lnum(add(v(maxplaces), 1))), [v(place##names)]), %#), 1)])];@dolist [v(place[r(0)]names)]={@pemit ##=%N stands, leaving the place.};&place[r(0)]names me=[remove(v(place[r(0)]names), %#)]}
+&MAXPLACES here=4 &MAXSEATS1 here=1
+&PLACE1 here=place 1 
+&MAXSEATS2 here=6 
+&PLACE2 here=place 2 &MAXSEATS3 here=6 
+&PLACE3 here=place 3 
+&MAXSEATS4 here=2 
+&PLACE4 here=place 4 
+&APPROVAL here=This room and all its exits were approved by Maleficient: Sun May 12 10:20:30 1996
+&INSPECTED here=Yes #6825 #7091 
+@lock here/INSPECTED 
+@Succ here=[space(5)]There are two sets of large wooden double-doors. One leads to the Kick Boxing Training Hall, the other to the Gym. The Stairwell leads to the other floors. &VIEW_MAP here=%rThe floorplan of the building is laid out on one wall:%r%rBasement: Conference Room%r%rFirst Floor: Gym (Body Beautiful) and Training Hall (American Kickboxing)%r%rSecond Floor: FX Studio%r%rThird Floor: Executive Offices (Dark Angel Productions)%r &JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows are barred from the outside, and have additional security (#8096/windows). The door to the street has superior security (#8096/door_out). There is one security guard per floor in this building. There is a panic button (#8096/panic) near each guard station. This building passes all requirements for commercial zoning, and includes handicapped access. 
+@set here=JUMP_OK 
+@set here=UNFINDABLE
+@Desc Reception Room <OUT>=Two large solid oak doors, leading to the reception area. There are no symbols on the doors.uc0 
+@open Third floor - Office <3>;Third Floor - office;third;3;3f;office 
+@lock Third floor - Office <3>=*BLDR012|*Gislin|*Regan 
+@Desc Third floor - Office <3>=A small steel door, leading somewhere. A sign on it reads "Executive Office - Gislin Dahl". 
+@Succ Third floor - Office <3>=You go through the steel door leading to the Third floor. 
+@Osucc Third floor - Office <3>=goes through the steel door leading to the Third floor. 
+@Odrop Third floor - Office <3>=enters from the Stairwell outside the Steel Door. 
+@Fail Third floor - Office <3>=The door to the Third floor does not budge. Locked steel doors tend to do that. 
+@Ofail Third floor - Office <3>=tries the steel door to the Third floor, which is locked. 
+&STATUS Third floor - Office <3>=lock
+&UNLOCK Third floor - Office <3>=$unlock:@trigger #9019/unlock-3=%N @set Third floor - Office <3>=COMMANDS
+
+@create Brandon=10
+@Desc Brandon=%rBrandon is a slightly shorter-than-average man in his late twenties or possibly early thirties. His exact age is difficult to pinpoint because he has the smooth, ageless look gifted from a partial Asian ethnicity. His dark eyes scan the room alertly, as he mediates bouts or instructs the senior students. His very stillness is that of the coiled spring, of the crouched tiger. Occasionally, he paces through the room, his white gi whispering with the movements. Rather than a traditional karate or judo belt, his gi jacket is knotted closed with a length of rope. Since he's primarily a kickboxing instructor, he prolly wears the gi more for comfort than as a uniform. If questioned about his name, he simply responds that he's Brandon Lee, no relation to the dead one.
+@Adesc Brandon=@pemit %#=%rOOC information: Brandon has a Brawl of 4, and Melee of 3. His physical stats are comporable, as well. There's some simple code in place, so you can 'train' with him if one of the PC instructers isn't available.;@pemit owner(me)=<%N looked at [name(me)]>
+&AMB-CMD Brandon=^* has arrived.:@wait 3=@emit [u(#8096/amb[rand(10)])] &TRAIN-CMD Brandon=$train:@pemit %#=%r[center(Training Help,79,*)];@pemit %#=%rBrandon may be used to practice 'combat' or 'sparring' type poses. While thought and effort has gone into setting up these commands, PLEASE keep in mind that he is only a puppet, and as such cannot think for himself. :)%r%rYou may train with Brandon one of two ways: %r(a) You may pose punching or kicking Brandon <:kicks Brandon> or <:punches Brandon> which will appear on the screen as that command, with your name (ex: Jackie Chan punches Brandon). Brandon will respond.%r%r(b) You may type <bout>, and challenge Brandon to a fight. He will then emit a series of about 10 poses which you can react to. WARNING: The <bout> function is not enabled yet!!!%r%rIf you have trouble with Brandon, and he does not seem to function at all, try 'reset'. If that does not work, +mail [name(owner(me))].;@pemit %#=%r[center(***,79,*)] 
+&PUNCH Brandon=^* punches Brandon*:@emit [u(#8096/punch[rand(3)])] 
+&KICK Brandon=^* kicks Brandon*:@emit [u(#8096/kick[rand(3)])] 
+&BOUT Brandon=$bout:@switch [u(fighting)]=Yes,{@pemit %#=Brandon is already sparring with someone. Please wait till he is done. If there is no one else in the room, you can 'reset' Brandon.},No,{&partner me=[name(%#)]; &fighting me=Yes; :bows to %N, tapping the side of his gi pants with his palms as he bends at the waist. The bout is ready to begin.; @pemit %N=Please pose bowing in return, and then make your first movement. Brandon's poses will be about 40 seconds apart.},{@pemit %N=OOC WARNING: Brandon is malfunctioning. Please 'reset' him.} 
+&FIGHTING Brandon=No &CLEAR-BOUT1 Brandon=^* has left.:@switch %0=[u(partner)],{@emit Brandon breaks off the bout and moves to cool down as his partner leaves unexpectedly.;&fighting me=No;&partner me=;@wait 1=@halt me} &CLEAR-BOUT2 Brandon=^* has disconnected.:@switch %0=[u(partner)],{@emit Brandon breaks off the bout and moves to cool down as his partner leaves unexpectedly.;&fighting me=No;&partner me=;@wait 1=@halt me} 
+&RESET Brandon=$reset:@trigger me/startup @Startup Brandon=&fighting me=No; &partner me=; &count me=0; 
+&BOUT-TRIGGER Brandon=@switch [gte([u(count)],10)]=1,{@emit Brandon bows to [u(partner)], tapping the side of his gi pants with his palms as he bends at the waist. The bout is over.;@wait 1=&count me=0},0,{&count me=[add(u(count),1)];@wait 5=[u(bout-switch-from-hell)]},{@emit OOC WARNING: Brandon is malfunctioning. Please 'reset' him and start over.} &COUNT Brandon=0 &BOUT-SWITCH-FROM-HELL Brandon=[switch(extract(%0,1,1))],[u(partner)],[switch(match(%0,*hit*),1,{@emit [u(#0000/bout-hit[rand(3)])]})],[switch(match(%0,*swing*),1,{@emit [u(#0000/bout-swing[rand(3)])]})],[switch(match(%0,*punch*),1,{@emit [u(#0000/bout-punch[rand(3)])]})],[switch(match(%0,*kick*),1,{@emit [u(#0000/bout-kick[rand(3)])]})],[switch(match(%0,*circle*),1,{@emit [u(#0000/bout-circle[rand(3)])]})],[@emit [u(#0000/bout-random[rand(3)])] 
+@set Brandon=MONITOR 
+@set Brandon=VISUAL 
+@set Brandon=PUPPET 
+@set Brandon=TERSE
+@set Brandon=COMMANDS
+
+@create Martha=10
+@lock Martha=#1166
+@Desc Martha=A competant-looking woman, perhaps 35 years old, with short brown hair, alert darker brown eyes, and a no-nonsense attitude. She's dressed in a severe-looking suit, with a clipboard tucked under one arm. A security badge for 'Dark Angel Studios' is clipped to one lapel.
+&SET-ADD Martha=$set add *=*:&type-%0 me=%1;@pemit %#=You add set '%0' with the desc of '%1' for the sound stage.
+&SET-CHOSE Martha=$choose *:@switch hasattr ( #7870 , TYPE-%0 )=0,{@pemit %#=That set does not exist yet.},{&set-use me=v(type-%0);@pemit %#=You choose the '%0' set for the sound stage.}
+&SET-USE Martha=Clouds billow everywhere, both on a stunningly realistic-looking backdrop, and rolling along the floor. Golden lights pierce through the layers of chilly clouds, warming the area. The sound of trumpets and stringed instroments can be heard faintly in the distance.
+@Adesc Martha=@pemit %#=For help with changing the set on the sound stage, type 'stage help'.
+&STAGE-HELP Martha=$stage help:@pemit %#=%r[space(5)]'set add <set name>=<set desc>' will add a new set description.%r[space(5)]'choose <set name>' will change the sound stage set to the new choice%r[space(5)]'set list' will list all the set names you can use &SET-LIST Martha=$set list:@pemit %#=Set names for the sound stage: [iter(sort(lattr(#7870/type-*)),[after(##,TYPE-)])]
+&TYPE-HEAVEN Martha=Clouds billow everywhere, both on a stunningly realistic-looking backdrop, and rolling along the floor. Golden lights pierce through the layers of chilly clouds, warming the area. The sound of trumpets and stringed instroments can be heard faintly in the distance.
+@set Martha=PUPPET
+@set Martha=CONTROL_OK
+@set Martha=COMMANDS
+
+@create sec=10
+&WINDOWS sec=All windows in this building are set with breakage detectors, that alert the security sysetm automatically if the window is broken or opened.
+&DOORS_OUT sec=All doors to the ouside of this building are rigged with breakage detectors on the locks and hinges. All doors to the outside of this building are locked with a top quality deadbolt lock, Dif 8(Sec Sys) or Dif 7(Lockpick). Plus, the doors are internally reinforced with long, thick steel bars. They require a greater-than-5 strength to break (starting diff 9 for a 6, diff -1 per additional point of strength). After the lock is opened, not broke, the opener has 20 IC seconds to enter a personal code into an electronic keypad. There are no warnings to do this. Any false code will alert police, while appearing to disarm the system.
+&PANIC sec=This is a panic button that alerts the building sec sys to call police with a single touch. Police should respond quickly to this, as it would be assumed that there was an intruder in the building.
+&FIRE sec=This system has smoke detectors, Per 6, in each room to detect fires. They will set off the interior sprinkler system when tripped.
+&DOORS_IN sec=All interior doors (if any) between rooms are set with top quality deadbolt locks, Diff 8 (Sec Sys) or Diff 7(Lockpick). They are double-key deadbolts (both sides require a key rather than a knob on one side). If the security system is active (assumed on during non-business hours appropriate to the building), breakage detectors will be active on the locks and hinges. After the lock is opened, not broke, the opener has 20 IC seconds to enter a personal code into an electronic keypad. There are no warnings to do this. Any false code will alert police, while appearing to disarm the system.
+&INFRA-RED sec=Multiple infra-red cells are assembled in this open passageway to block a slightly staggard line from the top to the bottom. Nothing larger than a rat may pass without triggering the alarm silently. Security guards know how to disable and re-enable to allow them to pass on their normal rounds. This is only enabled outside normal business hours.
+&SECURITY sec=This building has a high-end security system. It is installed into the walls, the windows and doors of this building. A series of generators supplies power, should the building power go off. Two high resistance surge suppressors protect the system from overload.This system will call police should any of the alarms go off; windows, doors, or code. This call is automated on a direct cellular link that is turned on by the system only if the alarms are tripped, autodialing police, or medical/fire if that code is punched in to any of the keypads around the building, or if the smoke detectors pick up smoke. The alarm to the police is silent, unless the panic button is used, in which case a high volume alam goes off. The same alarm goes off in case of a fire. Additional security notes can be found in the atrribute 'sys2' on this object. Please check it.
+&SEC2 sec=Security cameras are hidden in EVERY room of EVERY building including the bathrooms, though they arn't pointed towards the toilets. There are enough cameras arranged to get a clear view of all activities in the room. They run 24/7, and the tapes are stockpiled for 1-2 IC months before being recycled (unless evidence on them is needed, obviously). The tapes are b&w. Remote security guards monitor camera images, and can trigger any alarm necessary from their location. Exterminators thoroughly inspect and clean each room once per IC month, usually under supervision. Each building is additionally 'sealed' (maintained) enough to keep most rodents and pests out. Water and gas mains are specially self-contained. They have their own direct connections to public accesses, without linking to other buildings close to the site. Other common security measures (waste management/document shredding/etc) in place as well.
+&AMB0 sec=Brandon performs his famous Spinning Backkick move.
+&AMB1 sec=Brandon completely ignores everone else to help an amazingly beautiful young lady.
+&AMB2 sec=Brandon talks to one of the other instructors.
+&AMB3 sec=Brandon does some exercices.
+&AMB4 sec=Brandon meditates.
+&AMB5 sec=Brandon is practicing some moves with a short bladed weapon.
+&AMB6 sec=Brandon talks to a new student.
+&AMB7 sec=Brandon explains the price structure for lessons to someone.
+&AMB8 sec=Brandon is chatting with some instructors and high ranking students.
+&AMB9 sec=Brandon works through some training moves.
+&KICK0 sec=Brandon sidesteps, and, turning faster than you thought possible, kicks %N in the solar plexus.
+&KICK1 sec=Brandon swiftly parries the kick, steps forward and sweeps %p leg from the floor, sending %N to the ground.
+&KICK2 sec=Brandon dodges the kick, sweeping %N's other leg. &PUNCH0 sec=Brandon strikes %N's arm before %s finishes %p punch.
+&PUNCH1 sec=Brandon ducks to the side, grabbing %N's hand, and, before anyone understand what's happening, %s is kneeled, held from behing by Brandon.
+&PUNCH2 sec=Brandon parries %N's punch, and counters with a hand strike of his own to %N's nose.
+@set sec=DARK
+@set sec=STICKY
+
+@create Holder Object=10
+&KEYS Holder Object=#0
+&ADDSTAFF Holder Object=$add *:&staff #5047=[u(#5047/staff)] [num(*%0)]; &staff #9136=[u(#9136/staff)] [num(*%0)]; @pemit %#=You added %0 to the staff list on the FX studio door and Basement door. &DROPSTAFF Holder Object=$remove *:&staff #5047=[remove([u(#5047/staff)],[num(*%0)])]; &staff #9136=[remove([u(#9136/staff)],[num(*%0)])];@pemit %#=You remove %0 from the staff list on the Basement door and FX studio. &SHOWSTAFF Holder Object=$show staff:@pemit %#=The Dark Angel Tower Staff Members are:%r[iter([u(#5047/staff)],|[name(##)])]
+@set Holder Object=COMMANDS
+
+@create Martha=10
+@lock Martha=#1166
+@Desc Martha=A competant-looking woman, perhaps 35 years old, with short brown hair, alert darker brown eyes, and a no-nonsense attitude. She's dressed in a severe-looking suit, with a clipboard tucked under one arm. A security badge for 'Dark Angel Studios' is clipped to one lapel. &SET-ADD Martha=$set add *=*:&type-%0 me=%1;@pemit %#=You add set '%0' with the desc of '%1' for the sound stage.
+&SET-CHOSE Martha=$choose *:@switch hasattr ( #7870 , TYPE-%0 )=0,{@pemit %#=That set does not exist yet.},{&set-use me=v(type-%0);@pemit %#=You choose the '%0' set for the sound stage.} &SET-USE Martha=Clouds billow everywhere, both on a stunningly realistic-looking backdrop, and rolling along the floor. Golden lights pierce through the layers of chilly clouds, warming the area. The sound of trumpets and stringed instroments can be heard faintly in the distance.
+@Adesc Martha=@pemit %#=For help with changing the set on the sound stage, type 'stage help'.
+&STAGE-HELP Martha=$stage help:@pemit %#=%r[space(5)]'set add <set name>=<set desc>' will add a new set description.%r[space(5)]'choose <set name>' will change the sound stage set to the new choice%r[space(5)]'set list' will list all the set names you can use.
+&SET-LIST Martha=$set list:@pemit %#=Set names for the sound stage: [iter(sort(lattr(#7870/type-*)),[after(##,TYPE-)])] &TYPE-HEAVEN Martha=Clouds billow everywhere, both on a stunningly realistic-looking backdrop, and rolling along the floor. Golden lights pierce through the layers of chilly clouds, warming the area. The sound of trumpets and stringed instroments can be heard faintly in the distance.
+@set Martha=PUPPET 
+@set Martha=CONTROL_OK 
+@set Martha=COMMANDS
+
+@open Third floor - Office <3>;Third Floor - office;third;3;3f;office
+@lock Third floor - Office <3>=*BLDR012|*Gislin|*Regan 
+@Desc Third floor - Office <3>=A small steel door, leading somewhere. A sign on it reads "Executive Office - Gislin Dahl".
+@Succ Third floor - Office <3>=You go through the steel door leading to the Third floor.
+@Osucc Third floor - Office <3>=goes through the steel door leading to the Third floor. @Odrop Third floor - Office <3>=enters from the Stairwell outside the Steel Door.
+@Fail Third floor - Office <3>=The door to the Third floor does not budge. Locked steel doors tend to do that.
+@Ofail Third floor - Office <3>=tries the steel door to the Third floor, which is locked.
+&STATUS Third floor - Office <3>=lock
+&UNLOCK Third floor - Office <3>=$unlock:@trigger #9019/unlock-3=%N
+@set Third floor - Office <3>=COMMANDS
+
+@open Second floor - FX <2>;Second Floor - FX;second;2;2f;fx
+@lock Second floor - FX <2>=!STAFF-LOCK/0
+@Desc Second floor - FX <2>=A small steel door, leading somewhere. A sign on it reads "FX Studio".
+@Succ Second floor - FX <2>=You go through the steel door leading to the Second floor.
+@Osucc Second floor - FX <2>=goes through the steel door leading to the Second floor.
+@Odrop Second floor - FX <2>=enters from the Stairwell outside the Steel Door.
+@Fail Second floor - FX <2>=The door to the Second floor does not budge. Locked steel doors tend to do that.
+@Ofail Second floor - FX <2>=tries the steel door to the Second floor, which is locked.
+&STAFF Second floor - FX <2>=#4235 #1861 #11301 #8458 #9735 #6279 #9578 #10549 #3813 #11864
+&STAFF-LOCK Second floor - FX <2>=[match(u(STAFF),%#)]
+
+@open First floor - Reception <OUT>;first floor -reception;first;1;1f;reception;out;o;exit;x;leave
+@Desc First floor - Reception <OUT>=A small steel door, leading somewhere. A sign on it reads "Reception Area/First Floor".
+@Succ First floor - Reception <OUT>=You go through the steel door leading to the First floor.
+@Osucc First floor - Reception <OUT>=goes through the steel door leading to the First floor.
+@Odrop First floor - Reception <OUT>=enters from the Stairwell outside the Steel Door.
+@Fail First floor - Reception <OUT>=The door to the First floor does not budge. Locked steel doors tend to do that.
+@Ofail First floor - Reception <OUT>=tries the steel door to the First floor, which is locked.
+
+@open Basement - Conference <B>;basement - conference;basement;b;bf;conference
+@lock Basement - Conference <B>=!STAFF-LOCK/0
+@Fail Basement - Conference <B>=The door to the Basement does not budge. Locked steel doors tend to do that. 
+@Desc Basement - Conference <B>=A small steel door, leading somewhere. A sign on it reads "Conference Room". 
+@Succ Basement - Conference <B>=You go through the steel door leading to the Basement floor.
+@Osucc Basement - Conference <B>=goes through the steel door leading to the Basement floor.
+@Odrop Basement - Conference <B>=enters from the Stairwell outside the Steel Door.
+@Ofail Basement - Conference <B>=tries the steel door to the Basement, which is locked.
+&STAFF Basement - Conference <B>=#4235 #1861 #11301 #8458 #9735 #6279 #9578 #10549 #3813
+&STAFF-LOCK Basement - Conference <B>=[match(u(STAFF),%#)] You go through the steel door leading to the Basement floor.
+
+Conference Room - Dark Angel Tower(#5057RU)
+Obvious exits: Steel Door <SD>
+
+@open Steel Door <SD>;steel door;sd;steel;stairwell;stair;st;out;o;exit;ex;leave
+@Succ Steel Door <SD>=You go out through the Steel Door leading to the stairwell.
+@Osucc Steel Door <SD>=goes out through the Steel Door leading to the stairwell.
+@Odrop Steel Door <SD>=walks down the stairs into the room.
+@Desc Steel Door <SD>=A small steel door, leading somewhere. A sign on it reads "Stairwell".
+@Ofail Steel Door <SD>=tries the Steel Door to the stairwell, which is locked.
+@Fail Steel Door <SD>=The Steel Door to the stairwell does not budge. Locked doors tend to do that. You go out through the Steel Door leading to the stairwell.
+
+@open Steel Door %(Stairwell%) <SD>;steel door;sd;steel;stairwell;stair;st
+@Fail Steel Door (Stairwell) <SD>=You can't open the steel door to the Stairwell. It seems to be locked.
+@Ofail Steel Door (Stairwell) <SD>=can't open the steel door to the Stairwell. It seems to be locked.
+@Desc Steel Door (Stairwell) <SD>=A small steel door leading somewhere. A sign on it reads "Stairwell".
+@Succ Steel Door (Stairwell) <SD>=You open the door to the Stairwell, and move through the doorway.
+@Osucc Steel Door (Stairwell) <SD>=opens the door to the Stairwell, and move through the doorway.
+@Odrop Steel Door (Stairwell) <SD>=enters from the reception area.
+
+@open Training Hall <TH>;th;training;train
+@Desc Training Hall <TH>=Two large wooden doors, lead into the Training Hall. The doors are made of Solid Oak, and there is a symbol of a green dragon in flight on the left door, while a bald eagle in flight is on the right door.
+@Succ Training Hall <TH>=You push open the door, and step into the training hall. The door closes behind you slowly.
+@Osucc Training Hall <TH>=looks at the doors to the Training Hall, and then %s opens them and walks in.
+@Odrop Training Hall <TH>=enters from the reception area.
+@Fail Training Hall <TH>=You can't go into the Training Hall. The door is locked.
+@Ofail Training Hall <TH>=can't go into the Training Hall. The door is locked.
+@set Training Hall <TH>=ENTER_OK
+
+@open Gym <G>;gym;g
+@Desc Gym <G>=Two large wooden door lead into the Gym. The doors are made of solid oak. There is a symbol of a weight-lifting man on the left door, while a jogging woman is on the right door.
+@Succ Gym <G>=You leave the reception area and enter the Gym.
+@Osucc Gym <G>=leaves the reception area and enters the Gym.
+@Odrop Gym <G>=enters from the reception area.
+@Fail Gym <G>=You try the Gym doors, but they are locked.
+@Ofail Gym <G>=tries the Gym doors, but they are locked.
+
+@open Reception Room <OUT>;reception room;rr;out;o;exit;ex;leave
+@Succ Reception Room <OUT>=You leave the Gym and enter the reception area.
+@Osucc Reception Room <OUT>=leaves the Gym and enters the reception area.
+@Odrop Reception Room <OUT>=enters from the Gym.
+
+@dig/teleport Training Hall - Dark Angel Tower
+@Desc here=This room is well lit, and is impressive compared to the stark reception room. Its dimensions are forty feet by sixty feet. The walls extend at least twenty feet off the matted floor, and they're painted a slightly irridescent white. On each wall, you notice a different mural (+view to see). This room is a room for the strong of heart. Only the weak will turn away. &APPROVAL here=This room and all its exits were approved by Maleficient: Fri May 10 12:12:30 1996
+&VIEW_GREEN here=On the wall to your right, there is a painting of a green dragon, in flight, holding a magnificent katana in its talons. On this side of the room, there is alot of gymnist equipment, highbars, horses, and spring vaults. There is also a rack of boken practice swords, made of fine quality wood.
+&VIEW_BLUE here=On the wall to your left, is a picture of a blue dragon, sitting atop a pile of bones. The dragon looks extremely menacing and sinister. It sits there with a pride that is apparent from its reptilian features. On this side of the gym, there is an obstacle course set up. It looks rather difficult, and a sign advises that no one less than a brown belt try it. Also along this wall, are pamphlets, telling of ancient Japanese culture.
+&VIEW_BLACK here=On the wall behind you, is a black dragon. The dragon is seen crawling through a midnight forest, it's muscles rippling. By this wall, there are four full sets of weights, including all types of universal and nautilus equipment. There are instructions posted next to each one, showing its proper use, and the results.
+&VIEW_RED here=What really attracts your attention, however, is the far wall. A red dragon faces you, it's mouth wide open. It looks beautiful, yet quite deadly. Where it's mouth should be, are steel 'fangs' supporting small batons. On either side of this dragon are two boxing rings, complete with pads and equipment. Also along this wall are a row of staffs of various lengths, all of them with padded ends. &JUDGENOTE here=The equipment is all scrupulously maintained, and repaired or replaced when needed. The murals are covered over with a special layer of clear latex protectant. If they're vandilized, it will clean away without damaging them. &JUDGENOTE-SECURITY here=This building has a security system (#8096/security) and (#8096/sec2) as well as (#8096/fire) fire alarms. The windows (and skylight) are barred from the outside, and have additional security (#8096/windows). The door to the street has superior security (#8096/door_out). There is one security guard per floor in this building. There is a panic button (#8096/panic) near each guard station. This building passes all requirements for commercial zoning, and includes handicapped access.&INSPECTED here=Yes #8973
+@lock here/INSPECTED
+&JUDGENOTE-EMPLOYEES here=There are 8 NPC employees here for the kickboxing school. They represent Gislin's core of martial arts instructors, PC's only fill out the 'extra' slots. There is one with a brawl (spec: kickboxing) of 4, 3 with brawl: 3, and 4 with brawl: 2. ALL instructors have instruction: 2, Int, Dex, and Wits of 3 each.
+@lock here/JUDGENOTE-EMPLOYEES
+@set here=UNFINDABLE

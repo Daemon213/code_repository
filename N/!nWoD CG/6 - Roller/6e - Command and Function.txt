@@ -1,0 +1,350 @@
+/*
+################################################################################
+## ROLL COMMAND ################################################################
+
+
+--------------------------------------------------------------------------------
+-- Command: Roll ---------------------------------------------------------------
+
+Cutting corners for now. (And the past four years.)
+
+0: the match
+1: /list/of/switches, if any
+2: what to roll
+3: =<target list>, if any
+
+q7: sanitized input (%2)
+q8: temp holder building target list
+q9: target list (dbrefs or job #)
+
+*/
+
+&c.roll [v( d.nr )]=$^\+?roll(/.+?)? (.+?)(\=.*)?$:
+
+// .. people 'in chargen' cannot use +roll -- no better place for this
+	@assert cor( isstaff( %# ), not( isapproved( %#, chargen )))={ 
+		@pemit %#=[u( .alert, roll )] You are 'in chargen', and so cannot 
+		use this command. If you need something on your sheet rolled, please 
+		contact a staffer. 
+	}; 
+
+	@pemit %#=
+		strcat( 
+
+// .. sanitize input and detach the instance
+// .. (don't need to worry if instance already detached; extra spaces are fine)
+			setq( 7, 
+				squish( edit( 
+					strip( %2, %%%,;<>%[%] ), 
+					%(, %b%( 
+				))
+			), 
+
+// .. run the workhorse
+// .. (remove 'blind' switch, as that is for the 'build to-list' only)
+			null( 
+				u( f.roll.workhorse, 
+					%q7, 
+					%#, 
+					remove( %1, blind, /, / )
+				)
+			), 
+
+// .. build the to-list
+			setq( 9, u( f.build.to-list, %#, trim( rest( %3, = )), %1 )), 
+
+// .. interpret and output - check for errors first
+			if( 
+				t( words( %qe, ` )), 
+				cat( u( .alert, roll ), u( display.roll-items, %qe )), 
+// Roll To ...
+				u( display.roll-to-[first( %q9, | )], %#, rest( %q9, | ))
+			)
+		)
+
+// --
+
+@set v( d.nr )/c.roll=regex
+
+
+/*
+--------------------------------------------------------------------------------
+-- Build To-List ---------------------------------------------------------------
+
+This is separated out from &c.roll in order to make sure we don't clober global 
+registers, and to make this list easier to maintain and expand.
+
+0: roller (%#)
+1: target list (names, dbrefs, or 'job'), if exists
+2: switch list, if exists
+
+returns: public, private, or blind|<target dbrefs or 'job #'>
+
+q0: list of %1 as dbrefs (could be messy)
+q1: temp for pmatch() in iter
+
+*/
+
+&f.build.to-list [v( d.nr )]=
+	localize( strcat( 
+		setq( 0, iter( %0 %1, if( setr( 1, pmatch( %i0 )), %q1 ))), 
+		case( 1, 
+
+// .. job <num>
+			strmatch( %1, job * ), 
+			job|%1, 
+
+// .. blind: a target list including everyone except the roller
+			cand( t( %1 ), match( %2, blind, / )), 
+			strcat( blind|, setdiff( %q0, %0 )), 
+
+// .. private: a target list including the roller
+			t( %1 ), 
+			strcat( private|, setunion( %q0, )), 
+
+// .. public, default: everyone in the room with the roller
+			strcat( public|, lcon( loc( %0 ), connect ))
+		)
+	))
+
+
+
+/*
+================================================================================
+== Main Rolling Functions ======================================================
+
+
+--------------------------------------------------------------------------------
+-- Function: roll() ------------------------------------------------------------
+
+roll( <what to roll>, <who is rolling>[, <list/of/switches>] )
+
+0: what to roll
+1: who is rolling
+2: list/of/switches
+
+q0: sanitized what-to-roll
+q1: Sheet of pmatch(%1)
+q2: /list/of/switches (we need this to properly match switches)
+
+uses: 
+	isstaff() - is %# staff?
+
+--
+
+Somehow, registers are being passed into this function set
+(we are creating it @function/preserve/privileged)
+so we clear out all the globals (and "p"?!) before we start
+(no, iter didn't work)
+"e" was adding to the error list, "p" was, I think, changing the player dbref
+
+*/
+
+&f.roll [v( d.nr )]=
+	strcat( 
+		setq( d, ), setq( a, ), setq( e, ), setq( o, ), setq( s, ), setq( z, ), 
+		setq( r, ), setq( p, ), setq( t, ), setq( n, ), 
+
+		setq( 0, squish( edit( strip( %0, %%%,;<>%[%] ), %(, %b%( ))), 
+		setq( 1, u( [u(d.stat-setter)]/f.find-sheet, pmatch( %1 ))), 
+		setq( 2, if( words( trim( %2, l, / ), / ), /[trim( %2, l, / )])), 
+
+		case( 
+			0, 
+			t( words( %q0 )), #-1 Nothing to Roll, 
+			t( %q1 ), %q1, 
+			cor( 
+				isstaff( %# ), 
+				strmatch( %#, u( [u(d.stat-setter)]/f.find-sheet, %# ))), 
+			#-1 Staff Only, 
+			u( f.roll.workhorse, %q0, %q1, %q2 )
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Roll Workhorse --------------------------------------------------------------
+
+0: what to roll
+1: who is rolling
+2: /list/of/switches
+
+q0: successes
+q1: success interpreted
+q2: die rolls
+
+returns: <successes or #-1>|<pretty output or errors>|<die rolls>
+may be ignored if internal: items kept in global registers!
+
+*/
+
+&f.roll.workhorse [v( d.nr )]=
+	strcat( 
+// .. set up global register defaults
+		setq( z, u( f.switch.name-complete, %2 )), 
+		setq( d, 0 ), 
+		setq( a, 10 ), 
+		setq( n, 0 ), 
+		setq( t, ), 
+		setq( c, ), 
+		setq( s, Standard ), 
+		
+// .. run the basic roller setup
+		u( f.stat-check.stats, %1, %0 ), 
+
+// >> Active Adjustments <<
+// .. scan for and run "active" switches
+		iter(
+//			again weakness extended target willpower, 
+			edit( lcstr( lattr( %!/f.roll/* )), f.roll/, ), 
+			if( 
+				u( f.hasswitch?, %i0 ), 
+				u( f.roll/%i0, u( f.getswitch, %i0 ), %# )
+			), 
+			, @@ 
+		), 
+
+// .. last, check for health penalty
+		u( f.stat-check.health, %1 ), 
+		if( lte( %qd, 0 ), setq( s, Chance )), 
+
+// >> ROLL <<
+		if(
+			t( words( %qe, ` )), 
+// .. error output instead of rolling
+			strcat( 
+				#-1, |, 
+				u( display.roll-items, %qe ), |, 
+				@@( null )
+			), 
+
+			strcat( 
+
+// .. tweak 'n-again' register (qa) if 'weakness' or 'chance' roll
+// .. (this may not be necessary, put here in case my logic is flawed)
+				setq( a, 
+					case( 1, 
+						u( f.hasswitch?, weakness ), 11, 
+						strmatch( %qs, chance ), 10, 
+						%qa
+					)
+				), 
+
+// .. reset 'number of times to roll' register (qn) if not /extended or /target
+				setq( n, 
+					case( 1, 
+						u( f.hasswitch?, extended ), %qn , 
+						u( f.hasswitch?, target ), @@( null ), 
+						1 
+					)
+				), 
+
+// .. roll %qn times, at least once (if %qd = 0, roll 1 die -- it's chance)
+				setq( r, 
+					trim( u( f.roll.workhorse.recurisve, 0, 0 ), b, | )
+				), 
+
+// >> PARSE RESULTS
+// .. <'target' should also go here to remove extraneous rolls>
+// .. interpret successes -> <# succ>, "Success!", <what rolled>
+				u( f.roll-success-interpreter ), 
+				setq( c, trim( %qc )), 
+
+// .. and output for the sake of the function 
+// .. .. <# succ>[ <# succ>], <what rolled>, <dice>:<rote>:<n-again>[|<dice>:..]
+
+				strcat( 
+					%qc, |, 
+					%q2, |, 
+					trim( %qr, b, | )
+				)
+			)
+		)
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- roll(): The Function --------------------------------------------------------
+
+Add 'roll()' to the user-defined function list. 
+
+This code presumes that Wizards have access to '@function'.
+If not, be sure to add this to your game's function startup system.
+
+*/
+
+@fo me=&ufunc/privileged.roll [v( d.nr )]=u\\( [num( nr )]/f.roll, \\\%0, \\\%1, \\\%2 \\)
+
+@startup [v( d.nr )]=
+	@dolist lattr( %!/ufunc.* )=@function/preserve [rest( ##, . )]=%!/##; 
+	@dolist lattr( %!/ufunc/privileged.* )=
+		@function/preserve/privileged [rest( ##, . )]=%!/##
+
+@trig v( d.nr )/startup
+
+/* -- Tests --
+
+think u( v( d.nr )/f.roll.workhorse, str+dex+2, pmatch(thenomain), /again=8 )
+think u( v( d.nr )/f.roll, str+2, thenomain, /again=8 )
+
+
+
+================================================================================
+== Extended Roller =============================================================
+
+A recursive roller for /extended and /target switches, 
+otherwise defaults to one roll.
+
+input
+	0: loop counter (pass '0' initially)
+	1: total successes  (pass '0' initially)
+	qn: number of times to roll (default '1') -> /extended
+	qt: target number (default <null>) -> /target
+	qa: 'again' counter
+	qd: dice to roll
+
+output
+	qc: success list/counter
+
+internal
+	q0: this loop's roll
+	q1: this loop's successes
+
+*/
+
+&f.roll.workhorse.recurisve nr=
+	if( 
+		cand( 
+			cor( not( %qn ), lt( %0, %qn )), 
+			cor( not( %qt ), lt( %1, %qt )), 
+			cor( t( %qt ), t( %qn ), lt( %0, 1 ))
+		), 
+// roll some dice
+		strcat( 
+			setr( 0, 
+				ulocal( f.roller, 
+					if( lte( %qd, 0 ), 1, %qd ), 
+					%qa, 
+					if( u( f.hasswitch?, rote ), 8 )
+				)
+			), |, 
+
+// count some successes
+			setq( 1, u( f.successes.%qs, %q0, 8 )), 
+			setq( c, %qc %q1 ), 
+
+// do it again
+			u( f.roll.workhorse.recurisve, inc( %0 ), add( %q1, %1 ))
+		), 
+
+// (last loop does nothing)
+
+	)
+
+/* -- Tests --
+
+think roll( str+dex+2, thenomain, /again=8/extended )
+think roll( str+2, thenomain, /again=8/extended=tyyt )
+
+*/

@@ -1,0 +1,340 @@
+ CLASS: MUSHCoding 201
+PART: 2
+DATE: 12/14/2002 TIME: 6 PM
+INSTRUCTOR: Luigi
+DESCRIPTION: The first class of MUSHCoding 201 PART 2 ever held. Most of
+it has been left in its original state, though some parts of the log were
+edited to remove spam or clarify points. A '*' has been placed in front of
+the speaker's name.
+
+----------------------------------------------------------------------------
+
+* Luigi says, "Very well. Let us review a little of what we talked about last week."
+* Luigi says, "Iteration comes in two forms. Function, and Command."
+* Luigi types --> @dolist 1 2 3=say Command Iteration ##!
+* Luigi says, "Command Iteration 1!"
+* Luigi says, "Command Iteration 2!"
+* Luigi says, "Command Iteration 3!"
+* Luigi types --> say Function Iteration: [iter(1 2 3,##)]
+* Luigi says, "Function Iteration: 1 2 3"
+* Luigi says, "The ## is replaced with the current text being iterated on."
+* Luigi says, "You will want to use brackets for more than one command in a @Dolist, like so:"
+* Luigi types --> @dolist 1 2 3={say hi;say ##}
+* Luigi says, "hi"
+* Luigi says, "1"
+* Luigi says, "hi"
+* Luigi says, "2"
+* Luigi says, "hi"
+* Luigi says, "3"
+* Luigi says, "There is also another token which both @dolist and iter() can use. #@"
+* Luigi says, "It returns the number of the iteration currently being processed."
+* Luigi types --> @dolist red blue green={say ##-#@}
+* Luigi says, "red-1"
+* Luigi says, "blue-2"
+* Luigi says, "green-3"
+* Luigi says, "We also discussed Delimiters. Which are what seperates a list of words."
+* Luigi says, "1 2 3 (the delimiter is a space)"
+* Luigi says, "1|2|3 (the delimiter is a |)"
+* Luigi says, "Now, onto today's lesson."
+* Luigi says, "We are going to discuss user-defined functions, and user registers."
+Rhayden oo!
+* Luigi says, "First, we shall overview game registers."
+* Luigi says, "Registers, known as Substitutions, are basic and used by builders to determine the appropriate pronouns to use regarding players."
+XML raishes hand
+* Luigi says, "For instance, someone may set the @OSUCC of an exit to: walks north, %p feet tromp as %s walks away."
+XML says, "Are there only %0 %1 %2 %3 %4 %5 %6 %7 %8 and %9? Or are there more?"
+* Luigi says, "There are only 10 numbered registers, but there are many more."
+* Luigi says, "For instance, %n returns the name of the person who calls it."
+* Luigi types --> say %n
+* Luigi says, "Luigi"
+XML nods.
+* Luigi says, "%# returns the DBREF. %p returns 'his', 'her', or 'it' depending on the caller's @SEX."
+* Luigi types --> say %# %n %p
+* Luigi says, "#1000 Luigi his"
+* Luigi says, "So in code, instead of using 'say', you could use @PEMIT combined with %#."
+* Luigi types --> @pemit %#=Only %n(%#) is seeing this message.
+* Luigi says, "In a $-Command, %# is the DBREF of the person who typed it, so you can @pemit directly to that person this way."
+Phil_Laco has arrived.
+Mysterious box has left.
+Phil_Laco takes Mysterious box.
+* Luigi says, "Everyone understand?"
+Phil_Laco has left.
+Rhayden nods.
+XML nods.
+XML says, "Hey.."
+XML says, "Which should we use?"
+XML says, "%n OR %#?"
+Faizah prefers %#
+XML says, "Is any particular one faster?"
+XML says, "Or is it just a personal prefernce?"
+* Luigi says, "Only use %#."
+XML says, "Oh?"
+* Luigi says, "If you're using @pemits. Here's why."
+XML says, "Wait, I know why."
+XML says, "Objects named the same thing."
+XML says, "There can't be more than one dbref"
+* Luigi says, "%n may be "Luigi", but if there's an object "Luigi's Puppet" in the same room, @pemit won't know which one to @pemit to."
+XML says, "But many things can be named a particular thing."
+XML nods.
+* Luigi says, "But %n can be useful in exits and such."
+* Luigi says, "Now, onward."
+* Luigi says, "User-defined registers are % registers than can be set to something, and later recalled."
+* Luigi says, "For instance:"
+47 is the number
+47 times two is 94
+Illmuri has disconnected.
+* Luigi types --> &test me=$test:say [setr(1,rand(50))] is the number;say %q1 times two is [mul(%q1,2)]
+* Luigi types --> test
+* Luigi says, "36 is the number"
+* Luigi says, "36 times two is 72"
+* Luigi says, "29 is the number"
+* Luigi says, "29 times two is 58"
+* Luigi says, "20 is the number"
+* Luigi says, "20 times two is 40"
+Rhayden says, "Hey, nifty."
+Rhayden says, "It's like algebra."
+* Luigi says, "I used the SETR() function to place the value of RAND(50) into user-register "1", and then recalled it twice with "%q1"."
+* Luigi says, "The format of SETR() is: SETR(<register>,<value>)"
+XML raise hand
+XML says, "Can use just use 0-9?"
+* Luigi says, "Yes XML?"
+XML says, "Or can you use A-Z?"
+* Luigi says, "%0 is different from %q0."
+XML says, "No, I know."
+XML says, "But can you specify more than just 0-9?"
+* Luigi says, "I'm getting there, hold up."
+XML nods.
+Rhayden says, "Could i do setr(foobar,num(me)) ?"
+* Luigi says, "The format of the register to recall it is %q<register>. So %q1 recalls "1"."
+* Luigi says, "Now, let us discuss <register>."
+* Luigi says, "<register> can only be 1 character in length. So "foobar" is too long."
+Rhayden nods, ok.
+Illmuri has connected.
+* Luigi says, "It can be 0-9 on all MU* servers."
+* Luigi says, "On PennMUSH and TinyBit, and in the future MUX maybe, it can be A-Z."
+* Luigi says, "So.."
+* Luigi types --> say [setr(1,rand(100))] [setr(A,rand(100))] [setr(Q,rand(100))] %q1 %qA %qQ
+* Luigi says, "74 87 75 74 87 75"
+* Luigi says, "It isn't case sensative. There is no difference between 'a' and 'A' in user-registers."
+* Luigi says, "However, sometimes in normal game registers there is. %N and %n for example."
+* Luigi says, "%N always capitalizes the name of the player, even if it is lowercase. Same with %P."
+* Luigi says, "SETR(), or "set register", also has a brother. SETQ()."
+Illmuri says, "mux uses va-vz"
+* Luigi says, "No it doesn't Illmuri. Not for local-registers."
+* Luigi says, "%va-%vz allows you to grab the VA-VZ attributes on an object though."
+* Luigi types --> &va me=corndogs
+* Luigi types --> say %va
+* Luigi says, "corndogs"
+Illmuri says, "oh, yeah i see"
+* Luigi says, "SETR(), set register, has a brother. SETQ(). The Q most likely stands for 'quiet'."
+* Luigi says, "Because it sets the register, without showing it like SETR does."
+Illmuri says, "nod"
+Illmuri says, "i tried it out just now"
+* Luigi types --> say [setq(A,balloon)][setq(B,animals)][setq(C,rule)]%qa %qb %qc
+* Luigi says, "balloon animals rule"
+* Luigi says, "And if we had used SETR instead.."
+* Luigi types --> say [setr(A,balloon)][setr(B,animals)][setr(C,rule)]%qa %qb %qc
+* Luigi says, "balloonanimalsruleballoon animals rule"
+Rhayden says, "So what is the use of using setr() then?"
+* Luigi says, "Saves space sometimes."
+* Luigi types --> @swi/first setr(A,rand(100))=>50,{say %qA is greater than 50.},{say %qB is less than 50.}
+* Luigi says, "74 is greater than 50."
+* Luigi types --> @swi/first [setq(A,rand(100))]%qA=>50,{say %qA is greater than 50.},{say %qB is less than 50.}
+* Luigi says, "77 is greater than 50."
+* Luigi says, "Both methods work, but the first was shorter."
+* Luigi says, "User registers are very useful for storing something you might otherwise have to calculate multiple times in a function."
+Rhayden NODS
+Rhayden says, "I've run into that before."
+* Luigi says, "Function, or a command. Sorry."
+* Luigi says, "Now, we learned about ITER() last week. Let's combine both ITER() and user registers."
+Shadow-Link has arrived.
+Shadow-Link coughs.
+* Luigi says, "I'm going to generate 100 random numbers between 1-50 first."
+* Luigi types --> say iter(lnum(1,100),rand(50))
+* Luigi says, "26 17 9 41 49 4 8 5 1 23 47 35 16 28 22 44 18 37 0 44 13 23 6 9 12 39 46 34 49 40 12 13 15 14 33 13 34 36 16 21 38 19 13 34 33 7 43 37 0 42 36 19 27 11 20 28 18 36 39 25 27 20 21 23 3 29 5 34 1 44 23 47 6 29 18 26 48 2 20 36 31 48 31 39 38 11 37 31 45 10 34 46 0 11 8 5 49 46 35 32"
+* Luigi says, "Now, I want to add all of the numbers I generate up into a register, and then show it."
+* Luigi types --> say [iter(lnum(1,100),setq(A,add(%qA,rand(50))))]%qA
+* Luigi says, " 2146"
+Shadow-Link says, "You beast."
+Rhayden says, "Why was there all the empty space?"
+Illmuri says, "thats how much link gets whipped"
+Illmuri says, "cause the spaces of iter"
+* Luigi says, "Notice the many spaces. That is because our Delimiter in the Iter defaulted to space, since we didn't tell it otherwise. So now I will add the 3rd and 4th arguments to get rid of the spaces, telling it we want to use nothing as the output seperator."
+* Luigi says, "Note: A Delimiter given nothing will assume a space, as a delimiter can not be less than one character in length. An output seperator can be nothing, however."
+Illmuri says, "thats all the spaces in between each of 50 numbers"
+* Luigi types --> say [iter(lnum(1,100),setq(A,add(%qA,rand(50))),,)]%qA
+* Luigi says, "2293"
+* Luigi types --> say [iter(lnum(1,100),setq(A,add(%qA,rand(50))),,)]%qA
+* Luigi says, "2606"
+* Luigi types --> say [iter(lnum(1,100),setq(A,add(%qA,rand(50))),,)]%qA
+* Luigi says, "2418"
+* Luigi says, "Now that we've seen a good example of Iter() and User Registers, I should let you know that what we just did was not necessary for the following reason: LMATH()."
+* Luigi types --> say lmath(add,1 2 3 4 5 6 7 8 9 10)
+* Luigi says, "55"
+* Luigi says, "But for the sake of example, we didn't use it."
+* Luigi says, "Now, any questions before I move on?"
+Rhayden says, "Nope, not really."
+Faizah is fine.
+Illmuri says, "what are common uses?"
+* Luigi says, "In Iter()'s as I've described, and @Switches. Consider this.."
+* Luigi says, "We usually @Switch on one argument, which would allow us to use #$ to grab what we switched on. But.."
+Faizah will speak up if she has questions. But otherwise remain silent to keep log small.
+* Luigi types --> @Switch/first [setr(1,rand(100))]|[gt(%q1,50)]=100|*,{say Arg two is equal to 100!},*|1,{say Arg two (%q1) is greater than 50.},{say Arg two (%q1) is not greater than fifty.}
+* Luigi says, "Arg two (80) is greater than 50."
+* Luigi says, "I put two things on the switch. By placing the random number is %q1, I was more easily able to access it later. I could have also done something like first(#$,|), but this was easier."
+* Luigi says, "In more complex coding you'll probably find uses for SETR/SETQ."
+Rhayden has a question
+* Luigi says, "Yes?"
+Rhayden says, "What are you checking against with "100|*" ?"
+* Luigi says, "If the random number is equal to 100, and then a |, and then anything else. * is a wildcard."
+* Luigi says, "Oh, just for a note, rand(100) will never be equal to 100, because Rand(100) returns a random number in the range of 0 to 99."
+* Luigi says, "But that was my oversight."
+Rhayden says, "Oh, ok, I get it now."
+* Luigi says, "Now, User Defined Functions. We've played with game functions. Our first were the basic math functions if I remember correctly, ADD() and so forth."
+* Luigi says, "Functions take arguments, up to 10, which are placed in the %0-%9 registers accordingly."
+* Luigi says, "User-Defined Functions that is."
+* Luigi says, "A quick example:"
+* Luigi types --> &sum me=add(%0,%1)
+* Luigi types --> say u(me/sum,10,10)
+* Luigi says, "20"
+* Luigi says, "The U() function, which is an alias for UFUN(), stands for User Function."
+* Luigi says, "It takes an attribute, and calls it as a function. You can pass up to 10 variables to it, which will be placed in %0, %1.. up to %9."
+* Luigi says, "There is no error checking for amount of arguments it takes, so.."
+* Luigi types --> say u(me/sum,1,2,3)
+* Luigi says, "3"
+* Luigi says, "It received the third argument, "3", into %2. Even though it never did anything with it."
+* Luigi says, "Questions?"
+Rhayden says, "I assume the no error-checking goes the other way too?"
+* Luigi says, "Hmm?"
+Illmuri says, "prolly 0"
+XML raises hand
+Rhayden says, "As in, if my function requires three arguments and i only give it two, it just adds the first two?"
+* Luigi says, "Yes XML?"
+XML says, "How big can @switch/switch() es get?"
+XML says, "I mean, what's the maximum size"
+XML says, "?"
+* Luigi says, "Right. It would just pass nothing to %2, and your user-function would try to use a blank %2."
+XML says, "I mean, can you have 10, 15, 20 arguements?"
+* Luigi says, "Very big, XML."
+Rhayden says, "Function invocation limit is 4096, yes?"
+Rhayden says, "Er, or am I thinking of function recursion limit"
+* Luigi says, "I have never tested, but let's try something quickly"
+(Performs a few tests)
+* Luigi says, "Interesting. Well, you'll probably never reach that limit, so don't worry about it."
+* Luigi says, "Now, let's try a more complex User Function."
+XML saves that code for offensive purposes :)
+* Luigi types --> &test me=iter(%0,##[setq(T,add(%qT,##))],,+)=%qT
+* Luigi types --> say u(me/test,1 2 3)
+* Luigi says, "1+2+3=6"
+* Luigi types --> say u(me/test,1 2 3 4 5)
+* Luigi says, "1+2+3+4+5=15"
+* Luigi says, "Now, let's discuss the format of U()."
+* Luigi says, "U()'s format is simply this.. U(<target>/<name of attribute>)"
+* Luigi says, "Any further arguments after this are sent to the %0 to %9 registers. So up to 10 further arguments can be provided."
+* Luigi says, "U(), like SETR and SETQ, has a brother."
+* Luigi says, "Perhaps a sister. You can't really tell."
+* Luigi says, "ULOCAL()"
+* Luigi says, "The difference? User Registers (setr/setq) are passed when a U() calls an attribute. If I set something with SETQ/SETR prior to calling it, it gets passed to the attribute I call with U()."
+* Luigi says, "ULOCAL() makes sure the registers effected in the user function called do NOT effect what called it, thus keeping them local."
+Rhayden says, "I'm not sure I follow."
+Shadow-Link says, "is V() like U()?"
+Illmuri says, "u calls a function. v merely shows an attribute"
+* Luigi says, "If I set %qL to something while in a "ULOCAL", it doesn't effect what called it."
+* Luigi says, "But if it's a U(), it can effect it."
+Illmuri says, "u does code, v just displays the code"
+* Luigi types --> &red me=[ulocal(me/blue)] %qB
+* Luigi types --> &blue me=setq(B,the color blue)
+* Luigi types --> say u(me/red)
+* Luigi says, " "
+* Luigi types --> &red me=[u(me/blue)] %qB
+* Luigi types --> say u(me/red)
+* Luigi says, " the color blue"
+Shadow-Link says, "what about "
+XML says, "Yes, what -about- ""
+XML ducks :)
+Shadow-Link types --> &red me=[get(me/blue)] %qB
+Shadow-Link says, "Shtup XML."
+* Luigi says, "Link, get() doesn't evaluate what it grabs. U() does."
+XML was just joking, sar.
+Illmuri says, "help v() help get() help u()"
+XML says, "I have to idle for a minute. If Imiss anything important, tell me."
+* Luigi says, "So to summarize ULOCAL and U, if you want to use SETR/SETQ in a User Function you are calling, and don't want it to mess up any you have already set, use ULOCAL. Otherwise, use U."
+Rhayden says, "Lemme get this straight"
+Rhayden says, "I've got a function that sets to blue."
+Rhayden says, "I've got a function that sets %qB to blue."
+XML re's
+Rhayden says, "If I use ulocal(), I could calculate something else using the register %qB, then call %qb and it would still say blue?"
+XML nods.
+XML says, "case-insensitive."
+Rhayden says, "Awright, I think I got it."
+* Luigi says, "Correct."
+Rhayden says, "Public and private variables, for us Java programmers."
+XML says, "It doesn't care about your case."
+* Luigi says, "U() and ULOCAL()'s first argument, the <target>/<attribute> one, can also accept simply <attribute>. If you provide u(red) instead of u(me/red), it will default the target to the person who calls it. So it would default to you."
+XML says, "Today on Oprah: MUSH functions that don't care about your case."
+Rhayden says, "Public and private variables, for us Java programmers."
+Rhayden says, "Whoops"
+* Luigi says, "If any of you feel like a little extra reading, have a look at U's cousin, UDEFAULT(), and his great-aunt EDEFAULT(). But let's move on. I want to discuss one last topic tonight."
+Shadow-Link says, "We just recently started on Java... very repetitive if you don't use loops."
+* Luigi says, "The SORT() function. Which is often useful when using ITER() and such."
+* Luigi says, "SORT() takes a list, which may be seperated by a Delimiter, and sorts it into an order."
+* Luigi types --> say sort(9 5 3 7 10 1 13)
+* Luigi says, "1 3 5 7 9 10 13"
+* Luigi says, "You can provide a second argument, of a single letter, telling it how to sort it."
+* Luigi says, "By providing no second argument, it tries to guess how you wanted it sorted. It usually does a good job. Options for how you can sort it include 'f' for decimal (f = floating point) values, 'a' for lexicographically, and more. See HELP SORT() for this list."
+* Luigi says, "The homework for next class is going to combine all of the things we talked about today. You may want to refer to my averaging example."
+* Luigi says, "I don't want you using LMATH(), though after this assignment you would probably be best to use LMATH() when possible. :)"
+* Luigi says, "For the following assignment, GT() and LT() may come in handy as well. Here it is:"
+* Luigi says, "PROJECT 2: Advanced Calculator (15)"
+* Luigi says, "Create an object which combines registers, local functions, and"
+* Luigi says, "iter() to provide the following commands: 'average <list of numbers>',"
+* Luigi says, "'largest <list of numbers>' (returns the largest number), and 'sum"
+* Luigi says, "<list of numbers>' (returns the total of the numbers added together)."
+* Luigi says, "Also provide a command for sorting a list of decimal numbers, such as"
+* Luigi says, "'sort <list of numbers>'."
+* Luigi says, "And, for you overacchievers:"
+* Luigi says, "EXTRA CREDIT: Calculator Extras (5 points)"
+* Luigi says, "Give the calculator a command 'graphlist <list of numbers ranging from"
+* Luigi says, "1 to 10>' which shows you an ASCII, ANSI or FANSI display of the list"
+* Luigi says, "of numbers given to it."
+Illmuri says, "ugh, not math... i got to calculus and that was enough"
+* Luigi says, "HELP MATH FUNCTIONS may prove useful. GT() and LT() will be your greatest pals most likely."
+Rhayden says, "Mmmm, extra credit. :)"
+* Luigi says, "Don't kill yourself over the extra credit, I'm not sure if you guys are up to the level or not yet. It's just something I thought I'd throw out there and see. :)"
+XML says, "When's this due?"
+Illmuri says, "EC is easy"
+* Luigi says, "Does anyone want to meet this Wednesday? Or shall we try next Saturday, or pass for a few weeks in light of the holidays?"
+Faizah considers the extra credit... Yeah, I think I could do it. The code might be ugly, but I could do something.
+XML says, "sATURDAY"
+XML says, "Please... I've got a -ton- of stuff on monday, tuesday and wednesday."
+Mysterious box rocks back and forth.
+Illmuri says, "sat works"
+Rhayden says, "Next Saturday works for me"
+Faizah nods.
+Illmuri says, "its not too close to holidays"
+Illmuri says, "sigh"
+* Luigi says, "Alright, next Saturday. Thank you everyone for showing up. My email is eightbitmush@hotmail.com if you have questions."
+Illmuri says, "sure we have to use iter?"
+Illmuri says, "not mean()?"
+* Luigi says, "Yep. Look at my example for showing the total."
+* Luigi says, "Mean() won't work Illmuri, because they are providing a list of numbers."
+Illmuri says, "hmm"
+* Luigi says, "You can't do mean(%0). It expects Mean(1,2,3)."
+Illmuri says, "oh"
+Illmuri says, "thats not all that great then"
+Rhayden says, "Heh, got the graph done already. :)"
+* Luigi says, "And I want to be able to give it any number of numbers from say.. 2 to 100. So no massive switches. Use ITER() to do it and it'll be slick."
+XML nods. Aye,
+Illmuri goes home.
+Illmuri has left.
+Rhayden says, "I like learning to mushcode because: a.), i can do nifty things here."
+XML says, "Hey now, I knewe how to mushcode before,"
+XML says, "I could get it to pemit "Hi" when you typed sayhi."
+* Luigi says, "In my opinion at least. I never knew how to use them until after a long time coding."
+XML stands tall.
+Rhayden says, "And b.) it helps me put thought into a programming format. Helps me out with other languages, like Java and such."
+* Luigi says, "Heh XML"
+XML says, "And The IC p... err... project is going to start he coding phase tonight."
+Shadow-Link says, "I can't understand why the teacher wants use to use for loops for everything in Java."
+XML says, "I can say no more unless I get authorisation."
+Link has connected.

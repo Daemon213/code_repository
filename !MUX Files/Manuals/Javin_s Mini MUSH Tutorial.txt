@@ -1,0 +1,189 @@
+ ***Mini MUSH tutorial***
+I am often asked by new players how to learn to build and code on a MUSH.
+Some time ago, I wrote a tutorial for a friend on how to do things on
+Dynamix. I have sent this 'mini-tutorial' out to over a dozen players now
+and decided finally to put it into Dynamix help files.
+
+This tutorial is by no means complete, but intended to give you the very
+basics of building and coding on DynamixMUSH. A very complete (if somewhat
+outdated) mush manual can be found at http://www.godlike.com/mushman
+The MUSH101 web site also is an excellent place to go. Among other things,
+it contains logs of lectures given by the 101 staff for people who want
+to learn coding just like you. Go to http://www2.mmind.net/nemo/mush101/
+That aside, I hope you will find my tutorial to be a quick way to get your
+hands dirty and begin learning to build and code on MUSH, here goes...
+
+Many times in the following I will put things in angle brackets <> You are
+meant to substitute something in at those places, without any angle
+brackets. For example: @desc here=<whatever>
+means you should enter some description instead of <whatever>
+
+This tutorial was written specifically for DynamixMUSH. I will put (*) next
+to items that are specific to Dynamix and probably will not work on other
+MUSHes.
+
+***Objects and attributes***
+The mush has 4 kinds of things in it:
+Player objects, Room objects, Exit objects, Thing objects
+
+These objects have some standard attributes that can be set on them.
+The syntax for setting standard attributes is:
+@<attribute name> <object>=<whatever>
+
+For example, to set the describe attribute of the room you are in:
+@desc here=Nice cozy room.
+
+To set the description of an ice cream cone object in your posession:
+@desc ice cream=Tasty chocolate scoop.
+
+To see a list of standard attributes, type: @list/attribs
+For help on any attribute, type: help @<attribute name>
+For example, help @desc
+
+***Creating things***
+You can also make up your own attributes. These would be called
+non-standard attributes. For example, you want to make a TV object. To create
+the object you use the @create command like this:
+@create <object>
+In this case: @create TV
+All objects have the no_command flag set on them by default when they are
+created. Flags can give mush objects certain properties and are very
+important to mush coding. Without going into details about the MUSH server,
+the no_command flag makes the server more efficient if set on objects that
+do not respond to commands. But we want the TV to do something. To unset the
+no_command flag (the ! means NOT):
+@set TV=!no_command
+We will put a user-defined command (also called a $-command) on the TV. For
+help with user-defined commands, type: help user-def
+
+***Non-standard attributes and adding commands to things***
+Now, back to non-standard attributes. The syntax for setting non-standard
+attributes is:
+&<attribute name> <object>=<whatever>
+In this case we will make a TURNON attribute that will respond to the
+dollar command - turn tv on
+&TURNON TV=$turn tv on:@emit %N turns on the TV and you see that
+Happy Days is on.
+
+Let's break this up and see what it does:
+&TURNON TV= - means we are setting the TURNON attribute of the TV object.
+$turn tv on: - is the text that the TV object will be waiting for. Typing
+this text in the future will trigger the commands following the colon.
+@emit - is a command meaning the object will 'emit' the text following it.
+For more information on that, type: help @emit
+%N - is replaced by the enactor's name. For more information about percent
+substitutions, you can type: help substitutions
+The rest of the text will also be emitted for others in the room to hear.
+
+Now, if I type 'turn tv on' in the presence of the TV object, everyone and
+everything in the same room as the TV will see: Javin turns on the TV and
+you see that Happy Days is on.
+
+***Making rooms and exits***
+Rooms and exits can be added to the mush with the @dig command:
+@dig <room name>=<exit into the room>,<exit out from the room>
+
+For example, we are in the Living Room. We want to make a Dining Room next
+to the Living Room. Here is how we would do it:
+@dig Dining Room=Dining Room;din;dr;d,Living Room;liv;lr;l
+In this example, din,dr,and d are all aliases to for Dining Room exit. It is
+nice to have some aliases so that the full exit name need not be typed to go
+there, any one of the aliases will take you through the exit as well.
+
+This is just one form of the @dig command. For more help on digging rooms,
+type 'help @dig'. You can also make exits with the @open command.
+
+***Standard exit attributes***
+When you make a new exit, you should set the standard exit attributes succ,
+osucc, and odrop, here is what they are:
+succ - is seen by the person going through the exit
+osucc - is seen by others in the room the person is leaving
+odrop - is seen by others in the room the person is going to
+
+So to continue the example, lets set the dining room exit attributes:
+@succ din=You go into the dining room.
+@osucc din=goes into the dining room.
+@odrop din=steps in from the living room.
+
+The osucc and odrop are preceded automatically by the enactor's name.
+To set the attributes on the living room exit that leads from the dining
+room back to the living room, we have to go into the dining room where the
+Living Room;liv;lr;l exit is.
+
+(*) I am not very creative with these attributes, so I made a global command
+that sets all three attibutes to some defaults. For example, to set the
+attributes to defaults for the exit from the dining room to the living
+room, you would go into the dining room and type: +exit <database number of
+exit>
+
+To find out what the database number is for that exit, examine it, like this:
+ex liv
+which might show you it is #1345, so you would have typed: +exit #1345
+
+***Examining MUSH objects***
+To examine anything, type ex <object/exit/person name>
+To examine the TV: ex TV
+To examine the room you are in: ex here
+To examine yourself: ex me
+To examine the living room exit: ex liv
+
+Examining an object gives you the list of the object's attributes and the
+values of those attributes. It tells a variety of other information about
+the object as well including the creator, the flags set on it, locks on it,
+etc. You can only see all this examine information for objects you own.
+
+
+***Colors***
+PennMUSH supports the use of ansi colors to make the text a bit more
+colorful. Some people like it, some don't. On Dynamix, the staff agreed
+early on to use colors in specific ways to help new players here.
+(*)Green tips you off what to type
+(*)Magenta is used for virtual +view-able objects
+(*)Blue is for bar separators.
+
+To make colored text, you use the ansi function.
+Example of using ansi function:
+"[ansi(g, hi there)]
+The " means you 'say' it.
+The [ tells the interpreter that you are about ready to call a function
+ansi is the function name
+The ( separates the parameter list
+The g is the first parameter meaning 'green'. (*)Type +color to see the others.
+The hi there is what will be said, in green.
+The ) ends the paramter list
+The ] ends the function call
+
+Functions are very important to MUSH coding and there are a variety of
+useful functions available. Type 'help function' for more.
+
+(*)ransi, bar, cbar, and tbar are global functions I made. For example:
+@desc here=This is Javin's [ransi(cool)] pad!
+would make the word cool some random color.
+
+@desc here=[bar(1,b)]%r<some description>%r[bar(2,r)]
+The %r 's are forced carriage returns.
+The bar separators are produced by the bar function calls, try it and see...
+
+***Other stuff***
+There is a lot of useful information in the news and help files. Here are
+some things to try:
+news
+(*)news globals
+(*)news map
+help function list
+help substitutions
+help commands
+help $-commands
+help flag list
+help <flag name>
+help MONITOR
+help listen
+help @-attributes
+help @-general
+
+The key to learning mush coding is reading and understanding the help files.
+I taught myself everything I know about it by reading the help files and
+experimenting with things. It does take some time, but I hope you will find
+it to be worth while. Hopefully this tutorial has given you some insight into
+how the mush is organized and how to read and use the help files. Good luck
+and have fun! 

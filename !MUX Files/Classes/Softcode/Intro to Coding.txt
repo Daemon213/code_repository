@@ -1,0 +1,462 @@
+ From shalott@liii.com
+Date: Fri, 1 Dec 1995 21:49:04 -0500
+From: Naomi Novik <shalott@liii.com>
+To: tf2005@liii.com
+Subject: Coding Log
+
+Seminar: Intro to coding
+
+Cyclonus drops Lesson Plan.
+Cyclonus says, "OK, all, seminar called to order :)"
+Cyclonus points to Lesson Plan. Take a look, this is the outline of the
+lesson. Some of the topics will be basic, but I'm going to try and explain
+them very thoroughly.
+Lesson plan for the seminar:
+1) Coding a simple macro
+2) All about objects: creating one and giving it attributes. 3) Flags
+4) Making a puppet and controlling it
+5) Common pitfalls
+6) Next seminar :)
+Cyclonus says, "OK. The first topic is coding a simple macro, or personal
+command. These are really useful shortcuts for combinations of commands
+that you use very frequently."
+Cyclonus says, "Now, I'm going to type in a sample macro, and then take you
+all through it step by step to explain each part."
+Cyclonus &say_hello me=$sh:say {Hello there!}
+Cyclonus says, "You can all try typing this on yourselves. :) Here's how it
+works..."
+Cyclonus says, "The &say_hello tells the MUSH that you are doing something
+with an ATTRIBUTE named say_hello. An attribute is a part of the code on an
+object that makes it unique, just like your physical attributes make you
+unique."
+Galvatron wonders how to activate the macro
+Cyclonus says, "&say_hello me tells the MUSH that you are doing something
+with an attribute called "say_hello" that is located on the object named
+"me" (IE, on yourself)... I'll get to that in a moment, Galvy. :)"
+Cyclonus says, "&say_hello me=<anything> tells the mush to SET the
+attribute say_hello on you to <anything>. (btw, any words I type in all
+caps are going to be important ones, so if you get confused aboyt their
+meaning, don't be afraid to ask me."
+Cyclonus says, "Does everyone understand the process of setting the
+attribute on yourself? If you don't, say no; if you do, say yes. :)"
+Cyclonus repeats the sample macro for the newcomers.
+Cyclonus &say_hello me=$sh:say {Hello there!}
+Slag says, "No."
+Cyclonus says, "OK, Slag has a question..."
+Cyclonus says, "Go ahead Slag. I'll answer yours afterwards if it isn't
+cleared up by answering Slag's, Thunder & Ramjet."
+Slag says, "Okay. So, by typing $say_hello, your are giving yourself an
+attribute named, "say hello"?"
+Cyclonus says, "Well, for one, it's &say_hello. It's important to use the
+ampersand: the dollar sign means something else entirely to the MUSH."
+Slag sorries..that's what I meant.
+Airwolf says, "The "me" is important too. You could be setting this
+attribute on something other than yourself, like an object."
+Cyclonus says, "For the second, just typing &say_hello me=
+will NOT set an attribute on you, because there's nothing to set on you
+there. :) You have to use &say_hello me=<something>"
+Thunderbolt uhhhhhs.
+Cyclonus says, "Important exception: If there already IS an attribute
+called SAY_HELLO on you, typing
+&say_hello me=
+will SET it to _empty_."
+Cyclonus says, "In other words, erase it."
+Thunderbolt says, "Is it my turn to question, the Prof.?"
+Slag ahhhhh's. Okay.
+Cyclonus says, "However... typing
+&say_hello me=blah
+will create an attribute on you named say_hello that contains the word
+"blah". Try that, if you like. :)"
+Cyclonus says, "OK, Slag, does that answer your question?"
+Thunderbolt says, "I'm confused on this attribute part."
+Slag nods
+Cyclonus nods, OK, Thunderbolt, what's your question? :)
+Thunderbolt says, "Say, your object, say the NoNod, is the '&say_hello
+<object>=whatever, would the code say whatever?"
+Thunderbolt sorries on the lag, his bad typing and his overall bad day.
+Cyclonus says, "I'm not sure I understand your question. Does this answer
+it? Typing
+&say_hello NoNod=whatever
+would create an attribute called say_hello on the NoNod object that
+contained the word whatever."
+Thunderbolt says, "Well, I bet this is next, but what attributes are for what?"
+Cyclonus says, "Important point: an attribute can be named nearly anything
+and contain nearly anything. You could do &afgkjhgaiuh
+me=aghaiht25826fanilgh7825tohag
+
+An attribute by itself doesn't _do_ anything. It's what is contained in an
+attribute (ie, what's after the equal sign ) that actually has an effect."
+Thunderbolt says, "So what would your example do?"
+Cyclonus nods to Thunderbolt, that's next. :) I want to make sure
+everyone's clear on this before I continue.
+Cyclonus says, "Does everyone get the principle of setting an attribute? :)"
+Thunderbolt shurgs, but "Go ahead.
+Slag nods
+Arcee does. :)
+Cyclonus repeats the sample macro again: &say_hello me=$sh:say {Hello there!}
+Cyclonus says, "OK. Now let's move on to the content of this macro. The
+first thing inside this macro is a $. The $, when it's the first letter of
+an attribute, has a very important function: It tells the mush that this
+attribute contains a command."
+Cyclonus says, "The commands created this way are called $-TRIGGERS,
+because they start with a $ and TRIGGER some sort of event."
+Cyclonus says, "I've now put the sample macron on the lesson plan so you
+can all look at it while I babble, btw. :)"
+Cyclonus says, "You can use nearly any word or phrase you want to use as
+the actual trigger word. The trigger word is what you will type to activate
+the command, so it usually makes sense to make it as short and
+easy-to-remember as you can."
+Cyclonus says, "The trigger word follows the $ and is ended with a colon
+(:). Because of that, you can't use colons inside trigger words (I made
+that mistake once and spent hours trying to figure out what was wrong ;)"
+Cyclonus says, "Slag, you have a question?"
+Slag nods, "Can you set macos to already existing attributes?"
+Cyclonus says, "Are you asking if you can erase an attribute that already
+exists and replace it with one that has a macro?"
+Saber has arrived.
+Slag says, "Sort of...maybe i'm just impatient, but how would you set the
+TRIGGER to execute an attack or something? Woulnd't that go off of an
+already existing attribute?"
+Cyclonus says, "You're getting ahead of the program in that case. :) I'll
+get to that in time."
+Saber says, "Hello there!"
+Galvatron says, "Surrender or be obliterated!! HUAHAHAH!!"
+Saber laughs
+Galvatron says, "what the??"
+Cyclonus says, "Saber, please don't spam or test the macro just yet. :)"
+Slag sorries..then eats Galvatron
+Cyclonus says, "Please, no spam."
+Galvatron says, "uhhh, how did that go off?"
+Saber says, "OK."
+Galvatron didn't do it
+Cyclonus will explain that too, Galvy :)
+Saber didn't.
+Galvatron looks suspiciously at cyc, then goes quiet
+Cyclonus says, "OK, does everyone understand how you choose and create the
+trigger word?"
+Cyclonus says, "OK. Now, everything that follows the colon is a COMMAND
+LIST. A command list is a list of commands that are already defined. In
+this case, the command list is just:
+say {Hello there!}"
+Mirage puts his hand up.
+Adamia has arrived.
+Cyclonus says, "All of you are familiar with the say command (or the "
+command, which does the same thing). This is a command that is already
+defined inside the MUSH, and it has an effect: it makes the object that
+enters that command say whatever is after it."
+Cyclonus says, "Mirage, you have a question?"
+Adamia wavers hi then immediately quiets.
+Mirage says, "Yeah. Where exactly do we put the colon? After the $ sign?"
+Mirage never minds as he looks at the lesson plan.
+Cyclonus LAGS!
+Cyclonus says, "The colon follows the end of the $-TRIGGER"
+Mirage nods
+Cyclonus nods.
+Cyclonus says, "OK...now, whenever someone types the $-TRIGGER of a macro,
+the COMMAND LIST of that macro gets executed."
+Cyclonus says, "And that's how it works, on the most basic level. Does
+everyone understand so far?"
+Cyclonus says, "OK. Now, to make this sample macro a little more
+complicated." Cyclonus says, "Actually, before I do that, let me also warn
+you about a couple of pitfalls involved in any macro."
+Cyclonus demonstrates one.
+Saber says, "Hello there!"
+Mirage grin
+Cyclonus says, "I just typed "sh". :)"
+Saber says, "Hello there!"
+Saber says, "Hello there!"
+Saber says, "Hello there!"
+Galvatron LOL
+Cyclonus says, "And triggered SABER's macro... please stop now all :)"
+Saber says, "You can stop now."
+Thunderbolt says, "BRB"
+Cyclonus says, "Back in the bad old days, you had to do nasty annoying
+things to get around this little problem. Now, however, there is one simple
+thing that you can do to avoid this problem all the time."
+Thunderbolt has disconnected.
+Cyclonus says, "You need to USELOCK yourself. Just like @lock me=me, which
+locks you so no one can pick you up, @lock/use me=me will lock you so no
+one else can USE you or your macros."
+Saber knew he forgot to do something when this character was created.
+Cyclonus says, "OK, that's problem one... the second common problem is a
+FLAG called NO_COMMAND. This flag is a default flag: it's automatically set
+on every object and character that is created on the MUSH."
+Cyclonus says, "Anything that has this flag on it, the MUSH takes one look
+at, says "Oh, this has NO COMMANDS on it, so I can ignore it" and none of
+the commands on the object will work."
+Cyclonus says, "To check and see if you have this flag set on you, type
+"brief me" and look at the line right under your name, after the word
+"Flags:"" Cyclonus says, "If you do, just type
+@set me=!NO_COMMAND
+to reset the flag."
+Cyclonus says, "Then any commands you put on yourself will work. Does
+everyone understand so far?"
+Cyclonus says, "OK, great :) Now, everyone take another look at the macro
+on the lesson plan, as we're now going to make it a little more
+complicated." Cyclonus says, "As I mentioned above, everything after the
+colon is the COMMAND LIST. You can have a whole slew of commands in the
+command list. The way you separate the commands is with semicolons (;)."
+Cyclonus says, "Now, you'll notice that in the current macro, there's an
+odd difference between the first command and hte second command. In the
+first command, the message is enclosed in {}. In the second, the message
+isn't."
+Quiet Coding Room
+Please follow the rules of the room: 1) No spamming 2) No leaving spammy
+objects in here. They will be immediately @nuked, no questions asked. Type
+'spamdef' for a definition (NOT an example, don't worry) of spammy.3) Ask
+others in the room before testing any spammy objects. Contents:
+Whiz
+IF YOU COME IN LATE, READ
+Adamia
+Saber
+Arcee
+Airwolf
+Lesson Plan
+Ramjet
+Mirage
+Slag
+Thunderbolt
+Bel Arin
+Cyclonus
+Obvious exits:
+<FC> leads to Free Code Room.
+Lesson plan for the seminar:
+1) Coding a simple macro
+2) All about objects: creating one and giving it attributes. 3) Flags
+4) Making a puppet and controlling it
+5) Common pitfalls
+6) Next seminar :)
+
+&say_hello me=$sh:say {Hello there!};pose waves.
+Cyclonus says, "That's because a) I forgot to put the {} in the second time
+;) and b) the {} aren't _really_ necessary in this particular case. Using
+{} is just a VERY good habit to get into, because very often they ARE
+necessary, and if you aren't used to using them, you can spend a long time
+trying to figure out what is wrong with a command."
+Cyclonus now fixes the macro on the lesson plan to be right :)
+Whiz has reconnected.
+Adamia okays so i'd do the ; pose waves then? Cyclonus says, "Slag, your
+question?"
+Whiz has partially disconnected.
+Slag says, "So, exactly what do I have to put around then?"
+Slag says, "er.."""
+Cyclonus hehs. Type a \ before the first { to make it show up :) Slag
+aaaaah's...{}
+Slag says, "those"
+Saber says, "/"
+Cyclonus says, "Like I said, it's complicated. You're safe if you put {}
+around everything, basically."
+Saber says, "{}"
+Slag says, "Around just stuff you want to say, or everything, including
+commands..?"
+Cyclonus says, "You can put it around everything, although messages are one
+of the most common things that have problems unless you put }"
+Cyclonus says, "oops. {} around them."
+
+**This is actually wrong *:) If you put {} around the commands in this
+**example, it won't work! *ouch*. Sorry. :> -Cyc
+
+Slag okays
+Hoist has arrived.
+Hoist comes into the room, looking for those who haven't been checked up on
+lately.
+Cyclonus says, "OK, is everyone clear on this?"
+
+Cyclonus says, "OK! Now, let's take the next step. :)"
+Cyclonus says, "The next step is making this macro personal. After all, if
+you say the same thing and wave every time someone comes in, it's sort of
+like one of those annoying form letters. :) To make it personal, we need to
+add a VARIABLE."
+Cyclonus says, "A VARIABLE is just something that changes every time the
+command is executed. The MUSH has a few different ways of allowing you to
+put in variables, but we're going to concentrate on the most basic and also
+most useful kind."
+Cyclonus says, "Here is our rewritten macro: &say_hello me=$sh *:say {Hello
+there, %0!};pose {waves.} "
+Cyclonus says, "Two parts go into making a variable. First part: You have
+to add a WILDCARD to the $-TRIGGER. A wildcard is just like a wildcard in
+any card game: it can be anything. A wildcard is represented in a $-TRIGGER
+by the asterisk (*) symbol."
+Cyclonus says, "What that means is that this command can now be triggered
+by typing
+sh <ANYTHING>
+For example: sh snorfblat globble
+would trigger the command ;)"
+Cyclonus says, "Second part: we have to make whatever was in the wildcard
+show up in the command. Here's where it gets a little complicated."
+Cyclonus says, "The MUSH has several storage spaces called REGISTERS. These
+REGISTERS store information for the length of a command. There are a total
+of ten registers, which can hold just about anything. They are numbered
+0-9. Whenever you have a wildcard in a command, the stuff that replaces the
+wildcard in what you actually type gets stuffed into one of the registers.
+(don't ask questions about this part yet, wait til I finish explaining)."
+Cyclonus says, "The stuff that replaces the first wildcard gets put into
+the 0 register. The stuff that replaces the second wildcard gets put into
+the 1 register, and so on up until 9. You can't have more wildcards than 10
+in a command for that reason :)."
+Cyclonus continues... "In our nice macro, there is only one wildcard, so
+everything that replaces it in the actually typed command will get put into
+the 0 register. So, when you type
+sh snorfblat globble
+the 0 register will contain: snorfblat globble"
+Cyclonus says, "OK. Slag, you had a question? I'll take them on this part,
+but don't ask why I'm explaining it, it'll become clear in a moment :)"
+Slag okays, "I was wondering, do you need more than one wildcard if you
+have more than one variable?
+Mirage actually thiks this is making some stuff clearer than it was before
+:) Cyclonus says, "Yes, Slag, you do. :)"
+Slag says, "So how do you type that?"
+Cyclonus says, "Note: you don't need more than one wildcard for one WORD.
+But you do need more than one wildcard if you want to have more than one
+variable... well, that again gets more complicated, so let me finish
+explaining this part first. :)"
+Slag okays
+Cyclonus says, "Does everyone understand this so far? :)"
+Cyclonus says, "OK. The next step is, we want to get the information OUT of
+the register and INTO the command."
+Cyclonus says, "And to do that, we use the handy-dandy % symbol."
+Cyclonus says, "Example: when you include %0 in a command, it is replaced
+by whatever is in the 0 register."
+Cyclonus says, "So, when you type
+sh snorfblat globble
+The result will be:
+Cyclonus says, "Hello there, snorfblat globble!"
+Cyclonus waves."
+Adamia ahhhhs.
+Cyclonus says, "Everyone understand so far? :)"
+Slag wonders what's in the other registers
+Airwolf says, "Yes."
+Whiz cools
+Cyclonus says, "Slag, to answer your question:"
+Whiz puts her hand up. She has a question when you're done with Slag but
+may be jumping the gun.
+Cyclonus says, "In this particular case, the other registers are EMPTY.
+There's nothing in them, because there was only one wildcard in the
+command. If you made a mistake and had this command on you: &say_hello
+me=$sh *:{say Hello there, %1!} When you typed
+sh snorfblat
+The result would be
+Cyclonus says, "Hello there, !"
+Cyclonus waves.
+which would look sort of silly. :)"
+Slag OOOOOH's as the really big, Mack truck of ideas hits him
+Cyclonus says, "OK, now, Adamia, you had a question?"
+Saber wonders why no one's tried it yet.
+Whiz dunnos about Adamia, but she has one.
+Adamia wonders if the register 0 would change each time if you wanted to
+use the macro on 3 seperate persons
+Cyclonus says, "To avoid spam, Saber. :) We can test afterwards, when the
+log is done."
+Cyclonus nods, exactly.
+Saber says, "OK."
+Adamia okays then
+Slag says, "then you could have 9 variables in one macro?"
+Cyclonus says, "If you typed 'sh Adamia', it would put in Adamia for the
+%0. If you typed sh Slag after that, it would put Slag in for the %0. :)
+The registers are cleared out after every command is finished, so there
+won't be anything left in them."
+Cyclonus says, "Whiz was next..."
+Slag oh's
+Cyclonus says, "Briefly, Slag, yes, you can have up to 10 variables in one
+macro."
+Whiz says, "What if two people run a macro at once? And along those lines,
+why does one person's macro trigger another person's if they both have the
+same name?"
+Whiz says, "For example, I have kicked people on accident when my kick
+macro was triggered."
+Air Raid has arrived.
+Saber raises his hand.
+Cyclonus says, "OK, let me answer the second question first. It doesn't
+matter if the macros have the same attribute name: it only matters if their
+macros have the same $-TRIGGER. And in this case, Whiz, you weren't
+uselocked, which we discussed earler."
+Whiz says, "Oh, ok."
+Saber puts his hand down.
+Cyclonus says, "As for why, that's how the MUSH works. :) When you type in
+something, the MUSH starts looking around for a command to match it with.
+It looks at all the commands that are part of the MUSH code, then it looks
+around on you and your objects, then it looks at the objects in the same
+room as you, then it looks at the global objects. This can become very
+technical, so I wont' go into it further."
+Whiz doesn't need to get technical, that's quite ok with me :)
+Cyclonus says, "Now, to answer your second question, that doesn't cause a
+problem. THe MUSH is smart enough to keep track of the registers for the
+separate people."
+Cyclonus says, "Adamia, the syntax is: @lock/use me=me"
+Cyclonus says, "Airwolf, you're next. :)"
+Adamia d'ohs.
+Airwolf nods. "Back to multiple variables. Let's say I wanted to say hello
+to the people in the room. How would I code the macro so I didn't have to
+repeat it x times?
+Airwolf says, "Wait, that's not a good example."
+Cyclonus says, "OK. Well, in this example, you don't really need multiple
+variables. You could just type:
+sh Slag, Adamia, Airwolf
+and it would say, "Hello there, Slag, Adamia, Airwolf!" and wave."
+Airwolf says, "Just two variables, with different uses in the $trigger."
+Cyclonus says, "I want to make sure I have answered all the questions on
+this before we get into multiple variables, actually... just one second.
+:)" Cyclonus says, "Saber, do you still ahve a question?"
+Airwolf nods.
+Saber says, "No."
+Cyclonus says, "Slag, then :)"
+Slag says, "Okay, how would you type multiple wildcars, just "****" or
+something? Slag confused."
+Cyclonus says, "OK, before I go into this, is everyone ok with the current
+macro? Do you all understand how it works?"
+Cyclonus says, "OK. Then onward to multiple variables. :)"
+Adamia thinks so.
+Slag cheers
+Saber nods.
+Cyclonus says, "OK. Let's say that you now want to give the newcomer an
+idea of how you're feeling. You might want to pose "waves happily" or
+"waves glumly"."
+Cyclonus says, "Since you don't always feel the same way, you want this to
+be another variable. Take a look at the lesson plan now to see how I've set
+this up."
+Cyclonus says, "You'll notice that there's now a second wildcard in the
+message, separated from the first one by an equals sign (=)."
+Cyclonus says, "The $-TRIGGER is now sh *=*, which will be matched by
+typing sh <anything>=<anything>"
+Arcee says, "Kinda like a Mad Lib :)"
+Cyclonus says, "Does it have to be an equals sign? No. Not at all. You
+could have the $-COMMAND be sh * * or sh *-* or sh */* if you liked."
+Cyclonus nods to Arcee. "The reason I like to use = in the $-Trigger is
+because it's not normally used in a phrase. For instance, you don't want to
+use sh * * because the first wildcard will STOP as soon as it hits the
+first space.
+Cyclonus says, "So if you tried to type
+sh Arcee and Slag happily
+while having sh * * as the $-TRIGGER, it would result in: Cyclonus says,
+"Hello there, Arcee!"
+Cyclonus waves and Slag happily."
+Cyclonus says, "Which looks silly :)"
+Whiz snickers
+Adamia raises hand
+Slag aha's
+Cyclonus says, "Adamia?"
+Adamia says, "hmmm... just wondered something..."
+Adamia says, "do you do a *=*=* and so on for each of the variables/registers?"
+Cyclonus says, "Yep, exactly :)"
+Cyclonus says, "Anyway, this has run overtime, so I don't think we're going
+to get to the rest of the lesson plan *:>"
+Slag darns
+Cyclonus says, "Does everyone understand this much? :)"
+Whiz figured :)
+Airwolf says, "Yes."
+Cyclonus has to go eat dinner :)
+Slag nods and hugs Cyclonus
+Doc nods
+Whiz says, "Thanks so much, Cyc!"
+Airwolf waves.
+Cyclonus says, "Next seminar announcement: )"
+Cyclonus says, "The next one will be on more complex commands, using
+@select/@switch and @dolist, with an introduction to functions."
+
+...out flew the web and floated wide
+the mirror crack'd from side to side...
+-the lady of shalott-
+
+email: shalott@deshaw.com
+http://www.liii.com/~tf2005
+

@@ -1,0 +1,138 @@
+------------------------------------------------------------------------------
++events (1 of 3)
+ 
+  +events[/date][/mine]
+  +event #
+  +event/signup #
+  +event/unsignup #
+  +event/remove #=<Player>
+  +event/changedate #=<Mmm Dd YYYY HH:MM>
+  +event/changesum #=<New Summary>
+  +event/addsum #=Thing=<Stuff>/Thing2=<Stuff2>/Thing3=<Stuff3>/...
+  +event/timezone #=<Timezone>
+  +event/mail #=<mail>
+  +event/cancel #
+  +event/create <Title>=<Mmm DD YYYY HH:MM>/<genre>/<summary>
+
+  NOTE: All dates must be in the: Mmm Dd HH:MM format such as: Jul 20 2017
+  22:04! The time must also be in the 24 hour format.
+
+  Indepth break down of the commands on following pages!
+ 
+  * Notifications: When someone signs up, or unsigns up an @mail is sent to
+  the event ST. If the event ST changes the date of cancels the event an 
+  @mail is sent to the attendees.
+ 
+  * Reminder: The attendees of an event will be sent a reminder @mail the  
+  morning of the day before the event.  The ST gets an @mail as well.
+ 
+  Continued in +events2
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
++events (2 of 3)
+
+  Attendee Commands
+
+  +events - This command will bring up the list of all current events!  With the
+  /date switch it will sort the events by date.  The /mine switch views events you
+  signed up for or are STing, this is automagically sorted by date.
+ 
+  +event # - This command will bring up the summary information, date, and  
+  current signups of a specific event.  
+          Example:: +event 5
+ 
+  +event/signup # - This command will add you to the list of those signed up
+  for an event.
+          Example:: +event/signup 5
+ 
+  +event/unsignup # - This command will remove you from the list of those  
+  signed up for an event.  
+          Example:: +event/unsignup 5
+ 
+  Continued in +events3
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
++events (3 of 3)
+ 
+  Storyteller Commands
+ 
+  +event/create <Title>=<Mmm Dd YYYY HH:MM>/<Genre>/<Summary> - This command
+  will create an event. Note: The date /must/ be in the form of Mmm Dd YYYY
+  HH:MM, like in the example. 
+          Example: +event/create Fear=Aug 20 2017 22:00/Horror/This is 
+  just an example! 
+ 
+  +event/changedate #=<Mmm Dd YYYY HH:MM> - This command will change the 
+  date of an event. Note: The date /must/ be in the form of Mmm Dd YYYY 
+  HH:MM, like in the example. 
+          Example:: +event/changedate 5=Aug 21 2017 16:00  
+ 
+  +event/cancel # - This command will cancel an event. Note: This command  
+  can /only/ be used by staff or the Storyteller for the event.
+          Example:: +event/cancel 5. 
+ 
+  +event/remove #=<Player> - This command will remove a player from an
+  event. Note: This command can only be used by staff or the Storyteller for
+  the event. 
+          Example:: +event/remove 5=Daemon
+ 
+  +event/changesum #=<New Summary> - This command allows you to change the  
+  summary of an already posted event.  Note: This will not override things
+  that have been added with +events/addsum.  
+          Example:: +event/changesum 5=This is a sample event.  
+ 
+  +event/timezone #=<Timezone> - This command will allow you to change the 
+  timezone of an event. It defaults to whatever is specified in 
+  &default.timezone on the ECO object. 
+          Example:: +event/timezone 5=EST
+
+  +event/addsum #=Thing=<Stuff>/Thing2=<Stuff2>/Thing3=<stuff3>/... - This  
+  command allows you to add nigh-limitless attributes to an event you have  
+  created. Note: This must be one word!
+          Example:: +event/addsum 5=Threat=Threat level is
+  low./Reward=Treasure in the form of a token or hedgespinning material.
+
+ +event/mail #=<body of the mail> - This command allows you to do @mail the
+ attendees of your event.
+          Example:: +event/mail 5=I will be late by at least fifteen minutes
+  to the +event.
+ 
+------------------------------------------------------------------------------
+
+Events Master - #24 (The bit who sends the @mail messages)
+Events Command Object - #274
+Events Database - #275
+
+@create Events Command Object=10
+@create Events Database=10
+
+&V-INFO Events Command Object=VA: Events Command Object Dbref, VB: Events DB Dbref
+@VA Events Command Object=#274
+@VB Events Command Object=#275
+&DEFAULT.TIMEZONE Events Command Object=EST
+&BB_READ Events Command Object=A B G
+&SORTBY.EVENT-DATE Events Command Object=comp(extract(get(v(vb)/event.[last(%0, .)]), 4, 1, |), extract(get(v(vb)/event.[last(%1, .)]), 4, 1, |))
+&FIL.ATTRNAME Events Command Object=not(valid(attrname, first(%0, =)))
+&TRIG_POST Events Command Object=+bbpost 9/Event: %0=[ansi(h, Summary)]: %1
+&TRIG.MAIL Events Command Object=@fo #24=@mail/quick %0/%1=%2
+&TRIG.DAILY Events Command Object=[iter(lattr(v(vb)/event.*), [if(lte([last(get(v(vb)/%i0), |)], [Secs()]), [set(v(vb), %i0:)][set(v(vb), summary.[last(%i0, .)]:)][set(v(vb), remindday.[last(%i0, .)]:)][set(v(vb), signups.[last(%i0, .)]:)])])] [iter(lattr(v(vb)/remindday.*), [if(lte([last(get(v(vb)/%i0), |)], Secs()), [trigger(v(va)/trig.mail, [get(v(vb)/signups.[last(%i0, .)])], Event Reminder, You are signed up for +event [last(%i0, .)] %([extract(get(v(vb)/event.[last(%i0, .)]), 3, 1, |)]%) which will be held on [convsecs(last(get(v(vb)/event.[last(%i0, .)]), |))].)], This is an error message.)] [if(lte([last(get(v(vb)/%i0), |)], Secs()), [trigger(v(va)/trig.mail, [first(get(v(vb)/event.[last(%i0, .)]), |)], ST Event Reminder, You are schedule to run +event [last(%i0, .)] %([extract(get(v(vb)/event.[last(%i0, .)]), 3, 1, |)]%) which will be held on [convsecs(last(get(v(vb)/event.[last(%i0, .)]), |))].)], This is an error message.)])]
+&C.EVENTS Events Command Object=$+events:@pemit %#=[header(Current [mudname()] Events)]%r[ansi(h, [ljust(NUM, 5)][ljust(ST, 10)][ljust(Genre,10)][ljust(Title, 30)][ljust(Date, 17)]%b[ljust(Sgnps, 5)])]%r[repeat(-,78)]%r[if(gte(words(lattr(v(vb)/event.*)),1),[iter(lattr(v(vb)/event.*), [ljust(after(%i0, .), 4)]%b[ljust(moniker(first(get(v(vb)/%i0), |)), 10)][ljust(extract(get(v(vb)/%i0), 2, 1, |), 10)][ljust(extract(get(v(vb)/%i0), 3, 1, |), 30)][ljust(convsecs(extract(get(v(vb)/%i0), 4, 1, |)), 16)][space(3)][if(get(v(vb)/timezone.[last(%i0, .)]), [ljust([get(v(vb)/timezone.[last(%i0, .)])], 3)], [get(v(vb)/default.timzone)])]%b[if(hasattr(v(vb), signups.[last(%i0, .)]), [words(get(v(vb)/signups.[last(%i0, .)]))], 0)], , %r)],[center(No Events Scheduled,78)])]%r[footer(words(lattr(v(vb)/event.*)))]
+&C.EVENT-LOOKUP Events Command Object=$+event *:@pemit %#=[if(hasattr(v(vb), event.%0), [header([extract(get(v(vb)/event.%0), 3, 1, |)] - [convsecs(extract(get(v(vb)/event.%0), 4, 1, |))] [if(hasattr(v(vb),timezone.%0),[get(v(vb)/timezone.%0)],[u(default.timezone)])])]%r%r%t[u(v(vb)/summary.%0)]%r%r[ansi(h, Storyteller)]: [moniker(first(get(v(vb)/event.%0),|))]%r[ansi(h, Genre)]: [extract(get(v(vb)/event.%0), 2, 1, |)]%r[ansi(h, Signups)]: [itemize(iter(get(v(vb)/signups.%0), [name(%i0)], , |), |)]%r[footer([extract(get(v(vb)/event.%0), 3, 1, |)] - [convsecs(extract(get(v(vb)/event.%0), 4, 1, |))] [if(hasattr(v(vb), timezone.[last(%0, .)]), [get(v(vb)/timezone.[last(%0, .)])], [get(v(vb)/default.timezone)])] - [if(hasattr(v(vb), signups.%0), [words(get(v(vb)/signups.%0))], 0)])], [ansi(hc,Events:)] Unfortunately there is no event %0! Please use +events to see the current list.)]
+&C.EVENT-CREATE Events Command Object=$+event/create *=*/*/*:@pemit %#=[if([or(isstaff(%#), isapproved(%#))], [setq(0, add(get(v(vb)/eventtotal), 1))][set(v(vb), event.%q0:[pmatch(%#)]|%2|%0|[convtime(%1)])][set(v(vb), summary.%q0:%3)][set(v(vb), eventtotal:%q0)][set(v(vb), remindday.%q0:[sub(convtime(%1), 86400)])][ansi(hc,Events:)] You have setup +event %q0. Please check to make certain all of the details are correct![trigger(v(va)/trig_post, %0, %3)], [ansi(hc,Events:)] Sorry%, only staff or approved characters can use this command!)]
+&C.EVENT-CHANGEDATE Events Command Object=$+event/changedate *=*:@pemit %#=[if(or(isstaff(%#), strmatch(first(get(v(vb)/event.%0), |), %#)), [if(hasattr(v(vb), event.%0), [set(v(vb), event.%0:[extract(get(v(vb)/event.%0), 1, 3, |)]|[convtime(%1)])][ansi(hc,Events:)] You change the date of %0 to %1[set(v(vb), remindday.%0:[sub(convtime(%1), 86400))].[trigger(v(va)/trig.mail, [get(v(vb)/signups.%0)], Event Reschedule, [name(%#)] has rescheduled +event %0 %([extract(get(v(vb)/event.%0), 3, 1, |)]%) to %1.)], [ansi(hc,Events:)] There is no +event %0.)], [ansi(hc,Events:)] Only [name(first(get(v(vb)/event.%0), |))] or Staff can change this event's date.)]
+&C.EVENT-CHANGESUM Events Command Object=$+event/changesum *=*:@pemit %#=[if(or(isstaff(%#), strmatch(first(get(v(vb)/event.%0), |), %#)), [if(hasattr(v(vb), event.%0), [set(v(vb), summary.%0:%1)][ansi(hc,Events:)] You change the Summary of %0 to %1. Note this does not remove any summary items added with +events/addsum![trigger(v(va)/trig.mail, [get(v(vb)/signups.%0)], Event Summary Change, [name(%#)] has changed the summary of +event %0 %([extract(get(v(vb)/event.%0), 3, 1, |)]%)%r%r%1.)], [ansi(hc,Events:)] There is no +event %0.)], [ansi(hc,Events:)] Only [name(first(get(v(vb)/event.%0), |))] or Staff can change this event's date.)]
+&C.EVENT-SIGNUP Events Command Object=$+event/signup *:@pemit %#=[if(isnum(%0), [if(or(isstaff(%#), isapproved(%#)), [if(hasattr(v(vb), event.%0), [if(hasattr(v(vb), signups.%0), [if(grab(get(v(vb)/signups.%0), [pmatch(%#)]), [ansi(hc,Events:)] You are already signed up for +event %0., [set(v(vb), signups.%0:[get(v(vb)/signups.%0)] [pmatch(%#)])][ansi(hc,Events:)] You have been signed up for +event %0.[trigger(v(va)/trig.mail, [first(get(v(vb)/event.%0), |)], New Event Signup, [name(%#)] has signed up for your +event %0 %([extract(get(v(vb)/event.%0), 3, 1, |)]%).)])], [set(v(vb), signups.%0:[pmatch(%#)])][ansi(hc,Events:)] You have been signed up to +event %0.[trigger(v(va)/trig.mail, [first(get(v(vb)/event.%0), |)], New Event Signup, [name(%#)] has signed up for your +event %0 %([extract(get(v(vb)/event.%0), 3, 1, |)]%).)])], [ansi(hc,Events:)] Sorry %0 is not an event. Check +events for the list of current events.)], [ansi(hc,Events:)] Sorry%, only approved players can +event/signup.)], [alert(Events, alert)] Please use a number. Such as +event 1.)]
+&C.EVENT-UNSIGNUP Events Command Object=$+event/unsignup *:@pemit %#=[if(hasattr(v(vb), event.%0), [if(grab(get(v(vb)/signups.%0), [pmatch(%#)]), [set(v(vb), signups.%0:[setdiff(get(v(vb)/signups.%0), [pmatch(%#)])])][ansi(hc,Events:)] You have been removed from +event %0.[trigger(v(va)/trig.mail, [first(get(v(vb)/event.%0), |)], New Event Cancellation, [name(%#)] has unsigned up for your +event %0 %([extract(get(v(vb)/event.%0), 3, 1, |)]%).)], [ansi(hc,Events:)] You are not signed up for +event %0.)], [ansi(hc,Events:)] There is no %0 +event. Please check +events for the current list of events.)]
+&C.EVENT-CANCEL Events Command Object=$+event/cancel *:@pemit %#=[if(or(isstaff(%#), strmatch(first(get(v(vb)/event.%0), |), %#)), [if(hasattr(v(vb), event.%0), [trigger(v(va)/trig.mail, [get(v(vb)/signups.%0)], Event Cancellation, [name(%#)] has canceled +event %0 %([extract(get(v(vb)/event.%0), 3, 1, |)]%).)][set(v(vb), event.%0:)][set(v(vb), summary.%0:)][set(v(vb), signups.%0:)][set(v(vb), timezone.%0:)][set(v(vb), remindday.%0:)][ansi(hc,Events:)] You have canceled +event %0., [ansi(hc,Events:)] There is not +event %0.)], [ansi(hc,Events:)] Only [name(first(get(v(vb)/event.%0), |))] or Staff can cancel this event.)]
+&C.EVENT-REMOVE Events Command Object=$+event/remove *=*:@pemit %#=[if(or(isstaff(%#), strmatch(first(get(v(vb)/event.%0), |), %#)), [if(grab(get(v(vb)/signups.%0), [pmatch(%1)]), [set(v(vb), signups.%0:[setdiff(get(v(vb)/signups.%0), [pmatch(%1)])])][ansi(hc,Events:)] You've remove %1 from +event %0.[trigger(v(va)/trig.mail, %1, Event Removal, You have been removed from +event %0 %([extract(get(v(vb)/event.%0), 3, 1, |)]%).)], [ansi(hc,Events:)] %1 is not signed up for +event %0.)], [ansi(hc,Events:)] Only [name(first(get(v(vb)/event.%0), |))] or Staff can remove players from +event %0.)]
+&C.EVENT-TIMEZONE Events Command Object=$+event/timezone *=*:@pemit %#=[if(or(isstaff(%#), strmatch(first(get(v(vb)/event.%0), |), %#)), [if(hasattr(v(vb), event.%0), [set(v(vb), timezone.%0:%1)][ansi(hc,Events:)] You set the timezone for +event %0 to %1%.[trigger(v(va)/trig.mail, [get(v(vb)/signups.%0)], Event Timzone Change, [name(%#)] has changed the timezone of +event %0 %([extract(get(v(vb)/event.%0), 3, 1, |)]%) to %1.)], [ansi(hc,Events:)] There is no +event %0.)], [ansi(hc,Events:)] Only [name(first(get(v(vb)/event.%0), |))] or Staff can change this event's timezone.)]
+&C.EVENT-ADDSUM Events Command Object=$+event/addsum *=*:@pemit %#=[if(or(isstaff(%#), strmatch(first(get(v(vb)/event.%0), |), %#)), [if(hasattr(v(vb), event.%0), [if(filter(v(va)/fil.attrname, %1, /), [alert(Events, alert)] The following items cannot be set because they do not have appropriate attribute names%, make sure you are using one word and no numbers:%r[iter(filter(v(va)/fil.attrname, %1, /,%B), edit(%i0, =, :%b), /, %r)], [alert(Events)] Setting the following attributes to +event %0: %r[iter(%1, edit(%i0, =, :%b)[set(v(vb), Summary.%0.[first(%i0, =)]:[rest(%i0, =)])], /, %r)][trigger(v(va)/trig.mail, [get(v(vb)/signups.%0)], Event Summary Addition, [name(%#)] has added to the summary of +event %0 %([extract(get(v(vb)/event.%0), 3, 1, |)]%)%r%r[iter(%1, edit(%i0, =, :%b), /, %r)].)])], [ansi(hc,Events:)] There is no +event %0.)], [ansi(hc,Events:)] Only [name(first(get(v(vb)/event.%0), |))] or Staff can change this event's date.)]
+&C.EVENT-MINE Events Command Object=$+events/mine:@pemit %#=[header(Current [mudname()] Events)]%r[ansi(h, [ljust(NUM, 5)][ljust(ST,10)][ljust(Genre, 10)][ljust(Title, 30)][ljust(Date, 17)]%b[ljust(Sgnps, 5)])]%r[repeat(-,78)]%r[setq(0, %#)][setq(2, iter(lattr(v(vb)/event.*), if(strmatch(first(get(v(vb)/%i0), |), %q0), after(%i0, .))))][setq(1, iter(lattr(v(vb)/signups.*), [if(graball(get(v(vb)/%i0), %q0), last(%i0, .))]))][iter(sortby(sortby.event-date, %q1 %q2), [ljust(%i0,4)]%b[ljust(name(first(get(v(vb)/event.%i0), |)), 10)][ljust(extract(get(v(vb)/event.%i0), 2, 1, |), 10)][ljust(extract(get(v(vb)/event.%i0), 3, 1, |), 30)][ljust(convsecs(extract(get(v(vb)/event.%i0), 4, 1, |)), 16)]%b[if(get(v(vb)/timezone.%i0),[ljust([get(v(vb)/timezone.%i0)], 3)], PST)]%b[words(get(v(vb)/signups.%i0))], , %r)]%r[footer([words(%q1)] of [words(lattr(v(vb)/event.*))] events)]
+&C.EVENT-MAIL Events Command Object=$+event/mail *=*:@switch [hasattr(v(vb),event.%0)]=1,{@switch [strmatch(first(get(v(vb)/event.%0),|),%#)]=1,{[trigger(v(va)/trig.mail, [get(v(vb)/signups.%0)],Message: Event %0, %1)];@pemit %#=[ansi(hc,Events:)] You sent a message to everyone who signed up for your event %(Event %0%) with the message:%r%r%1%r},{@pemit %#=[ansi(hc,Events:)] Only the Storyteller can send a mail about that event.}},{@pemit %#=[ansi(hc,Events:)] Unfortunately there is no event %0! Please use +events to see the current list.}
+@set Events Command Object=INHERIT
+@set Events Command Object=SAFE
+
+&EVENTTOTAL Events Database=0
+@set Events Database=SAFE

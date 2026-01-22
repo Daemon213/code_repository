@@ -1,0 +1,466 @@
+ ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+|\ /| |\ /| |\ /|
+| \ / | | \ / | | \ / |
+| \/ |oe's | \/ |ushkode | \/ |anual
+~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
+LESSON 4 - HOW MUCH IS THAT DOGGY IN THE WINDOW?
+
+In Lessons 1, 2, and 3, we learned a lot about the basics and
+fundamentals of mushcoding. We covered a variety of things, including
+setting of attributes, memory, nesting functions. A lot of stuff. At the
+end, we had a workable command, called mywho, that told us a comfortable
+amount of information about the players connected to our mush of choice.
+In this lesson, we're going to go a wholly different direction,
+and explore what it takes to create that most sought-after of mushcode
+projects, the mushcode vendor. This vendor will sell items, cloning them
+from objects in its inventory. It will keep track of multiple costs, and
+handle multiple customers at once. It will be somewhat interactive, and
+hopefully fun to find in an RP situation.
+
+DISCLAIMER AND BRIEF SPURT OF STREAMLINED EDUCATION
+
+Before I start teaching you to code the guts of a multi-item
+vendor, let me cover the absolute bare-bones basics of what makes a vendor
+work. There are three @commands, hardcoded into mushes, that do the work
+of a vendor. @cost, @pay, and @apay. They work on one item at a time, in
+general. Here is a brief rundown of how to set them up to sell just one
+item. I shall use a Horse seller as an example.
+@create Vendor <This creates a Vendor object.>
+@create Horse <This creates a Horse object.>
+@set Horse=chown_ok <This allows customers to chown the clone of their
+object>
+give Vendor=Horse <This puts the Horse in the Vendor's inventory.>
+@cost Vendor=50 <This sets the cost in pennies to buy a horse.>
+@pay Vendor=You give the Horse seller your money. <Message shown when
+they pay the appropriate cost in pennies.>
+@apay Vendor=@clone Horse;@emit Your horse is brought out for you.;wh
+%N=Please 'get Horse', then '@chown Horse', and finally '@set
+Horse=!halt'. <This is the work attribute. When someone pays the right
+number of pennies, it makes a clone of the Horse object, which is put in
+the same room as the Vendor. It gives a brief message that tells the
+customer what is happening, and then whispers to them instructions on how
+to make the object their own. This is a series of commands, separated by
+semicolons.>
+
+There really isn't more to a single-object vendor than that. You
+can make fancier messages in your @pay and @apay. You can have lots of
+ansi, or other decorations. But, this is, in essence, all there is to a
+vendor. It's when you want to sell more than one item that it gets much
+trickier.
+
+WHERE DO WE START??
+
+The first thing you always have to ask yourself when you're going
+to code something like this is: What do I want it to do? What capabilities
+do I want this particular piece of code to have? You must realize that you
+are approaching something that could be called a 'system', in that you
+have many different commands that potentially all work on the same set of
+data.
+In this case, we are designing a vendor, so therefore we need to
+think of what a vendor can do. A vendor greets their customers. A vendor
+displays their wares. A vendor allows the customer to order something from
+the store. A vendor takes the money, and provides the item. It sounds like
+a lot, but in truth, many of those are combined into lumps of code, so
+they are smaller tasks than they sound.
+The next question you need to ask yourself is how you're going to
+store your data. This one question can make or break your code. No
+pressure. What it really centres on is how your code is going to be
+written, so that it accomodates the data, which is hopefully stored in the
+most efficient manner possible. Since we are going to be dealing with
+multiple items, each with a name and cost. We can store all the
+information for each item in one attribute, on our vendor. We can do this
+most effectively by storing it as a |-separated list. An example for a
+Ball item would be:
+
+&item-ball vendor=10|A big red ball|It's very bouncy and fun to play with.
+
+This would tell us that the cost is 10 pennies, the name of the
+object is a big red ball, and that the description of the object is 'It's
+very bouncy and fun to play with.'. With one of these attributes for each
+item we have, we are able to reference only one attribute, and get all the
+information for that item our vendor is selling. If all of our items are
+stored in attributes that start with 'item-', then they will be easy to
+find using code on our vendor, as well.
+
+LET'S GET STARTED
+
+Okay, obviously, we're going to need an object, upon which to put
+our code. On your mush of choice, type:
+
+@create Vendor
+@set Vendor=!no_command <Or: @set Vendor=commands on TinyMUSH>
+
+Now, we're ready to code. First off, let's decide on what our
+vendor is going to sell. In the hopes of excommunicating the
+I-don't-understand-mushcode demons, let's have our Vendor sell a Bell, a
+Book, and a Candle. And let's also code commands that allow our vendor to
+sell more things, and edit the existing things, later. We will need our
+three objects, to be held by the Vendor so that they can be cloned for use
+by our customers.
+
+@create Bell
+@set Bell=chown_ok
+@create Book
+@set Book=chown_ok
+@create Candle
+@set Candle=chown_ok
+give Vendor=Bell
+give Vendor=Book
+give Vendor=Candle
+
+There. Now our Vendor has the three objects it will sell. We set
+them chown_ok so that when they are given to the customer, the customer
+will be able to @chown the object, and own it(saving your quota, if
+enabled on your mush).
+Something I often do in cases like this is set the Vendor with the
+Opaque flag, which allows(or forces) the customer to use your code to view
+the items and their costs. Let's start with that code, and build from
+there. We've established our data format above, so we can begin coding
+with that in mind.
+We know this will be a command, for the purpose of listing the
+items, so we can start out with the basis of:
+
+&cmd_list Vendor=$list:@pemit %#=
+
+Not bad, eh? If you are familiar with mushcode, or you've studied
+the previous three lessons, all of that should make sense. If any of it
+doesn't, go back and study Lesson 1. From this point, we need to decide
+how we want to graphically represent our listing. We will call on a number
+of the skills we learned in Lessons 2 and 3, as involves cosmetic coding,
+and attribute retrieval.
+First, let's make a graphical header. I don't suggest much, unless
+you really want to make your vendor distinctive. For this, I would do the
+following:
+
+&header Vendor=[repeat(=,78)]%R|[center(%0,76)]|%R[repeat(=,78)]
+
+So, if we passed 'List of Items' as %0, our output would look
+like:
+
+==============================================================================
+| List of Items |
+==============================================================================
+
+Not fancy, but not bad either. We can now add a ufun call to our
+header function, to start off our list command.
+
+&cmd_list Vendor=$list:@pemit %#=u(header,List of Items)
+
+We're moving a bit slow to start, but here we're going to kick
+things off quite a bit. We're going to do some pretty heavy parsing in an
+iter(), pulling the list of attributes on our Vendor object that begin
+with item-, using the lattr() function and some wildcard-matching. I'm
+telling you all this to give you something to look forward to, of course.
+First, we're going to learn a new substitution, that works in iter(), as
+well as learning to use the extract() function.
+
+## VS. #@
+
+There is another substitution in iter() that is quite helpful, and
+that is the #@ substitution. As ## represents the individual item in the
+list, #@ represents the position of that item in the list. Here is a quick
+example, to familiarize yourself with this functionality. Consider the
+following three snippets of code:
+
+iter(a b c d,##)
+iter(a b c d,#@)
+iter(a b c d,#@> ##)
+
+If you 'think' or 'say' those pieces of code, you will get 'a b c
+d' for the first one, '1 2 3 4' for the second, and '1> a 2> b 3> c 4> d'
+for the third. This shows you what each substitution represents. The ##
+means the list item, itself, and the #@ means where in the list that item
+is, ordinally. We're going to use this to our advantage in our display of
+our items, as we're going to reference them on the list by number, rather
+than by name.
+Matching by name is possible, but there are a number of things to
+learn before handling string matching on a regular basis, and I want to
+make this vendor as simple as possible. How the use of this #@
+substitution works for us is that lattr() will always pull the attributes
+in the same order, sorting them the best way it can, as we learned the
+sort(), setunion() and other related functions do. So, we can reference
+the items by their position in the list of item- attributes, in any
+command on our vendor! And while that sounds completely confusing, trust
+me, it will all make sense in a few minutes. I hope.
+
+MAKING A LIST. CHECKING IT TWICE.
+
+Alright, we know that we have a list of attributes that we want to
+find. We need to setup this list, first. Let's write our command for
+adding items to our vendor's list, and then from that we will know further
+how our information is being stored and can retrieve it more
+effectively. Some initial things to think about. We need to restrict who
+can add and delete items on the list. I usually restrict this to admin,
+and the person who owns the object. We can do both of these tests like
+this: [or(orflags(%#,Wr),controls(%#,me))]
+That code tests for one of two conditions. 1) The character
+performing the command has either the Wizard or Royalty
+flag.(orflags(%#,WZ) in TinyMUSH). 2) The character performing the command
+has privileges over the object. Wizards will pass both tests, of course,
+but the or() function means that if /either/ case is true(evaluates to 1),
+then it will return a 1. If neither case returns a true expression, then
+or() returns a 0. This is called a boolean logic function. Look at the
+help files on your mush of choice for functions like and() and not(), for
+more of this kind.
+Since there will be at least two commands(adding and deleting
+items) that use this test for privileges, let's set this test in a small
+ufunction on our Vendor, to avoid having to type it out each time we need
+it.
+
+&fn-priv Vendor=[or(orflags(%#,Wr),controls(%#,me))]
+
+Yes, it will recognize the %# as being the character that used the
+command, even though it's in a ufunction. By setting this function, now
+all we need to do to test to see if someone has privileges on our object
+is to call u(fn-priv) and test to see if it returns a 1 or a 0. This is
+very efficient, and very maintainable. If someone wants to add different
+permissions to the Vendor, they only have to change the fn-priv attribute,
+rather than several different command attributes.
+We established above what our format would look like for storing
+the data on our items, so let's figure out what the best way to put all
+three pieces of information into one command so that they all get set at
+once. We know that we need to have 1) the name of the item, 2) its cost,
+and 3) a description of the item. Figuring out the format of your commands
+can sometimes be the hardest part of your job as a coder. You want to be
+able to make it as user-friendly as possible, and at the same time, make
+it as functional as possible.
+I am going to suggest a format for this lesson, and in your later
+coding endeavours, you can choose to do a different way. Quite often, the
+format that a coder uses to build their commands is as distinctive as a
+fingerprint. For this command, I would suggest using the format:
+
+item-add <simple name>
+item-edit <simple name>=<attribute>/<new value>
+
+Two commands? You said you could do it in one! Are you nuts?? No.
+Well, maybe I am, but let me explain the madness to my particular method.
+If we tried to put a lot of information into one command, for example:
+
+item-add <full name of item>=<cost>/<description>
+
+It would get both unwieldy, increase the chance of mistakes, and
+we would have to use the item-edit command anyways. As well, by specifying
+the full name of the item, we force ourselves to intuit a 'good' name to
+store the information. Intuition has its place, but mushcode isn't a good
+area to try it. By using two commands, we allow ourselves the luxury of
+having complete control over all aspects of our items, and we learn to do
+some list-manipulation in the process. Yay us.
+Let's start on the item-add command first. We know we need to test
+to see if the person invoking the command has permission to do so, and we
+need to check to see if there is already an attribute that exists by that
+name. These are simple checks to perform, if we use the method of multiple
+cases for a switch() that we learned in lesson three. Consider the
+following code:
+
+&cmd_itemadd Vendor=$item-add *:@pemit
+%#=switch(u(fn-priv):[hasattr(me,item-%0)],0:*,You don't have permission
+to do that.,*:1,There is already an item by that name.,<default>)
+
+We did something different here that we haven't done before. We
+passed a parameter in the command itself. This works identically to the
+way it works when passing parameters in ufun's, in that they go into the
+command code in order from %0-%9. In this case, they are read in by
+wildcards. You can have up to ten wildcards, and each would read into a
+separate register. If we had done the long form of the item-add command I
+suggested above, it would look like:
+
+&cmd_itemadd Vendor=$item-add *=*/*:<code>
+
+In that case, the first * would be %0, the second %1, and the
+third %2. As it is with the command we are using, we only have one
+wildcard, and so therefore we only need to worry about %0. The
+hasattr() function tests to see if there is an attribute on 'me', the
+Vendor, named item-%0. Yes, this means that there should not be spaces in
+our name. There are two ways to fix this. One, we can test to see if there
+is more than one word in %0, or we can simply edit out the spaces,
+replacing with another character.
+Personally, I prefer the latter, as it allows us to be more
+descriptive with our attributes, and we aren't forced to make up ball,
+ball2, ball3, ball4, and remember what each one is. I now introduce you to
+a trick that has been used for years in mushcoding, called
+space2tilde. This is a simple substitution that replaces any spaces in a
+string with the character '~', known as a tilde. The function works like
+this:
+
+&space2tilde Vendor=[edit(%0,%b,~)]
+
+Very simple. The edit() function works just like the @edit
+command, replacing the existing text with the new value. The
+edit() function is done on a string, rather than the value of an
+attribute. This makes it more flexible for something like this. If we
+implement this in our code, it now looks like:
+
+&cmd_itemadd Vendor=$item-add *:@pemit
+%#=switch(u(fn-priv):[hasattr(me,setr(0,item-[u(space2tilde,%0)]))],0:*,You
+don't have permission to do that.,*:1,There is already an item stored with
+that name.,<default code>)
+
+Yes, I did implement the setr() function, saving the value returned
+by our space2tilde function, prefixed by item-. I did this because, if there
+is not an attribute already with that name, we will be setting one later in
+this command, and this way, I can save the value returned by that function
+rather than having to run it again, each time I need that substitution done.
+Now, we are at the point of writing the code for setting an attribute
+on our object. We will do this using the set() function, which is a
+side-effect function that works equivalent to the @set command. We know that
+there are three fields that we need to fill in: Cost, Fullname, and
+Description. These can be set with default values, and then edited later with
+our item-edit command.
+In the spirit of configurability, we should make it possible for
+our vendor owner to easily change the default value for his vendor's
+items. This is done most easily by storing the value in an attribute on
+the vendor, named default_value:
+
+&default_value Vendor=10
+
+Once this is set, it can be easily referenced in our code, and
+allows the player to change it easily without having to edit long command
+attributes. The set() function takes the syntax:
+
+set(<object>,<attribute>:<value>)
+
+In our case, the object is 'me', since we're setting the attribute
+on our vendor object, and the attribute name will be %q0, the space2tilde
+edited version of our item name from earlier in the code. Our value will
+be the contents of the default_value attribute, a fullname that can be
+easily represented by %0, and a description. We can easily intuit the
+description by placing an article(a, an, the) before the fullname. Again,
+these are values which will likely be edited later.
+How do we know which article to use? MUSH provides us with a function
+that will do that for us, thankfully. The art() function's sole purpose is to
+take a string, and return the proper article that should precede it. So, we
+shall determine our article for %0 by running it through the art() function.
+Because we also want it to be nicely formatted, we'll capitalize it, too.
+So, our set() function looks like this:
+
+set(me,%q0:[v(default_value)]|%0|[capstr(art(%0))] %0)
+
+After this function is done, we would deliver a message of success
+to the player, and remind them that if they wish to change any of the
+values, that they should use the item-edit command. The set() function
+returns no value, so we don't have to worry about where we put it in our
+code. So, now our command looks like:
+
+&cmd_itemadd Vendor=$item-add *:@pemit
+%#=switch(u(fn-priv):[hasattr(me,item-[setr(0,u(space2tilde,%0))])],0:*,You
+don't have permission to do that.,*:1,There is already an item stored with
+that name.,set(me,%q0:[v(default_value)]|%0|[capstr(art(%0))] %0)Your item
+has been added. Use the item-edit command to change any of the values.)
+
+Voila. A working item-add command. We could type: item-add red
+ball, and it would add an attribute to itself(the Vendor object), that
+looks like:
+
+&item-red~ball Vendor=10|red ball|A red ball
+
+Obviously, our next project is to write the item-edit command. In
+this command, we can recycle the majority of the code from the beginning
+of the item-add command, and add one more test case for our switch(). That
+test will be to verify that they are trying to edit a valid category,
+either Cost, Fullname, or Description.
+We know that the attribute will be named cmd_itemedit, and that
+it's going on the Vendor object. We know that the syntax of the command is
+item-edit <name>=<category>/<new value>. We can guess from this that we
+will need three wildcards in our command, for each of the three variable
+pieces of data. And we know that we will need to do some list
+manipulation, taking out an old value and replacing it with a new one.
+Overall, we know a fair amount. We can write over 80% of the
+command, with just this knowledge alone. Let's look at how our command
+would start to take shape, and then dive into some of the specific
+elements that we need to include:
+
+&cmd_itemedit Vendor=$item-edit *=*/*:@pemit
+%#=switch(u(fn-priv):[hasattr(me,setr(0,item-[u(space2tilde,%0)]))]:<code
+to test category>,0:*:*,You can't do that.,*:0:*,I don't have that
+item.,*:*:0,You must specify one of the following categories: Cost
+Fullname Description,<code to edit list>)
+
+YOU CAN BE A MEMBER(), WITHOUT A SECRET HANDSHAKE!
+
+We have a list. Cost Fullname Description. This is the order of
+elements in our data-storage attributes. We would like to know if a
+string, %1 in this case, is the same as one of the items in our list. Even
+more than that, it would be useful if we could learn which item in the
+list our string matches, if any. Introducing: member(). This function is
+quite useful in a case like this, as it does precisely what we're looking
+for. It takes a list, compares some test data against the list, and if the
+test data is the same as any item in the list, it returns the position of
+the item it matches. It tells us which 'member' of the list is the same.
+In using member(), it is necessary to allow for the case of your
+text, if it is a string. member() is case-sensitive, and we never have a
+guarantee that our users will type exactly what we want them to, so we
+must accomodate for this, whenever possible. In this case, the following
+code will suffice:
+
+member(cost fullname description,lcstr(%1))
+
+As we've learned previously, lcstr() converts all the characters
+in a string to lower-case. If the converted %1 is a member of our list, we
+will get back 1, 2, or 3. If it is not, we will get a 0. Within our
+switch(), if we test for 0 we are testing for the validity of the category
+specified. The result of the member() function should also be saved into a
+memory register, since we will want to use it later in our list
+manipulation code.
+So, now our code would look something like this:
+
+&cmd_itemedit Vendor=$item-edit *=*/*:@pemit
+%#=switch(u(fn-priv):[hasattr(me,setr(0,item-[u(space2tilde,%0)]))]:[setr(1,member(cost
+fullname description,lcstr(%1)))],0:*:*,You can't do that.,*:0:*,I don't
+have that item.,*:*:0,You must specify one of the following categories:
+Cost Fullname Description,<code to edit list>)
+
+I'LL MATCH() YOUR BET
+
+I bet you're asking, 'What if they only type in name, or desc,
+instead of the full category word?' Excellent question, dear reader. There
+is a way to accomodate for this, but it is somewhat trickier, as it opens
+up a different opportunity for error.
+This is the wonderful world of pattern-matching. A large-scale
+example is taking a list of all of the words in Gone with the Wind, and
+finding out how many of them contain the letter 'e'. There are a number of
+ways to accomplish pattern-matching, but to begin with, we should just
+learn about the match() function. In theory, it works quite similarly to
+the member() function, however it extends to you the ability to use
+wildcards in your test data. For example:
+
+match(cost fullname description,*name*)
+
+Would return '2', since our test data would match 'fullname', and
+neither of the other two. Similarly, we could test for *desc*, *os*,
+*full*, and any other logical combination, and have it work. Difficulties
+ensue when you have a condition like *e* or *t*. Either of which would
+conceivably match more than one item in our list. It's highly unlikely
+that our users would type in 'e' to mean fullname, but...typoes DO happen.
+It is a fact of mushing.
+You may be asking why I surrounded the text with
+asterisks. Another excellent question. Since we don't know which fraction
+of the word the user may insert, we are safest by surrounding our test
+data with wildcards, thereby opening up a wider field of possible
+matches. name* would not match on fullname, where *name would. *desc would
+not match on description, whereas desc* would. *text* is safest, as it
+guarantees the maximum number of possible results.
+Another benefit of match() is that it is case-insensitive, so
+*desc* will match Description, and description can be matched with *Desc*.
+This is more convenient in most cases than member(), though member() is a
+good idea if you want to limit the possibilities for input.
+
+
+SUMMARY
+
+Okay, in this first installment of the mushcode vendor tutorial,
+we've come a long way towards understanding how the system is going to
+work, though we haven't coded very much. I've handled a lot more
+individual details in this lesson than I have in previous tutorials, so
+that you can understand both methods to make things simple, and methods to
+make them highly-functional, while still accomplishing both with your
+present coding skill.
+We've discussed how to format our commands, passing parameters in
+commands, developing ways to store our data so that many commands can
+access it logically, and accounting for issues such as privilege, and the
+vaguaries of user's input.
+Finally, we learned some pattern-matching techniques that we can
+use on lists in any coding project. In our next lesson, we will continue
+to build upon the basic data structure we have, finish the item-edit
+command, and build the mechanics of the code that allows us to handle
+multiple items being sold by our vendor.

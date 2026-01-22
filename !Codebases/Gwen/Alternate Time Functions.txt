@@ -1,0 +1,113 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @@ This is an alternate Time Functions Object for Keran's weather and time code package.\
+@@ It is concurrent with the existing 4.0 system. Keran's code is REALLY great for\
+@@ customizable time. It's not nearly as good if you want the spiffy 'extra' systems\
+@@ to run on a basic alternate "real world" time system (ie: our modern Gregorian calender\
+@@ either in the future or past). This object should function 'as is', *except* that the\
+@@ leap year calculation function does not yet seem to be working. You should use this as\
+@@ a 'clean' Time functions object (ie: @wipe it or use a fresh object), otherwise you will have\
+@@ alot of useless functions stored.\
+@@\
+@@ The following two functions are the ones that set the accelerated time.\
+@@ Change the multiple of Vsecs to what time rate you want (presently set to 5:2, as 2.25).\
+@@ Generate vtime and vsecs as user-defined functions off the God char or a wiz object\
+@@ to make them accessable to everyone.\
+@@\
+@@ &TIME-BEGINS Keran's Time Functions=938182650\
+@@ &VSECS Keran's Time Functions=[add(secs(),mul(sub(secs(),v(TIME-BEGINS)),2.25))]\
+@@ &VTIME Keran's Time Functions=[convsecs(u(vsecs))]\
+@@\
+@@ 'Time begins' is the timestamp of when you want the clock to calculate the alternate\
+@@ time FROM (ie: calculate a 5:2 time ratio from the date of Jan 4th, 1999.)\
+@@\
+@@ &TIME-BEGINS Keran's Time Functions=938182650\
+@@\
+@@ You need to uncomment these functions (remove the @@ in front of them) before you port the object.\
+\
+@create Keran's Time Functions=10\
+@Desc Keran's Time Functions=This object has the major timing functions on it. It belongs in the Auxiliary room and has no commands on it. It should be set visual.\
+&VERSION Keran's Time Functions=4.0\
+&AUTHOR Keran's Time Functions=Keran@Keranset Island. "System" time and "Vtime" code hacks by Gwen Morse and Gary Weiner.\
+&CALENDAR-COMPRESSION Keran's Time Functions=1\
+&CLOCK-COMPRESSION Keran's Time Functions=1\
+&SOLSTICE-DAY-LENGTH Keran's Time Functions=18\
+&SECS-ELAPSED-TODAY Keran's Time Functions=[add(mul(mid(vtime(),11,2),3600),mul(mid(vtime(),14,2),60),mid(vtime(),17,2))]\
+&SECS-ELAPSED-THIS-YEAR Keran's Time Functions=[sub(sub(secs(), u(time-begins)), mul(u(year), u(days-per-year), 24, u(secs-per-hour)))]\
+&SECS-ELAPSED-THIS-CALENDAR-MONTH Keran's Time Functions=[mod(sub(secs(), u(time-begins)), u(secs-per-calendar-month))]\
+&SECS-PER-DAY Keran's Time Functions=[mul(u(secs-per-hour), 24)]\
+&SECS-PER-HOUR Keran's Time Functions=[fdiv(3600, u(clock-compression))]\
+&SECS-PER-HALFDAY Keran's Time Functions=[mul(u(secs-per-hour), 12)]\
+&SECS-PER-QUARTERDAY Keran's Time Functions=[mul(u(secs-per-hour), 6)]\
+&SECS-PER-HALFHOUR Keran's Time Functions=[div(u(secs-per-hour), 2)]\
+&SECS-PER-YEAR Keran's Time Functions=[mul(u(days-per-year), u(secs-per-day))]\
+&SECS-PER-CALENDAR-MONTH Keran's Time Functions=[mul(u(secs-per-day), u(days-per-calendar-month))]\
+&DAYS-PER-CALENDAR-MONTH Keran's Time Functions=[div(u(days-per-year), 12)]\
+&DAY-FROM-0 Keran's Time Functions=[div(sub(secs(), u(time-begins)), u(secs-per-day))]\
+&DAY-OF-YEAR Keran's Time Functions=[add(u(BASE-DAY-OF-MONTH),u(DAY-OF-CALENDAR-MONTH))]\
+&DAYS-PER-YEAR Keran's Time Functions=[div(u(base-days-per-year), u(calendar-compression))]\
+&DAYS-PER-SEASON Keran's Time Functions=[div(u(days-per-year), 4)]\
+&YEAR Keran's Time Functions=[extract(vtime(),5,1)]\
+&SEASON Keran's Time Functions=[u(system-season)]\
+&HOUR Keran's Time Functions=[mid(vtime(), 11, 2)]\
+&BASE-DAYS-PER-YEAR Keran's Time Functions=365\
+&WEEK Keran's Time Functions=[inc(div(mul(dec(u(day-of-calendar-month)), u(calendar-compression)), 7))]\
+&NUMBER-OF-CALENDAR-MONTH Keran's Time Functions=[match(January February March April May June July August September October November December,u(SYSTEM-MONTH))]\
+&DAY-OF-CALENDAR-MONTH Keran's Time Functions=[mid(vtime(), 8, 2)]\
+&MONTH Keran's Time Functions=[u(SYSTEM-MONTH)]\
+&LAST-MIDNIGHT Keran's Time Functions=[add(mul(u(day-from-0), u(secs-per-day)), u(time-begins))]\
+&NEXT-MIDNIGHT Keran's Time Functions=[add(mul(inc(u(day-from-0)), u(secs-per-day)), u(time-begins))]\
+&MIDNIGHT-BEFORE-LAST Keran's Time Functions=[add(mul(dec(u(day-from-0)), u(secs-per-day)), u(time-begins))]\
+&LAST-NOON Keran's Time Functions=[switch(gt(secs(), add(u(last-midnight), u(secs-per-halfday))), 1, [add(u(last-midnight), u(secs-per-halfday))], [sub(u(last-midnight), u(secs-per-halfday))])]\
+&NOON-BEFORE-LAST Keran's Time Functions=[sub(u(last-noon), u(secs-per-day))]\
+&NEXT-NOON Keran's Time Functions=[add(u(last-noon), u(secs-per-day))]\
+&DAY-LENGTH-VARIATION Keran's Time Functions=[round(mul(sub(u(solstice-day-length), 12), u(secs-per-hour)), 0)]\
+&SUN-CYCLE Keran's Time Functions=[fdiv(u(day-of-year), u(days-per-year))]\
+&DAY-LENGTH Keran's Time Functions=[round(add(mul(sin(fdiv(mul(mul(pi(), 2), u(day-of-year)), u(days-per-year))), u(day-length-variation)), u(secs-per-halfday)), 0)]\
+&NIGHT-LENGTH Keran's Time Functions=[sub(u(secs-per-day), u(day-length))]\
+&SUNSET Keran's Time Functions=[add(div(u(night-length), 2), u(day-length))]\
+&SUNRISE Keran's Time Functions=[div(u(night-length), 2)]\
+&IS-MIDNIGHT Keran's Time Functions=[or(gt(u(secs-elapsed-today), sub(u(secs-per-day), u(secs-per-halfhour))), lt(u(secs-elapsed-today), u(secs-per-halfhour)))]\
+&IS-DAWN Keran's Time Functions=[and(gt(u(secs-elapsed-today), sub(u(sunrise), u(secs-per-halfhour))), lt(u(secs-elapsed-today), add(u(sunrise), u(secs-per-halfhour))))]\
+&IS-MORNING Keran's Time Functions=[and(gt(u(secs-elapsed-today), add(u(sunrise), u(secs-per-halfhour))), lt(u(secs-elapsed-today), sub(u(secs-per-halfday), u(secs-per-halfhour))))]\
+&IS-NOON Keran's Time Functions=[and(gt(u(secs-elapsed-today), sub(u(secs-per-halfday), u(secs-per-halfhour))), lt(u(secs-elapsed-today), add(u(secs-per-halfday), u(secs-per-halfhour))))]\
+&IS-AFTERNOON Keran's Time Functions=[and(gt(u(secs-elapsed-today), add(u(secs-per-halfday), u(secs-per-halfhour))), lt(u(secs-elapsed-today), sub(u(sunset), u(secs-per-halfhour))))]\
+&IS-DUSK Keran's Time Functions=[and(gt(u(secs-elapsed-today), sub(u(sunset), u(secs-per-halfhour))), lt(u(secs-elapsed-today), add(u(sunset), u(secs-per-halfhour))))]\
+&IS-AFTER-MIDNIGHT Keran's Time Functions=[and(gt(u(secs-elapsed-today), u(secs-per-halfhour)), lt(u(secs-elapsed-today), sub(u(sunrise), u(secs-per-halfhour))))]\
+&IFDAWN Keran's Time Functions=[ifelse(u(is-dawn), dawn, u(ifmorning))]\
+&IFMORNING Keran's Time Functions=[ifelse(u(is-morning), morning, u(ifnoon))]\
+&IFNOON Keran's Time Functions=[ifelse(u(is-noon), noon, u(ifafternoon))]\
+&IFAFTERNOON Keran's Time Functions=[ifelse(u(is-afternoon), afternoon, u(ifdusk))]\
+&IFDUSK Keran's Time Functions=[ifelse(u(is-dusk), dusk, u(day-night))]\
+&IFAFTERMIDNIGHT Keran's Time Functions=[ifelse(u(is-after-midnight), after midnight, u(ifdawn))]\
+&TIME-OF-DAY Keran's Time Functions=[ifelse(u(is-midnight), midnight, u(ifaftermidnight))]\
+&DAY-NIGHT-DAWN-DUSK Keran's Time Functions=[ifelse(u(is-dawn), dawn, u(ifdusk))]\
+&DAY-NIGHT Keran's Time Functions=[ifelse(and(lt(u(secs-elapsed-today), u(sunset)), gt(u(secs-elapsed-today), u(sunrise))), day, night)]\
+&SYSTEM-WEEKDAY Keran's Time Functions=[switch(mid(vtime(), 0, 3), Mon, Monday, Tue, Tuesday, Wed, Wednesday, Thu, Thursday, Fri, Friday, Sat, Saturday, Sun, Sunday)]\
+&SYSTEM-MONTH Keran's Time Functions=[switch(mid(vtime(), 4, 3), Jan, January, Feb, February, Mar, March, Apr, April, May, May, Jun, June, Jul, July, Aug, August, Sep, September, Oct, October, Nov, November, Dec, December)]\
+&SYSTEM-DATE Keran's Time Functions=[mid(vtime(), 8, 2)]\
+&SYSTEM-TIME Keran's Time Functions=[mid(vtime(), 11, 9)]\
+&SYSTEM-HOUR Keran's Time Functions=[mid(vtime(), 11, 2)]\
+&SYSTEM-YEAR Keran's Time Functions=[add(mid(vtime(), 20, 4), u(starting-year))]\
+&SYSTEM-SEASON Keran's Time Functions=[switch(mid(vtime(), 4, 3), Jan, WINTER, Feb, WINTER, Mar, switch(gte(mid(vtime(), 8, 2),21),1,SPRING,WINTER), Apr, SPRING, May, SPRING, Jun, switch(gte(mid(vtime(), 8, 2),21),1,SUMMER,SPRING),Jul, SUMMER, Aug, SUMMER, Sep, switch(gte(mid(vtime(), 8, 2),21),1,AUTUMN,SUMMER), Oct, AUTUMN, Nov, AUTUMN, Dec, switch(gte(mid(vtime(), 8, 2),21),1,WINTER,AUTUMN))]\
+&THIS-YEAR-BEGAN Keran's Time Functions=[sub(u(last-midnight), mul(u(day-of-year), u(secs-per-day)))]\
+&CLOCK-FACE-HOUR Keran's Time Functions=[switch(u(hour), 0, 12, 13, 1, 14, 2, 15, 3, 16, 4, 17, 5, 18, 6, 19, 7, 20, 8, 21, 9, 22, 10, 23, 11, u(hour))]\
+&SECS-PER-QUARTERHOUR Keran's Time Functions=[div(u(secs-per-hour), 4)]\
+&HALFHOUR Keran's Time Functions=[u(calculated-halfhour)]\
+&QUARTERHOUR Keran's Time Functions=[u(calculated-quarterhour)]\
+&CALCULATED-HALFHOUR Keran's Time Functions=[div(u(secs-elapsed-today), u(secs-per-halfhour))]\
+&CALCULATED-QUARTERHOUR Keran's Time Functions=[div(u(secs-elapsed-today), u(secs-per-quarterhour))]\
+&SYSTEM-HALFHOUR Keran's Time Functions=[add(mul(mid(vtime(), 11, 2), 2), div(mid(vtime(), 14, 2), 30))]\
+&SYSTEM-QUARTERHOUR Keran's Time Functions=[add(mul(mid(vtime(), 11, 2), 4), div(mid(vtime(), 14, 2), 15))]\
+&BASE-DAY-OF-MONTH Keran's Time Functions=[switch(u(NUMBER-OF-CALENDAR-MONTH),1,0,2,31,3,59,4,90,5,120,6,151,7,181,8,212,9,243,10,273,11,304,12,334)]\
+&SYSTEM-LEAPYEAR Keran's Time Functions=[setq(0,u(YEAR))];[add(mul(eq(mod(%q0,4),0),neq(mod(%q0,100),0)),eq(mod(%q0,400),0))]\
+&SYSTEM-LEAPYEAR-ADD Keran's Time Functions=[switch(gt(u(NUMBER-OF-CALENDAR-MONTH),2),1,u(SYSTEM-LEAPYEAR),0,0)]\
+&TIME-BEGINS-SAFE Keran's Time Functions=938182650\
+@set Keran's Time Functions=VISUAL\
+@set Keran's Time Functions=SAFE\
+}

@@ -1,0 +1,275 @@
+ Topic: Code Security
+Author: Raevnos
+Summary: Raevnos steps forward to provide insights into security issues. If
+you're planning to code globals, you need this stuff.
+
+5/19/99
+
+Code Classroom(#1061RnJ)
+A chalkboard fills one wall, with an old beat-up lectern in front of it.
+The other three walls are painted off-white. A few long flourescent lights are
+attached to the ceiling making the room bright. Several chairs with attached
+desktop-like surfaces (standard classroom chairs) are scattered about the room
+in no particular order.
+Contents:
+Shane
+Tiberious
+Octavian
+Marretta
+Security Cabinet
+Obvious exits:
+Hallway <O>
+
+Tiberious says, "Okay"
+
+David has arrived.
+
+David says, "Did I miss it?"
+
+Tiberious says, "It hasn't started yet, shush, he is logging"
+
+David cheers quitely.
+
+David sighs. "No spelling for *me*."
+
+Tiberious waits to learn
+
+Raevnos says, "Ok, now to start things off. First, thanks for coming. I hope
+you find this lecture useful, and please don't use anything you might learn in
+a malicious matter. I'm not responsible. :)
+
+First, the aspect of security I'm going to cover is one of the most common
+source of problems - not bad coding because of ignorance (Though that's a
+pretty major problem also.)... accidently evaluating code that shouldn't be. A
+few examples of problems I've seen because of this: Myriddin's bboard system
+used to let people set themselves royalty, and you could use +finger here to
+get see_all access - something David here found, and Trispis fixed."
+
+Raevnos says, "The first way to have code evaluated that can be used to evil
+ends is with s(). u() and the other functions that evaluate an attribute
+aren't a problem, since the code they evaluate is run with the permissions of
+the object the attribute is on. But s() is evaluated with the permissions of
+the object the s() is on. This means that if you have a command on a wizard
+object that does something like s(%0) or s(get(%#/note)), you're asking for
+trouble."
+
+Raevnos says, "Now, why would you want to do something like that in the first
+place? Anyone?"
+
+Raevnos says, "Bueller?"
+
+Tiberious says, "To exploit TrekMUSHes?"
+
+David says, "Why would you *code* using s()? I dunno."
+
+Raevnos says, "Ok, here's one. +finger code on a non-wizard object that
+evaluates attributes like &note on players, on a mush that uses safer_ufun.
+You'd still want to be able to finger wizards correctly... so you might do
+something like s(xget(*%0, note)). Of course, this is bad, because then
+everyone can use that to run whatever code they like on the object the +finger
+code is on. The obvious fix is to move the finger code to a wizard object that
+can just use u(*%0/note)."
+
+David says, "That's what was happening here, with the s(). Luckly, the object
+was just see_all, and I wasn't evil."
+
+Raevnos says, "This leads to a principle of master-room management that can
+help minimize the affect of any holes in your globals - each command should go
+on an object with the bare minimum of privledges and powers that are required
+for the code to run without messy workarounds like the s() thing. If it
+doesn't need see_all, it shouldn't be on an object with see_all, for example."
+
+Raevnos says, "That way, you have a hierarchy of objects to inspect for
+problems, from most important that they be fixed because of the damage that
+can be done (Wizard) to least (No special powers or flags)."
+
+Tiberious says, "Are you saying, you should put like the Who command, on it's
+own object?"
+
+Tiberious says, "That way other commands don't use the power who needs?"
+
+Raevnos says, "No, on an object shared by other commands that need the same
+level of powers... for a +who, probably see_all. pemit_all too, of course."
+
+Tiberious says, "oh okay"
+
+Tiberious says, "so if you have like 5 commands, which need see_all and
+pemit_all, those commands should be the only commands on there"
+
+Raevnos says, "Correct."
+
+Raevnos says, "Now on to the not-so-obvious way that untrusted code can be
+evaluated: iter(). Anyone know what the problem with iter() is?"
+
+David says, "#-1 FUNCTION (ITER) EXPECTS BETWEEN 2 AND 4 ARGUMENTS,
+iter()...hrm, what was that..."
+
+David says, "Stupid evaling speech."
+
+Raevnos says, "say/noeval. :)"
+
+Raevnos says, "Hint for iter(): It has to do with when ## is interpeted."
+
+Raevnos says, "Since nobody seems to be answering, I will. ## is replaced by
+the current item BEFORE the code it's in is evaluated, not while it is, like
+%-substitutions. This means that if the item is code in it's own right, it'll
+get evaluated."
+
+Security Cabinet drops Iter examples.
+Iter examples(#4133)
+Type: Thing Flags:
+Owner: Raevnos Zone: Raevnos's ZMO(#1398S) Ducats: 10
+Parent: *NOTHING*
+Basic Lock: =Raevnos(#1622POXrzACMcx)
+Powers:
+Warnings checked: none
+Created: Wed May 5 15:12:59 1999
+Last Modification: Wed May 5 15:54:20 1999
+FLAWED_ITER [#1622]: iter(%0, ##, |, |)
+GOOD_ITER [#1622]: iter(secure(%0), ##, |, |)
+MAP_INSTEAD [#1622]: map(.value, %0, |)
+.VALUE [#1622]: %0
++ITER1_CMD [#1622]: $+iter1:@Pemit %#=This is a flawed iter of
+[v(test_string)]:%r[u(flawed_iter, v(test_string))]
++ITER2_CMD [#1622]: $+iter2:@Pemit %#=This is a corrected iter of
+[v(test_string)]:%r[u(good_iter, v(test_string))]
++ITER3_CMD [#1622]: $+iter3:@Pemit %#=This is a map of
+[v(test_string)]:%r[u(map_instead, v(test_string))]
+TEST_STRING [#1622]: A|B|C|[pemit(%#, This is a hole in iter\(\)!)]|E
++ITER4_CMD [#1622]: $+iter4 *: @pemit %#=This is a flawed iter of
+%0:%r[u(flawed_iter, %0)]
++ITER5_CMD [#1622]: $+iter5 *: @pemit %#=This is a good iter of
+%0:%r[u(good_iter, %0)]
+Home: Security Cabinet(#5912Oen)
+Location: Code Classroom(#1061RnJ)
+
+Raevnos says, "For an example, try '+iter1', and then examine iter/+iter1_cmd
+and iter/flawed_iter"
+
+This is a hole in iter()!
+This is a flawed iter of A|B|C|[pemit(%#, This is a hole in iter\(\)!)]|E:
+A|B|C||E
+
+Tiberious says, "Hrm..."
+
+Raevnos says, "The easy solution is to stick the list argument to iter()
+inside a secure() or escape(). Try +iter2, and ex iter/+iter2_cmd and
+iter/good_iter for an example."
+
+Raevnos says, "The problem with escape() is that gives you only one level of
+protection - ie, iter(escape(a|b|c|\[set\(#1622,royalty\)\], u(somethingelse,
+##))] wouldn't prevent somethingelse from potentially having a problem.
+secure() solves that, but removes various characters that might be benign
+formatting. So, another solution is to not use iter() at all, but a similar
+function: map()."
+
+Raevnos says, "+iter3, iter/+iter3_cmd, iter/map_instead, and iter/.value are
+an example of using map in place of iter."
+
+Raevnos says, "Now, when do you need to take measures to stop iter() from
+evaluating something? Whenever you want to iter over untrusted strings - user
+input from a command, arguments to a public ufun, the contents of an
+attribute, and, finally, the results of a lattr()."
+
+David says, "Huh? lattr()?"
+
+Raevnos says, "Yup, lattr()."
+
+Raevnos provides an example.
+
+David wants to see this.
+
+Security Cabinet drops Flawed +view code.
+Security Cabinet drops Tainted +view data.
+
+Raevnos says, "examine #688"
+
+Tainted +view data(#688Vn)
+Type: Thing Flags: VISUAL NO_COMMAND
+Owner: Raevnos Zone: Raevnos's ZMO(#1398S) Ducats: 10
+Parent: *NOTHING*
+Basic Lock: =Raevnos(#1622POXrzACMcx)
+Powers:
+Warnings checked: none
+Created: Wed May 5 14:57:10 1999
+Last Modification: Wed May 5 14:58:25 1999
+VIEW_FOO [#1622]: It's a foo!
+VIEW_[PEMIT(%#,THIS%BIS%BA%BHOLE!)] [#1622]: It's a subtle security hole!
+Home: Someplace you're not(#1580RntA)
+Location: Code Classroom(#1061RnJ)
+
+Flawed +view code(#5911V)
+Type: Thing Flags: VISUAL
+Owner: Raevnos Zone: Raevnos's ZMO(#1398S) Ducats: 10
+Parent: *NOTHING*
+Basic Lock: =Raevnos(#1622POXrzACMcx)
+Powers:
+Warnings checked: none
+Created: Wed May 5 15:05:06 1999
+Last Modification: Wed May 5 15:08:22 1999
++VIEW_CMD [#1622]: $+fview:@pemit %#=Views on
+[name(#688)]:%r[table(iter(edit(lattr(#688/view_*), VIEW_,),
+capstr(lcstr(##)), ,|), 15, 78, |)]
+Home: Security Cabinet(#5912Oen)
+Location: Code Classroom(#1061RnJ)
+
+Raevnos says, "Then examine #5911 and try +fview."
+
+THIS IS A HOLE!
+Views on Tainted +view data:
+Foo
+
+David Had no idea you could use [, ], ( and ) in a attrib name.
+
+Raevnos says, "Yup, you can."
+
+Rusty has arrived.
+
+Security Cabinet drops Good +view code.
+
+Good +view code(#5910V)
+Type: Thing Flags: VISUAL
+Owner: Raevnos Zone: Raevnos's ZMO(#1398S) Ducats: 10
+Parent: *NOTHING*
+Basic Lock: =Raevnos(#1622POXrzACMcx)
+Powers:
+Warnings checked: none
+Created: Wed May 5 15:07:37 1999
+Last Modification: Wed May 5 15:11:05 1999
++VIEW2_CMD [#1622]: $+gview2:@pemit %#=Views on
+[name(#688)]:%r[table(map(#1838/.capitalize,
+lcstr(edit(edit(lattr(#688/view_*), VIEW_,),%b, |)), |), 30, 78, |)]
++VIEW1_CMD [#1622]: $+gview1:@pemit %#=Views on
+[name(#688)]:%r[table(iter(escape(edit(lattr(#688/view_*), VIEW_,)),
+capstr(lcstr(##)), ,|), 30, 78, |)]
+Home: Security Cabinet(#5912Oen)
+Location: Code Classroom(#1061RnJ)
+
+Shane hmms, "It certainly isn't something you would normally think about."
+
+Raevnos nods to Shane. "The other ways are all pretty straightforward and
+obvious. But people don't think of attribute NAMES as being problems, just
+their contents... so they usually don't do anything about them."
+
+Raevnos says, "#5910 has two versions of the code that aren't hit by funny
+attribute names - +gview1 and +gview2."
+
+Raevnos glances through his notes and sees he's covered pretty much everything
+he meant to. A few odds and ends. I've gotten into the habit, when writing a
++command that takes arguments, of doing things like:
+
+$+foo *:@pemit %#=[setq(0,secure(%0))][use %q0 everywhere you'd normally use
+%0]
+
+This makes looking for problems involving user-input data simpler, as long as
+you don't care that special characters are stripped. If you do care, that's
+not an option and you'd have to use something else.
+
+Raevnos says, "And, of course, the tradition way to find problems: Looking at
+the code, and trying it out with wierd arguments (+foo \[lit\(\[set\(%#,
+royalty\)\]\)\]"
+
+Raevnos says, "That didn't come out /quite/ right. A few extra backslashes.
+:P"
+
+Raevnos opens the floor to questions. 

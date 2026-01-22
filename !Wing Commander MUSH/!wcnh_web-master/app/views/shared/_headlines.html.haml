@@ -1,0 +1,7 @@
+%h2 Headline News (<a href="/headlines.rss">RSS Feed</a>)
+- @headlines.each do |story|
+  .listing.first
+    .title
+      %h3= story.title
+    .excerpt
+      %p= "#{story.created_at.to_datetime.to_ictime.strftime('%B %e, %Y')}<br><br>#{story.body.gsub("\n","<br>")}".html_safe

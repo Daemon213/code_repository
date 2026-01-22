@@ -1,0 +1,174 @@
+/*
+CHARGEN
+or at least many things chargen
+mainly the "is this sheet chargen-compatible" system
+
+
+
+================================================================================
+== SETUP =======================================================================
+*/
+
+@create GMC Chargen <cg>
+@set GMC Chargen <cg>=inherit safe
+@fo me=&d.cg me=GMC Chargen <cg>
+
+@parent GMC Chargen <cg>=codp
+&prefix.dot-functions cg=.
+&prefix.checks cg=check.
+&prefix.display cg=format. display.
+
+
+
+/*
+================================================================================
+== DATA ========================================================================
+*/
+
+@fo me=&d.dd [v( d.cg )]=search( name=data dictionary <dd> )
+@fo me=&d.dt [v( d.cg )]=search( name=data tags <d:t> )
+@fo me=&d.sfp [v( d.cg )]=search( name=stat functions prototype <sfp> )
+@fo me=&d.asp [v( d.cg )]=search( name=aspirations system <asp> )
+
+
+
+/*
+================================================================================
+== INITIAL COMMAND =============================================================
+*/
+
+&c.cg [v( d.cg )]=$^\+?cg$:@pemit %#=Yup, it's chargen. See Also: +help chargen
+
+// --
+
+@set v( d.cg )/c.cg=regexp
+
+// -----------------------------------------------------------------------------
+
+&c.chargen [v( d.cg )]=$^\+?chargen$:@pemit %#=You probably want 'cg'. 
+	See Also: +help chargen
+
+// --
+
+@set v( d.cg )/c.chargen=regexp
+
+
+
+/*
+================================================================================
+== FUNCTIONS ===================================================================
+*/
+
+&.msg [v( d.cg )]=ansi( h, <%0>, n, %b%1 )
+
+
+
+/*
+================================================================================
+== FILTERS =====================================================================
+
+0: <statpath>:<value>
+1: stat class
+2: tags
+
+*/
+
+&fil.stats-to-include [v( d.cg )]=
+	cand( 
+		strmatch( %0, %1.* ), 
+		u( v( d.sfp )/fil.list-stats-tags, 
+			before( %0, : ), 
+			%2 
+		)
+	)
+
+
+
+/*
+================================================================================
+== LIST: Things ================================================================
+
+Functions that provide lists of information that we can use to validate traits.
+
+
+--------------------------------------------------------------------------------
+-- List of Stats Based on Tags -------------------------------------------------
+
+Returns only the stats of a certain category ('*' for 'any') with a certain tag
+or '*' for 'don't filter', in which case don't use this function, 
+use lattr( <sheet>/_<category>.* ) and leave it at that.
+
+List of stats on a sheet, based on passed tags
+	0: sheet dbref
+	1: category (may be *)
+	2: tags.list (all required, if any, for 'mental', etc., * for 'all')
+	3: 'or' for the default behavior of hastag? (defaults to 'and')
+
+	returns: character sheet statpaths
+*/
+
+&f.list-stats-tags [v( d.cg )]=
+	filter( 
+		[v( d.sfp )]/fil.list-stats-tags, 
+// .. lazy, so turning "_sheet.statpath" into "sheet.statpath" 
+// .. so we can use the filter for non-sheet matches
+		rest( edit( lattr( %0/_%1.* ), %b_, %b ), _ ), 
+		, 
+		, 
+		%2, 
+		not( strmatch( %3, or ))
+	)
+
+/* -- test --
+
+think u( v( d.cg )/f.list-stats-tags, %#, attribute, mental )
+think u( v( d.cg )/f.list-stats-tags, %#, attribute, resistance )
+think u( v( d.cg )/f.list-stats-tags, %#, attribute, resistance.mental )
+think u( v( d.cg )/f.list-stats-tags, %#, attribute, * )
+
+think u( v( d.cg )/f.list-stats-tags, %#, skill, physical.mental.social, or )
+
+think u( v( d.cg )/f.list-stats-tags, %#, merit, human )
+think u( v( d.cg )/f.list-stats-tags, %#, *, power level )
+think u( v( d.cg )/f.list-stats-tags, %#, *, energy )
+think u( v( d.cg )/f.list-stats-tags, %#, *, morality )
+
+think u( v( d.cg )/f.list-stats-tags, %#, merit, supernatural )
+
+
+--------------------------------------------------------------------------------
+-- List Total Points in a Category/Tags Combo ----------------------------------
+
+Does not presently work for List stats
+
+	0: sheet dbref
+	1: category (attribute, skill, merit, etc)
+	2: tags.list (all required, if any, for 'mental', etc., '*' for 'all')
+
+	returns: total number of dots in that category.
+
+	l: list of statpaths (you can see where we're going with this)
+	s: sum of points in each category (primary stats only)
+	b: number
+*/
+
+&f.points.category [v( d.cg )]=
+	strcat( 
+		setq( l, u( f.list-stats-tags, %0, %1, %2 )), 
+		setr( s, 
+			ladd( 
+				iter( 
+					%ql, 
+					first( u( %0/_%i0 ), . )
+				)
+			)
+		)
+	)
+
+/* -- test --
+
+think u( v( d.cg )/f.points.category, %#, attribute, social )
+think u( v( d.cg )/f.points.category, %#, skill, social )
+think u( v( d.cg )/f.points.category, %#, merit, * )
+
+*/

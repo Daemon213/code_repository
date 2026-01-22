@@ -1,0 +1,71 @@
+OOC Room Parent - #57
+Grid Room Parent - #58
+CharGen Room Parent - #59
+Exit Parent - #60
+RP Room Parent - #61
+Parent Setup Bot - #62
+Custom Player Commands - #63
+Custom Staff Commands- #64
+
+@create OOC Room Parent=10
+@create Grid Room Parent=10
+@create CharGen Room Parent=10
+@create Exit Parent=10
+@create RP Room Parent=10
+@create Parent Setup Bot=10
+@create Custom Player Commands=10
+@create Custom Staff Commands=10
+
+@Desc OOC Room Parent=[space(18)]Description to come soon.
+@NameFormat OOC Room Parent=%r[name(me)] - [u(area)] - [u(zone)][switch([isstaff(%#)],1,%b([num(me)][flags(me)]))]
+@ExitFormat OOC Room Parent=Exits:%b%r[columns(ifelse(isstaff(%#),iter(lexits(me),strcat(ifelse(setr(1,orflags(##,D)),%ch%cr!%cn,),[first(name(##),;)]%b<[extract([fullname(##)],2,1,;)]>),%b,|),iter(%0,[first(name(##),;)]%b<[extract([fullname(##)],2,1,;)]>,%b,|)),26,|)]
+@ConFormat OOC Room Parent=Contents:%r[columns(ifelse(isstaff(%#),iter(setdiff(lcon(me),%#),strcat(ifelse(orflags(##,D),%ch%cr!%cn,),ifelse(andflags(##,P!c),ansi(hr,-),),first(moniker(##),;)),%b,|),iter(setdiff(%0,%#),first(moniker(##),;),%b,|)),26,|)]
+@DescFormat OOC Room Parent=[repeat(-,78)]%r%r%t%0%r%r[repeat(-,78)]
+@set OOC Room Parent=SAFE
+
+@Desc Grid Room Parent=[space(18)]Description to come soon.
+@NameFormat Grid Room Parent=%r[center(<%b[ansi(h,[edit(name(me),and,&)] - [ansi(h,[u(area)])] - [ansi(h,[u(zone)])])][switch([isstaff(%#)],1,[ansi(hx,([num(me)][flags(me)]))])]%b>,78,-)]
+@ExitFormat Grid Room Parent=Exits:%b%r[columns(ifelse(isstaff(%#),iter(lexits(me),strcat(ifelse(setr(1,orflags(##,D)),%ch%cr!%cn,),[first(edit(name(##),and,&),;)]%b<[ansi(h,[extract([fullname(##)],2,1,;)])]>),%b,|),iter(%0,[first(name(##),;)]%b<[ansi(h,[extract([fullname(##)],2,1,;)])]>,%b,|)),30,|)]
+@ConFormat Grid Room Parent=Contents:%r[columns(ifelse(isstaff(%#),iter(setdiff(lcon(me),%#),strcat(ifelse(orflags(##,D),%ch%cr!%cn,),ifelse(andflags(##,P!c),ansi(hr,-),),first(moniker(##),;)),[space(4)],|),iter(setdiff(%0,%#),first(moniker(##),;),%b,|)),26,|)]
+@DescFormat Grid Room Parent=%r%t%0%r%r[repeat(-,78)]
+&IC Grid Room Parent=1
+@set Grid Room Parent=SAFE
+
+@Desc CharGen Room Parent=[center(Description to come soon.,78)]%r%r[repeat(-,78)]
+@NameFormat CharGen Room Parent=[center(<%b[ansi(hr,[name(me)])] [ansi(h,-)] [ansi(hr,[u(area)])] [ansi(h,-)] [ansi(hr,[u(zone)])][switch([isstaff(%#)],1,%b[ansi(hx,%[[num(me)][flags(me)]%])])]%b>,78,-)]%r
+@ExitFormat CharGen Room Parent=%rExits:%r[columns(ifelse(isstaff(%#),iter(lexits(me),strcat(ifelse(setr(1,orflags(##,D)),%ch%cr!%cn,),[first(name(##),;)]%b<[extract([fullname(##)],2,1,;)]>),%b,|),iter(%0,[first(name(##),;)]%b<[extract([fullname(##)],2,1,;)]>,%b,|)),26,|)]
+@set CharGen Room Parent=SAFE
+
+&C.LIST RP Room Parent=$+desc/list:@pemit %#=[center(<%b[ansi(h,Room Description List)]%b>,78,-)]%r%r[space(2)][edit([edit([setq(0,lcstr(sort(lattr(#193/desc_*))))][iter(%q0,[ljust(capstr_all(edit(edit(mid(##,strlen(desc_),strlen(##)),-,%b),_,)),24)][switch(mod(#@,3),0,%r%b)])],Of,of)],The,the)]%r%r[repeat(-,78)]&C.LOCK RP Room Parent=$+lock:@lock [u(loc(%#)/exit)]=#1;@lock o=#1;&status [loc(%#)]=[ansi(hr,TAKEN)];@pemit %#=[ansi(hc,Game:)] You've locked the doors.;@oemit %#=[ansi(hc,Game:)] [name(%#)] has locked the doors.&C.UNLOCK RP Room Parent=$+unlock:@unlock [u(loc(%#)/exit)];@unlock o;&status [loc(%#)]=[ansi(hg,OPEN)];@pemit %#=[ansi(hc,Game:)] You unlock the doors.;@oemit %#=[ansi(hc,Game:)] [name(%#)] has unlocked the doors.&C.PREVIEW RP Room Parent=$+desc/preview *:@pemit %#=[center(<%b[ansi(h,Room Description: [capstr_all(%0)])]%b>,78,-)]%r%r[u(#193/desc_[edit(%0,%b,-)])]%r%r[repeat(-,78)]&C.SET RP Room Parent=$+desc/set *:@switch [hasattr(#193,desc_[edit(%0,%b,-)])]=1,{&active [loc(%#)]=[edit(%0,%b,-)];@remit %#=[ansi(hc,Game:)] [name(%#)] has changed the room's description.},0,{@pemit %#=[ansi(hr,Error:)] That is not a valid selection. Check the list and try again.}&C.RESET RP Room Parent=$+reset:&active [loc(%#)];@unlock [u(loc(%#)/exit)];@tel #50=[loc(%#)];@fo #50=@unlock out;@fo #50=home;&status [loc(%#)]=[ansi(hg,OPEN)];@pemit %#=[ansi(hc,Game:)] You have reset the room. Doors are unlocked and description is reset.;@oemit %#=[ansi(hc,Game:)] [name(%#)] has reset the room.&C.ADD RP Room Parent=$+desc/add *=*:@switch [hasattr(#193,desc_[edit(%0,%b,-)])]=0,{&desc_[edit(%0,%b,-)] #193=%1;@pemit %#=[ansi(hc,Game:)] You have added [ansi(h,capstr_all(%0))] to the description list with a description of:%r%r%t%1%r},1,{@pemit %#=[ansi(hr,Error:)] There is already a description by that name. Please choose another or ask the staff to remove it.}@Desc RP Room Parent=[if(hasattr(loc(%#),active),[u(#193/desc_[u(loc(%#)/active)])],u(#227/desc_default))]&C.COMMANDS RP Room Parent=$+commands:@pemit %#=[center(<%b[ansi(h,Command List)]%b>,78,-)]%r%r[space(2)][ljust(ansi(h,+desc/add <title>=<desc>)%b,28,.)]%bAdds a new desc to the description list.%r[space(2)][ljust(ansi(h,+desc/list)%b,28,.)]%bList the available descriptions for use.%r[space(2)][ljust(ansi(h,+desc/preview <title>)%b,28,.)]%bDisplays a preview of the specified description.%r[space(2)][ljust(ansi(h,+desc/set <title>)%b,28,.)]%bChanges the description of the room.%r[space(2)][ljust(ansi(h,+lock)%b,28,.)]%bLocks the room's doors and claims the room.%r[space(2)][ljust(ansi(h,+unlock)%b,28,.)]%bUnlocks the room's doors and frees up the room.%r[space(2)][ljust(ansi(h,+reset)%b,28,.)]%bResets the room to the default description, %r[space(31)]unlocks the doors and frees up the room.%r%r[repeat(-,78)]&DESC_DEFAULT RP Room Parent=Welcome to [name(loc(%#))]. You are more than welcome to use this room to represent any rooms that you may need and are not created on the actual grid. We do ask that you use the [ansi(h,+lock)] command to lock the doors and claim the room as in use. This will prevent people from wondering into your scene and disrupting your RP. Feel free to add descriptions to the database if you do not find one that you like. You do not need to add [ansi(h,%%r%%t)] at the beginning of the new description and [ansi(h,%%r)] at the end. These are added automatically. For a list of commands that are available in this room, type '[ansi(h,+commands)]'.@set RP Room Parent=SAFE@parent RP Room Parent=#58
+
+@Fail Exit Parent=You can not go that way since the room is [ansi(hr,locked)].
+@Odrop Exit Parent=arrives from [ansi(ch,[name([home(me)])])].
+@Osucc Exit Parent=heads into [ansi(hc,[name(num(loc(me)))])].
+@Succ Exit Parent=You head into [ansi(hc,[name(num(loc(me)))])].
+@set Exit Parent=INHERIT
+@set Exit Parent=OPAQUE
+@set Exit Parent=SAFE
+
+@set Parent Setup Bot=DARK
+@set Parent Setup Bot=INHERIT
+@set Parent Setup Bot=QUIET
+@set Parent Setup Bot=SAFE
+@set Parent Setup Bot=ROBOT
+
+&C.PARENT-CG #64=$+parent/cg:@pemit %#=[ansi(hc,Parent:)] Setting up CharGen Room Parent.;@wait .1=@tel #62=[loc(%#)];@wait .2=@fo #62=@parent here=#59;@wait .3=@fo #62=@chown here=#12;@wait .4=@fo #62=@set here=!halt safe inherit;@wait .5=@fo #62=home;@wait .6=@pemit %#=[ansi(hc,Parent:)] Room setup completed successfully.
+&C.PARENT-OOC #64=$+parent/ooc:@pemit %#=[ansi(hc,Parent:)] Setting up OOC Room Parent.;@wait .1=@tel #62=[loc(%#)];@wait .2=@fo #62=@parent here=#57;@wait .3=@fo #62=@chown here=#13;@wait .4=@fo #62=@set here=!halt safe;@wait .5=@fo #62=home;@wait .6=@pemit %#=[ansi(hc,Parent:)] Room setup completed successfully.
+&C.PARENT-GRID #64=$+parent/grid:@pemit %#=[ansi(hc,Parent:)] Setting up Grid Room Parent.;@wait .1=@tel #62=[loc(%#)];@wait .2=@fo #62=@parent here=#58;@wait .3=@fo #62=@chown here=#14;@wait .4=@fo #62=@set here=!halt safe;@wait .5=@fo #62=home;@wait .6=@pemit %#=[ansi(hc,Parent:)] Room setup completed successfully.
+&C.PARENT-GRID2 #64=$+parent/ic:@fo %#=+parent/grid
+&C.PARENT-RP #64=$+parent/rp:@pemit %#=[ansi(hc,Parent:)] Setting up RP Room Parent.;@wait .1=@tel #62=[loc(%#)];@wait .2=@fo #62=@parent here=#61;@wait .3=@fo #62=@chown here=#14;@wait .4=@fo #62=@set here=!halt safe inherit;@wait .5=@fo #62=home;@wait .6=@pemit %#=[ansi(hc,Parent:)] Room setup completed successfully.
+&C.PARENT-EXIT #64=$+parent/exit *:@pemit %#=[ansi(hc,Parent:)] Setting up Exit Parent.;@wait .1=@tel #62=[loc(%#)];@wait .2=@fo #62=@parent %0=#60;@wait .3=@fo #62=@chown %0=#88;@wait .4=@fo #62=@set %0=!halt safe;@wait .5=@fo #62=home;@wait .6=@pemit %#=[ansi(hc,Parent:)] Exit setup completed successfully.
+
+@link #63=#2
+@link #64=#2
+
+@set #63=safe inherit
+@set #64=safe inherit
+&canuse #64=[isstaff(%#)]
+@lock #64=CANUSE/1
+
+@tel #63=#2
+@tel #64=#2

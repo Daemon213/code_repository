@@ -1,0 +1,400 @@
+ ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+|\ /| |\ /| |\ /|
+| \ / | | \ / | | \ / |
+| \/ |oe's | \/ |ushkode | \/ |anual
+~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
+Lesson 2: WHAT? YOU WANT MORE?
+
+Alright, in our last lesson, we handled a number of basics of
+mushcoding, and created a 'mywho' command that did a couple of basic
+coding procedures. It looked something like:
+
+&cmd_mywho obj=$mywho:@pemit
+%#=iter(lwho(),switch(lcstr(xget(##,sex)),f*,ucstr(name(##)),m*,%t
+[name(##)],name(##)),,%R)
+
+Look familiar? Make sense? If the answer to both is no, go back
+and read Lesson 1 of this tutorial. If the answer to only the second
+question is no, go back and read Lesson 1 of this tutorial. If it at least
+makes sense, let's move on.
+
+U-FUNCTIONS
+
+At this point in the tutorial, we're going to start making our
+code look a bit cleaner, and also by learning these methods, we'll start
+finding ways to make the tracking down of bugs easier. It is possible,
+through the use of something called u-functions, to break your code up
+into chunks, creating in essence subroutines.
+This is useful if your code is going to be using the same bits
+time and time again, and you don't want to have to type them out each
+time. Or, if your command is starting to get lengthy and full of various
+parentheses that you're afraid you'll lose track of, it's time to use
+u-functions.
+In short, a u-function is a user-defined function routine that can
+be stored in an attribute separate from the one in which the command is
+stored. Since they are going to be stored in an attribute(all mushcode is
+stored in attributes, so this should come as no surprise), it is helpful
+to adopt a naming convention, as discussed in Lesson 1.
+There are many possibilities for what you can name your u-function
+attributes. fn_dostuff would be the name of an attribute that did stuff,
+and by its name, you would know it was a function routine. do_stuff is
+also valid. Whatever works for you, great. Stick with it, and be
+consistent. In the offchance that someone has to maintain your code, it is
+helpful if you name your attributes logically and clearly.
+If you look at our mywho from above, you'll notice that where the
+switch() is, it's starting to get a little cumbersome with the
+parentheses. So, let's put this into a u-function. Let's name it fn-sex,
+as this tells us that it is a function that handles or checks sex in some
+way. (Naughty minds, I tell you!)
+Now, our ufun(short for u-function) is going to need to be able to
+accept the dbref that is being iterated in each pass of our command. This
+is where we learn about passing parameters.
+
+PARAMETERS
+
+As if on cue, eh? Parameters are values passed from one piece of
+code to another. There are certain hard and fast rules for doing this, so
+you don't have to worry too much about being confused. First, you can only
+pass up to ten parameters. They are always accepted in the order in which
+they are passed, and their order will always be referenced the same
+way. Mushes store parameters in %0-%9. %0 is always the first parameter
+passed, %1 the second, %2 the third, etc.
+Now, our switch() routine from above only has one element of it
+that changes, the ##. We will turn that into %0, since that is the first
+parameter that can be passed. In our case, it will be the only one. Here
+is how our ufun will look.
+
+&fn-sex
+obj=[switch(lcstr(xget(%0,sex)),f*,ucstr(name(%0)),m*,%t[name(%0)],name(%0))]
+
+Why are there brackets around it, you ask? If you remember your
+rules, you know that brackets force the evaluation of functions. This
+entire routine is functions, and we want to be sure that it evaluates,
+regardless of what may come before it where it was called. It is better to
+always enclose your ufuns in brackets than to risk having it not be
+evaluated.
+Now, how do we call this wonder of coding technology, you
+ask? Even if you didn't, here's how. We rewrite our cmd_mywho to include a
+u() function. This is how ufuns got their name, because they are invoked
+by the u() function.
+
+BRIEF TANGENT TO TEACH YOU SOMETHING
+
+There is a lot of confusion with beginning coders about the
+difference between v() and u(). Let me pause in our mywho development to
+explain this, in a modest amount of detail. As I just explained, u() is
+used to invoke a subroutine of functions. It follows the syntax:
+u([<obj>/]<attribute>,[<param>])This means it is telling the mush:
+'Evaluate the contents of this attribute.'
+If you specify an object and an attribute, it means you want to
+read and evaluate an attribute stored on an object other than that which
+the code you're using is on. Parameters are optional, as not all ufuns
+require them. But, they can be included, if necessary.
+v() on the other hand, does none of these things. The v() function
+only returns the value of an attribute(V, value, get it?). It does not do
+any substitution, evaluation, nor can v() fetch an attribute from another
+object. It can only see attributes on the same object as the code, and
+will only ever return what is stored in that attribute. It will not do
+/any/ evaluation.
+Here's how I learned to remember it. v() gives me the value of an
+attribute. u() uses the attribute. V - value. U - use. Simple, no? I hope
+so. Back to our regularly scheduled tutorial.
+
+CALLING A U-FUNCTION
+
+Where our switch() was before in our mywho, we are going to put
+the following code:
+
+u(fn-sex,##)
+
+What this does is tells the command to 'use' the functions stored
+in the attribute named fn-sex, stored on the same object that the command
+is on. It tells it also to use the current value of ##, which will be
+passed as %0. So, now our new mywho looks like:
+
+&cmd_mywho obj=$mywho:@pemit %#=iter(lwho(),u(fn-sex,##),,%R)
+
+Looks a lot better than it did when we started, doesn't
+it? Cleaner, and more maintainable. Because now, we can change fn-sex if
+we want to change something about the display, and we don't have to change
+our mywho command at all. Such is one of the benefits of ufuns. They are
+your friend.
+We can take it even a step further. We could have a fn-mywho that
+does our iter(), and calls fn-sex from within it. And then our mywho
+command would simply be:
+
+&cmd_mywho obj=$mywho:@pemit %#=u(fn-mywho)
+
+We could do that, yes. But, I like to see something in my
+command. Makes me feel like I did something. As well, there are some small
+efficiency reasons not to do this. If an object is set to be read for
+$commands, then the mush is going to check every attribute on that object
+for $commands, each time a command is entered. It can get tedious to set
+each and every function attribute to no_command, if you want to be the
+most efficient about it.
+What? Setting function attributes to no_command?? Yes, you can do
+that. They aren't commands in and of themselves, and setting them
+no_command doesn't stop their evaluation. It just tells the mush not to
+look at them when trying to match a $command used by a player. And now,
+for something completely different.
+
+COSMETIC CODING
+
+Quite often as coders, we are faced with the task of making
+something we produce look nice on the screen. This involves a lot of
+justifying, centering, truncating...a mess of things that get in the way
+of doing actual manipulation of data. But, if you learn a few simple
+tricks, you can institute some good habits and ease the path of what I
+like to call 'Cosmetic Coding'.
+First tenet of cosmetic coding is this: Always code for a
+78-column screen. Even in the beginning of the 21st century, where it's
+feasible to have a 1600x1400 resolution screen, your standard terminal
+window is designed to be 80 columns wide. By limiting yourself to
+78-column coding, you are going to always have a presentation that can be
+viewed by anyone logging on to your mush. Only coding for people who see
+things in 140 columns is not going to win you any friends that are Linux
+users, for instance.
+A side note that I should throw in here while I am at it. Not
+everyone uses a fixed-width font anymore. In the old days, it was fixedsys
+and courier new. Now, there are more fonts than flavours of Nehi, and only
+a select few of them are fixed-width font. All of the careful coding for
+alignment in the world will go quickly out the window when viewed in a
+variable-width font. To make sure that your code is going to be properly
+justified, make sure you're looking at it in Courier New, or a similar
+fixed-width font.
+While I could spend a lot of time talking about how to do ascii
+borders, and artistic things like that, I am going to focus more on the
+justification and alignment of text, taking our mywho in a wholly new
+direction in the process. We are going to revamp our fn-sex so that it
+displays two columns of data. One is the character's name, and the other
+is their sex.
+Now, for starters, let's begin with the following code:
+
+&fn-sex obj=[name(%0)] [xget(%0,sex)]
+
+Type that in, and then run your mywho command. You'll see the data
+you requested, and most likely you'll have one column of names that is
+nicely left-justified and a column of gender specifications that is
+uneven, as it's spaced based on what the character's name is.
+A lot of beginning coders at this point will think to fix that by
+putting a %t between the name() and the xget() functions, thinking that
+will provide a uniform distance between the two. It doesn't, for two
+reasons.
+One, not everyone has the same tab width set on their client.
+While 3 or 4 spaces is the most common, it is by no means universal, and
+those two values by themselves are different and therefore can cause
+specific alignment problems.
+Two, the %t only moves the text to the next tab stop on the
+screen. That may be in one or seven spaces, depending on the length of the
+text preceding it. Again, while it's a nice idea, you have no guarantee
+that it's going to align your text properly. There is a better way.
+
+LJUST()
+
+Mushcode provides you with three justification functions. ljust(),
+rjust(), and center(). All three of these functions behave similarly, in
+that they allow you to specify a total column width that you would like to
+put your text in, and providing that your text isn't longer than that
+width, it will pad the appropriate end(s) of your text with whitespace in
+order to achieve the total length.
+These three functions also allow you to pad the supplied text with
+a character other than a blank space, and thanks to this, we are able to
+visually see how they work, in order to understand them better. Enter the
+following command(think doesn't exist on TinyMUSH2.2, so I suggest using
+@pemit me= or @emit instead):
+
+think ljust(Word,10,+)%R[rjust(Word,10,+)]%R[center(Word,10,+)]
+
+You should get back something that looks like this:
+
+Word++++++
+++++++Word
++++Word+++
+
+You can see how the mush pads the text you supply to make the
+output be the assigned length. We can use this to our advantage when we
+are doing cosmetic coding, because it allows us to make fixed-width
+columns that will always line up. Consider the following modification to
+fn-sex:
+
+&fn-sex obj=[ljust(name(%0),25)][xget(%0,sex)]
+
+Type that in, and then run your mywho command again. Providing
+that none of your characters have names greater than 25 characters, it
+should look pretty snazzy. Now why didn't we justify the sex column? It
+wasn't necessary. You only need to left-justify something in order to
+align what comes /after/ it. There is nothing after the sex on each line,
+so there is no need to justify that column.
+
+AVOIDING BLANK SPACE
+
+Something that will help both you as a coder, and your users, is
+avoiding blank space to signify that something doesn't exist. It is as
+much a part of robust coding as it is cosmetic coding, and so I shall
+address it here, while you're still relatively impressionable in your
+coding skills and habits.
+Consider our current fn-sex, and the case of two or three
+characters that don't have their @sex attribute set. As it is now, the
+xget() will simply retrieve a null string, or no value. This means that
+they don't have their sex set, and we intellectually know that. But, in
+the spirit of learning to code for other people, let's learn how to
+provide some basic data for most any situation. We'll use the
+default() function.
+Default() looks for an attribute and tries to read its value, a la
+v(). If it either a) can't find the attribute, b) can't read the attribute
+due to permissions or lack thereof, or c) the attribute has no value, it
+will return a 'default' value. Guess how the function got its name? Here
+is the syntax for default(): default(obj/attr,default)
+And here is how we are going to implement it in our fn-sex:
+
+&fn-sex obj=[ljust(name(%0),25)][default(%0/sex,Not set.)]
+
+This will produce two columns that are guaranteed to have data on
+each line, in both columns. It will tell us the character's name, and
+their sex, if it is set. If it is not, it will tell us 'Not set.'. If
+someone comes behind us and uses our mywho command, they will have a much
+clearer understanding of what the command is displaying, through the
+simple use of this function.
+
+TRUNCATING
+
+One of the onerous jobs of the mushcoder is truncating text to fit
+in a field. In our current case, we're going to expand our mywho command
+and learn how to truncate at the same time. And we're going to expand our
+usage of the default() function as well. Now you know why I just made you
+learn it, don't you?
+While it's not quite universal, it can be considered a standard
+convention of most RP mushes to have players set a &fullname attribute on
+their character to indicate what the full name of their beloved creation
+is, as opposed to simply the screen name by which they login. For the next
+level of our mywho, let's adjust our display so that it gives us the
+fullname attribute, if set, and if not, just gives us the character's
+name. We will need to justify this column, still, and also truncate so
+that it doesn't run over our specified width.
+Sadly, ljust(), rjust(), and center() do not truncate for us. If
+the text is wider than the width we specify, it will simply display the
+text as is. The solution for this is the simple inclusion of the
+left() function. This function returns the leftmost number of characters
+that we specify. left(This is a test,8) would return 'This is '
+We learned from our previous bit that default() looks for the
+value of one attribute, and either returns that, or a default value. So,
+let us proceed to figure out first how to apply that to a fullname
+attribute. We know the player's dbref is being passed as %0, so it becomes
+as simple as: default(%0/fullname,name(%0))
+This then needs to be truncated and justified. Two more functions,
+coming right up. You want fries with that?
+
+ljust(left(default(%0/fullname,name(%0)),24),25)
+
+I chose to take the 24 leftmost characters and put them in a field
+of 25 spaces, that way we are always assured of having at least one column
+of whitespace between our name column and our sex column. Whitespace is
+necessary for the brain to be able to distinguish between pieces of
+information. Make sure to give your users some(both whitespace /and/
+pieces of information, that is).
+Now, we just need to redo our fn-sex, so that it looks like:
+
+&fn-sex
+obj=[ljust(left(default(%0/fullname,name(%0)),24),25)][default(%0/sex,Not
+set.)]
+
+There. Got all that? Run your mywho again, and marvel in the
+elegant layout, the pleasant justification, the tender truncation of
+run-on text.
+
+ANSI or HOW TO ANNOY CERTAIN PEOPLE
+
+Disclaimer: Not everyone likes ansi. Not everyone uses ansi. It is
+optional. But, it is not accidental. If you are going to use ansi, please
+use it tastefully, and not just because you can. Use ansi colour for the
+purpose of either tastefully decorating or emphasizing text. Otherwise,
+it's like golf pants. Garish, no matter how you look at them.
+
+For this section, I'm going to simply teach the use of the
+ansi() function, which works on both Penn, Tiny, and Mux. There are no
+%-substitutions for ansi on Penn, and Tiny and Mux fight over whether to
+use %x or %c for ansi colour codes. So, I stick with the basics.
+I am also not going to speak much on this, as it is something to
+be experimented with before used. Since it is very(almost strictly)
+cosmetic, it rounds out this section of the Manual. The use of the
+ansi() function imparts colour to what is otherwise drab ascii text. You
+cannot recreate the lushness of your favourite 3D game, so please...don't
+try.
+From help ansi(), you can get a sense of the various colour
+combinations that are possible. For each colour listed, there are two
+varieties, the base colour and the highlight colour. You can see the
+difference by typing: think ansi(c,Cyan) and think ansi(hc,Highlight
+Cyan). The second is much more striking, bright, and eye-catching.
+The ansi() function should surround the text you are seeking to
+change. If we were to apply it to our mywho command, we could list all of
+our names in highlight cyan by the following method:
+
+&fn-sex
+obj=[ljust(left(ansi(hc,default(%0/fullname,name(%0))),24),25)][default(%0/sex,Not
+set.)]
+
+This would change the colour of our names column only, leaving the
+sex column as plain text. Feel free to play with the color combinations,
+and various effects that ansi has. It is not supported uniformly on all
+platforms. Fortunately, a number of clients no longer support flashing
+ansi. Remember that potentially anyone could be using your code, and so
+you should code for the capabilities of the maximum number of users, not
+just what works on /your/ machine.
+That is as close to another of my original Rules of Coding as you
+are going to get. Code for what the most users will be able to do, not
+just what you see on your machine.
+
+HEADERS AND FOOTERS
+
+This is as close to ascii art as I'm going to get, and I shall
+only demonstrate one method of making a header/footer combination, and
+then leave you to play with characters on your own to come up with a style
+that you like.
+It is often visually appealing to display the output of your code
+sandwiched between a pleasantly-graphic header and footer that separate
+your code's output from the rest of the text on your screen. A sample
+header and footer for a mywho would be:
+
+==============================================================================
+My Who
+==============================================================================
+Bob Will Male
+Sara Won't Female
+Guest Not set.
+==============================================================================
+
+Very simplistic, but you see how it provides a definite 'frame'
+for your code's output. Quite often, headers and footers get used over and
+over by many different commands, so it's best to put them in an attribute
+by themselves, and let them be called by many different things. Here, I
+will use the repeat() function to create a line of alternating ~^
+patterns. Note that there is a %0 in this function, that will serve as the
+title of the command being displayed.
+
+&cmdheader obj=[repeat(~^,39)]%R[center(ucstr(%0),78)]%R[repeat(~^,39)]%R
+
+The reason I repeat the ~^ 39 times is that it is two characters
+long. 39 x 2 = 78. That's how wide I want my display to be. For my footer,
+I will just use that same graphical pattern, making one line. I will put a
+%R before it so that I am always ensured that it is going on its own
+line. I put a %R at the end of my cmdheader so that I am always ensured
+that what comes after the header begins on its own line, as well.
+
+&cmdfooter obj=%R[repeat(~^,39)]
+
+Note that we will have to call these with a u() or an eval() in
+order to have the functions and %R evaluate. If you use v() on these, you
+will get back precisely what is in the attribute, and nothing more. Now,
+we can modify our mywho command just a bit to accomodate these graphical
+bits. Et voila:
+
+&cmd_mywho obj=$mywho:@pemit
+%#=u(cmdheader,mywho)[iter(lwho(),u(fn-sex,##),,%R)][u(cmdfooter)]
+
+Run your mywho again, with these graphics around it. Starting to
+look more professional all the time, isn't it? So now you've come this
+far, and it's up to you to make the choice to go on, or to rest lightly on
+your laurels and remain at the level you have achieved thus far. Going
+onward involves math, memory registers, and other nastiness. But, it's
+fun.

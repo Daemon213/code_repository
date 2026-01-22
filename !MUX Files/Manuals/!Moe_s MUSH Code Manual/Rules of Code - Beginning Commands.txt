@@ -1,0 +1,460 @@
+ ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+|\ /| |\ /| |\ /|
+| \ / | | \ / | | \ / |
+| \/ |oe's | \/ |ushkode | \/ |anual
+~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
+Lesson 1: SO, YOU WANT TO LEARN TO CODE?
+
+Mushcode is seen by many as complete gibberish, utter lunacy of
+syntax, and a headache just waiting to happen. And there are a whole
+/other/ set of people that don't know how to code in it. In an endeavour
+to bridge the gap between the savvy and the non-initiated, I want to offer
+a short and simple tutorial, and include a few nearly-inalienable rules of
+coding on a MUSH, in the hopes that this will help people who are having
+trouble.
+As a quick disclaimer, short and simple will mean: I'll try not to
+belabour any points, it'll come in managable installments, and I'll leave
+it up to you to explore the things I talk about in depth.
+
+RULES!
+
+When I say rules, I mean rules. These are things that if you
+follow them, you will lead a happy and prosperous life as a coder. And if
+you break them, there will be punishments, usually in the form of
+unexpected results from your coding. These are guidelines, sure. But, they
+are rules. Things that will give you comfort if you take them to heart.
+
+1) Mushcode is primarily a list-manipulation language. As such, it is
+possible to look at everything on a mush as a list. If everything is a list,
+then every list has a separator. A separator is the one-character symbol
+used to divide a list into its component parts. This is also called a
+delimiter. This sentence is a space-separated list of words.
+This|is|a|list|too. There@are@many@ways@to@write@a@list.
+
+2) There are two broad categories of mushcode. Commands and Functions.
+Commands produce data. Functions don't. Functions manipulate data.
+Commands don't. Commands are things like: @describe, move, look, get, WHO,
+@pemit, @switch, and @dolist. Functions are things likes: iter(),
+pmatch(), lwho(), xget(), and add(). Think of commands as the big pot you
+put over a fire, and functions and data all go into them, get mixed up,
+converted, and come out a thick rich stew.
+Functions must be evaluated. This means that you must tell the game
+that it needs to operate the function on the stuff inside the parentheses.
+In order for a function to be evaluated, it .-=MUST=-. be within a
+command. You cannot evaluate a function without it being in a command.
+Again, the distinction should be emphasized. Commands produce data,
+functions manipulate data. There cannot be data for a function to
+manipulate, unless a command has produced it. Or, more specifically, all
+of the manipulation of data in the world isn't going to matter if it's
+never seen.
+
+3) Mushcode functions work from the inside, out. Their syntax is nested,
+meaning one structure, or function, is within another, within another.
+This is the primary problem with reading mushcode. The nesting occurs with
+parentheses, square brackets( [ ] ), and curly braces( { } ). With
+practice, you will learn to decipher the nesting of functions.
+Mushcode commands work from left to right, making them much easier to
+read. It is possible to group sets of commands to occur together with
+curly braces( { } ). This will be explained later.
+
+4) Square brackets are ONLY needed to separate functions to be evaluated,
+from plain text that PRECEDES them, within a command or function. This is
+the cardinal sin of mushcoding, and the greatest contributor to making
+code utterly and completely unreadable. Quite often, it's the greatest
+contributor to making it not work, as well. If you include extra square
+brackets, you run the risk of not matching a pair of them. They must all
+match if you want your code to work. Square brackets tell the MUSH: Hey!
+Evaluate what's inside here, because it's different from what just came
+before it!
+
+5) Curly braces are ONLY needed to a) group commands together to run at
+the same time OR b) go around a block of text to preserve the commas
+inside of it. There is no other use for curly braces, other than ascii
+decoration.
+
+EXAMPLE
+
+In this example, I'm going to introduce you to the process of
+writing your own code. All of the functions I will use here will work on
+either PennMUSH, TinyMUSH(2.x or 3.0), and TinyMUX. What we will do is
+make our own +who command, which will list all of the people connected,
+and some other relevant information about each player. And, while we're
+doing this, I'll show you how the above rules are your friends, rather
+than your foes.
+Another common misconception for a lot of players is that commands
+like +finger, +where, and +who are standard, and come with the MUSH.
+They're not. They are what are called 'softcoded' commands. There are two
+types of code on a MUSH, hardcode and softcode. Hardcode is things like
+look, @describe, WHO, and @dig. These are commands that are built into the
+mush. Commands like +finger, +where, and +who are called 'softcoded'
+commands because they are coded in using mushcode. You can modify their
+appearance, their functionality, or eliminate them altogether.
+Softcoded commands are stored in attributes on an object. All
+mushcode is stored in attributes, on an object. The attributes can be
+named anything you would like, though I do suggest adopting a standard
+system, or convention, for your naming. It helps you later, when you want
+to go back and edit an attribute, if the purpose of the code is easy to
+deduce based on the name of the attribute in which it is stored. For
+example, if an attribute is going to hold a +pay command, you could(and
+likely should) name that attribute CMD_PAY. You would set that attribute
+on an object by typing: &CMD_PAY Object=<text>. If you were storing some
+data, for example the names of all of the current players in a card game,
+you could name that attribute DATA_PLAYERS.
+Let's look at the anatomy of a very simple command.
+
+&cmd_hello #1234=$hello:@pemit %#=Hello, world!
+
+Yes, that's a command. What it does is when the player types
+'hello', it will send that player the message 'Hello, world!' back.
+'Hello, world' is the first message produced when learning almost any
+coding language, so here is the mushcode version of it. Let's examine
+parts of this command. & is the symbol that tells the mush that we are
+setting an attribute on an object. cmd_hello is the name of this
+attribute. The name was chosen to show that this attribute has a command
+in it, and that command is hello. #1234 is the dbref(database reference)
+number of the object on which we are storing this attribute. The = sign
+says to the mush 'here is what I want to store'.
+The $ symbol designates the beginning of what the user has to type
+in to make the command work. Everything between the $ and the : is the
+command, and everything after the : is the code that will be run when the
+command is typed. In this case, the user has to type 'hello' in order to
+make the code run. If this command were the +where command, it would look
+like: $+where:
+The next part of our command is the actual code itself. @pemit is
+a command that is hardcoded into the mush which sends the specified
+message to just one object. Pemit = Private emit. The next symbol is one
+of, if not the most commonly used substitution in mushcode. Mushcode
+allows you to substitute simple symbols for things, such as your location,
+the name of an object, and in this case, the dbref of the object that used
+the command. If a player Mungo with the dbref #99 typed 'hello', %# would
+be the same as #99. There are a number of substitutions in mushcode, and I
+invite you to type 'help substitutions' on your mush of choice for more
+information on them. So, we are going to send a private emit, or pemit, to
+the object that used the command. We specify the message to be sent with
+the equals sign. In this case, our message is 'Hello, world!'.
+Now, we have examined all of the elements of a command. In short:
+&<attribute name> <object>=$<command text>:<code>. Yes, that is all there
+is to making your own commands on a mush. A brief sidenote here, is that
+mushes require that you have a specific configuration of flags so that the
+game knows that the object on which you are storing your commands should
+be checked whenever a player types in a command. On PennMUSH, this is @set
+<object>=!no_command. That clears the no_command flag, letting the object
+have user-defined commands on it. On TinyMUSH, you must @set
+<object>=commands, which /puts/ a flag on the object telling the mush to
+check it for commands.
+
+A COMMAND
+
+Now on to making our own command. @create an object for this, or
+use one that you already have handy. Make sure the flags on it are
+appropriate, as noted above. We are going to call our command +mywho, so
+as not to conflict with the possibility of your mush already having a +who
+command installed. In the spirit of consistency, we should store this
+command in an attribute named cmd_mywho. For the rest of this lesson, I'll
+use the abbreviation 'obj' to reference the object on which our code is
+stored.
+Like our hello command, we want something that will return our
+output to just one player, the one that typed the command. So, our mywho
+command is going to start off just the same, with @pemit %#=. Even the
+great +finger, +where, and +who commands are structured this way. They
+return their output just to the player who typed the command.
+Here you will learn your first function. Again on your mush of
+choice, type: help lwho(). The lwho() function, as you will read, returns
+the list of dbrefs for all connected players. We'll start with this, as
+this is the basis of our mywho. This tells us who is connected, albeit
+with only their dbrefs.
+
+&cmd_mywho obj=$+mywho:@pemit %#=lwho()
+
+Type it out. Don't cut and paste it. Learn what it's like to type
+those % signs and parentheses. You'll be doing a lot of it, and you might
+as well get used to it, because when you're writing your own code, there
+won't be anything from which to cut and paste. Once you have this typed
+in, and you're sure the flags are set properly on your object, type:
++mywho
+You should have gotten at least one dbref(yours) in return. If you
+didn't, examine your object and make sure that your code matches what is
+displayed above, exactly. If it doesn't, redo the attribute. Once you have
+it working, give yourself a pat on the back. You just coded your first
+command!
+However, it's not overly useful. Typing WHO tells you more than
+this command does, so we need to make it better. Now, here is where I go
+back to the rules that I talked about at the beginning. Rule #1 says:
+Everything is a list. Mushcode is a list-manipulation language. So, let's
+learn how to manipulate our list of dbrefs so that we can get some more
+information out of our command.
+On your mush of choice, type: help iter(). Read it, and try not to
+cry. iter() is a very powerful function, and as such, the developers of
+mushes the world around have the difficult job of describing a great deal
+of functionality in a small amount of space. I will attempt to provide a
+layman's description of what iter() does, without confusing you further.
+The abbreviation 'iter' stands for 'iterate', which is a computer term
+for: Do the same thing to every member of a list. The dictionary says:
+iterate(v.) - to say or do again. This is precisely true. When you iterate
+through a list, you do the same thing again, to each member of the list.
+So, we have a list, lwho(), and we have a tool, iter(), to process
+that list. Let's start putting them together. The first thing we want to
+do is get a name for each of those dbrefs. There is a function for that,
+as well, and not surprisingly it is called name(). You can read the
+helpfile for the name() function, and it will tell you that the syntax for
+it is: name(<dbref>). Here is how we would combine lwho(), name(), and
+iter() to get what we want: iter(lwho(),name(##))
+I reference Rule #3 from above now. Mushcode works from the
+inside, out. As you read in the help file, iter() takes the form of:
+iter(<list>,<actions>,[<delimiter>],[<output separator>]). The last two
+are optional parts of the iter(). iter() will assume that your list is
+separated with spaces, so you don't have to specify a delimiter(fancy word
+for the character that separates a list). iter() also outputs a
+space-separated list by default, so you don't have to specify a new output
+separator, unless you want something /other/ than a space.
+Now, what is ##? ## is another substitution. The iter() function
+requires some way to signify the current member of the list, on which it
+is performing the actions. For each member of the list, iter() does its
+actions to that member. If our lwho() returned the list: #1 #4 #10, and we
+did the iter() from above, it would do the following: name(#1), then
+name(#4), and finally, name(#10). Each time, ## represents the current
+member of the list.
+Let's apply this newfound knowledge to our +mywho.
+
+&cmd_mywho obj=$+mywho:@pemit %#=iter(lwho(),name(##))
+
+Again, type it out. Learn how the functions feel under your
+fingers. Make sure you get all the parentheses. Once you have it typed in,
+type: +mywho. You should get at least one name(yours) back. If you didn't,
+examine your object and make sure that your code matches what is above,
+exactly. Assuming it worked, be proud of yourself. You just used three
+functions, at once. You now have a command at your disposal which will
+output the names of all of the connected players on the mush.
+Not enough, you say? Oh, alright. Let's do some more with this
+list. First, let's arrange our list so that the names are in a column,
+rather than a row. This entails putting a carriage return between the
+names. There are two ways to do this, and I will show you both of them and
+let you choose which method you want to adopt, for your own. Fortunately,
+they are both done using iter(), so are simple to demonstrate.
+
+iter(lwho(),name(##),,%R) OR iter(lwho(),%R[name(##)])
+
+I'll explain them in order. The first one takes advantage of the
+syntax of iter(). It uses what is called an output separator, which is a
+one-character symbol that separates the outputted list. One-character?
+There's two there! %R! %R is a substitution for a carriage return, and is
+treated as a single character by the MUSH. So, it's valid.
+The second one is a bit more intuitive, but still useful. iter()
+by default outputs a space-separated list. And if we wanted to put a
+carriage return in between the members of that list, we could either put
+the %R at the beginning or end of our action list. There's a reason for
+putting it at the beginning, though, and I'll show you what that is. If
+you consider this list: Alpha Beta Gamma, and the code: iter(Alpha Beta
+Gamma,##%R). From your now vast experience with iter(), you should be able
+to make a fair guess at how this will come out. Here is what it would
+return:
+
+Alpha
+Beta
+Gamma
+
+Accurate, but not what we want. iter() is putting the %R precisely
+where you told it to, which is right after each member of the list. iter()
+puts a space between each member, so we wind up with the list I showed you
+above. If we move the %R to the front of the action list, we will get the
+following output.
+
+Alpha
+Beta
+Gamma
+
+Which looks much better, because the space that exists is at the
+end of each item, and therefore not seen. The carriage return comes before
+each element, which brings it down to a new line, left-justified very
+nicely.
+Going back to our +mywho command, you should be able to see why we
+would do: iter(lwho(),%R[name(##)]). This is the same output you would get
+if you used: iter(lwho(),name(##),,%R). However, there is a difference in
+this version, because this is our first usage of the square brackets.
+I'll refer you to Rule #4 from above. Square brackets separate
+functions to be evaluated from the plain text that precedes them. The %R
+is a substitution, that produces a carriage return. But, it comes before
+the name() function. If we tried to leave out the square brackets around
+the name() function, we would get the following from our list of #1 #4
+#10:
+
+name(#1)
+name(#4)
+name(#10)
+
+It's interesting, but it's not what we want. We have to tell the
+mush to evaluate our name() function. So, since we have a %R before the
+function, we have to enclose it in square brackets. For the rest of this
+tutorial, I am going to work with the iter(lwho(),name(##),,%R) version of
+the code. If you choose to use the other one, the modifications will be
+simple to make, between the two. Now, our +mywho should look like:
+
+&cmd_mywho obj=$+mywho:@pemit %#=iter(lwho(),name(##),,%R)
+
+Which is going to give us the list of connected players, in a
+left-justified column on our screen. Not enough, you say? Great. I agree.
+We want to know what makes this list of players stand out. For example,
+perhaps we would like to know which players have their @sex set to Male,
+and which have their @sex set to Female. Other options include
+highlighting those players who have a particularly large idle time. There
+are many things you can do. We'll start with the gender test, as that
+allows us to introduce the functions that fetch information.
+On your mush of choice, read help xget(). If you are on
+TinyMUSH2.2, you won't have the xget() function, but you will have get().
+xget() is faster, and becoming more widely accepted as the
+information-fetching function of choice. In this case, we are going to use
+the xget() function to retrieve the value of the player's SEX attribute,
+which they set with the @sex me=<Male|Female> command. The xget() function
+takes the syntax of: xget(<dbref>,<attribute>).
+Just to give you a hint of how this function works, let's issue
+the following command, which looks startlingly like our mywho command:
+
+say iter(lwho(),xget(##,sex),,%R)
+
+You should get a list of the genders of the people currently
+connected on the mush. It's possible some of these people don't have their
+@sex attribute set. However, for the most part, this should have returned
+a column of text that looked something similar, but not exactly like:
+
+Male
+female
+m
+male
+f
+female
+please
+
+What this has done is iterated(there's that word again) its way
+through the list of connected players, and retrieved the value of their
+sex attribute. Pretty simple. Now, how are we going to make this work for
+our mywho? Pretty simply, now that we have a grasp of xget().
+
+A STEP FURTHER
+
+We're going to learn another function, and along with iter(), one
+of the two most-used functions in all of mushcode. switch() lets you test
+one piece of information against many other cases, and if it matches,
+perform an action list, or if none match, you can perform a 'default'
+action. This is similar in function to the @switch command, though there
+are some small differences.
+@switch will test against all the cases you specify, unless you
+use @switch/first. (See 'help @switch' for the gory details). switch()
+will always stop after the -first- match it gets. So, here's the syntax of
+switch(), for you to know and love, forever'n ever:
+
+switch(test
+data,case1,actions1,case2,actions2,case3,actions3,...,defaultactions)
+
+Here's how it works. Switch() takes the test data, and compares it
+to case1. If it matches, it does what is specified in actions1. If it
+doesn't, it compares it to case2. If -that- matches, it does what is in
+actions2. It keeps going until it either matches a case, or runs out of
+cases, in which case it will do the default set of actions, if some have
+been specified.
+It sounds like a lot, and yet not much, all at the same time.
+Trust me, you'll come to love and treasure switch(). Here's how we're
+going to apply it to our mywho command. We're going to capitalize the
+names of all the people who have their sex set to female.
+Looking at our syntax for switch() above, we need something that
+is test data. This is what we are going to compare to each of our cases.
+Our cases, as they are, consist of female, and everything else. We're only
+testing to see if their gender is set to female, and then we will put
+their name in all upper case. What are we going to test to see if it's
+female? The sex attribute of each connected player. We know this will be
+done inside of our iter(), so each connected player will be referenced as
+##. Therefore, our test data becomes: xget(##,sex)
+So, now we can build our switch this far:
+
+switch(xget(##,sex),female,
+
+Now, if it does match at being female, we need to put the name of
+the character in all upper case. Mush provides us with a very simple way
+to do this, through the use of the ucstr() function. Yes, that means:
+upper case string. Give yourself a cookie if you realized that at first
+glance. We already know from our existing command that the name of the
+character can be retrieved using the name() function, and since we know
+from rule #3 above that mushcode works inside out, we can then construct:
+ucstr(name(##)) for our action list. Now our switch looks like:
+
+switch(xget(##,sex),female,ucstr(name(##))
+
+Not too confusing, right? If it was, do yourself the favour of
+going back in this document and re-reading any sections that confused you.
+Trust me, it's better for you to understand everything we've done up to
+this point than just nodding your head and smiling.
+Foraging onwards, we will now take advantage of switch()'s ability
+to take a default actions list, if none of the cases matched. Since we are
+only testing against female, anything else would be a default. Everyone
+who isn't female will just have their name returned. And our switch() will
+be done, so now it looks like this:
+
+switch(xget(##,sex),female,ucstr(name(##)),name(##))
+
+Now we want to put this into our mywho command.
+
+&cmd_mywho obj=$mywho:@pemit
+%#=iter(lwho(),switch(xget(##,sex),female,ucstr(name(##)),name(##)),,%R)
+
+Yeah, it's growing, I know. It's only going to get worse, or
+better, depending on your viewpoint. Once you've got this typed in(yes,
+type it out. Don't just cut and paste. You're not going to be able to cut
+and paste original code later, so get used to typing it on your own now.),
+run your mywho command again. You should get a column of names, ideally
+with some that are presented in all upper-case.
+
+WILDCARDS (No, not jokers or one-eyed jacks, but close)
+
+Now, there may be the instance that there are some names on that
+list that are female characters, but aren't in all-caps. Why is this? It's
+likely that these characters have set their @sex to something other than
+just 'female'. It may be f, fem, or Female. You have just encountered one
+of the oldest problems of being a programmer. The user never types in what
+you want them to. Quite often, we have to go to great lengths to make sure
+that whatever the user types in will work for us. This is called 'robust
+programming'. It's also called 'How to get grey hair'.
+Let's level the playing field here. Let's learn about wildcards.
+Wildcards are symbols in mushcode that work identically to a wild card in
+a card game such as poker(hence their name: wildcards). As a one-eyed jack
+can be used to match any card in the deck, wildcard symbols are things
+that can be used to match against any one or many characters. There are
+two wildcards in mushcode, ? and *. ? matches against one character, and *
+matches against any number. Here's a brief example of how they work. d?g
+would match against 'dig', 'dog', and 'dug', but not 'drag'. d*g would
+match against 'dig', 'dog', 'dug', 'drag', and 'didn't have a dime so went
+walking'.
+switch() will be case sensitive, so in order for us to hopefully
+match against any variation of the word 'female', we will have to make
+sure that our test data is the same case of letters as our individual
+cases in switch(). Lots of 'case' in there, I apologize. Just as there is
+a ucstr(), there is a lcstr() as well, and it's quite handy for this
+particular situation. I offer the following as an alternative to our
+previous attempt at mywho:
+
+&cmd_mywho obj=$mywho:@pemit
+%#=iter(lwho(),switch(lcstr(xget(##,sex)),f*,ucstr(name(##)),name(##)),,%R)
+
+Not much bigger, is it? We added one function, lcstr(), to put
+whatever their sex attribute is in all lower case. Then, we changed our
+switch() case to f*, in order to trap anything that starts with the letter
+'f'. Without going into detail, this obviously can cause some other
+problems, if players choose to set their @sex to something
+rather...obscene. I'll leave that to you to figure out how to avoid.
+Now, let's exploit switch() a bit more. Let's upper case the names
+of the female players, and put a tab before the names of the male players.
+Anyone set to anything other than male or female, including Neuter, will
+have no change whatsoever. This is simple to accomplish, as it only
+involves adding a case to our switch().
+
+&cmd_mywho obj=$mywho:@pemit
+%#=iter(lwho(),switch(lcstr(xget(##,sex)),f*,ucstr(name(##)),m*,%t[name(##)],name(##)),,%R)
+
+Not too bad, right? Now, run the command, by typing: mywho. You
+should get a list of characters, some upper-cased, some with a tab in
+front of their name, and some with no change at all. You've just written a
+relatively useful mushcode command, from start to finish. You've
+incorporated functions, attributes, commands, substitutions,
+wildcards...and you've made it all work.
+Take a moment to congratulate yourself. Then, ask yourself if you
+want to go on and learn some of the more interesting things you can do
+with mushcode. If you do, go on to lesson #2 in Moe's Mushcode Manual.

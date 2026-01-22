@@ -1,0 +1,235 @@
+/*
+Summarize Allocated Traits
+
+================================================================================
+== Show Allocations In ... =====================================================
+
+The various WoD games do different things across this spectrum, so each section 
+does (or may) have code to find and apply exception. This is to be written in 
+such a way that the exceptions themselves can be pulled as "allocated", even if 
+it's a simple as "1 point of <Power Level> was given for free with this 
+template." We know this already, but this way more granular details can be 
+pulled from within the system.
+
+
+--------------------------------------------------------------------------------
+-- Allocated: Points in Attributes ---------------------------------------------
+
+Now we can account for 'free' attributes by trying to remove them.
+
+e.g., if we pass 'attribute.strength:-1', we can see if everything is ok 
+if 'Strength' was the free attribute.
+
+	0: dbref of sheet
+	1: list of stats to add (stat.path:value stat.path:value)
+	returns: <mental>/<physical>/<social>
+*/
+
+&f.allocated.attributes [v( d.cg )]=
+	iter( 
+		mental physical social, 
+		add( 
+			sub( u( f.points.category, %0, attribute, %i0 ), 3 ), 
+			ladd( iter( 
+				filter( fil.stats-to-include, %1, , , attribute, %i0 ), 
+				last( %i0, : )
+			))
+		), 
+		, / 
+	)
+
+/* -- tests --
+
+think u( v( d.cg )/f.allocated.attributes, %# )
+think u( v( d.cg )/f.allocated.attributes, %#, attribute.strength:-1 )
+
+
+--------------------------------------------------------------------------------
+-- Allocated: Points in Skills -------------------------------------------------
+Specialties are ignored because they don't have tags, so fail the filter.
+
+	0: dbref of sheet
+	1: list of stats to add (stat.path:value stat.path:value)
+	returns: <mental>/<physical>/<social>
+*/
+
+&f.allocated.skills [v( d.cg )]=
+	iter( 
+		mental physical social, 
+		add( 
+			u( f.points.category, %0, skill, %i0 ), 
+			ladd( iter( 
+				filter( fil.stats-to-include, %1, , , skill, %i0 ), 
+				last( %i0, : )
+			))
+		), 
+		, / 
+	)
+
+/* --tests --
+
+think u( v( d.cg )/f.allocated.skills, %# )
+think u( v( d.cg )/f.allocated.skills, %#, skill.empathy:-1 )
+
+
+--------------------------------------------------------------------------------
+-- Allocated: List of Specialties ----------------------------------------------
+
+Returns full stat paths.  The first part of the list are specialties that are not allocated via bonuses to template, etc.  Minor templates are checked first, if appropriate.
+
+	0: dbref of sheet
+	returns: _stat.path.specs for <normal>`<template>`<etc>
+
+	l: list of skills (just skills) player has
+	s: list specialties associated by those skills, eventually filtered
+	   (free specialties are removed from this list)
+	t: template
+	f: free`specialties`for`template`and`species`et. al
+*/
+
+&f.allocated.specialties [v( d.cg )]=
+	strcat( 
+		setq( l, 
+			ulocal( f.list-stats-tags, %0, skill, mental.physical.social, or )
+		), 
+		setq( s, iter( %ql, lattr( %0/_%i0.* ))), 
+		setq( t, u( %0/_bio.template )), 
+		setq( f, u( f.allocated.specialties.%qt, %0, %qs )), 
+
+		iter( %qf, 
+			iter( %i0, 
+				setq( s, remove( %qs, %i0 ))
+			), 
+			`, 
+			@@
+		), 
+		%qs[if( strlen( %qf ), `%qf )]
+	)
+
+/* -- test --
+
+think u( v( d.cg )/f.allocated.specialties, %# )
+think u( v( d.cg )/f.allocated.specialties, v( _special.sheet_location ))
+think u( v( d.cg )/f.allocated.specialties, pmatch( hemi ))
+
+
+--------------------------------------------------------------------------------
+-- Allocated Specialties: Human ------------------------------------------------
+
+Humans themselves don't get additional specialties, so as a reminder:
+*/
+
+&f.allocated.specialties.human [v( d.cg )]=@@( nothing )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Allocated: Aspirations ------------------------------------------------------
+
+So far, everyone (but Demons) have 2 short-term and 1 long-term aspiration.
+Check for these under 'pitched'.
+
+Outputs: <number of short term>/<number of long-term>
+
+*/
+
+&f.allocated.aspirations [v( d.cg )]=
+	localize( strcat( 
+		setq( a, u( v( d.asp )/f.get.aspirations.status, %0, pitched )), 
+		setq( s, filter( v( d.asp )/filter.term, %qa, , , short-term )), 
+		setq( l, filter( v( d.asp )/filter.term, %qa, , , long-term )), 
+
+		words( %qs ), /, words( %ql )
+	))
+
+
+/*
+-- Points Check: Aspirations ---------------------------------------------------
+*/
+
+&f.pts-valid?.aspirations [v( d.cg )]=
+	strcat( 
+		setq( a, u( f.allocated.aspirations, %0 )), 
+		cand( 
+			eq( first( %qa, / ), 2 ), 
+			eq( rest( %qa, / ), 1 )
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Allocated: Points in Merits -------------------------------------------------
+
+Unlike skills' substats (specialties), merit substats are a breakdown of the 
+main merit, option add-ons, or other.
+
+	0: dbref of sheet
+	returns: points spent on <merits>/<merit points spent on power level raise>
+*/
+
+&f.allocated.merits [v( d.cg )]=
+	strcat( 
+		setq( t, u( %0/_bio.template )), 
+		ladd( cat( 
+			ulocal( f.points.category, %0, merit, * ), 
+
+// .. subtract points in merit substats
+			iter( lattr( %0/_merit.*.* ), 
+				mul( -1, first( u( %0/%i0 ), . ))
+			), 
+
+// .. subtract points given free with template-based things
+			-[ulocal( f.allocated.merits.%qt, %0 )], 
+			
+		)), 
+
+		/, 
+
+		udefault( f.allocated.power-trait.%qt, 0, %0 )
+	)
+
+/* -- test --
+
+think u( v( d.cg )/f.allocated.merits, %# )
+
+
+--------------------------------------------------------------------------------
+-- Allocated Power Trait: Humans -----------------------------------------------
+
+Each template will have their own. Humans? 0. Total 0.
+
+*/
+
+&f.allocated.power-trait.human [v( d.cg )]=0
+
+
+/*
+--------------------------------------------------------------------------------
+-- Allocated: Points in Integrity ----------------------------------------------
+
+Characters need to start at 'default' Integrity from chargen.
+Add 'f.allocated.integrity.<template>' where appropriate
+
+t: template
+
+*/
+
+&f.allocated.integrity [v( d.cg )]=
+	strcat( 
+		setq( t, u( %0/_bio.template )), 
+		udefault( 
+			f.allocated.integrity.%qt, 
+			u( f.allocated.integrity.human, %0 ), 
+			%0 
+		)
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Allocated: Integrity, Human -------------------------------------------------
+*/
+
+&f.allocated.integrity.human [v( d.cg )]=
+	u( u( d.dd )/.value, %0, advantage.integrity )
+

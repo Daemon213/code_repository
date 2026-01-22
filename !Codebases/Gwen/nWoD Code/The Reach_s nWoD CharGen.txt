@@ -1,0 +1,367 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @@The following are the Character Generation rooms, going from the basics (selecting your birthdate, etc) to the end where you submit your template. This requires the +bg SGP system installed.@@\
+\
+@dig/teleport Character Generation - The Basics\
+@lock/SpeechLock Character Generation - The Basics=#392\
+&KEY_STAFF Character Generation - The Basics=or(hasflag(%#,WIZARD),hasattr(%#,_ABORTED),hasattr(%#,_FINISHED))\
+@lock/TportLock Character Generation - The Basics=KEY_STAFF/1\
+@lock/TeloutLock Character Generation - The Basics=KEY_STAFF/1\
+@lock/GetFromLock Character Generation - The Basics=KEY_STAFF/1\
+@ConFormat Character Generation - The Basics=%\
+@ExitFormat Character Generation - The Basics=%\
+@Desc Character Generation - The Basics=%rWelcome to The Reach Mortal/Mortal+ Character Generation. In this section of character creation, one sets a concept, date of birth, virtue and vice.%r%r%xm[repeat(-,77)]%xn%r[ljust(Template: Mortal,25)] [ljust(Concept: [default(%#/_CONCEPT,<unset>)],52)]%r[table(Morality: [default(%#/_MORALITY,7)]|Virtue: [default(%#/_VIRTUE,<unset>)]|Vice: [default(%#/_VICE,<unset>)]|[ljust(Birthdate: [if(hasattr(%#,_DOB),[timefmt($d $b $Y,convtime(setr(W,get(%#/_DOB))))],<unset>)],25)]|[ljust(Age: [if(hasattr(%#,_DOB),ulocal(#89/F_AGE,[extract(%qw,2,2)] [last(%qw)]),<unset>)],25)],25,77,|)]%r%xm[repeat(-,77)]%xn%r%r[ljust(To set a concept%, use:,30)]\'a0%xhconcept <concept>%xn%r[ljust(To set a birthdate%, use:,30)]\'a0%xhbirthdate <month> <day> <year>%xn%r[ljust(To set a virtue%, use:,30)]\'a0%xhvirtue <virtue>%xn%r[ljust(To set a vice%, use:,30)]\'a0%xhvice <vice>%xn%r%rStandard Vices: Envy, Gluttony, Greed, Lust, Pride, Sloth, Wrath.%rStandard Virtues: Charity, Faith, Fortitude, Hope, Justice, Prudence, Temperance.%r%r[center(Type "%xhnext%xn" to proceed%, "%xhreset%xn"%, or "%xhabort%xn" to cancel character creation.,77)]%r\
+&CMD-CONCEPT Character Generation - The Basics=$concept*:@pemit\'a0%#=[setq(T,trim(%0))][switch(0,strlen(%0),[set(%#,_CONCEPT:)]Your concept has been wiped.,lte(strlen(%qt),52),Your concept must be 52 characters or less in length.,[set(%#,_CONCEPT:%qt)]Your concept has been set to:\'a0%qt)]\
+@set Character Generation - The Basics/CMD-CONCEPT = no_parse\
+&CMD-BIRTHDATE Character Generation - The Basics=$birthdate * * *:@pemit\'a0%#=switch(0,[setq(M,statnum(monthf,%0))][setq(F,statfull(monthf,%0))]%qm,I can't find that birth month.,isrepeat(monthf,%0),mall(monthf,%0),and(isnum(%1),gt(%1,0),lte(%1,statname(limit,%qm))),There is no [th(%1)] day of\'a0%qf.,and(isnum(%2),not(strmatch(%2,-*)),not(strmatch(%2,*.*)),gte(%2,1)),The birth year should be a whole%, positive number greater than or equal to 1.,if(and(strmatch(%qf,Feb*),eq(%1,29)),t(statnum(leap,%2)),1),%2 was not a leap year.,gte(setr(A,u(#89/F_AGE,statname(month,%qm),%1,%2)),18),All characters must be at least 18 years old.,[set(%#,_DOB:[convsecs(convtime(Mon [statname(month,%qm)]\'a0%1 00:00:00\'a0%2))])]Your IC date of birth is set to\'a0%qf\'a0%1\'a0%2.%rYour character is\'a0%qa years old.)\
+&CMD-VIRTUE Character Generation - The Basics=$virtue *:@pemit\'a0%#=switch(0,statnum(virtue,%0),I can't find that virtue.,isrepeat(virtue,%0),mall(virtue,%0),[set(%#,_VIRTUE:[setr(F,statfull(virtue,%0))])]You set your virtue to\'a0%qf.)\
+&CMD-VICE Character Generation - The Basics=$vice *:@pemit\'a0%#=switch(0,statnum(vice,%0),I can't find that vice.,isrepeat(vice,%0),mall(vice,%0),[set(%#,_VICE:[setr(F,statfull(vice,%0))])]You set your vice to\'a0%qf.)\
+&CMD-RESET Character Generation - The Basics=$reset:&_CONCEPT\'a0%#;&_DOB\'a0%#;&VIRTUE\'a0%#;&_VICE\'a0%#;@pemit\'a0%#=You reset this section of CharGen.;@wait 0.5=@pemit\'a0%#=Character Generation - The Basics%r[u(DESC)]\
+&CMD-ABORT Character Generation - The Basics=$abort:@pemit\'a0%#=[setq(Q,[set(%#,_ABORTED:1)][iter(statlist(cattr),set(%#,%i0:))])]You abort CharGen.;@teleport\'a0%#=#0\
+&CMD-TEMPLATE Character Generation - The Basics=$template *:@pemit\'a0%#=switch(0,statnum(template,%0),I can't find that template.,isrepeat(template,%0),mall(template,%0),[set(%#,_TEMPLATE:[setr(F,statfull(template,%0))])]You set your template to\'a0%qf.)\
+&_IC Character Generation - The Basics=0\
+&_CHARGEN Character Generation - The Basics=1\
+@set Character Generation - The Basics=AUDITORIUM\
+@set Character Generation - The Basics=BLIND\
+@set Character Generation - The Basics=DARK\
+@set Character Generation - The Basics=INHERIT\
+@rxlevel Character Generation - The Basics= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@txlevel Character Generation - The Basics= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@parent Character Generation - The Basics=#230\
+\
+@dig/teleport Character Generation - Attributes\
+&KEY_STAFF Character Generation - Attributes=or(hasflag(%#,WIZARD),hasattr(%#,_ABORTED),hasattr(%#,_FINISHED))\
+@lock/SpeechLock Character Generation - Attributes=#2655\
+@lock/TportLock Character Generation - Attributes=KEY_STAFF/1\
+@lock/TeloutLock Character Generation - Attributes=KEY_STAFF/1\
+@lock/GetFromLock Character Generation - Attributes=KEY_STAFF/1\
+@ConFormat Character Generation - Attributes=%\
+@ExitFormat Character Generation - Attributes=%\
+@Desc Character Generation - Attributes=[if(hasattr(%#,_ATPOINTS),[setq(P,default(%#/_ATPOINTS,XXX 0 0 0))][setq(A,default(%#/_ATTRIBUTES,1 1 1 1 1 1 1 1 1))]%r[center(Your Priorities: [v(OPTION_ATV-[first(%qp)])],77)]%r%xm[repeat(-,77)]%xn%r[table([center(%xuMental%xn,25)]|[center(%xuPhysical%xn,25)]|[center(%xuSocial%xn,25)]|[iter(statlist(Attribute),[ljust(edit(%i0,_,%b),17,.)] [rjust(extract(%qa,inum(),1),2)],,|)]|[repeat(-,20)]|[repeat(-,20)]|[repeat(-,20)]|[ljust(Points Left:,17)] [rjust(extract(%qp,2,1),2)]|[ljust(Points Left:,17)] [rjust(extract(%qp,3,1),2)]|[ljust(Points Left:,17)] [rjust(extract(%qp,4,1),2)],25,77,|)]%r%xm[repeat(-,77)]%xn%r%r[ljust(To set an attribute's value%, use:,35)]\'a0%xhset <attribute> to <#>%xn,%rIt is now time to buy attributes. Attributes come in three flavors:\'a0%xuM%xnental%,\'a0%xuP%xnhysical and\'a0%xuS%xnocial. You must first prioritize these categories into primary\'a0%(with 5 points%)%, secondary\'a0%(with 4 points%)%, and tertiary\'a0%(with 3 points%).%r%r%tSet priorities with%, "%xhchoose XXX%xn"\'a0%(Example: choose MSP%))]%r%r[center(Type "%xhnext%xn" to proceed%, "%xhreset%xn"%, or "%xhabort%xn" to cancel character creation.,77)]%r[center(Type "%xhback%xn" to return to the previous step of character creation.,77)]%r\
+&CMD-CHOOSE Character Generation - Attributes=$choose *:@pemit\'a0%#=switch(0,not(hasattr(%#,_ATPOINTS)),You have already prioritized attributes. Please use "%xhreset%xn" to reset and start over.,hasattr(#2655,OPTION_AT-%0),I can't find that combination of priorities.,[set(%#,_ATPOINTS:[ucstr(%0)] [v(OPTION_AT-%0)])]You set priorities to: [v(OPTION_ATV-%0)].)\
+@set Character Generation - Attributes/CMD-CHOOSE = no_parse\
+&OPTION_AT-MPS Character Generation - Attributes=5 4 3\
+&OPTION_AT-MSP Character Generation - Attributes=5 3 4\
+&OPTION_AT-PMS Character Generation - Attributes=4 5 3\
+&OPTION_AT-PSM Character Generation - Attributes=3 5 4\
+&OPTION_AT-SMP Character Generation - Attributes=4 3 5\
+&OPTION_AT-SPM Character Generation - Attributes=3 4 5\
+&OPTION_ATV-MPS Character Generation - Attributes=Mental (5) Physical (4) Social (3)\
+&OPTION_ATV-MSP Character Generation - Attributes=Mental (5) Social (4) Physical (3)\
+&OPTION_ATV-PMS Character Generation - Attributes=Physical (5) Mental (4) Social (3)\
+&OPTION_ATV-PSM Character Generation - Attributes=Physical (5) Social (4) Mental (3)\
+&OPTION_ATV-SMP Character Generation - Attributes=Social (5) Mental (4) Physical (3)\
+&OPTION_ATV-SPM Character Generation - Attributes=Social (5) Physical (4) Mental (3)\
+&CMD-RESET Character Generation - Attributes=$reset:&_ATTRIBUTES\'a0%#;&_ATMODIFIED\'a0%#;&_ATPOINTS\'a0%#;@pemit\'a0%#=You reset this section of CharGen.;@wait 0.5=@pemit\'a0%#=Character Generation - Attributes%r[u(DESC)]\
+&CMD-SET Character Generation - Attributes=$set * to *:@switch/first 0=[setq(E,edit(%0,%b,_))][setq(N,statnum(attribute,%qe))][setq(F,statfull(attribute,%qe))][setq(A,default(%#/_ATTRIBUTES,1 1 1 1 1 1 1 1 1))][setq(P,default(%#/_ATPOINTS,XXX 0 0 0))][setq(V,extract(%qa,%qn,1))][setq(T,switch(1,t(match(1 4 7,%qn)),2,t(match(2 5 8,%qn)),3,t(match(3 6 9,%qn)),4,0))][setq(Q,switch(1,t(match(1 4 7,%qn)),Mental,t(match(2 5 8,%qn)),Physical,t(match(3 6 9,%qn)),Social,Fubar))][setq(X,extract(%qp,%qt,1))][setq(D,sub(%1,%qv))][setq(C,switch(1,eq(%1,5),inc(%qd),eq(%qv,5),dec(%qd),%qd))][hasattr(%#,_ATPOINTS)],@pemit\'a0%#=Sorry! You need to prioritize your attributes first. Use "%xhchoose XXX%xn" to prioritize attributes\'a0%(example "choose MSP"%).,%qn,@pemit\'a0%#=I can't find that attribute.,isrepeat(attribute,%qe),@pemit\'a0%#=mall(attribute,%qe),match(1 2 3 4 5,%1),@pemit\'a0%#=Please choose a whole dot value between 1 and 5.,neq(%1,%qv),@pemit\'a0%#=Your\'a0%qf is already set to\'a0%1 dots.,gte(%qx,%qc),@pemit\'a0%#=You don't have enough dots left to raise\'a0%qf.,\{@wait\'a0%#/1=\{&_ATPOINTS\'a0%#=[replace(%qp,%qt,sub(%qx,%qc))];&_ATTRIBUTES\'a0%#=[replace(%qa,%qn,%1)];@pemit\'a0%#=You set\'a0%qf to\'a0%1 dots. You have [sub(%qx,%qc)]\'a0%qq dots left to spend.;@drain\'a0%#\}\}\
+&_IC Character Generation - Attributes=0\
+&_CHARGEN Character Generation - Attributes=1\
+@set Character Generation - Attributes=AUDITORIUM\
+@set Character Generation - Attributes=BLIND\
+@set Character Generation - Attributes=DARK\
+@set Character Generation - Attributes=INHERIT\
+@rxlevel Character Generation - Attributes= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@txlevel Character Generation - Attributes= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+\
+@dig/teleport Character Generation - Skills\
+&KEY_STAFF Character Generation - Skills=or(hasflag(%#,WIZARD),hasattr(%#,_ABORTED),hasattr(%#,_FINISHED))\
+@lock/SpeechLock Character Generation - Skills=#2658\
+@lock/TportLock Character Generation - Skills=KEY_STAFF/1\
+@lock/TeloutLock Character Generation - Skills=KEY_STAFF/1\
+@lock/GetFromLock Character Generation - Skills=KEY_STAFF/1\
+@ConFormat Character Generation - Skills=%\
+@ExitFormat Character Generation - Skills=%\
+&OPTION_SK-MPS Character Generation - Skills=11 7 4\
+&OPTION_SK-MSP Character Generation - Skills=11 4 7\
+&OPTION_SK-PMS Character Generation - Skills=7 11 4\
+&OPTION_SK-PSM Character Generation - Skills=4 11 7\
+&OPTION_SK-SMP Character Generation - Skills=7 4 11\
+&OPTION_SK-SPM Character Generation - Skills=4 7 11\
+&OPTION_SKV-MPS Character Generation - Skills=Mental (11) Physical (7) Social (4)\
+&OPTION_SKV-MSP Character Generation - Skills=Mental (11) Social (7) Physical (4)\
+&OPTION_SKV-PMS Character Generation - Skills=Physical (11) Mental (7) Social (4)\
+&OPTION_SKV-PSM Character Generation - Skills=Physical (11) Social (7) Mental (4)\
+&OPTION_SKV-SMP Character Generation - Skills=Social (11) Mental (7) Physical (4)\
+&OPTION_SKV-SPM Character Generation - Skills=Social (11) Physical (7) Mental (4)\
+&CMD-CHOOSE Character Generation - Skills=$choose *:@pemit\'a0%#=switch(0,not(hasattr(%#,_SKPOINTS)),You have already prioritized skills. Please use "%xhreset%xn" to reset and start over.,hasattr(#2658,OPTION_SK-%0),I can't find that combination of priorities.,[set(%#,_SKPOINTS:[ucstr(%0)] [v(OPTION_SK-%0)])]You set priorities to: [v(OPTION_SKV-%0)].)\
+@set Character Generation - Skills/CMD-CHOOSE = no_parse\
+&CMD-SET Character Generation - Skills=$set * to *:@switch/first 0=[setq(E,edit(%0,%b,_))][setq(N,statnum(skill,%qe))][setq(F,statfull(skill,%qe))][setq(A,default(%#/_SKILLS,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))][setq(P,default(%#/_SKPOINTS,XXX 0 0 0))][setq(V,extract(%qa,%qn,1))][setq(T,switch(1,t(match(1 4 7 10 13 16 19 22,%qn)),2,t(match(2 5 8 11 14 17 20 23,%qn)),3,t(match(3 6 9 12 15 18 21 24,%qn)),4,0))][setq(Q,switch(1,t(match(1 4 7 10 13 16 19 22,%qn)),Mental,t(match(2 5 8 11 14 17 20 23,%qn)),Physical,t(match(3 6 9 12 15 18 21 24,%qn)),Social,Fubar))][setq(X,extract(%qp,%qt,1))][setq(D,sub(%1,%qv))][setq(C,switch(1,eq(%1,5),inc(%qd),eq(%qv,5),dec(%qd),%qd))][hasattr(%#,_SKPOINTS)],@pemit\'a0%#=Sorry! You need to prioritize your skills first. Use "%xhchoose XXX%xn" to prioritize skills\'a0%(example "choose MSP"%).,%qn,@pemit\'a0%#=I can't find that skill.,isrepeat(skill,%qe),@pemit\'a0%#=mall(skill,%qe),match(0 1 2 3 4 5,%1),@pemit\'a0%#=Please choose a whole dot value between 0 and 5.,neq(%1,%qv),@pemit\'a0%#=Your\'a0%qf is already set to\'a0%1 dots.,gte(%qx,%qc),@pemit\'a0%#=You don't have enough dots left to raise\'a0%qf.,\{@wait\'a0%#/1=\{&_SKPOINTS\'a0%#=[replace(%qp,%qt,sub(%qx,%qc))];&_SKILLS\'a0%#=[replace(%qa,%qn,%1)];@pemit\'a0%#=You set\'a0%qf to\'a0%1 dots. You have [sub(%qx,%qc)]\'a0%qq dots left to spend.;@drain\'a0%#\}\}\
+&CMD-ABORT Character Generation - Skills=$abort:@pemit\'a0%#=[setq(Q,[set(%#,_ABORTED:1)][iter(statlist(cattr),set(%#,%i0:))])]You abort CharGen.;@teleport\'a0%#=#0\
+&CMD-RESET Character Generation - Skills=$reset:&_SKILLS\'a0%#;&_SKPOINTS\'a0%#;@pemit\'a0%#=You reset this section of CharGen.;@wait 0.5=@pemit\'a0%#=Character Generation - Skills%r[u(DESC)]\
+&_IC Character Generation - Skills=0\
+&_CHARGEN Character Generation - Skills=1\
+@Desc Character Generation - Skills=[if(hasattr(%#, _SKPOINTS), [setq(P, default(%#/_SKPOINTS, XXX 0 0 0))][setq(A, default(%#/_SKILLS,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))]%r[center(Your Priorities: [v(OPTIN_ATV-[first(%qp)])], 77)]%r%xm[repeat(-,77)]%xn%r[table([center(%xuMental%xn,25)]|[center(%xuPhysical%xn,25)]|[center(%xuSocial%xn,25)]|[iter(statlist(Skill),[ljust(edit(%i0,_,%b),17,.)] [rjust(extract(%qa,inum(),1),2)],,|)]|[repeat(-,20)]|[repeat(-,20)]|[repeat(-,20)]|[ljust(Points Left:,17)] [rjust(extract(%qp,2,1),2)]|[ljust(Points Left:,17)] [rjust(extract(%qp,3,1),2)]|[ljust(Points Left:,17)] [rjust(extract(%qp,4,1),2)],25,77,|)]%r%xm[repeat(-,77)]%xn%r%r[ljust(To set an skill's value%, use:,35)]\'a0%xhset <skill> to <#>%xn,%rIt is now time to buy skills. Skills come in three flavors:\'a0%xuM%xnental%,\'a0%xuP%xnhysical and\'a0%xuS%xnocial. You must first prioritize these categories into primary\'a0%(with 11 points%)%, secondary\'a0%(with 7 points%)%, and tertiary\'a0%(with 4 points%).%r%r%tSet priorities with%, "%xhchoose XXX%xn"\'a0%(Example: choose MSP%))]%r%r[center(Type "%xhnext%xn" to proceed%, "%xhreset%xn"%, or "%xhabort%xn" to cancel character creation.,77)]%r[center(Type "%xhback%xn" to return to the previous step of character creation.,77)]%r\
+@set Character Generation - Skills=AUDITORIUM\
+@set Character Generation - Skills=BLIND\
+@set Character Generation - Skills=DARK\
+@set Character Generation - Skills=INHERIT\
+@rxlevel Character Generation - Skills= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@txlevel Character Generation - Skills= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+\
+@dig/teleport Character Generation - Skill Specialties\
+&KEY_STAFF Character Generation - Skill Specialties=or(hasflag(%#,WIZARD),hasattr(%#,_ABORTED),hasattr(%#,_FINISHED))\
+@lock/SpeechLock Character Generation - Skill Specialties=#2661\
+@lock/TportLock Character Generation - Skill Specialties=KEY_STAFF/1\
+@lock/TeloutLock Character Generation - Skill Specialties=KEY_STAFF/1\
+@lock/GetFromLock Character Generation - Skill Specialties=KEY_STAFF/1\
+@ConFormat Character Generation - Skill Specialties=%\
+@ExitFormat Character Generation - Skill Specialties=%\
+@Desc Character Generation - Skill Specialties=%rIt is now time to purchase skill specialties. You can have up to 3 skill specialties assigned to different skills or all to the same skill.[setq(S,default(%#/_SKILLS,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))][setq(T,sort(get(%#/_SPECIALTIES),|))][setq(U,setunion(iter(%qt,before(%i0,:)),))]%r%r%xm[repeat(-,77)]%xn%r[table([center(%xuMental%xn,25)]|[center(%xuPhysical%xn,25)]|[center(%xuSocial%xn,25)]|[iter(statlist(Skill),[ljust(edit(%i0,_,%b),17,.)] [rjust(extract(%qs,inum(),1),2)][if(match(%qu,inum()),*)],,|)],25,77,|)]%r%xm[repeat(-,77)]%xn[if(%qt,%r[table(sort(iter(%qt,[edit(statname(skill,before(%i0,:)),_,%b)]: [edit(after(%i0,:),_,%b)],,|),a,|,|),38,77,|,,.)])]%r%xm[repeat(-,77)]%xn%r%r[ljust(To add a specialty%, use:,30)]\'a0%xhaddspec <skill>=<specialty>%xn%r[ljust(To remove a specialty%, use:,30)]\'a0%xhremspec <skill>=<specialty>%xn%r%r[center(%(You must type a speciality exactly as added to remove it.%),77)]%r%r[center(Type "%xhnext%xn" to proceed%, "%xhreset%xn"%, or "%xhabort%xn" to cancel character creation.,77)]%r[center(Type "%xhback%xn" to return to the previous step of character creation.,77)]%r\
+&CMD-ABORT Character Generation - Skill Specialties=$abort:@pemit\'a0%#=[setq(Q,[set(%#,_ABORTED:1)][iter(statlist(cattr),set(%#,%i0:))])]You abort CharGen.;@teleport\'a0%#=#0\
+&CMD-RESET Character Generation - Skill Specialties=$reset:&_SPECIALTIES\'a0%#;@pemit\'a0%#=You reset this section of CharGen.;@wait 0.5=@pemit\'a0%#=Character Generation - Skill Specialties%r[u(DESC)]\
+&CMD-ADDSPEC Character Generation - Skill Specialties=$addspec *=*:@switch/first 0=[setq(E,edit(%0,%b,_))][setq(S,edit(%1,%b,_))][setq(N,statnum(skill,%qe))][setq(F,statfull(skill,%qe))][setq(A,default(%#/_SKILLS,0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))][setq(X,get(%#/_SPECIALTIES))][setq(V,extract(%qa,%qn,1))]%qn,@pemit\'a0%#=I can't find that skill.,isrepeat(skill,%qe),@pemit\'a0%#=mall(skill,%qe),gt(%qv,0),@pemit\'a0%#=Sorry%, you cannot specialize in a 0 dot skill.,not(strmatch(%qs,*:*)),@pemit\'a0%#=Sorry%, specialties cannot include the ":" character.,lt(words(%qx),3),@pemit\'a0%#=Sorry%, you're only allowed 3 specialties in CharGen.,\{@wait\'a0%#/1=\{&_SPECIALTIES\'a0%#=[trim(%qx\'a0%qn:%qs)];@pemit\'a0%#=You add a specialty to\'a0%qf called "%1".;@drain\'a0%#\}\}\
+@set Character Generation - Skill Specialties/CMD-ADDSPEC = no_parse\
+&CMD-REMSPEC Character Generation - Skill Specialties=$remspec *=*:@switch/first 0=[setq(E,edit(%0,%b,_))][setq(S,edit(%1,%b,_))][setq(N,statnum(skill,%qe))][setq(F,statfull(skill,%qe))][setq(X,get(%#/_SPECIALTIES))]%qn,@pemit\'a0%#=I can't find that skill.,isrepeat(skill,%qe),@pemit\'a0%#=mall(skill,%qe),match(%qx,%qn:*),@pemit\'a0%#=Sorry%, you haven't specialized in\'a0%qf.,match(%qx,%qn:%qs),@pemit\'a0%#=Sorry%, I can't find that\'a0%qf specialty.,\{@wait\'a0%#/1=\{&_SPECIALTIES\'a0%#=[remove(%qx,%qn:%qs)];@pemit\'a0%#=You remove your\'a0%qf specialty called "%1".;@drain\'a0%#\}\}\
+@set Character Generation - Skill Specialties/CMD-REMSPEC = no_parse\
+&_IC Character Generation - Skill Specialties=0\
+&_CHARGEN Character Generation - Skill Specialties=1\
+@set Character Generation - Skill Specialties=AUDITORIUM\
+@set Character Generation - Skill Specialties=BLIND\
+@set Character Generation - Skill Specialties=DARK\
+@set Character Generation - Skill Specialties=INHERIT\
+@rxlevel Character Generation - Skill Specialties= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@txlevel Character Generation - Skill Specialties= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+\
+@dig/teleport Character Generation - Advantages\
+&KEY_STAFF Character Generation - Advantages=or(hasflag(%#,WIZARD),hasattr(%#,_ABORTED),hasattr(%#,_FINISHED))\
+@lock/SpeechLock Character Generation - Advantages=#2664\
+@lock/TportLock Character Generation - Advantages=KEY_STAFF/1\
+@lock/TeloutLock Character Generation - Advantages=KEY_STAFF/1\
+@lock/GetFromLock Character Generation - Advantages=KEY_STAFF/1\
+@ConFormat Character Generation - Advantages=%\
+@ExitFormat Character Generation - Advantages=%\
+@Desc Character Generation - Advantages=%rMost advantages are calculated automatically by the attributes chosen in the second section of character creation. The exceptions to this rule are the Size and Speed "species factor" advantages, which staff may change upon the request of the player for his or her character before approval.[setq(A,default(%#/_ATTRIBUTES,1 1 1 1 1 1 1 1 1))][setq(M,default(%#/_ATMODIFIED,0 0 0 0 0 0 0 0 0))]%r%r%xm[repeat(-,77)]%xn%r[table([ljust(Defense,17,.)] [setq(D,ulocal(#89/SCORE-DEFENSE,%#))][rjust(first(%qd),2)]|[ljust(Initiative,17,.)] [setq(I,ulocal(#89/SCORE-INITIATIVE,%#))][rjust(first(%qi),2)]|[ljust(Size,17,.)] [setq(S,ulocal(#89/SCORE-SIZE,%#))][rjust(first(%qs),2)]|[ljust(Speed,17,.)] [setq(P,ulocal(#89/SCORE-SPEED,%#))][rjust(first(%qp),2)]|[ljust(Curr Willpower,17,.)] [setq(W,ulocal(#89/SCORE-WILLPOWER,%#))][rjust(first(%qw),2)]|[ljust(Perm Willpower,17,.)] [rjust(extract(%qw,3,1),2)],25,77,|)]%r%xm[repeat(-,77)]%xn%r%r[center(Type "%xhnext%xn" to proceed%, or "%xhabort%xn" to cancel character creation.,77)]%r[center(Type "%xhback%xn" to return to the previous step of character creation.,77)]%r\
+&_IC Character Generation - Advantages=0\
+&_CHARGEN Character Generation - Advantages=1\
+@set Character Generation - Advantages=AUDITORIUM\
+@set Character Generation - Advantages=BLIND\
+@set Character Generation - Advantages=DARK\
+@set Character Generation - Advantages=INHERIT\
+@rxlevel Character Generation - Advantages= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@txlevel Character Generation - Advantages= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+\
+@dig/teleport Character Generation - Merits\
+&KEY_STAFF Character Generation - Merits=or(hasflag(%#,WIZARD),hasattr(%#,_ABORTED),hasattr(%#,_FINISHED))\
+@lock/SpeechLock Character Generation - Merits=#2667\
+@lock/TportLock Character Generation - Merits=KEY_STAFF/1\
+@lock/TeloutLock Character Generation - Merits=KEY_STAFF/1\
+@lock/GetFromLock Character Generation - Merits=KEY_STAFF/1\
+@ConFormat Character Generation - Merits=%\
+@ExitFormat Character Generation - Merits=%\
+&CMD-ABORT Character Generation - Merits=$abort:@pemit\'a0%#=[setq(Q,[set(%#,_ABORTED:1)][iter(statlist(cattr),set(%#,%i0:))])]You abort CharGen.;@teleport\'a0%#=#0\
+&CMD-RESET Character Generation - Merits=$reset:&_MERITS\'a0%#;&_MEPOINTS\'a0%#;@pemit\'a0%#=You reset this section of CharGen.;@wait 0.5=@pemit\'a0%#=Character Generation - Merits%r[u(DESC)]\
+@Desc Character Generation - Merits=[setq(M,sort(get(%#/_MERITS),a,|,|))][setq(P,default(%#/_MEPOINTS,7))]%rIt is now time to purchase merits. Characters are allotted 7 points of merits in CharGen, which can be spent on the basic World of Darkness merits -- or for those who wish to play a Mortal+ character, their class's merits. Certain merits may be added more than once, such as Language. Some merits require an explanation (seen here as a brief comment included on the sheet). Supernatural templates will require the aid of a staffer to set certain merits.%r%r%xm[repeat(-,77)]%xn%r[iter(%qm,[ljust(edit(first(%i0,~),_,%b),34,.)] [rjust(extract(%i0,2,1,~),2)] [center(if(setr(N,last(%i0,~)),%(%qn%)),38)],|,%r)]%r%xm[repeat(-,77)]%xn%r[rjust(You have\'a0%qp merit points left,77)]%r%r[ljust(List merits with:, 35)]\'a0%xhstat/list merit%xn%r[ljust(To add a new merit%, use:,35)]\'a0%xhaddmerit <merit>=<value>%xn%r[ljust(To add a merit w/a comment%, use:,35)]\'a0%xhaddmerit <merit>=<value>/<comment>%xn%r[ljust(To remove a merit%, use*:,35)]\'a0%xhremmerit <merit>%xn%r%r[rjust(* removes the first instance of the merit on the sheet.,77)]%r%r[center(Type "%xhnext%xn" to proceed%, "%xhreset%xn"%, or "%xhabort%xn" to cancel character creation.,77)]%r[center(Type "%xhback%xn" to return to the previous step of character creation.,77)]%r\
+&CMD-ADDMERIT Character Generation - Merits=$addmerit *=*:@switch/first 0=[setq(E, edit(%0,\'a0%b, _))][setq(N, statnum(merit,\'a0%qe))][setq(F, statfull(merit,\'a0%qe))][setq(V, before(%1, /))][setq(C, after(%1, /))][setq(D, get(%#/_MERITS))][setq(P, default(%#/_MEPOINTS, 7))][setq(A, get(#2681/ACCESS-%qf))]%qn, @pemit\'a0%#=I can't find that merit., isrepeat(merit,\'a0%qe), @pemit\'a0%#=mall(merit,\'a0%qe), match(All Mortal Psychic Thaumaturge Mortal+,\'a0%qa), @pemit\'a0%#=Sorry%, that merit is reserved for\'a0%qa characters., match(setr(X, case(1, isint(setr(Z, get(#2672/COST-%qf))),\'a0%qz, strmatch(%qz,\'a0?-*), lnum(before(%qz, -), after(%qz, -)),\'a0%qz)),\'a0%qv), @pemit\'a0%#=The\'a0%qf merit must have a point value of [itemize(%qx, , or)]., gte(%qp,\'a0%qv), @pemit\'a0%#=Sorry%, you don't have enough merit points for that., \{@wait\'a0%#/1=\{&_MERITS\'a0%#=[if(%qd,\'a0%qd|)]%qf~%qv~%qc; &_MEPOINTS\'a0%#=sub(%qp,\'a0%qv); @pemit\'a0%#=You add the\'a0%qf merit with a value of\'a0%qv[if(%qc,\'a0%band a comment of "%qc")]. You now have [sub(%qp,\'a0%qv)] merit points.; @drain\'a0%#\}\}\
+@set Character Generation - Merits/CMD-ADDMERIT = no_parse\
+&CMD-REMMERIT Character Generation - Merits=$remmerit *:@switch/first 0=[setq(E,edit(%0,%b,_))][setq(N,statnum(merit,%qe))][setq(F,statfull(merit,%qe))][setq(D,get(%#/_MERITS))][setq(P,default(%#/_MEPOINTS,7))][setq(M,match(%qd,%qf~*~*,|))][setq(X,extract(%qd,%qm,1,|))][setq(V,extract(%qx,2,1,~))][setq(C,extract(%qx,3,1,~))]%qn,@pemit\'a0%#=I can't find that merit.,isrepeat(merit,%qe),@pemit\'a0%#=mall(merit,%qe),%qm,@pemit\'a0%#=I can't find that merit on your character sheet.,\{@wait\'a0%#/1=\{&_MERITS\'a0%#=ldelete(%qd,%qm,|);&_MEPOINTS\'a0%#=add(%qp,%qv);@pemit\'a0%#=You remove the\'a0%qf merit with a value of\'a0%qv[if(%qc,%band a comment of "%qc")]. You now have [add(%qp,%qv)] merit points.;@drain\'a0%#\}\}\
+&_IC Character Generation - Merits=0\
+&_CHARGEN Character Generation - Merits=1\
+@set Character Generation - Merits=AUDITORIUM\
+@set Character Generation - Merits=BLIND\
+@set Character Generation - Merits=DARK\
+@set Character Generation - Merits=INHERIT\
+@rxlevel Character Generation - Merits= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@txlevel Character Generation - Merits= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@parent Character Generation - Merits=#230\
+\
+@dig/teleport Character Generation - Final Touches\
+&KEY_STAFF Character Generation - Final Touches=or(hasflag(%#,WIZARD),hasattr(%#,_ABORTED),hasattr(%#,_FINISHED))\
+@lock/SpeechLock Character Generation - Final Touches=#2670\
+@lock/TportLock Character Generation - Final Touches=KEY_STAFF/1\
+@lock/TeloutLock Character Generation - Final Touches=KEY_STAFF/1\
+@lock/GetFromLock Character Generation - Final Touches=KEY_STAFF/1\
+@ConFormat Character Generation - Final Touches=%\
+@ExitFormat Character Generation - Final Touches=%\
+&CMD-ABORT Character Generation - Final Touches=$abort:@pemit\'a0%#=[setq(Q,[set(%#,_ABORTED:1)][iter(statlist(cattr),set(%#,%i0:))])]You abort CharGen.;@teleport\'a0%#=#0\
+&CMD-RESET Character Generation - Final Touches=$reset:@pemit\'a0%#=There is nothing to reset in this section. Please use "+help backgrounds" to view a list of background-related commands.\
+@Desc Character Generation - Final Touches=%rIt is now time to set a background describing your character. Please read "+help background" for more information on background-related commands.%r%r[if(hasattr(%#,BACKGROUND_1),You have set a background. Use "%xh+bg 1%xn" to review it.,You have not set a background.)]%r%r[center(Type "%xhnext%xn" to proceed or "%xhabort%xn" to cancel character creation.,77)]%r[center(Type "%xhback%xn" to return to the previous step of character creation.,77)]%r\
+&_IC Character Generation - Final Touches=0\
+&_CHARGEN Character Generation - Final Touches=1\
+@set Character Generation - Final Touches=AUDITORIUM\
+@set Character Generation - Final Touches=BLIND\
+@set Character Generation - Final Touches=DARK\
+@set Character Generation - Final Touches=INHERIT\
+@rxlevel Character Generation - Final Touches= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@txlevel Character Generation - Final Touches= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@parent Character Generation - Final Touches=#230\
+\
+@dig/teleport Character Generation - Confirmation\
+&KEY_STAFF Character Generation - Confirmation=or(hasflag(%#,WIZARD),hasattr(%#,_ABORTED),hasattr(%#,_FINISHED))\
+@lock/SpeechLock Character Generation - Confirmation=#2674\
+@lock/TportLock Character Generation - Confirmation=KEY_STAFF/1\
+@lock/TeloutLock Character Generation - Confirmation=KEY_STAFF/1\
+@lock/GetFromLock Character Generation - Confirmation=KEY_STAFF/1\
+@ConFormat Character Generation - Confirmation=%\
+@ExitFormat Character Generation - Confirmation=%\
+&CMD-ABORT Character Generation - Confirmation=$abort:@pemit\'a0%#=[setq(Q,[set(%#,_ABORTED:1)][iter(statlist(cattr),set(%#,%i0:))])]You abort CharGen.;@teleport\'a0%#=#0\
+@Desc Character Generation - Confirmation=%rYou have completed The Reach's Mortal/Mortal+ Character Generation. To review your character now, please type "%xh+sheet%xn" and "%xh+bg 1%xn" (as well as any additional background sections). If you are satisfied with your character, type "%xh%xrdone%xn" to exit character creation. Staff will be alerted that the character is awaiting approval, and you'll receive @mail from them letting you know you've been approved or that revisions to the character are needed (as applicable).%r%r%xhIf you are apping into one of the Supernatural Spheres, please set your [ansi(r, CG Template)] from the list below before proceeding. Once you leave here, a +request will be created for you in which you can detail your XP spends.%xn%r%r[ansi(hw, Use: template <template>)]%rCurrent Spheres: [itemize(u(_CG.SPHERES), |)].%r%r[center(Type "%xhdone%xn" to finish creation or "%xhabort%xn" to cancel.,77)]%r[center(Type "%xhback%xn" to return to the previous step of character creation.,77)]%r\
+&CMD.TEMPLATE Character Generation - Confirmation=$template *:[switch([not(isapproved(%#))][t(setr(t, match(u(_CG.SPHERES),\'a0%0*, |)))], 0*, game(%#, Only characters not yet approved may change their template here.), 10*, err(%#, Template '[secure(%0)]' not recognized.), [set(%#, _CGTemplate:[setr(p, extract(u(_CG.SPHERES),\'a0%qt, 1, |))])][game(%#, Application Template set to\'a0%qp.)])]\
+&_CG.SPHERES Character Generation - Confirmation=Blood Bather|Body Thief|Changeling|Changing Breeds|Eternal|Fae-Touched|Geist|Ghoul|Harvester|Hunter|Mage|Mortal|Patchwork People|Possessed|Proximus|Psychic|Purified|Reborn|Thaumaturge|Vampire|Visitor|Warden|Werewolf|Wolfblooded\
+&_IC Character Generation - Confirmation=0\
+&_CHARGEN Character Generation - Confirmation=1\
+@set Character Generation - Confirmation=AUDITORIUM\
+@set Character Generation - Confirmation=DARK\
+@set Character Generation - Confirmation=INHERIT\
+@rxlevel Character Generation - Confirmation= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@txlevel Character Generation - Confirmation= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@parent Character Generation - Confirmation=#230\
+\
+\
+@@The following are the character sheet commands and functions that need to be in place to make sure that a player can see their sheet, XP, regain willpower, spend pools, etc.@@\
+\
+@create Character Sheet Functions <CSF>=10\
+&FN-FORMAT Character Sheet Functions <CSF>=switch(%0,*/s*/p* *=*,if(hasattrp(me,layout-%qV),u(layout-%qV,%1),u(layout-%qR-%qV,%1)),*/p*/s* *=*,if(hasattrp(me,layout-%qV),u(layout-%qV,%1),u(layout-%qR-%qV,%1)),*/p*/s* *,u(layout-sheet,%1),*/s*/p* *,u(layout-sheet,%1),*/s* *,if(hasattrp(me,layout-%qV),u(layout-%qV,%1),u(layout-%qR-%qV,%1)),*/s*,u(layout-sheet,%1),*/n*,u(layout-note,xget(%1,_n-%qV),%1,xget(%1,_nl-%qV)),*/c*,GAME: [name(%1)][switch(%0,*/p*,,*/l*,%bloudly)] +proves[switch(%0,*/p*,%bprivately to [elist(iter(%qP,name(itext(0)), ,|),,|)] that)] [obj(%1)] has a [name(%qS)] with a Resources cost of at least\'a0%qV.,*/q*,GAME: [name(%1)][switch(%0,*/p*,,*/l*,%bloudly)] +proves[switch(%0,*/p*,%bprivately to [elist(iter(%qP,name(itext(0)), ,|),,|)] that)] [obj(%1)] has a [name(%qS)] with a quality level of at least\'a0%qV. This bonus applies to rolls involving [elist(xget(%qS,Stat),,|)].,*/i*,GAME: [name(%1)][switch(%0,*/p*,,*/l*,%bloudly)] +proves[switch(%0,*/p*,%bprivately to [elist(iter(%qP,name(itext(0)), ,|),,|)] that)] [obj(%1)] has a [name(%qS)] with a quality level of at least\'a0%qV. This bonus applies to rolls involving [elist(xget(%qS,Stat),,|)]. This is a resources [xget(%qS,cost)] [xget(%qS,class)],if(isnum(%qV),GAME: [name(%1)][switch(%0,*/p*,,*/l*,%bloudly)] +proves[switch(%0,*/p*,%bprivately to [elist(iter(%qP,name(itext(0)), ,|),,|)] that)] [obj(%1)] [getstatname(%qS)] of at least\'a0%qV.,GAME: [name(%1)][switch(%0,*/p*,,*/l*,%bloudly)] +proves[switch(%0,*/p*,%bprivately to [elist(iter(%qP,name(itext(0)), ,|),,|)] that)] [poss(%1)] [getstatname(%qS)] is "[getstat(%1,%qS)]".))\
+&FN-LISTUNIQUE Character Sheet Functions <CSF>=xget(%0,_race)|[xget(%0,_faction)]|[xget(%0,_group)]|[xget(%0,_tradition)]|[xget(%0,_seeming)]|[xget(%0,_kith)]|[xget(%0,_motley)]|[xget(%0,_entitlement)]|[xget(%0,_court)]|[xget(%0,_path)]|[xget(%0,_order)]|[xget(%0,_cabal)]|[xget(%0,_legacy)]|[xget(%0,_clan)]|[xget(%0,_covenant)]|[xget(%0,_coterie)]|[xget(%0,_bloodline)]|[xget(%0,_auspice)]|[xget(%0,_tribe)]|[xget(%0,_pack)]|[xget(%0,_lodge)]\
+&FN-PASSLOCK Character Sheet Functions <CSF>=or(isstaff(%0),strmatch(%0,%1),strmatch(xget(%1,_owner),%0),strmatch(owner(%1),%0),strmatch(setr(0,xget(%1,%2)),all),and(!hasattr(%1,%2),!hastype(%1,PLAYER),nearby(%0,%1)),and(eq(ladd(iter(%q0,switch(itext(0),staffonly,0,staff,0,*>=*,and(gte(getstat(%0,first(itext(0),>)),rest(itext(0),=)),hasflag(%0,APPROVED)),*<=*,and(lte(getstat(%0,first(itext(0),<)),rest(itext(0),=)),hasflag(%0,APPROVED)),*=*,and(strmatch(getstat(%0,first(itext(0),=)),rest(itext(0),=)),hasflag(%0,APPROVED)),*>*,and(gt(getstat(%0,first(itext(0),>)),rest(itext(0),>)),hasflag(%0,APPROVED)),*<*,and(lt(getstat(%0,first(itext(0),<)),rest(itext(0),<)),hasflag(%0,APPROVED)),here,nearby(%0,%1),visible,and(nearby(%0,%1),cansee(%1,%0)),invisible,and(nearby(%0,%1),!cansee(%1,%0)),approved,hasflag(%0,APPROVED)),|)),words(%q0,|)),gt(words(%q0,|),0)))\
+&FN-NUMBERSORT Character Sheet Functions <CSF>=ncomp(strip(%0,0123456789,1),strip(%1,0123456789,1))\
+&FN-CHECKSTAT Character Sheet Functions <CSF>=if(!isstat(setr(S,first(%0,%1))),"%qS" is not a stat.%b,setq(R,rest(%0,%2))[if(switch(getstattype(%qS),Text,1,0),if(isnum(%qR),%qS requires a text value. You entered "%qR".%b,if(hasattrp(me,limit-[edit(%qS,%b,_)]),if(!t(match(v(limit-%qS),%qR,|)),You must use either [elist(v(limit-[edit(%qS,%b,_)]),or,|)] for a\'a0%qS.%b))),if(!isnum(%qR),You must choose a number for the value of\'a0%qS.%b,if(or(gt(%qR,5),lt(%qR,0)),The value for\'a0%qS must be a number between 0 and 5. You set it at\'a0%qR.%b)))])\
+&FN-NOTEFILTER Character Sheet Functions <CSF>=u(fn-passlock,%1,%2,edit(%0,_n-,_nl-))\
+&FN-GETNOTELIST Character Sheet Functions <CSF>=sortby(fn-numbersort,filter(fn-notefilter,lattr(%1/_n-*),,,%0,%1))\
+&FN-GETNOTENUMBER Character Sheet Functions <CSF>=rest(extract(u(fn-getnotelist,%0,%1),%2,1),-)\
+&FILTER-HASXPSPEND Character Sheet Functions <CSF>=or(t(lattr(%0/_raise-*)), t(lattr(%0/_newspec-*)))\
+@lock/UseLock Character Sheet Functions <CSF>=STAFFLOCK/1\
+&OLDFN-GETSTAT Character Sheet Functions <CSF>=if(and(isskill(setr(0,switch(%1,temp*,rest(orest(%1,-)),orest(%1,-)))),!t(setr(1,switch(%1,temp*,gettempstat(%0,rest(%1)),getstat(%0,%1))))),if(t(match(Academics Computer Crafts Investigation Medicine Occult Politics Science,getstatname(%q0))),-3,-1),%q1)\
+@set Character Sheet Functions <CSF>=INHERIT\
+@rxlevel Character Sheet Functions <CSF>= Real\
+@txlevel Character Sheet Functions <CSF>= Real\
+@parent Character Sheet Functions <CSF>=#2633\
+\
+@create Character Sheet Commands <CSC>=10\
+&CMD-+SHEET Character Sheet Commands <CSC>=$+sheet:@pemit\'a0%#=[u(layout-sheet,%#)];\
+&CMD-+STATS Character Sheet Commands <CSC>=$+stats*:@force\'a0%#=+sheet%0;\
+&CMD-+SHEET_<NAME> Character Sheet Commands <CSC>=$+sheet *:@eval setq(E,if(!t(setr(P,pmatch(%0),Player)),Could not find player "%0".)); @switch\'a0%qE=,\{@pemit\'a0%#=[u(layout-sheet,%qP)];\},\{@pemit\'a0%#=[u(prefix)]\'a0%qE;\}\
+@lock Character Sheet Commands <CSC>/CMD-+SHEET_<NAME>\
+&~CMD-+SHEET_<NAME> Character Sheet Commands <CSC>=[u(stafflock,%#)]\
+&CMD-+PROVE Character Sheet Commands <CSC>=$+prove*:@eval setq(E,switch(%0,*/p*,iter(rest(first(%0,=)),if(!t(pmatch(itext(0))),Could not find player "[itext(0)]".%b,setq(P,%qP [pmatch(itext(0))],Players)), ,@@()),*/s*,,*/n*,,*/l*,,*/i*,,*/q*,,*/c*,,*/*,You entered invalid options for this command. Please check your syntax and try again.%b)[switch(%0,*/p*,,setq(P,iter(lcon(%L),if(cansee(%#,itext(0)),itext(0),setq(N,itext(0),NoSee))),Players))][switch(%0,*/l*,setq(P,setunion(%qP,%qN),Players)[setq(N,,NoSee)])][setq(R,getstat(%#,Race))][setq(S,switch(%0,*=*=*,extract(%0,2,1,=),*/p*=*,rest(%0,=),*=*,orest(first(%0,=)),orest(%0)),Stat)][setq(V,last(orest(%0),=),Value)][switch(%0,*/p*/s* *=*,,*/s*/p* *=*,,*/p*/s* *,setq(V,sheet,Value),*/s*/p* *,setq(V,sheet,Value),*/s* *,,*/s*,setq(V,sheet,Value),*/n*,,*/i*,setq(S,locate(%#,%qS,i))[switch(%0,*/i* *=*,,*/i* *,setq(V,xget(%qS,quality)))],*/c*,setq(S,locate(%#,%qS,i)),*/q*,setq(S,locate(%#,%qS,i)),if(strmatch(%qS,%qV),setq(V,getstat(%#,%qS),Value)))][switch(%0,*/q*=*,,*/q*,setq(V,xget(%qS,quality)),*/c*=*,,*/c*,setq(V,xget(%qS,cost)))][if(and(switch(%0,*/i*,1,*/q*,1,*/c*,1,0),!t(%qS)),You don't have that item.%b)][switch(%0,*/s*,if(and(t(%qV),!hasattrp(me,layout-%qV),!hasattrp(me,layout-%qR-%qV)),"%qV" is not a valid section of your sheet.%b),*/n*,if(!isnum(%qV),%qV is not a number.%b,if(!hasattr(%#,_n-%qV),You do not have a note #%qV.)),*/q*,if(!isnum(%qV),You must enter a number for the quality level of the item you wish to +prove.,if(!lte(%qV,xget(%qS,quality)),That item does not have a quality level of or less than\'a0%qV.)),*/c*,if(!isnum(%qV),You must enter a number for the resources cost of the item you wish to +prove.,if(!lte(%qV,xget(%qS,cost)),That item does not have a cost of or less than\'a0%qV.)),*/i*,,if(!isstat(%qS),"%qS" is not a stat.%b,if(and(isnum(%qV),!lte(%qV,getstat(%#,%qS))),You do not have a [getstatname(%qS)] stat of at least\'a0%qV.%b)))][setq(T,u(fn-format,%0,%#),Text)]); @switch\'a0%qE=,\{@pemit/list\'a0%l\'a0%# [setdiff(%qP,%#)] [setdiff(iter(%qP,loc(itext(0))),%l)]=switch(%0,*/s*,stdheader(+prove,OOC)%R\'a0%bGAME:\'a0%N[switch(%0,*/p*,,*/l*,%bloudly)] +proves part of\'a0%p sheet[switch(%0,*/p*,%bprivately to [elist(iter(%qP,name(itext(0)), ,|),,|)])]...%R%qT%R[stdfooter(Verification Code: [default(##/_vcode,not set!)],OOC)],*/n*,stdheader(+prove,OOC)%R\'a0%bGAME:\'a0%N[switch(%0,*/p*,,*/l*,%bloudly)] +proves a +note[switch(%0,*/p*,%bprivately to [elist(iter(%qP,name(itext(0)), ,|),,|)])]...%R%qT%R[stdfooter(Verification Code: [default(##/_vcode,not set!)],OOC)],%qT (Verification Code: [default(##/_vcode,not set!)])); @pemit/list\'a0%qN=GAME:\'a0%N +proves something to the room. You must be visible to view this +prove, have it paged directly to you, or ask\'a0%o to +prove/l so the whole room will see it.;\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\}\
+@set Character Sheet Commands <CSC>/CMD-+PROVE = no_parse\
+&CMD-+HURT Character Sheet Commands <CSC>=$+hurt*:@eval setq(E,switch(%0,*/b*,setq(T,bashing,Type),*/l*,setq(T,lethal,Type),*/a*,setq(T,agg,Type),*/*,That type of damage was not recognized. Check your syntax and try again.%b,setq(T,bashing,Type))[switch(%0,* *,if(!isnum(orest(%0)),You must enter a number to damage yourself with.%b,setq(D,orest(%0),Damage)),setq(D,1,Damage))][if(gt(%qD,99),You can't do more than 99 points of damage at a time.%b)][if(hasflag(%#,DEAD),You are already dead.)]); @switch\'a0%qE=,\{@pemit/list\'a0%l [lcon(%l)]=GAME:\'a0%N causes\'a0%oself\'a0%qD\'a0%qT damage.[setq(H,getstat(%#,Health))] (Verification code: [default(##/_vcode,not set!)]); @dolist lnum(%qD)=\{@eval null(setq(A,xget(%#,_agg))[setq(L,xget(%#,_lethal))][setq(B,xget(%#,_bashing))][if(!t(%qA),setq(A,0))][if(!t(%qL),setq(L,0))][if(!t(%qB),setq(B,0))][if(gt(add(xget(%#,_[setr(S,%qT)]),1),sub(%qH,switch(%qT,b*,add(%qL,%qA),l*,%qA,0))),setq(S,switch(%qT,b*,lethal,agg)))][if(gt(add(xget(%#,_%qS),1),sub(%qH,switch(%qS,l*,%qA,0))),setq(S,agg))]); &_%qS\'a0%#=add(if(t(setr(V,xget(%#,_%qS))),%qV,0),1); &_%qS-times\'a0%#=setunion(xget(%#,_%qS-times),add(secs(),#@));\}; @wait .1=\{@eval null(setq(A,xget(%#,_agg))[setq(L,xget(%#,_lethal))][setq(B,xget(%#,_bashing))][if(!t(%qA),setq(A,0))][if(!t(%qL),setq(L,0))][if(!t(%qB),setq(B,0))]); @switch gt(ladd(%qA\'a0%qL\'a0%qB),%qH)=1,\{&_lethal\'a0%#=if(gt(%qL,sub(%qH,%qA)),sub(%qH,%qA),%qL); &_bashing\'a0%#=if(gt(%qB,sub(%qH,add(%qA,%qL))),sub(%qH,add(%qA,%qL)),%qB); @switch lte(setr(B,xget(%#,_bashing)),0)=1,\{&_bashing\'a0%#=0; @wipe\'a0%#/_bashing-times;\},\{&_bashing-times\'a0%#=extract(xget(%#,_bashing-times),1,%qB);\}; @switch lte(setr(L,xget(%#,_lethal)),0)=1,\{&_lethal\'a0%#=0; @wipe\'a0%#/_lethal-times;\},\{&_lethal-times\'a0%#=extract(xget(%#,_lethal-times),1,%qL);\}; @switch lte(setr(A,xget(%#,_agg)),0)=1,\{&_agg\'a0%#=0; @wipe\'a0%#/_agg-times;\},\{&_agg-times\'a0%#=extract(xget(%#,_agg-times),1,%qA);\};\}; @switch gte(if(t(setr(A,xget(%#,_agg))),%qA,0),%qH)=1,\{@pemit/list\'a0%l [lcon(%l)]=GAME:\'a0%N is dead. (Verification code: [default(##/_vcode,not set!)]); @set\'a0%#=DEAD;\},\{@pemit\'a0%#=GAME: Your health level: [squish(u(layout-health,%#))] (Verification code: [default(%#/_vcode,not set!)]);\};\};\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\}\
+@set Character Sheet Commands <CSC>/CMD-+HURT = no_parse\
+&CMD-+HEAL Character Sheet Commands <CSC>=$+heal*:@eval setq(E,switch(%0,*/b*,setq(T,bashing,Type),*/l*,setq(T,lethal,Type),*/a*,setq(T,agg,Type),*/*,That type of damage was not recognized. Check your syntax and try again.%b,setq(T,bashing,Type))[switch(%0,* *,if(!isnum(orest(%0)),You must enter a number to heal yourself by.%b,setq(D,orest(%0),Damage)),setq(D,1,Damage))][if(lt(sub(if(t(setr(V,xget(%#,_%qT))),%qV,0),%qD),0),You don't have that much\'a0%qT damage.%b)][if(hasflag(%#,DEAD),You are dead and may not be revived.%b)]); @switch\'a0%qE=,\{@pemit/list\'a0%l [lcon(%l)]=GAME:\'a0%N heals\'a0%oself of\'a0%qD\'a0%qT damage. (Verification code: [default(##/_vcode,not set!)])[setq(H,getstat(%0,Health))]; @dolist lnum(%qD)=\{&_%qT\'a0%#=sub(if(t(setr(V,xget(%#,_%qT))),%qV,0),1); &_%qT-times\'a0%#=revwords(rest(revwords(sortbynum(xget(%#,_%qT-times)))));\}; @wait .1=\{@pemit\'a0%#=GAME: Your health level: [squish(u(layout-health,%#))] (Verification code: [default(%#/_vcode,not set!)]);\};\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\}\
+@set Character Sheet Commands <CSC>/CMD-+HEAL = no_parse\
+&CMD-+SPEND Character Sheet Commands <CSC>=$+spend*:@eval setq(E,switch(%0,*/p* *=*,iter(first(orest(%0),=),if(t(pmatch(itext(0))),setq(P,%qP [pmatch(itext(0))],Players),Could not find player "[itext(0)]".%b), ,%()),*/p*,setq(P,%#,Players),*/l*,setq(P,lcon(%l),Players),setq(P,iter(lcon(%L),if(cansee(%#,itext(0)),itext(0),setq(N,itext(0),NoSee))),Players))[switch(%0,*/p*,,*/l*,,*/*,That type of spend was not recognized. Please check your syntax and try again.%b)][setq(S,orest(orest(%0),=),Stat)][if(!isstat(%qS),The stat\'a0%qS could not be found.%b,if(eq(default(%#/_temp-%qS,0),0),You don't have\'a0%qS as a stat.%b,if(!strmatch(v(list-spendable),*%qS*),%qS is not a spendable stat.%b,if(lte(if(t(setr(C,get(%#/_temp-%qS),Current)),%qC,0),0),Your\'a0%qS is at\'a0%qC and cannot be spent.))))]); @switch\'a0%qE=,\{@pemit/list\'a0%l\'a0%# [setdiff(%qP,%#)] [setdiff(iter(%qP,loc(itext(0))),%l)]=GAME:\'a0%N spends one point of\'a0%qS[switch(%0,*/p*,%bprivately to [switch(%0,*=*,elist(iter(%qP,name(itext(0)), ,|),,|),%oself)])].[if(or(isstaff(##),strmatch(%#,##),hastype(##,ROOM)),%b%S has [sub(%qC,1)] points remaining.)] (Verification code: [default(##/_vcode,not set!)]); &_temp-%qS\'a0%#=sub(%qC,1); @pemit/list\'a0%qN=GAME:\'a0%N spends something. To see +spends, you must become visible or ask\'a0%o to +spend/l.;\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\}\
+@set Character Sheet Commands <CSC>/CMD-+SPEND = no_parse\
+&CMD-+REGAIN Character Sheet Commands <CSC>=$+regain* *=*:@eval setq(E,if(lt(sub(secs(),default(%#/_lastregain,0)),14400),You may only regain a stat once every four hours.%b,[setq(S,getstatname(%1))]if(!isstat(%1),The stat\'a0%1 could not be found.%b,if(eq(default(%#/_temp-%qS,0),0),You don't have\'a0%qS as a stat.%b,if(!strmatch(Glamour|Mana|Vitae|Essence,%qS,|),%qS is not a regainable stat.%b,if(gte(get(%#/_temp-%qS),setr(C,getstat(%#,%qS),Current)),Your\'a0%qS is at your max of\'a0%qC.%b,switch(%2,*+*+*+*+*,You may not roll more than one attribute%, one skill%, an appropriate merit%, and appropriate situational modifiers for this roll.%b))))))); @switch\'a0%qE=,\{@eval setq(E,setq(D,edit(orest(%2,=),-,+-))[if(!t(%qD),There was a problem with your roll. Please check the syntax and try again.%b)][setq(D,squish(edit(%qD,-,+-),+))][iter(%qD,if(!isnum(itext(0)),switch(itext(0),Temp* *,setq(0,rest(itext(0)))[setq(1,Temporary%b)],setq(0,itext(0))[setq(1,)])[if(!isstat(%q0),"%q0" is not a stat and cannot be rolled.%b,setq(D,replace(%qD,inum(0),%q1[setr(0,getstatname(%q0))],+)[case(getstattype(%q0),Attribute,setq(9,1),Skill,setq(8,1),setq(7,switch(%q0,Herd*,0,Harvest*,0,Locus*,0,Hallow*,0,1)))]))],setq(6,itext(0))),+,@@())][if(t(%q6),if(gt(%q6,3),You may not apply positive situational modifiers higher than 3 to this roll.%b))][if(!t(%q9),You must roll an attribute.%b)][if(!t(%q8),You must roll an skill.%b)][if(t(%q7),Permitted stats are attributes%, abilities%, and one of the following merits: Herd%, Harvest%, Locus%, or Hallow.%b)]); @switch\'a0%qE=,\{@eval setq(M,iter(%qD,if(isnum(itext(0)),itext(0),ulocal(fn-getstat,%#,itext(0))),+,+))[setq(U,edit(edit(iter(%qD,if(isnum(itext(0)),itext(0),itext(0) ([extract(%qM,inum(0),1,+)])),+,+),+,%b+%b),+%b-,-%b))][setq(W,edit(edit(%qD,+,%b+%b),+%b-,-%b))][setq(N,sub(ladd(edit(%qM,+,%b)),ladd(edit(%qY,+,%b))))][setq(E,if(lte(%qN,0),Rolling\'a0%qU would leave you 0 or fewer dice! Try something else.%b,if(gt(%qN,100),The dice roller can't roll more than 100 dice.,setq(T,roll(%qN,switch(%0,*/n*/1*,0,*/1*/n*,0,*/n*,11,*/1*,1,*/8*,8,*/9*,9,10)))[setq(F,sub(words(%qT),setr(T,ladd(%qT))))][setq(B,if(gte(%qT,5),%bDramatic success!))][setq(U,%qU:\'a0%qT success[if(!eq(%qT,1),es)][switch(%1,*'*,,%,\'a0%qF failed)].%qB)][setq(R,%N rolled to regain\'a0%qS[switch(%0,*/n*/1*,%, 1's subtract%, no rerolls,*/1*/n*,%, 1's subtract%, no rerolls,*/n*,%, no rerolls,*/1*,%, 1's subtract%, reroll 10's,*/8*,%, rerolling 8's,*/9*,%, rerolling 9's)]:)])))]; @switch\'a0%qE=,\{&_temp-%qS\'a0%#=min(add(default(%#/_temp-%qS,0),%qT),%qC); @pemit/list [if(isooc(%#),%#,%l [lcon(%l)])]=GAME: [if(isooc(%#),Quiet:%b)]%qR [if(or(isstaff(##),hastype(##,room),match(##,%#)),%qU,%qW)] (Verification code: [default(##/_vcode,Verification code not set! Please type +help verify!)]); &_lastregain\'a0%#=[secs()];\},\{@pemit\'a0%#=u(prefix)\'a0%qE\};\},\{@pemit\'a0%#=u(prefix)\'a0%qE\};\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\}\
+&CMD-+XPLIST Character Sheet Commands <CSC>=$+xplist:@pemit\'a0%#=stdheader(Pending XP Spends)%R[iter(lattr(%#/_raise-*), rjust(setr(T, inum(0)), 4). [extract(setr(S, xget(%#, itext(0))), 2, 1, |)] [extract(%qS, 3, 1, |)] for [last(%qS, |)] XP spent [singletime(sub(secs(), rest(itext(0), -)))] ago.,,%R)][iter(lattr(%#/_newspec-*), rjust(add(inum(0),\'a0%qT), 4). [extract(setr(S, xget(%#, itext(0))), 2, 1, |)] [extract(%qS, 3, 1, |)] for [last(%qS, |)] XP spent [singletime(sub(secs(), rest(itext(0), -)))] ago.,,%R)]%R[stdfooter()]\
+&CMD-+XPCANCEL Character Sheet Commands <CSC>=$+xpcancel *:@eval setq(E, if(!isnum(%0), Please enter a number for the spend you wish to cancel.%b, if(or(gt(%0, words(setr(S, lattr(%#/_raise-*) [lattr(%#/_newspec-*)]))),lte(%0, 0)), You do not have a XP spend #%0.%b,setq(S, extract(%qS,\'a0%0, 1))[setq(V, xget(%#,\'a0%qS))]))); @switch\'a0%qE=,\{@wipe\'a0%#/%qS; &_temp-experience\'a0%#=[setr(R,add(setr(X, last(%qV, |)), default(%#/_temp-experience, 0)))]; @pemit\'a0%#=u(prefix) You cancel spend number\'a0%0, your request for [extract(%qV, 2, 1, |)] [extract(%qV, 3, 1, |)] for\'a0%qX XP spent [singletime(sub(secs(), rest(%qS, -)))] ago. Your purchase time for this stat has been reset but your XP has been refunded. You now have\'a0%qR XP to spend.;\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\};\
+@set Character Sheet Commands <CSC>/CMD-+XPCANCEL = no_parse\
+&CMD-+XPLIST/ALL Character Sheet Commands <CSC>=$+xplist/all:@pemit\'a0%#=stdheader(Pending XP Spends); @pemit\'a0%#=list(filter(parent(me)/filter-hasxpspend, xget(#140, players)), stdsubheader(name(##))%R[iter(lattr(##/_raise-*), rjust(setr(T, inum(0)), 4). [extract(setr(S, xget(##, itext(0))), 2, 1, |)] [extract(%qS, 3, 1, |)] for [last(%qS, |)] XP spent [singletime(sub(secs(), rest(itext(0), -)))] ago.,,%R)][iter(lattr(##/_newspec-*), rjust(add(inum(0),\'a0%qT), 4). [extract(setr(S, xget(##, itext(0))), 2, 1, |)] [extract(%qS, 3, 1, |)] for [last(%qS, |)] XP spent [singletime(sub(secs(), rest(itext(0), -)))] ago.,,%R)]); @pemit\'a0%#=stdfooter();\
+&~CMD-+XPLIST/ALL Character Sheet Commands <CSC>=[u(stafflock,%#)]\
+&CMD-+XPLIST/DENY Character Sheet Commands <CSC>=$+xplist/deny */*=*:@eval setq(E, if(!t(setr(P, pmatch(%0))), Could not find player "%0".%b, if(!isnum(%1)[setq(N, name(%qP))], Please enter a number for the spend you wish to cancel.%b, if(or(gt(%1, words(setr(S, lattr(%qP/_raise-*) [lattr(%qP/_newspec-*)]))),lte(%1, 0)),\'a0%qN does not have a XP spend #%1.%b,setq(S, extract(%qS,\'a0%1, 1))[setq(V, xget(%qP,\'a0%qS))])))); @switch\'a0%qE=,\{@wipe\'a0%qP/%qS; &_temp-experience\'a0%qP=[setr(R,add(setr(X, last(%qV, |)), default(%qP/_temp-experience, 0)))]; @pemit\'a0%#=u(prefix) You cancel\'a0%qN's spend number\'a0%1, [poss(%qP)] [setr(L, request for [extract(%qV, 2, 1, |)] [extract(%qV, 3, 1, |)] for\'a0%qX XP spent [singletime(sub(secs(), rest(%qS, -)))] ago)]. [capstr(poss(%qP))] purchase time for this stat has been reset but [poss(%qP)] XP has been refunded. [capstr(subj(%qP))] now has\'a0%qR XP to spend.; @force\'a0%#=@mail/quick\'a0%qP/XP Spend Denied=%bYour\'a0%qL was denied [if(t(%2),because\'a0%2,with no reason given)]. Your purchase time for this stat has been reset but your XP has been refunded. You now have\'a0%qR XP to spend.;\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\};\
+@set Character Sheet Commands <CSC>/CMD-+XPLIST/DENY = no_parse\
+&~CMD-+XPLIST/DENY Character Sheet Commands <CSC>=[u(stafflock,%#)]\
+&CMD-+FEED Character Sheet Commands <CSC>=$+feed *=*:\
+&CMD-+FEED/PERMIT Character Sheet Commands <CSC>=$+feed/permit *:\
+&CMD-+SHIFT Character Sheet Commands <CSC>=$+shift *:@switch\'a0%0=gl*,\{\};\
+&CMD-+FPOSE Character Sheet Commands <CSC>=$fp *:\
+&CMD-+MLOOK Character Sheet Commands <CSC>=$+mlook *:\
+&CMD-+OBF Character Sheet Commands <CSC>=$+obf:\
+&CMD-+AURA Character Sheet Commands <CSC>=$+aura *:\
+&CMD-+MASK Character Sheet Commands <CSC>=$+mask: @@ Lets you hide your faedesc even from other fae.\
+&CMD-+SEARCH Character Sheet Commands <CSC>=$+search: @@ Search a room for invisifolk and hiders.\
+&CMD-+HEDGE Character Sheet Commands <CSC>=$+hedge: @@ Open a door to the Hedge.\
+&CMD-+GUISE Character Sheet Commands <CSC>=$+guise *: @@ Don a disguise.\
+&CMD-REGAIN/NOROLL Character Sheet Commands <CSC>=$+regain/noroll glamour:@switch [isooc(%#)][hasflag(%#,approved)][gte(get(%#/_temp-glamour),get(%#/_glamour))]=1**,\{@pemit\'a0%#=%xh%xrGAME:%xn You may only regain Glamour thru code while IC.\},00*,\{@pemit\'a0%#=%xh%xrGAME:%xn Only approved players may use this command.\},011,\{@pemit\'a0%#=%xh%xrGame:%xn Your Glamour is already at its maximum capacity.\},010,\{@remit loc(%#)=%xh%xyGAME:%xn\'a0%N has regained a point of glamour thru coded means. The IC or OOC circumstances should support this action. If they do not, please notify staff.;&_temp-glamour\'a0%#=[add(get(%#/_temp-glamour),1)];\{\}\
+&CMD-+WP/SLEEP Character Sheet Commands <CSC>=$+wp/sleep:@eval setq(E,if(lte(sub(secs(),default(%#/_sleeptime,0)),86400),You can only regain a willpower point due to sleep once per day.%b)[if(gte(get(%#/_temp-willpower),getstat(%#,willpower)),You are not currently down any willpower and so don't need to regain.%b)]); @switch\'a0%qE=,\{&_temp-willpower\'a0%#=[add(get(%#/_temp-willpower),1)]; &_sleeptime\'a0%#=[secs()];@pemit\'a0%#=GAME: You regain a point of willpower due to a full night's sleep.;\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\}\
+&CMD-+WP/VICE Character Sheet Commands <CSC>=$+wp/vice:@eval setq(E,if(lte(sub(secs(),default(%#/_vicetime,0)),172800),You can only regain a willpower point due to your vice twice per week.%b)[if(!t(getstat(%#,Vice)),You don't have a vice set to regain willpower by.%b)][if(gte(get(%#/_temp-willpower),get(%#/_willpower)),You are not currently down any willpower and so don't need to regain.%b)]); @switch\'a0%qE=,\{&_temp-willpower\'a0%#=[add(get(%#/_temp-willpower),1)]; &_vicetime\'a0%#=[secs()]; @pemit\'a0%#=GAME: You regain a point of willpower due to your vice.;\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\}\
+&CMD-+WP/VIRTUE Character Sheet Commands <CSC>=$+wp/virtue:@eval setq(E,if(lte(sub(secs(),default(%#/_virtuetime,0)),680400),You can only regain all willpower due to your virtue once per week.%b)[if(lte(sub(secs(),u(fn-lastvice,%#)),670500),You can only regain all willpower due to your virtue if you have not regained any willpower due to your vice for the past week.%b)][if(!t(getstat(%#,Virtue)),You don't have a virtue set to regain willpower by.%b)][if(gte(get(%#/_temp-willpower),get(%#/_willpower)),You are not currently down any willpower and so don't need to regain.%b)]); @switch\'a0%qE=,\{&_temp-willpower\'a0%#=[xget(%#,_willpower)]; @pemit\'a0%#=GAME: You regain all your willpower due to your virtue.;&_virtuetime\'a0%#=secs()\},\{@pemit\'a0%#=u(prefix)\'a0%qE;\}\
+&CMD-+SHEET/OPEN Character Sheet Commands <CSC>=$+sheet/open:&_sheetopen\'a0%#=yes;@pemit\'a0%N=%G: You have opened up you +sheet for all to view.\
+&STAFFLOCK Character Sheet Commands <CSC>=isstaff(%0)\
+@set Character Sheet Commands <CSC>=INHERIT\
+@rxlevel Character Sheet Commands <CSC>= Real\
+@txlevel Character Sheet Commands <CSC>= Real\
+@parent Character Sheet Commands <CSC>=#2637\
+\
+@create Stat Global Function Object <SGFO>=10\
+&FM-SPEED Stat Global Function Object <SGFO>=ladd(default(%0/_temp-strength,default(%0/_strength,0)) [default(%0/_temp-dexterity,default(%0/_dexterity,0))] [default(%0/_size,5)] [if(and(t(setr(1,xget(%0,_merits))),t(setr(2,match(%q1,Fleet of Foot~*,|)))),rest(extract(%q1,%q2,1,|),~),0)] [case(default(%0/_kith),Runnerswift,2,0)])\
+&FM-HEALTH Stat Global Function Object <SGFO>=ladd(getstat(%0,Size) [default(%0/_temp-stamina,default(%0/_stamina,0))])\
+&FM-INITIATIVE Stat Global Function Object <SGFO>=ladd(default(%0/_temp-dexterity,default(%0/_dexterity,0)) [default(%0/_temp-composure,default(%0/_composure,0))] [if(and(t(setr(1,xget(%0,_merits))),t(setr(2,match(%q1,Fast Reflexes~*,|)))),rest(extract(%q1,%q2,1,|),~),0)])\
+&FM-DEFENSE Stat Global Function Object <SGFO>=min(default(%0/_temp-wits,default(%0/_wits,0)),default(%0/_temp-dexterity,default(%0/_dexterity,0)))\
+&FM-PERCEPTION Stat Global Function Object <SGFO>=ladd(default(%0/_temp-wits,default(%0/_wits,0)) [default(%0/_temp-composure,default(%0/_composure,0))] [if(hasattr(%0,_perception),xget(%0,_perception),0)])\
+&FM-BLOOD_POTENCY Stat Global Function Object <SGFO>=ladd(default(%0/_blood_potency~3,0) [if(and(t(setr(1,xget(%0,_merits))),t(setr(2,match(%q1,Blood Potency~*,|)))),case(rest(extract(%q1,%q2,1,|),~),3,1,6,2,0),0)])\
+&FM-PRIMAL_URGE Stat Global Function Object <SGFO>=ladd(default(%0/_primal_urge~3,0) [if(and(t(setr(1,xget(%0,_merits))),t(setr(2,match(%q1,Primal Urge~*,|)))),case(rest(extract(%q1,%q2,1,|),~),3,1,6,2,0),0)])\
+&FM-WYRD Stat Global Function Object <SGFO>=ladd(default(%0/_wyrd~3,0) [if(and(t(setr(1,xget(%0,_merits))),t(setr(2,match(%q1,Wyrd~*,|)))),case(rest(extract(%q1,%q2,1,|),~),3,1,6,2,0),0)])\
+&FM-GNOSIS Stat Global Function Object <SGFO>=ladd(default(%0/_gnosis~3,0) [if(and(t(setr(1,xget(%0,_merits))),t(setr(2,match(%q1,Gnosis~*,|)))),case(rest(extract(%q1,%q2,1,|),~),3,1,6,2,0),0)])\
+&FM-SIZE Stat Global Function Object <SGFO>=ladd(default(%0/_size,5) [if(and(t(setr(1,xget(%0,_merits))),t(match(%q1,Giant~4,|))),1,0)])\
+&FM-WILLPOWER Stat Global Function Object <SGFO>=ladd(default(%0/_temp-resolve,default(%0/_resolve,0)) [default(%0/_temp-composure,default(%0/_composure,0))])\
+&FM-VITAE Stat Global Function Object <SGFO>=first(extract(v(calc-vitae),u(fm-blood_potency,%0),1,|),~)\
+&FM-MANA Stat Global Function Object <SGFO>=first(extract(v(calc-mana),u(fm-gnosis,%0),1,|),~)\
+&FM-ESSENCE Stat Global Function Object <SGFO>=first(extract(v(calc-essence),u(fm-primal_urge,%0),1,|),~)\
+&FN-GETSTAT Stat Global Function Object <SGFO>=setq(0,first(setr(0,getstatlocation(%1))[setq(1,rest(%q0))]))[if(hasattr(me,setr(2,fm-[case(getstatname(%1),Blood Potency,blood_potency,Primal Urge,primal_urge,Gnosis,gnosis,Wyrd,wyrd,Azoth,azoth,,health,rest(%q0,_))])),ulocal(%q2,%0),if(hasattr(%0,%q0),if(%q1,if(t(setr(2,match(setr(1,xget(%0,%q0)),%1*~*,|))),rest(extract(%q1,%q2,1,|),~),0),default(%0/%q0,0)),0))]\
+&SET-GETSTAT Stat Global Function Object <SGFO>=privilege preserve\
+&FN-GETSPEC Stat Global Function Object <SGFO>=[setr(0,getstatname(%1))][trim(squish(iter(default(%0/_specialties,),if(t(match(%q0,first(itext(0),~))),itext(0)),|,|),|),b,|)]\
+&SET-GETSPEC Stat Global Function Object <SGFO>=privilege preserve\
+&FN-GETTEMPSTAT Stat Global Function Object <SGFO>=if(t(setr(0,xget(%0,edit(first(getstatlocation(%1)),_,_temp-,1)))),%q0,getstat(%0,%1))\
+&SET-GETTEMPSTAT Stat Global Function Object <SGFO>=privilege preserve\
+&FN-ISSTAT Stat Global Function Object <SGFO>=and(t(ladd(iter(pgrep(me,list-*,*%0*),iter(v(itext(0)),strmatch(itext(0),%0*),|)))),t(%0))\
+&SET-ISSTAT Stat Global Function Object <SGFO>=privilege\
+&FN-ISSKILL Stat Global Function Object <SGFO>=and(t(ladd(iter(v(list-skills),strmatch(itext(0),%0*),|))),t(%0))\
+&SET-ISSKILL Stat Global Function Object <SGFO>=privilege\
+&FN-GETSTATNAME Stat Global Function Object <SGFO>=iter(pgrep(me,list-*,*%0*),iter(v(itext(0)),if(strmatch(itext(0),%0*),first(itext(0),~)[ibreak(0)][ibreak(1)]),|,@@()), ,@@())\
+&SET-GETSTATNAME Stat Global Function Object <SGFO>=privilege\
+&FN-GETSTATLOCATION Stat Global Function Object <SGFO>=if(hasattrp(me,setr(0,location-[rest(iter(pgrep(me,list-*,*%0*),iter(v(itext(0)),if(strmatch(itext(0),%0*),itext(1)[setq(1,itext(0))][ibreak(0)][ibreak(1)]),|,@@()), ,@@()),-)])),v(%q0) 1,_[edit(%q1,%b,_)] 0)\
+&SET-GETSTATLOCATION Stat Global Function Object <SGFO>=privilege preserve\
+&FN-GETSTATTYPE Stat Global Function Object <SGFO>=iter(pgrep(me,list-*,*%0*),iter(v(itext(0)),if(strmatch(itext(0),%0*),v(name-[rest(itext(1),-)])[ibreak(0)][ibreak(1)]),|,@@()), ,@@())\
+&SET-GETSTATTYPE Stat Global Function Object <SGFO>=privilege\
+&FN-GETXPMULTIPLIER Stat Global Function Object <SGFO>=if(hasattrp(me,setr(0,mul-[rest(iter(pgrep(me,list-*,*%0*),iter(v(itext(0)),if(strmatch(itext(0),%0*),itext(1)[setq(1,itext(0))][ibreak(0)][ibreak(1)]),|,@@()), ,@@()),-)])),v(%q0),1)\
+&SET-GETXPMULTIPLIER Stat Global Function Object <SGFO>=privilege preserve\
+@lock/UseLock Stat Global Function Object <SGFO>=STAFFLOCK/1\
+&FM-STARTGLAM Stat Global Function Object <SGFO>=first(extract(v(calc-glamour),u(fm-wyrd,%0),1,|),~)\
+&FN-XPGETSTATNAME Stat Global Function Object <SGFO>=iter(pgrep(me,list-*,*%0*),iter(pgrep(me,xp-*,*%0*),iter(v(itext(0)),if(strmatch(itext(0),%0*),first(itext(0),~)[ibreak(0)][ibreak(1)]),|,@@()), ,@@()))\
+&FM-STARTXP Stat Global Function Object <SGFO>=[ladd([if(lte(get(%0/_clarity),6),5,0)]|[if(lte(get(%0/_clarity),5),5,0)]|[if([gte(default(%0/_years_escaped,0),0)],35,0)],|)]\
+&FM-AZOTH Stat Global Function Object <SGFO>=ladd(default(%0/_azoth~3,0) [if(and(t(setr(1,xget(%0,_merits))),t(setr(2,match(%q1,Azoth~*,|)))),case(rest(extract(%q1,%q2,1,|),~),3,1,6,2,0),0)])\
+&FM-STARTPYROS Stat Global Function Object <SGFO>=first(extract(v(calc-pyros),u(fm-azoth,%0),1,|),~)\
+&FM-PYROS Stat Global Function Object <SGFO>=[get(%#/_humanity)]\
+&FN-GETSTATRACE Stat Global Function Object <SGFO>=if(hasattrp(me,setr(0,race-[rest(iter(pgrep(me,list-*,*%0*),iter(v(itext(0)),if(strmatch(itext(0),%0*),itext(1)[setq(1,itext(0))][ibreak(0)][ibreak(1)]),|,@@()), ,@@()),-)])),v(%q0),_[edit(%q1,%b,_)])\
+&SET-GETSTATRACE Stat Global Function Object <SGFO>=privilege preserve\
+&FM-PLASM Stat Global Function Object <SGFO>=first(extract(v(calc-plasm),u(fm-psyche,%0),1,|),~)\
+&FM-PSYCHE Stat Global Function Object <SGFO>=ladd(default(%0/_psyche~3,0) [if(and(t(setr(1,xget(%0,_merits))),t(setr(2,match(%q1,Psyche~*,|)))),case(rest(extract(%q1,%q2,1,|),~),3,1,6,2,0),0)])\
+&FM-PUREESSENCE Stat Global Function Object <SGFO>=first(extract(v(calc-chi),u(fm-chi,%0),1,|),~)\
+&FM-CHI Stat Global Function Object <SGFO>=ladd(default(%0/_chi~3,0) [if(and(t(setr(1,xget(%0,_merits))),t(setr(2,match(%q1,Chi~*,|)))),case(rest(extract(%q1,%q2,1,|),~),3,1,6,2,0),0)])\
+&LAYOUT-VAMPIRE-FOOTER Stat Global Function Object <SGFO>=%b Vitae:[rjc(get(%0/_temp-vitae) / [get(%0/_perm-vitae)],17)]\'a0%bBlood Potency:[rjc(get(%0/_Blood_Potency~3),10)]\
+@set Stat Global Function Object <SGFO>=HALTED\
+@set Stat Global Function Object <SGFO>=INHERIT\
+@rxlevel Stat Global Function Object <SGFO>= Real\
+@txlevel Stat Global Function Object <SGFO>= Real\
+@parent Stat Global Function Object <SGFO>=#2633\
+\
+@@What follows are the Reach's XP commands.@@\
+\
+@create Global: XP Commands <xpc>=10\
+&FCT.XP.DISPLAY Global: XP Commands <xpc>=[pemit(%0, [wheader(edit(edit([name(%1)]'s,s's,s'),z's,z') XP)]%r[iter(v(list_xp-types), if(setr(x, get(%1/_%i0)), [ansi(h, titlestr(edit(%i0, _,\'a0%b), XP), h,\'a0:)]\'a0%r%b\'a0%b [ljust(Unspent:, 10)][elements(%qx, 1)]\'a0%r%b\'a0%b [ljust(Spent:, 10)][elements(%qx, 2)]\'a0%r%b\'a0%b [ljust(Total:, 10)][elements(%qx, 3)]\'a0%r), , @@)][wfooter()])]\
+&FCT.PLAYER.FIND Global: XP Commands <xpc>=switch(1, not(comp(%0, )),\'a0%#, not(comp(%0, here)), setdiff(lcon(loc(%#), connect),\'a0%#), gt(words(%0), 1), iter(%0, [pmatch++(itext())]%b, , @@), t(setr(p, pmatch++(%0))),\'a0%qp)\
+&FCT.XP.PARSE Global: XP Commands <xpc>=[setq(x, if(setr(x, grab(xp practical_xp arcane_xp krewe_xp,\'a0%5*)),\'a0%qx, xp))][switch([lcstr(%2)], /award, if(isstaff(%0), u(fct.xp.update,\'a0%0,\'a0%1,\'a0%3,\'a0%4), game(%0, Permission denied.)), /spend, if(isstaff(%0), u(fct.xp.update,\'a0%0,\'a0%1, mul(-1,\'a0%3),\'a0%4), game(%0, Permission denied.)), /log, u(fct.xp.log.display,\'a0%0,\'a0%1, ,\'a0%qx), /spends, u(fct.xp.log.display,%0,\'a0%1, spends,\'a0%qx), /awards, u(fct.xp.log.display,\'a0%0,\'a0%1, awards,\'a0%qx), /remove, if(isstaff(%0), u(fct.xp.remove,\'a0%0,\'a0%1,\'a0%2,\'a0%3,\'a0%4), game(%0, Permission denied.)), , u(fct.xp.display,\'a0%0,\'a0%1), err(%0, Invalid command.))]\
+&FCT.XP.UPDATE Global: XP Commands <xpc>=[setq(x, if(t(%4),\'a0%4, XP))][setq(y, titlestr(edit(%qx, _,\'a0%b), XP))][regmatchi(u(%1/_%qx), (.+) (.+) (.+), 0 1 2 3)][if(not(strlen(%q0)), regmatch(0 0 0, (.+) (.+) (.+), 0 1 2 3))][if(gt(%2, 0), [set(%1, _%qx:[round(add(%2,\'a0%q1), 2)]\'a0%q2 [round(add(%2,\'a0%q3), 2)])][game(%0,\'a0%2\'a0%qy awarded to [name(%1)] for '%3'.)], [set(%1, _%qx:[add(%q1,\'a0%2)] [sub(%q2,\'a0%2)]%b%q3)][game(%0, abs(%2)\'a0%qy deducted from [name(%1)] for '%3'. [if(lt(extract(u(%1/_%qx), 2, 1), 0), [ansi(r, Warning)]: Spends exceed Total\'a0%qy.)])])][u(fct.xp.log.add,\'a0%0,\'a0%1,\'a0%2,\'a0%3,\'a0%qx)]\
+&FCT.XP.LOG.ADD Global: XP Commands <xpc>=if(u(%1/_[setr(x, if(t(%4),\'a0%4, XP))].LOG), set(%1, _%qx.LOG:[u(%1/_%qx.LOG)]~%2|%3|%0|[secs()]), set(%1, _%qx.LOG:%2|%3|%0|[secs()]))\
+&FCT.XP.LOG.DISPLAY.FORMAT Global: XP Commands <xpc>=[rjust(%1,3)]%b[rjust(extract(%0,1,1,|),5)]%b%b[ljust(extract(%0,2,1,|),39)]%b%b[ljust(name(extract(%0,3,1,|)),10)]%b[ljust(ldelete(convsecs(extract(%0,4,1,|)), 4),16)]\
+&FCT.XP.LOG.DISPLAY.SELECT Global: XP Commands <xpc>=[setq(n, elements(%0, 1, |))][case(1, and(strmatch(%2, a*), gte(%qn, 0)), [u(fct.xp.log.display.format,\'a0%0,\'a0%1)]%r, and(strmatch(%2, s*), lte(%qn, 0)), [u(fct.xp.log.display.format,\'a0%0,\'a0%1)]%r, not(or(strmatch(%2, a*), strmatch(%2, s*))), [u(fct.xp.log.display.format,\'a0%0,\'a0%1)]%r)]\
+&FCT.XP.LOG.DISPLAY Global: XP Commands <xpc>=[pemit(%0, wheader(edit(edit([name(%1)]'s, s's, s'), z's, z') [switch(%2, a*, Awarded%b, s*, Spent%b)][titlestr(edit(%3, _,\'a0%b), XP)] Log)%r[rjust(#, 3)]%b[rjust(XP, 5)]%b [ljust(Reason, 39)]%b[ljust(%bDone By, 10)]%b [ljust(Time, 16)]%r[wdivider()]%r[iter(u(%1/_%3.LOG), [u(fct.xp.log.display.select, itext(0), inum(0),\'a0%2)], ~, @@)][wfooter()])]\
+&FCT.XP.CALC.MOD Global: XP Commands <xpc>=[switch(1, gte(%0, 750), .1, gte(%0, 500), .25, gte(%0, 350), .5, gte(%0, 200), .75, 1)]\
+&DATA.XP.DIFF.WEEKS Global: XP Commands <xpc>=26\
+&DATA.XP.DIFF.BUFFER Global: XP Commands <xpc>=50\
+&FCT.XP.CALC.BONUS Global: XP Commands <xpc>=[if(gt(%1, 0), round(fdiv(%1, if(gt(setr(v, u(%0/_XP.DIFF.WEEKS)), 0),\'a0%qv, 1)), 2), 0)][set(%0, _XP.DIFF.WEEKS:[dec(u(%0/_XP.DIFF.WEEKS))])]\
+&FCT.SORT.TOPTEN Global: XP Commands <xpc>=[if(gte(last(u(%0/_XP)), last(u(%1/_XP))), -1, 1)]\
+&FCT.XP.REMOVE Global: XP Commands <xpc>=[setq(x, if(t(%5),\'a0%5, XP))][if(and(isstaff(%0), isnum(%3)), [setq(r, first(extract(u(%1/_%qx.LOG),\'a0%3, 1, ~), |))][if(gte(%qr, 0), set(%1, _%qx:[sub(first(u(%1/_%qx)),\'a0%qr)] [extract(u(%1/_%qx), 2, 1)] [sub(last(u(%1/_%qx)),\'a0%qr)]), set(%1, _%qx:[add(first(u(%1/_%qx)), abs(%qr))] [add(extract(u(%1/_%qx), 2, 1),\'a0%qr)] [last(u(%1/_%qx))]))][set(%1, _%qx.LOG:[ldelete(u(%1/_%qx.LOG),\'a0%3, ~)])][game(%0, [titlestr(edit(%qx, _,\'a0%b), XP)] corrected and item #%3 removed from the log for the reason: '%4'.)][set(%1, _XP.REMOVE.LOG:\'a0%qr|%4 (%qx)|%0|[secs()]%b[u(%1/_XP.REMOVE.LOG)])], err(%0, Permission denied.))]\
+&TRIG.WEEKLY_XP Global: XP Commands <xpc>=@dolist [setr(a, sortby(%!/fct.sort.topten, search(eplayer=and(isapproved(##), not(isstaff(##))))))][setq(x, sub(setr(m, idiv(ladd(iter(extract(%qa, 1, setr(d, round(mul(words(%qa), .05), 0))), last(u(##/_XP)))),\'a0%qd)), u(%!/data.xp.diff.buffer)))]=[u(%!/fct.xp.update, #3108, ##, round(add(u(%!/fct.xp.calc.bonus, ##, sub(%qx, last(u(##/_XP)))), mul(u(%!/fct.xp.calc.mod, last(u(##/_XP))), 3)), 2), Weekly XP)]\
+&CMD.XP Global: XP Commands <xpc>=$^\\+xp(/.*?)?( (.*?)(=.*)?)?$:@eval setq(w, v(list_xp-types)); @assert or(isstaff(%#), not(t(%4)))=\{@eval err(%#, Staff only.)\}; @eval case(1, strmatch(%3, */*), [setq(t, first(trim(%3), /))][setq(x, rest(trim(%3), /))], t(%4), [setq(t, trim(%3))][setq(x, xp)], t(match(%qw, trim(%3)*)), [setq(t,\'a0%#)][setq(x, trim(%3))], [setq(t, trim(%3))][setq(x, xp)]); @assert setr(t, u(fct.player.find,\'a0%qt))=\{@eval err(%#, Player not found.)\}; @assert or(isstaff(%#), strmatch(%#,\'a0%qt))=\{@eval err(%#, Staff only.)\}; @assert setr(x, grab(%qw,\'a0%qx*))=\{@eval err(%#, XP type must be one of: [edit(itemize(%qw), _,\'a0%b)].)\}; @assert or(not(%4), isnum(setr(a, first(rest(%4, =),\'a0:))))=\{@eval err(%#, XP must be a number.)\}; @assert or(not(%4), comp(setr(r, rest(%4,\'a0:)), ))=\{@eval err(%#, Must include a reason.)\}; @switch/first rest(%1, /)=aw*, \{@if t(%4)=\{@assert isstaff(%#)=\{@eval err(%#, Staff only.)\}; @eval u(fct.xp.update,\'a0%#,\'a0%qt,\'a0%qa,\'a0%qr,\'a0%qx); \}, \{@eval u(fct.xp.log.display,\'a0%#,\'a0%qt, awards,\'a0%qx)\}\}, sc*, \{@if t(%4)=\{@assert isstaff(%#)=\{@eval err(%#, Staff only.)\}; @dolist\'a0%qt=@eval u(fct.xp.update,\'a0%#, ##,\'a0%qa,\'a0%qr,\'a0%qx); \}\}, sp*, \{@if t(%4)=\{@assert isstaff(%#)=\{@eval err(%#, Staff only.)\}; @eval u(fct.xp.update,\'a0%#,\'a0%qt, -%qa,\'a0%qr,\'a0%qx); \}, \{@eval u(fct.xp.log.display,\'a0%#,\'a0%qt, spends,\'a0%qx)\}\}, rem*, \{@assert isstaff(%#)=\{@eval err(%#, Staff only.)\}; @eval u(fct.xp.remove,\'a0%#,\'a0%qt,\'a0???,\'a0%qa,\'a0%qr,\'a0%qx);\}, log*, \{@if t(%4)=\{@eval err(%#, Use the /spend or /award switch instead.)\}, \{@eval u(fct.xp.log.display,\'a0%#,\'a0%qt, ,\'a0%qx)\}\}, @@(null), \{@if t(%4)=\{@eval err(%#, Use the /spend or /award switch instead.)\}, \{@eval u(fct.xp.display,\'a0%#,\'a0%qt,\'a0%qx)\}\}, \{@eval err(%#, Unknown switch.)\};\
+@set Global: XP Commands <xpc>/CMD.XP = regexp\
+&LIST_XP-TYPES Global: XP Commands <xpc>=xp practical_xp arcane_xp krewe_xp\
+&SORTBY.XP-TIMESTAMP Global: XP Commands <xpc>=comp(last(%0, |), last(%1, |))\
+@set Global: XP Commands <xpc>=INHERIT\
+@set Global: XP Commands <xpc>=SAFE\
+@rxlevel Global: XP Commands <xpc>= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@txlevel Global: XP Commands <xpc>= Real Obf Twilight Shadow Abyss Astral Hedge Heaven Hell All\
+@parent Global: XP Commands <xpc>=#2833\
+\
+@@Make sure to change the weekly XP to be awarded by the following object if you choose to use weekly XP gain. If not, ignore.@@\
+\
+@create XP Daemon=10\
+@set XP Daemon=ROYALTY\
+@set XP Daemon=WIZARD\
+@rxlevel XP Daemon= Real\
+@txlevel XP Daemon= Real\
+}

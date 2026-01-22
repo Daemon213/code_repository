@@ -1,0 +1,171 @@
+& AHELP
+This is the admin-only help for WC:NH. 
+ 
+  PAGES:
+
+  +acheck        BBOARD         COMBAT         COMMS          CONTRACT
+  +DOSSIER       ECON           +FACTION       +gmemit        ITEMS
+  +PFILE         +RP            +SPACE         +TICKET        WANTED
+  +ZONE   
+
+& ITEMS
+There are items, and there are instances of said items.  The 'items' are
+parents.  The 'instances' of each item are what players carry around in their
+inventories.  The following commands let you manipulate the table of items.
+ 
++item/list - See a list of types of items.
++item/list <type> - See a list of items in that category.
++item/view <number> - Details on an item.
++item/new <type> - Add a new item to the specified type category.
++item/edit <num>/<field>=<value> - Edit an existing item.
++item/destroy <num> - Completely destroy an existing item.
++item/create <num> - Instantiate a new MUSH object for an item.
++item/fix <dbref> - Fix any propagation errors on a MUSH item.
++item/remove <dbref> - @nuke an instantiated item from both game and db.
+ 
+When an item is instantiated for someone to carry around, the instance that
+exists in the Mongo collection is propagated to the MUSH.  Vendors, which are
+Ruby objects, have an inventory which is a list of instantiated Ruby objects
+that have not yet been propagated to the MUSH.  Thus, when someone buys an
+object from a vendor, the item is propagated.  To manipulate a vendor, @tel to
+the room it's in and use the following commands:
+ 
+vendor/stock <number>=<amount> - Stock a vendor with item <number>
+
+& +GMEMIT 
+Syntax: +gmemit <text>
+ 
+This makes a global emit that everyone connected to the game will see.  It's
+useful for large scale plots that are happening at the moment, as opposed to 
+summary news posts on an IC news board after the fact.  Additionally, all 
+gmemits are posted to the Galactic Action board.
+
+& +DOSSIER
+  This command allows you to make notes about IC matters relating to characters.
+  Plot hooks that should be used, IC loans, or anything else related to a chara-
+  cter's IC life should be tracked here. (OOC matters are handled via +pfile).
+ 
+  This command can also be used to track information on objects (such as ships).
+ 
+  Commands: 
+ 
+  +dossier <person or object>
+  +dossier/add <person or object>=<note>
+ 
+  Dossier notes are also auto-posted (after a short delay) to +bb 4.
+& WANTED
+  Admin can add or manipulate the wanted system using these commands:
+ 
+  wanted/set <object>/<field>=<value> - set a field on a wanted object
+  wanted/delete <object> - delete a wanted object.
+ 
+  Fields are: amount, info, name, contact, and visible.
+ 
+  To create a new entry, use 'wanted/set <number>/name=<object/known name>.
+  <number> can be any four-digit number. The first time you run wanted/set, a
+  new entry will be automatically created.
+ 
+  All new entries default to visible: false, so make sure and set it to true
+  when done. Changes are not publicized to players, so use a News Net +bbpost
+  or something similar to announce it.
+& +RP
+Commands for admin.
+ 
++rp/addcat <name> - Add a category.
++rp/remcat <name> - Remove a category.
++rp/desc <cat>=<desc> - Describe a category.
++rp/sticky <num> - Make a post sticky.
++rp/unstick <num> - Remove sticky status.
+ 
+Additionally, admin can remove any post, regardless of who the author was.
+
+& COMBAT
+Commands for admin.
+ 
++heal <player> - Completely heal the player.
++injure <player>=<damage> - Apply damage to a player in a random location.
++injure <player>/<hitloc>=<damage> - Apply damage in a particular hitloc.
+ 
+The <damage> can be either numeric (joules) or one of "light", "moderate", or
+"heavy".  Here is a quick guide for the relative power of some attacks.
+ 
+LIGHT
+ 
+100 - Average human punch
+200 - Baseball bat
+ 
+MODERATE
+ 
+500 - Average handgun
+ 
+HEAVY
+
+1200 - M1 Carbine
+1700 - M16 Rifle
+400000 - Hit by a car at 60mph
+& +ZONE
+Admin commands for building.
+ 
++zone/list - See a hierarchial list of zones.
++zone/create <name> - Make a new zone.
++zone/assign <zone>=<parent zone> - Put a zone under a parent zone.
++zone/makebc <player obj> - Make a new BC.  You must @pcreate the BC first.
++zone/bc <zone>=<bc> - Assign a BC to a zone.
++zone/history <zone> - See the checkout history for a zone's BC.
++zone/checkout <zone> - Checkout a BC to do some building work.
+ 
+It is preferable always to use these commands when dealing with
+zoning/building.  Everything is sure to be properly zoned/chowned/powered/etc.
+when you use these commands.
+ 
+Guides can additionally use +zone/checkout and +zone/list in the event that you
+want to farm out some building work.
+& +acheck
++acheck <player>=<skill/attribute>
+
+Runs an admin-side +check of <player>'s skill or attribute, displayed to
+everyone in the room, just like a normal +check.
+
+Normally players should run +check themselves in scenes, to discourage people
+whining about bad rolls.
+
+& CONTRACT
+contract/new - start working on a new contract
+contract/date <y m d> - set the OOC close-to-new-responses date
+contract/title <title> - set contract's title
+contract/background <text> - set the contract's background
+contract/question <#>=<text> - set the contract's questions
+contract/publish - publish a contract and enable it for bids (posts for you)
+contract/award <contract>=<org/individual name> - award contract (posts for you)
+contract/responses <contract> - View responses of a contract
+contract/response/view <contract>=<response> - View an individual's response
+& COMMS
+Admins can:
+
+handle/list <person> - view somebody's handles
+comm/list <person> - view somebody's comm/list (note all channels are shown)
+handle/npc <handle> - Register a handle as an NPC handle
+message/npc <from handle>/<to handle>=<message> - Send a message from a NPC
+comm <channel>/<handle>=<message> - Talk on a channel. Handles are not checked!
+
+& BBOARD
+Admins can:
+ 
+Remove any post.
+Edit any post.
+See the real author of a post even on anonymous boards.
+ 
+Use the following commands:
++bbnewgroup <board name>
++bbconfig <board>/<setting>=<value>
+ 
+The settings are any valid class setting.  As of this writing, they include:
+num, name, ansi, permission_type, permission_value, anonymous, timeout.
+ 
+Most are self-explanatory.  "Anonymous" should be a string that is the name of
+the anonymous poster.  "Permission_type" currently includes: admin, guide, or
+faction.  If it's faction, then "permission_value" should be the abbreviation
+of a faction (SR, HV, etc.).  "Ansi" should be a valid ansi code.
+ 
+For settings that need to be cleared, specify "none" to reset the option to a
+nil value.

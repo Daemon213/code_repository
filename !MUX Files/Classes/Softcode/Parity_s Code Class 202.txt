@@ -1,0 +1,1226 @@
+ ©2000 Parity@OGR. You may copy and redistribute this document provided that it remains
+complete, with credits intact, and is used only for non-profit purposes.
+******
+
+Parity calls class to order and starts the log. "Speak now if you want
+to be edited out before posting."
+
+Parity says, "Hercules, no matter how quiet you're going to be, you'll want
+to create an object, with:
+@create <My Object>
+@set <My Object>=visual
+@set <My Object>=commands
+@lock/uselock <My Object>=me
+Where <My Object> is a name of your choice."
+
+Parity is a big believer in learning by experimenting, and you can't
+follow the excercises without an object.
+
+Hercules says, "Done.:)"
+
+Parity says, "Okay."
+
+Parity says, "Whenever I say 'MyObj' I mean, of course, your object,
+whatever you named it, so don't take that literally, but everyone has
+a differently named object."
+
+Parity says, "Hopefully. :)"
+
+Hercules nods.
+
+Moth chuckles
+
+Parity says, "We're going to start with a little bit of a basic exercise
+here, and write a simple remember/reminder command pair."
+
+Parity says, "&remember-cmd myobj=$.remember *:&memory-string me=%0 ; @pemit %#=Ok."
+
+Moth says, "Okie..."
+
+Parity says, "&reminder-cmd myobj=$.reminder:@pemit %#=You asked me to
+remember: [v(memory-string)]"
+
+Parity says, "Now, try typing '.remember The secret number is 7' and then
+'.reminder'"
+
+> Ok.
+> You asked me to remember: The secret number is 7
+
+Moth has to get off the wiz channel.... just a mo
+
+Parity okees.
+
+Moth tries that again
+
+Parity says, "Now, the point of this basic little exercise is, well,
+multifold. To remind everyone how to write a command, how to use [] to
+force evaluation of a function (in this case, the 'v()' function,
+which is essentially the same as 'get(me/whatever)') and to set the
+stage for more advanced examples."
+
+Parity says, "Does anyone, even those of you that think you're just
+lurking, have any question about this example?"
+
+Moth ugs... works on this a moment....
+
+Parity says, "If everyone drops their object, I can examine it and give
+guidance."
+
+Roswind doesn't think, she knows ;)
+
+Roswind pats the dragon's shoulder and moves away from it.
+
+Moth sets Prospero down.
+
+The big inflated dragon starts drifting across the room.
+
+Prospero wiggles his way off of Moth and across the floor in search of raisins.
+
+Moth's Prospero:
+REMEMBER-CMD:$.remember *:&memory-string me=%0 ; @pemit %#=Ok."
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to remember: [v(&memory-string me=%0 ;
+@pemit %#=Ok.)]
+
+Parityblinks.
+
+Parity says, "Moth, your 'v' command should just be 'v(memory-string)'"
+
+Hercules dropped Bubba.
+
+Parity says, "Err."
+
+Parity says, "I should say, your v -function-."
+
+Moth nods, thought I misunderstood that... will do it
+
+Hercules' Bubba:
+REMEMBER-CMD:$.remember *:&memory-string me=%0 ; @pemit %#=Ok
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to remember [v(memory-string)]
+MEMORY-STRING:The secret number is 7
+
+Parity says, "Both Bubba and the Dragon have it right if you need to look at it.
+Good job, Herc, Ros. ;)"
+
+Moth nods, just thought I was supposed to "fill that bit in"...
+
+Parity will use ... or <> for 'fill this in'
+
+Moth says, "Oh good... thanks..."
+
+Parity says, "To review briefly, a function is a special string that the
+MUSH evaluates and replaces with some other string."
+
+Hercules says, "Do these strings also work in MUX?"
+
+Parity says, "A function can appear as the first thing in a string that the
+mush is evaluating, as in 'say time()' or can be appear later in that
+string wrapped in square brackets [] to say 'evaluate this specially!'
+like 'say The time is [time()]'"
+
+Parity says, "Yes."
+
+Parity says, "Everything I teach you works in TinyMUSH, TinyMUX and PennMUSH."
+
+Parity says, "When we come across discrepancies I'll try to point out the
+cross-platform differences."
+
+Hercules says, "Cool!"
+
+Parity says, "So far, the only difference we'd see doing this elsewhere is
+that, on pennmush, we'd have to say, '@set MyObj=!no_command' instead
+of '@set MyObj=commands'"
+
+Parity says, "But I wasn't really teaching flags, just getting you an
+object to work with, so. :)"
+
+Moth chuckles
+
+Hercules nods.;)
+
+Moth's Prospero:
+REMEMBER-CMD:$.remember *:&memory-string me=%0 ; @pemit %#=Ok."
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to remember: [v(memory-string)]
+
+Moth says, "Oh woo..."
+
+Parity says, "Okay. So. You can put functions inside of any string
+evaluated by MUSH. You cannot, however, put -commands- in the middle
+of strings. THey have to go in very particular places. Basicalyl, at
+the beginning of a line, at the beginning of a $-command, and as the
+arguments to @force, @dolist, and @wait. I don't think there's
+anywhere else."
+
+Parity says, "You can string commands together only by separating them with
+';', not by embedding them inside each other, and not inside of
+functions."
+
+Parity says, "In other words, commands and functions are very
+different. Don't mix them up."
+
+Parity looks aroudn, "Any questions?"
+
+Moth says, "In this memory string.... you can continue to add "things
+to remember"... Like: .remember Raisins are tasty and Parity has a lot
+of them."
+
+Moth says, "?"
+
+Moth says, "Is there a limit or how does it handle multiple things to
+remember?"
+
+Parity mmmms, "Not in this example."
+
+Parity says, "Let's look at the code."
+
+Parity says, "&remember-cmd myobj=$.remember *:&memory-string me=%0 ; @pemit %#=Ok."
+
+Moth nods
+
+Parity says, "Okay."
+
+Parity says, "Parsing this string out, it says, 'This is a command, stored
+in the attribute 'remember-cmd' which is matched by '.remember '
+followed by anything at all; when invoked, do '&memory-string
+me=<whatever followed the '.remember '> ' and then do '@pemit <whoever
+called the command>=Ok.'"
+
+Parity says, "does that make sense?"
+
+Moth nods
+
+Parity says, "So, knowing that the '&<attribute name> <obj>=<value>' type
+syntax sets an attribute, we can see whatever you type is going to
+replace anything that might have been in 'memory-string' before."
+
+Moth ahs okays...cool
+
+Parity says, "Now, if we want to remember multiple things we can. ;)"
+
+Moth lets you get to that as you will ;)
+Parity says, "Everyone type 'help cat()'"
+> help cat
+
+Function: cat(<string>[,<stringN>])
+
+cat returns a string made up of the contents of string1 through stringN,
+with each string separated from its neighbors by a space.
+
+Example:
+> say cat(this is, a test)
+You say "this is a test"
+> say cat(This is,another,test of the,CAT function)
+You say "This is another test of the CAT function"
+
+Parity says, "cat is a nice useful function."
+Parity says, "It's short for 'concatenate' and means 'stick these strings together'"
+Parity says, "Try, 'say cat(first string,second string,third string)'"
+
+Moth ahhhs
+Moth says, "raisins are tasty and plentiful"
+
+Parity muses, "Not that we really need cat here, but it lets us
+introduce another function. :)"
+
+Parity says, "Anyway."
+
+Moth says, "Cool..."
+
+Hercules says, "car(first string,second string,third string)"
+Hercules says, "first string second string third string"
+Hercules blushes...
+
+Parity says, "If we replace the %0 with 'cat(v(memory-string),%0)' then
+instead of storing '<what the invoker typed>' we'll store '<what I
+remember>' plus '<what the invoker typed>' ..."
+
+Parity says, "Anyway. Try that. ;)"
+
+Parity grins at Hercules, "Unfortunately, car is not a function in MUSH."
+
+Hercules says, "So I noticed.:)"
+Hercules curses his big, blunt fingers.
+
+Parity says, "ACtually maybe it's not so very unfortunate. first() and
+rest() in MUSH do what (car) and (cdr) do in lisp."
+
+Parity personally things first and rest are more intuitive names. :)
+
+Parity says, "thinks, even."
+
+Hercule's Bubba:
+REMEMBER-CMD:$.remember *:&memory-string me=cat(v(memory-string),%0) ; @pemit %#=Ok
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to remember [v(memory-string)]
+MEMORY-STRING:The secret number is 7
+
+Hercules says, "So, we replace the %0 in the .reminder command with cat(v(memory-string),)?"
+
+Parity says, "YEs, you've got it right Hercules, except when speaking you
+have to escape all your %-substitutions. :)"
+
+Moth says, "oops..."
+
+Moth says, "Oh, cool... not oops..."
+
+Parity says, "Your code is correct. Try '.remember and the secret word is
+please' or whatever you want to add to Bubba's 'memory'."
+
+Hercules says, "Yeah, I forgot to add an extra '%' in the cat string."
+
+Hercules says, "Cool!"
+
+Moth's Prospero:
+REMEMBER-CMD:$.remember *:&memory-string me=cat(v(memory-string),%0) ; @pemit %#=Ok.
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to remember: [v(memory-string)]
+
+Parity peers at Prospero, "Looks good, Moth!"
+
+Moth offers Prospero a raisin.
+
+Moth grins
+
+Parity says, "Are we all clear on setting attributes and using v() now?"
+
+Moth nods, thinks so
+
+Moth says, "For me, that is"
+
+Parity says, "Cool. ;)"
+
+Parity says, "Okay, now we'll actually get to to-days topic, which is u(). :)"
+
+Parity says, "u() is like v() except that it evaluates the string it
+retrieves. In this case, we could put u() in the place of v() and
+nothing would change except that we'd use up more computer-cycles
+running our command. (Well, and some security risks, but lets not get
+too sidetracked.)"
+
+Parity says, "Any-way, u() may not sound very interesting with that
+description, but what that magic 'evaluation' means is that where v()
+acts as 'get-a-variable' u() acts as 'run-a-user-defined-function'."
+
+Parity says, "So, let's do an example here. ;)"
+
+Parity says, "&memory-fn myobj=[repeat(-,78)]%r[v(memory-string)]%r[repeat(-,78)]"
+
+Parity says, "Once you've entered that function, replace 'v(memory-string)'
+in your '.remember' command with 'u(memory-fn)'"
+
+Parity says, "err."
+
+Hercules says, "Do we leave the %0 in there?"
+
+Parity says, "I mean '.reminder' ..."
+
+Parity says, "D'oh."
+
+Parity says, "&reminder-cmd myobj=$.reminder:@pemit %#=You asked me to remember:
+[u(memory-fn)]"
+
+Hercules says, "Okie.:)"
+
+Parity says, "The remember command should remain, or be reset to: &remember-cmd
+myobj=$.remember *:&memory-string me=cat(v(memory-string),%0) ; @pemit %#=Ok"
+
+Hercules kisses 'Alt+Up'.
+
+Parity reminds itself to use less confusing command names next time.
+
+Moth says, "If only my new client wouldn't pop back down when folks talk. Laf"
+
+Parity says, "Sorry. ;o"
+
+Parity recommends tf for linux and simplemu* for windows.
+
+Moth is on a Cube
+
+Parity says, "G4Cube?"
+
+Moth says, "Yep...."
+
+Parity assumes not a NExtCube.
+
+Hercules is on MUSHclient.
+
+Moth says, "Nope, it's the G4Cube"
+
+Parity doesn't know Mac stuff, "But when you upgrade to OS X, you
+should be able to use tf like the rest of the Unix world. ;)"
+
+Moth says, "Build a mu*client for me Parity! ;) // Anyway...."
+
+Moth nods to Parity...
+
+Moth's Prospero:
+REMEMBER-CMD:$.remember *:&memory-string me=cat(v(memory-string),%0) ; @pemit %#=Ok.
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to remember: [u(memory-fn)]
+MEMORY-FN:[repeat(-,78)]%r[v(memory-string)]%r[repeat(-,78)]
+
+Hercules' Bubba:
+MEMORY-FN:[repeat(-,78)]%r[v(memory-string)]%r[repeat(-,78)]
+REMEMBER-CMD:$.remember *:&memory-string me=cat(v(memory-string),%0) ; @pemit %#=Ok
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to remember [u(memory-fn)]
+
+Parity says, "Okay, looks good!"
+
+Parity says, "Uhm. Hmm."
+
+Parity says, "Oh, except maybe there should be a %r after the 'remember' or it'll look
+funny. :o"
+
+Moth says, "In which bit?"
+
+Parity says, "In the reminder-cmd."
+
+Moth examines prospero
+
+Parity says, "Or... hm."
+
+Parity peers.
+
+Parity says, "Maybe it's not needed."
+
+Parity says, "Oh. Yes it is. ;)"
+
+Parity's client is wrapping things so they look nice, but that %r
+really should be there.
+
+Moth says, "So we should put the %r after remember:"
+
+Parity says, "yes. :)"
+
+Moth says, "In the reminder string ..."
+
+Moth says, "Okie"
+
+Parity says, "Has everybody typed '.reminder' and seen how the reminder looks now?"
+
+> .reminder
+You asked me to remember:
+------------------------------------------------------------------------------
+the secret number is 7 and the secret word is foobar
+------------------------------------------------------------------------------
+
+Hercules says, "So, &reminder-cmd #1284=$.reminder:@pemit #1147=You
+asked me to remember
+"
+
+Parity eeps.
+
+Moth says, "Oh, that looks nice"
+
+Hercules says, "Oooh!"
+
+Parity says, "Uhm. No spaces between the %r and the []."
+
+Parity says, "Or else you'll indent your borders by 1."
+
+Parity says, "Anyway."
+
+Parity says, "To explain what we've done here."
+
+Moth has two strings in my memory bits, but I get the point;)
+
+Parity says, "Instead of pemitting the value of 'memory-string', we're
+pemitting the result of evaluating 'memory-fn'."
+
+Parity writes on the blackboard, '&memory-fn
+myobj=[repeat(-,78)]%r[v(memory-string)]%r[repeat(-,78)]'
+
+Parity says, "Okay. The repeat function simply repeats the first argument
+however many times the second argument says to repeat it."
+
+Parity says, "You can play with that if you want, with 'say
+repeat(hello,3)' or whatever."
+
+Parity says, "You should all be familiar with %r by this time, I hope?"
+
+Parity says, "And then, the v(memory-string) is exactly the same as it
+always was."
+
+Moth says, "hellohellohello"
+Moth grins!
+
+Parity says, "So, when we evaluate u(memory-fn), we evaluate, 'repeat
+dashes/newline/get memory string/newline/repeat dashes' and, ta-da, a
+beautifully formatted memory string appears."
+
+Parity says, "Does that make sense to everyone?"
+
+Parity says, "As a mnemonic to help you remember, btw, v() retrieves a
+-V-ariable, and u() evaluates a -U-ser defined function."
+
+Moth believes so, for my part...
+Moth nods, thanks for that bit:)
+
+Parity nods, "Mnemonics are important, especially with
+one-letter-functions like u() and v(). :)"
+
+Moth nods, especially for me... laf
+
+Parity says, "Okay. Now this is a kind of a silly function. There's no good
+reason not to just put the whole string of stuff in memory-fn into the
+reminder-cmd and skip the whole u() thing."
+
+Parity says, "So, let's move forward to an example that -is- useful. ;)"
+
+Moth grins
+
+Hercules nods.:)
+
+Parity says, "&borders-fn myobj=[center(%b%0%b,78,-)]%r%1%r[repeat(-,78)]"
+Parity says, "&border-test-cmd myobj=$.btest:@pemit %#=u(borders-fn,Header,Text)"
+Parity says, "put those in, and try the '.btest' command, and then we'll
+discuss it."
+Parity says, "Let me know when you're ready."
+
+Moth ahhhs, as some things learned by rote years ago make sense. laf
+
+Parity grins.
+
+Moth woos
+
+Hercules woohoos!
+
+Parity grins, "I take it that means things are working."
+
+Parity says, "Okay."
+
+Parity says, "Now, this is where u-functions start to be -really- different
+from v."
+
+Parity says, "You'll notice that, similar to the way the value filling in
+the '*' in our commands gets stuffed into '%0', the arguments to our
+ufun are getting stuffed into %0 and %1."
+
+Parity says, "You can change your btest command, and replace 'Header' with
+'My Poem' and 'Text' with 'I don't have time to find a rhyme' ... or
+whatever."
+
+Parity says, "center(), if it isn't obvious, centers something. Take a look at help
+center() and try saying things like 'center(test,10,.)'"
+
+> help center
+
+Function: center(<string>,<width>[,<fill>])
+
+This function will center a string in a string <width> characters wide,
+using <fil> characters for padding on either end of the string for
+centering. If no fill character is specified then a space is used.
+If <string> is longer than <width> characters, the string is returned
+unmodified.
+
+Example:
+> say center(a,5,-)
+You say "--a--"
+> say center(*BAMF*,15)
+You say " *BAMF* "
+
+Moth says, "..tequila."
+
+Parity says, "And yes, it -is- annoying that repeat() and center() take
+arguments in a different order."
+
+Hercules says, "...test..."
+
+Parity says, "And yes, you -will-, even after -years- of coding, have to
+type 'help center()' and 'help repeat()' to remind yourself which goes
+in which order. ;o"
+
+Moth grins
+
+Parity says, "Though as a mnemonic, it is like, 'repeat <string> <number>
+of times' and 'center <text> in a <number> wide field of <character>'"
+Parity says, "If that helps."
+
+Moth nods, has familiarity with center... but will still mix them
+up. It is The Way Of Things (tm) ;)
+
+Parity says, "Yes."
+Parity says, "OKay."
+
+Moth says, "At least now the 'help' makes sense. Laf"
+
+Parity says, "The %b's are just to keep the dashes from getting right up
+against our header, 'cause that looks ugly. :)"
+
+Moth noddles
+
+Parity says, "And I think that pretty well dissects the function into its
+component parts. Clear?"
+
+Moth nods, is
+Hercules says, "Yep.:)"
+
+Parity says, "Yay. :)"
+Parity says, "Okay."
+
+Hercules thinks Parity is spiffy keen as a code guru.
+
+Moth grins, is waiting for the day when It says: When you can take
+this pebble from my hand....
+
+Hercules laughs.
+
+Parity says, "Now, you should be able to take what we've learned, and
+change our '.reminder' command to use our borders function to put a
+header of 'Memory' onto a text of the memory-string. Everyone try
+changing your .reminder command to do that."
+
+Parity smiles, and thanks everyone for the compliments, even the silly ones. ;)
+
+Moth is a silly creature
+
+Parity says, "That would explain why you're always circling light bulbs. ;)"
+
+Moth says, "You'd think I'd at least clue in enough to buy a good helmet...."
+
+Moth says, "Goggles..."
+
+Hercules says, "How would we set the .reminder command to do that?"
+
+Parity hehs.
+
+Moth examines the ferret again
+
+Parity says, "It's an exercise. :)"
+Parity says, "You should know enough to do it, I hope."
+Parity says, "If not, try asking specific questions. OR just try something and I'll
+explain what's wrong."
+
+Moth presses 'enter'... waits for mu* to explode....
+Moth covers ears...
+Hercules says, "How's that?"
+Parity grins.
+
+Hercules' Bubba:
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to remember%r[u(borders-fn,Memory,the
+secret number is 7 and the secret word is please)]
+
+Moth says, "Okay, I messed up..."
+Moth got half of it right
+
+Parity says, "Bubba, you don't really need the 'you asked me to remember'
+now that you've got a pretty header, and you've got a literal string
+in your call to borders-fn instead of a v()."
+
+Moth's Prospero:
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to
+remember:%r[u(borders-fn,Things To Remember,(memory-fn))]
+
+Parity says, "Ah. You have a similiar mistake Moth."
+Parity says, "Remember, you get your 'memory-string' out with 'v(memory-string)'"
+
+Moth says, "Oh yeah"
+
+Hercules says, "Is that better?:)"
+
+Parity says, "You -could- put u(memory-fn) in there, but then you'd get borders-
+inside-of-borders and it would look really weird. :)"
+
+Hercules' Bubba:
+REMINDER-CMD:$.reminder:@pemit %#=u(borders-fn,Memory,the secret
+number is 7 and the secret word is please)
+
+Parity says, "Hercules, you still have a literal string instead of
+retrieving memory-string from your object."
+
+Moth says, "Woo!"
+
+Moth's Prospero:
+REMINDER-CMD:$.reminder:@pemit %#=You asked me to remember:%r[u(borders-fn,Things To
+Remember,v(memory-string))]
+
+Hercules says, "Hmm. Ok. How do I fix that?"
+
+> .reminder
+You asked me to remember:
+----------------------------- Things To Remember -----------------------------
+the secret number is 7 and the secret word is foobar
+------------------------------------------------------------------------------
+
+Parity nods to Moth, though similarly, the 'You asked me to remember:'
+is redundant at this point, but the essence of it is correct.
+
+Parity says, "Hercules, you want to use v(memory-string) rather than having
+literal text in your u() call."
+
+Moth says, "Oh yeah"
+
+Moth's Prospero:
+REMINDER-CMD:$.reminder:%r[u(borders-fn,Things To Remember,v(memory-string))]
+
+Hercules says, "How about now?:)"
+
+Parity says, "Uhmmm, Moth, you don't need that leading %r, but you -do-
+need to keep an @pemit command in there."
+
+Moth got it :)
+
+Hercules' Bubba:
+REMINDER-CMD:$.reminder:@pemit %#=u(borders-fn,Memory,v(memory-string))
+
+Moth fixed it;)
+
+> .reminder
+----------------------------------- Memory -----------------------------------
+the secret number is 7 and the secret word is foobar
+------------------------------------------------------------------------------
+
+Moth is annoyed that I don't have a repose feature. Laf. gahs
+
+Parity nods to Hercules, "Good!"
+
+Moth's Prospero:
+REMINDER-CMD:$.reminder:@pemit %#=%r[u(borders-fn,Things To Remember,v(memory-string))]
+
+> .reminder
+
+----------------------------- Things To Remember -----------------------------
+the secret number is 7 and the secret word is foobar
+------------------------------------------------------------------------------
+
+Parity nods to Moth, "That works, but be aware that you're putting a
+leading blank-line at the top because of that leading %r."
+
+Moth noddles
+
+Parity says, "You can both exa bubba/reminder-cmd and exa
+prospero/reminder-cmd to see the difference between the two
+implementations."
+
+Moth okies
+
+Parity says, "That's why we have our objects set visual. :)"
+
+Moth's Prospero:
+REMINDER-CMD:$.reminder:@pemit %#=[u(borders-fn,Things To Remember,v(memory-string))]
+
+Parity says, "Though Moth took away the leading %r. ;)"
+
+Moth grins, sorry
+Moth says, "I did... just then"
+Moth says, "Is there a reason you wouldn't want that in there... ?"
+
+Parity says, "Moth, once the leading %r is gone, you don't need the
+enveloping square brackets [] anymore, because your u() is the first
+thing that the MUSH sees."
+
+Moth says, "Oh okay"
+Moth takes it out ;)
+Moth has used an attribute code bit instead of a +wear code and I now
+understand it. Laf. This is good ;)
+
+Parity mmms, "Generally, you don't want to lead off the output of a
+command with a blank line. Sometimes you do, if you want to offset the
+output from the text around it, to make it more noticeable, but
+generally, it's just making people's screens scroll more to have extra
+blank lines.
+
+Moth nods re: that
+
+Parity says, "Notice also that I had you make your lines 78 characters wide."
+
+Moth nods
+
+Parity says, "That's not an arbitrary choice."
+
+Moth has seen 76 before
+
+Parity says, "You can make it shorter, but not longer."
+
+Moth nods
+
+Parity says, "80 characters is as standard width screen, but because of the
+way some terminals and terminal emulators handle things, going past 78
+might cause extra line feeds."
+
+Moth nods
+
+Parity says, "Then, you'd -think- people were seeing:
+------------------------------------------------------------------------------
+Stuff
+------------------------------------------------------------------------------
+"
+Parity says, "But they'd actually see:
+------------------------------------------------------------------------------
+
+Stuff
+------------------------------------------------------------------------------
+
+"
+Moth ahhhhs, okie
+
+Parity says, "Or maybe even worse mutilations, but, let's just leave it as
+'it's bad to use more than 78 characters in a line.'"
+
+Moth noddles
+
+Parity says, "If in doubt about what things look like, try using a standard
+telnet screen to look at stuff; telnet on a unix console or in a
+default-size xterm, windows telnet in its default 24x80 screen size,
+or ncsa telnet on mac in its default size."
+
+Moth nods
+
+Parity says, "okee. ;)"
+Parity says, "So I think we all understand u() now?"
+
+Moth feels good about it
+Moth has warm and fuzzy regard for u()
+Moth chuckles
+
+Parity grins.
+
+Parity is going to amend the class. "We're -not- going to cover setq()
+today, because it's just as complicated as u() and we'd be going
+another two hours."
+
+Parity says, "WHat we will do, is expand our remember/reminder commands,
+though, and use our borders-fn some more."
+
+Moth says, "Oh groovy..."
+
+Parity says, "Only we're going to create new commands, .write and .read."
+
+Hercules says, "Okie."
+
+Moth will be creating the world's first literate ferret...
+
+Parity says, "&write-cmd myobj=$.write *=*:&memory-%0-string me=%1 ; @pemit %#=Ok."
+
+Hercules says, "My connection keeps getting so lagged this weekend."
+
+Parity says, "And for your .read command, start with '&read-cmd
+myobj=$.read *:' and use v(memory-%0-string) to get back the
+particular string you want to read."
+Parity says, "For this first iteration, use only -one- word for your
+titles."
+Parity says, "Like, .write test=This is a test ; things like .write My
+Test=THis is a test will not work."
+Parity wonders if anyone understands and can explain why '.write My
+Test=This is a test' would not work?
+
+Hercules says, "Is the .read cmd on Bubba Ok?"
+
+Moth says, "Well... I thought generally for commands and attributes
+(including +views) you have to use either _ or - to separate the words
+or it doesn't recognize them. It's not treated as text..."
+
+Hercules' Bubba:
+READ-CMD:$.read *:v(memory-%0-string)
+
+Parity says, "v() is a function; when the mush tries to execute the part
+after the : in Bubba's read-cmd, it will try to do 'v()' as if it were
+a command, which won't do much of anything but get a 'huh?'."
+
+Hercules says, "Yeah. That's what I got."
+
+Parity nods to Moth, "For attributes.... commands depend on how
+they're written, but yes, attributes can't have a space in them."
+
+Parity adds to Hercules, "You need the first thing after your : to be
+a command."
+
+Hercules says, "Ok."
+
+Hercules says, "Like .write, for example?"
+
+Parity says, "Well, .write -is- a command, but I was thinking more like,
+@pemit. You wouldn't want your .read command to call .write,
+probably."
+
+Parity says, "'help command list' to get an idea of what commands are
+available."
+
+> help command list
+Help available for MUSH Commands:
+
+drop enter examine get give goto
+help inventory kill leave LOGOUT look
+move news OUTPUTPREFIX OUTPUTSUFFIX page pose
+PUEBLOCLIENT QUIT read say score SESSION
+take throw use version whisper WHO
+" : ; & # \\
+
+@@ @chown @clone @create @decompile @destroy
+@dig @doing @dolist @drain @edit @emit
+@entrances @eval @femit @find @force @fpose
+@fsay @halt @last @link @list @listmotd
+@lock @mvattr @name @notify @oemit @open
+@parent @password @pemit @program @ps @quitprog
+@quota @robot @search @set @stats @sweep
+@switch @teleport @trigger @unlink @unlock @verb
+@wait @wipe
+
+{ 'help commands2' for more }
+
+Hercules says, "Ok. I think I'm a little lost. I get the @pemit, but
+what do I want it to emit?"
+
+Moth hmmms... messed something up along the way
+
+Moth's Prospero:
+READ-CMD:$.read *:@pemit %#=v(memory-%0-string)
+WRITE-CMD:$.write *=*:&memory-%0-string me=%1 ; @pemit %#=Ok.
+
+Parity peers at Moth's code, "That looks almost right... "
+
+Moth tried .write Poem and gets a huh?
+
+Moth thought that's where the one-word thing would come in;)
+
+Parity says, "Ahhh. Look at your .write command. '.write *=*'"
+
+Parity says, "So it would be '.write poem=Was there ever a ferret as lovely
+as a tree' not 'write Poem' by itself."
+
+Moth says, "Oooh;)...laf"
+
+Hercules thinks he has it now.:)
+
+Hercules' Bubba:
+READ-CMD:$.read *:@pemit %#=v(memory-%0-string)
+
+Hercules says, "Hmm. I still get a 'Huh?'"
+
+Parity hmmms?
+
+Moth says, "Oh, okay... I got it"
+
+Parity says, "Herc, try '.write test=this is a test' and '.read test'"
+Parity says, "It should work."
+
+Moth says, "Can you insert %r to make little stanzas?"
+
+Parity copied the code onto its 'myobj' and it worked.
+
+Hercules says, "Nope. Still get 'Huh?'"
+
+Parity blinks?
+
+Hercules says, "Is my .read command alright?"
+Parity nods...
+Parity says, "Hold on."
+Parity hrmmmms.
+Parity says, "Herc, are you typing 'read' or '.read' ?"
+
+Hercules says, ".read"
+
+Parity says, "And '.read test' doesn't work for you?"
+
+Hercules says, "Ohh! I was just typing '.read'. Sorry.:)"
+
+Parity ahhhs.
+
+Hercules----> Having yet another blonde day.
+
+Parity notes the pattern for .read is '.read *' ... in command
+patterns, spaces -are- significant, so '.read' doesn't match '.read '
+followed by anything because there's no space there.
+
+Parity says, "You can, and people often do, make a command like
+'$read-what-cmd myobj=$.read:@pemit #384=Read what?'"
+
+Parity says, "That will match '.read' by itself and remind you to give
+.read an argument. :)"
+
+Moth ahhhhhhs
+
+Parity says, "Err."
+Parity says, "With a %#, not with my dbref. ;o"
+
+Moth grins
+
+Parity says, "Okay."
+Parity says, "SO we have a .read that kinda works, but what we really want
+is to use our borders-fn, with our %0 argument for the header and our
+retrieved text inside the lines."
+Parity says, "So, try changing your .read commands to do that."
+
+Hercule's Bubba:
+READ-CMD:$.read *:@pemit %#=v(memory-%0-string)
+
+Moth's Prospero:
+Missing Space is Between @pemit and %#
+|
+v
+READ-CMD:$.read *:@pemit%#=u(borders-fn,Sonnet to The Ferretess Gwendolyn,v(memory-%0-string))
+
+Moth says, "Okie..."
+
+Parity says, "You're missing a space, Moth, and your header is going to be
+a fixed string, so when you '.read test' it'll have the same header as
+when you '.read poem'."
+
+Moth caught the space thing... how's it look now?
+
+Parity says, "Halfway there. ;)"
+
+Moth hmmmmms
+
+Parity says, "But, try, for example, '.write phonenum=123-4567' and '.read phonenum' ..."
+
+> .read phonenum
+---------------------- Sonnet to The Ferretess Gwendolyn ---------------------
+123-4567
+------------------------------------------------------------------------------
+
+Moth says, "Oh...."
+
+Parity says, "You might want to have %0 instead of a fixed string for your
+title. ;)"
+
+Moth nods
+
+Parity checks on Hercules, "Still with us?"
+
+Moth thinks I got it.
+
+Moth's Prospero:
+READ-CMD:$.read *:@pemit %#=u(borders-fn,%0,v(memory-%0-string))
+
+> .read test
+------------------------------------ test ------------------------------------
+This is a test.
+------------------------------------------------------------------------------
+
+> .read phonenum
+---------------------------------- phonenum ----------------------------------
+123-4567
+------------------------------------------------------------------------------
+
+Parity says, "Looks good, moth!"
+Parity says, "Now, to make it a bit more useful, try this:"
+
+Hercules says, "Yep.:)"
+Hercules says, "Just had to run AFK for a sec."
+
+Parity says, "&space2tilde-fn myobj=edit(%0,%b,~)"
+Parity says, "And,"
+Parity says, "&tilde2space-fn myobj=edit(%0,~,%b)"
+
+'MyObj':
+WRITE-CMD:$.write *=*:&memory-%0-string me=%1 ; @pemit %#=Ok.
+READ-CMD:$.read *:@pemit %#=u(borders-fn,%0,v(memory-%0-string))
+
+Parity says, "Then change 'memory-%0-string' in write-cmd to 'memory-
+[u(space2tilde-fn,%0)]-string'"
+
+Hercules is catching up. How's my .read with the borders?
+
+Parity says, "And similarly in read-cmd."
+
+Hercule's Bubba:
+READ-CMD:$.read *:@pemit %#=u(borders-fn,Notes,v(memory-%0-string))
+
+> .read test
+------------------------------------ Notes -----------------------------------
+This is a test.
+------------------------------------------------------------------------------
+
+Parity nods to Hercules, "It works, but you might want to replace
+'Notes' with '%0' to have a title appropriate to each note."
+
+Hercules says, "Okie.:)"
+
+Moth says, "It replaces the same portion of string in the .read as it
+did in the .write? Or everything from u( on"
+
+Parity peers quizically at moth.
+Parity says, "Sorry?"
+
+Moth's Prospero:
+WRITE-CMD:$.write *=*:&memory-[u(space2tilde-fn,%0)]-string me=%1 ; @pemit %#=Ok!
+READ-CMD:$.read *:@pemit %#=u(borders-fn,%0,v(memory-%0-string))
+
+Parity notes that the write-cmd on prospero looks correct.
+
+Hercules thinks he's caught up now.
+
+Parity says, "But the read-cmd needs to be modified, replacing
+'memory-%0-string' with 'memory-[u(space2tilde-fn,%0)]-string'"
+
+Hercules' Bubba:
+READ-CMD:$.read *:@pemit %#=u(borders-fn,%0,v(memory-[u(space2tilde-fn,%0)]-string))
+WRITE-CMD:$.write *=*:&memory-[u(space2tilde-fn,%0)]-string me=%1 ; @pemit %#=Ok
+
+Moth was lost on how much it replaced ...
+
+Parity nods to Hercules, "That -looks- right... try a command like
+'.write a multi word title=some text goes here' and then '.read a
+multi word title' ... and see if it works, or blows up. :)
+
+Moth says, "How does the ferret look/"
+
+Moth's Prospero:
+WRITE-CMD:$.write *=*:&memory-[u(space2tilde-fn,%0)]-string me=%1 ; @pemit %#=Ok!
+Parity says, "Uhmmmmm, you seem to have lost your borders-fn, Moth."
+
+Moth's Prospero:
+READ-CMD:$.read *:@pemit %#=u(borders-fn,%0,v(memory-[u(space2tilde-fn,%0)]-string))
+
+Parity says, "Oh, wait."
+Parity was looking at the wrong command.
+Parity says, "I know the difference between read and write. :)"
+Parity says, "I think Prospero looks good."
+Parity says, "Try a .write and a .read with a multi-word title."
+
+Moth woos!
+
+Moth's Prospero:
+MEMORY-STRING:The secret number is 7 Raisins are tasty and Parity has a lot of them.
+MEMORY-POEM-STRING:I love you like a raisin.
+MEMORY-PHONENUM-STRING: 123-4567
+MEMORY-POEM~TO~GWENDOLYN-STRING:I love you like a raisin
+You are so plump and sweet.
+I love your many whiskers
+and your tiny little feet.
+
+Parity laughs, "I see... ;)"
+
+Moth says, "Now... if I could only figure out how to get him to ~recite~ them...."
+
+Parity smiles, "You should have the know-how. Just use say or @emit instead of @pemit... "
+
+Parity wonders if we lost Hercules?
+
+Moth nods, was thinking that'd be it ;)
+
+Parity says, "Any-way. You can read the help on edit() and do 'exa
+myobj/*-string' to see how we're replacing spaces with tildes so that
+a multi-word string turns into a one-word string."
+
+Moth ahhhhhs
+
+Moth says, "Very cool :)"
+
+Parity says, "And yes, we could've just put edit() inside the square
+brackets [] in our .read and .write commands instead of making a
+space2tilde and tilde2space function."
+
+Moth nods, is that the preferable way generally speaking?
+
+Parity says, "However, there are a number of pieces of softcode out on the
+archives that use a 'space2tilde/tilde2space' type system, so this
+lets you see it ahead of time, as it were."
+
+Moth ahs cool
+
+Parity says, "I generally use edit() because using u-fun to replace one
+function with another seems a little silly to me."
+
+Moth nods
+
+Parity says, "I usually only use ufuns to replace a whole mess of functions
+with one ufun."
+
+Moth nods
+
+Parity says, "Like our borders-fn. That's about the simplest thing I would
+make into a ufun, but of course, the other consideration with
+borders-fn is that you can use it in many different places."
+
+Hercules says, "It works.:)"
+
+Hercules' Bubba:
+MEMORY-STRING:The secret number is 7 and the secret word is please
+MEMORY-POEM-STRING:There once was a man from Nantucket...
+MEMORY-TEST-STRING:This is a test
+MEMORY-MULTI-TITLED~TEST-STRING:This is to see if the command will work.
+
+Parity says, "Cool. ;)"
+
+Moth has seen news files written with that type of bordering and what-not...
+
+Parity says, "That's about that for class then. Question-and-answer time! :)"
+
+Moth grins
+
+Parity says, "Now's the time to speak if anything is still unclear."
+
+Hercules will need to go through the logs of the previous two classes
+and get caught up fully. I'm liking this.:)
+
+Moth says, "I think it's pretty clear... you would want to keep the
+ufuns down to a dull roar, I imagine? // Yeah, I'll need to read the
+log again to come up with anything more ... incisive question-wise,
+but this was good. It made the 'u#-1 FUNCTION () NOT FOUND' bit I've
+used for years make sense."
+
+Moth oops... laf
+
+Parity notes, btw, that with a little work, some understanding of
+lattr() and the use of tilde2space-fn and edit() you can write an
+index function for your memory-*-strings, and you can tweak your read
+and write functions as you like until you've got a full-fledged
+notebook going.
+
+Moth never could type that damn code out
+
+Parity grins.
+
+Moth says, "It's a desc attribute... anyhoo, it makes sense now..."
+
+Parity says, "Use ufuns as much or as little as you like. I tend to be
+conservative with them, because they do take extra cycles, -but- they
+also tend to make code more readable."
+
+Moth nods...
+
+Moth says, "Cool!"
+
+Hercules can now break through the wet paper bag.
+
+Parity says, "Generally, if your commands are getting to be ten lines long
+a ufun might be in order, and also, if you have any code that is
+getting used repeatedly, a ufun is good so you don't have to keep
+typing it over and over."
+
+Moth says, "This was great, Parity. Thanks:) Another wonderful code
+outing...// Ah yes, that would cut down on typo probs"
+
+Parity nods. :)
+
+Hercules thoroughly enjoyed learning this. Thank-you very much,
+Parity.:)
+
+Parity says, "You're welcome!"
+
+Prospero dropped Ball.
+
+Houston, we have lift-off. The ferret launches the ball across the room.
+
+Parity chuckles.
+
+Ball has left.
+
+The ferret gets the ball. Clever Prospero!
+
+Prospero dribbles it up the middle like Julius Erving!
+
+Parity says, "Any more questions?"
+
+Moth says, "No, not as of yet..."
+Moth says, "Next installment ?"
+Moth says, "setq?"
+
+Parity says, "Two weeks, I think, and we'll do setq(), yes. ;)"
+
+Moth says, "Let me know what you want to do and when and I'll post it :0"
+
+Hercules says, "Cool. I'll be out of town next weekend."
+
+Moth says, "Every other week seems to work out alright"
+
+Parity nods, "Every week would be too much for me. ;o"
+
+Moth says, "My brain would explode"
+
+Parity grins.
+
+Moth says, "Just like that guy in Scanners."
+
+Parity says, "Okay, thank you all for coming! I'll be stopping the log now."
+
+Moth says, "Thanks!"
+Moth says, "Mucho appreciado..."

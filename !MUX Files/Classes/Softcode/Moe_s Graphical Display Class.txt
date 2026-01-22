@@ -1,0 +1,654 @@
+ OGR - Wednesday, November 22, 2000, 6:03 PM
+
+-----
+
+Moses woo's, and begins. Welcome to the Class. For posting to OGR's website, this class will be logged. If you would like your name and comments taken out of the log, please let me know.
+
+Satyr wantsa be a star!
+
+Moses says "While on the outset, approaching topics like +finger, +who, +where, +sheet, etc. seems like a lot to take on in one class period, I want to say that I'm not going to attempt to fully code each one of those commands in this class."
+
+Wren says "Please change my name to something ambiguous, like Its_Not_Wren_Really_Its_Not please. I want to keep myself anonymous. ^^"
+
+Moses says "What I /am/ going to try to do is present strategies for the display of the data, giving tips on alignment, some examples of truncating text, etc."
+
+Moses says "How about *coughWrencough*?"
+
+Wren can deal with that, yes.
+
+Moses grins and goes on.
+
+Satyr watches that last bit zip over her po' non-english-speaking head. "Truncating?"
+
+Moses says "Cutting off to fit into a space."
+Moses says "Just like @do's only allow for so many characters."
+Moses says "Alright, there are a few basic tips I'm going to start off with. When you are approaching the coding of a command of this variety, the first thing you should do is make sure you're using what is called a 'fixed-width' font."
+Moses says "For those of you that use tinyfugue, tintin, or other unix-based client, you're going to be fine."
+Moses says "For us Winblows..er, Windows users, we have to make certain allowances for the fact that while some fonts are prettier than others, they aren't uniform in the size of their characters."
+
+Satyr snickers.
+
+Moses says "IMHO, for those Windows/Mac users out there, Courier New is both a) aesthetically pleasing and b) fixed-width."
+Moses says "Here's the reason why this is important. Displays like +finger look very good when things actually line up. When they don't it tends to look haphazard, sloppy, and like you put it together with play-doh and elmer's glue."
+Moses says "Whether you actually did or not, it shouldn't /look/ like you did."
+Moses says "And that pretty much sums up the theme of the class. How to make your displays look as good as possible, with a minimum of effort."
+Moses says "Now that I've spent ten minutes blathering on about fonts, I'll move on."
+
+Bryan phews. ;)
+
+Wren interjects; "I like fonts."
+
+Moses says "Wren, you're closer. You can hit Bryan. :)"
+
+Satyr applauds, whistles, throws roses.. Then sits back down. ;)
+
+Bryan smiles ever so sweetly.
+
+Moses says "When you're approaching this type of display, you have to manage essentially three basic things. 1) Any ascii graphics you are putting in place to frame your display. 2) The categories of information you are providing. 3) Formatting the information taken from the character/room/etc."
+Moses says "So, I'm going to endeavour to go through those in order."
+Moses says "If at any point you want me to slow down, shut up, explain further, etc. please speak up."
+
+Satyr will do. :)
+
+Moses says "Okay, first. The ascii graphics."
+Moses says "There are ways to simplify the display of ascii graphics. A lot of people make it really hard on themselves."
+Moses says "For example, you want a line of '=' signs. There are people out there that would try to type out 78 ='s."
+
+Announcement: Scaramouche announces "Sorry for the interruption: Code class with Moses is beginning now. Learn to build graphical commands, like +finger and +who. Join him in the Lecture Room, off the Crossroads...."
+
+Satyr coughnotme!cough.
+
+Moses says "Inevitably, you lose count at #54 or something, and have to count on the screen."
+
+Wren says, "My plan is to get carpel tunnel and mooch off of the goverment, you see.."
+
+Satyr laughs!
+
+Moses nods. Not a bad idea, but it cuts into your mushing career.
+
+Satyr has long, flexible toes! But anyho. ;)
+
+Moses says "So, I suggest using the//TMI!//repeat() function."
+Moses says "Repeat is a universal function that is available on all three main 'flavours' of codebase."
+Moses says "Notice above that I said the number 78."
+Moses says "This is a very very important number."
+Moses says "For the purposes of this class, we will refer to it as RULE #1!"
+Moses says "If you can possibly help it, never code for over 78 characters in a line."
+
+Wren scribbles, "Rule.. #1.. 78 is a pretty number."
+
+Satyr ooohs and aaaahs.
+
+Moses says "Despite the fact that we are in an age where having your monitor resolution set at 1600X1200 is possible, there are still many people who only have a screen width of 80 characters."
+
+Bryan says "Like poor Linux users who're working in the console. :)"
+
+Moses says "And, we need to code for the most common denominator. Precisely, Bryan."
+Moses says "Note that I did not say the LEAST common denominator. :)"
+Moses says "Sure it would be great to have 160 characters of width to code in, but we don't all have access to that."
+Moses says "You can use repeat() for more than one character. Doing +[repeat(=+,38)]= is a viable way to get a really neat line."
+Moses says "The patterns of ascii graphics are not endless, but there's enough out there that you're unlikely to see the identical same ones consistently."
+Moses says "For the purposes of display, it is attractive to put a header graphic and a footer graphic around whatever data your code is displaying."
+Moses says "Many mushes I know of have these as softcoded global functions."
+
+Wren says "Tsk. I thought we were taught that it's not whats on the outside, but what is on the inside that counts. :d"
+
+Moses says "It's a lot easier to type [cmdheader(+finger for <name>)] than to have to type out all those graphics for each and every command."
+
+Bryan says "Parents lie. :)"
+
+Satyr laughs!
+
+Moses says "Romance and Code have precious little to do with each other. If they do....well, nevermind."
+
+Wren says, "You often say you love code.." Shushing now.
+
+Moses says "I love teaching code. And I may love my code, but I don't /love/ my code."
+Moses says "Okay, anyone with any questions on ascii art, border graphics, etc?"
+Moses says "Anything? Bueller....Buelller....."
+
+Wren says "Well.."
+
+Moses says "Deep subject."
+
+Wren says "Yes, I do have a question I suppose. Isn't it possible to code headers for users with different lengths? Or as a rule is it better to just figure everyone will be (ideally) at 80 characters?"
+Wren says "Will a small border, look bad on larger screens?"
+
+Satyr waves a hand. Oooh! Oooh!
+
+Wren personally uses 800x600 and can't stand anything higher.
+
+Moses says "Keep the standard at 78. It's entirely too hard to code your alignments(which we'll get to in a minute) depending on a person's preferred screen width."
+
+Satyr says "Is it possible to have a bigger border than ye generic string of characters '-----', or will that inevitably become horribly deformed?"
+
+Moses says "A taller border you mean?"
+Moses says "As in several lines thick?"
+
+Satyr says "Well, bigger, more complex. Ascii ascii. ;)"
+
+Moses ahhs. Yes, that is possible. Lemme say one more thing on Wren's question first.
+
+Satyr salutes. :)
+
+Moses says "Another thing is Wren, while we may 'regularly' mush from one or two similar machines, there is always that instance where we're at a friend's house and log on...and their computer can't handle our user-defined settings...and it winds up being all wonky."
+Moses says "So, leaving a 78-character default is just a good coding practice."
+Moses says "Okay, Satyr. Fancier Ascii."
+Moses says "Bigger and more complex is possible. However, there is a good side and a bad side."
+Moses says "The good side is it looks /damn/ good to have really nicely done ascii art."
+Moses says "The bad side is, the more ascii you have, the less room you have for actual content."
+Moses says "As Wren was so eloquently pointing out before*ahem*, it is what is on the inside that counts."
+Moses says "The more ascii you put, the more 'spam-potential' you are creating for your users."
+
+Satyr giggles, and aaaahs, and nodnods. "Gotcha."
+
+Moses says "Anyone else? Follow-ups?"
+Moses says "Okay...moving on."
+Moses says "Step two in the process is what categories you're going to display."
+Moses says "Here is where I get to give my infamous anecdotal story of coding."
+Moses knew you were all /waiting/ for this.
+Moses says "As some of you may have noticed, there was a new +finger format that just went in here. About a week ago."
+
+Wren settles in and gets comfy, setting the alarm on the clock. .oO(ZzzzZzz...)
+
+Moses gets the Super Soaker out,a nd keeps talking. "It was restructured so that a lot of the optional attributes that people could set were only displayed if the player had them set.
+Moses says "The moral to this story is, imho, that while it is nice to be able to offer a lot of information on a +finger display, or +sheet display, it is going to wind up being a waste of whitespace to have every category displayed all the time."
+Moses says "So, I think I can offer some general tips on structuring the graphical displays."
+Moses says "Mainly, as permanent items on the display, have those things that tend to apply to /all/ characters."
+Moses says "Within a day or so of creation, every character has a gender, an alias, perhaps a fullname, a position, even if generic, and mail."
+Moses says "Usually."
+
+Wren says "Could this include, attributes or stats, that every character is going to have as a default?"
+
+Moses nods. Yes, it could. And is a good point.
+Moses says "For a lot of mushes, particularly those with chargens, or restricted positions, for instance...there is 'default' data that is set when the character is created."
+Moses says "With the use of a switch(hasattr(player,attribute)...) set of functions, it is possible to test for further things, that some of the older/more experienced players may have on themselves. Shortdesc, email, www, themesong, quote, favorite food, preferences, schedule, favorite use for rutabagas, etc."
+Moses says "On a different side, commands like +where and +who are going to have all their data listed under headers."
+Moses says "Name, Position, Gender, Location"
+
+**Post-Class Note: This next sentence refers to column-style displays, like +where, +who, not +finger or +sheet.**
+
+Moses says "A note on formatting here. While it is more politically correct to use the term 'Gender', utilizing the term 'Sex' allows for more symmetrical formatting."
+
+Moses says "Of course, it also allows for people putting 'Yes' or 'Y'."
+Moses says "Cause after all, no one would put 'no', right? :P"
+Moses ahems, and goes on.
+
+Wren laughs! "Moe! :P"
+
+Satyr facepalms.
+
+Moses says "Something to note for those of you that use PennMUSH, there is the hasattrval function which tests not only for the existence of the attribute, but checks to see if it is empty or not."
+Moses finds this personally useful and has been known to softcode it in as an @function on non-Penn Mushes.
+Moses says "The reason I like this above and beyond the basic hasattr() is that it prevents the displaying of empty categories on these displays."
+Moses says "Now, a note on aligning categories. This is where we actually get into real code."
+
+Wren says "So it would be 'N' for Neuter, or something?"
+
+Moses nods. Yes.
+Moses says "Okay, one of the common pitfalls I see in code is people using the space() function to make everything line up nicely."
+Moses says "This will work, but is equivalent to making card houses. Even if it all winds up working, it takes very little to throw the whole mess out of whack."
+Moses says "As well, it is infinitely more difficult to maintain."
+Moses says "Maintainable code is much more valuable than just 'working' code."
+Moses says "Just because it works for you doesn't mean it's going to work for the next person."
+Moses says "Now, there are three main formatting functions. ljust(), rjust() and center()."
+Moses says "They generally take the form: ljust(text,width)"
+Moses says "What this does is left-justify's the text to the specified width."
+Moses says "Similarly with rjust() and center()"
+Moses says "For interesting fun and games, type: say rjust(This is a test,25)"
+
+Wren says " This is a test"
+Wren says "
+
+rjust(This is a neat-o test,54)"
+
+Moses says "The game pads the text you put in with spaces until it has a string 25 characters long."
+
+Wren hrms.
+
+Moses says "You have to put that in []'s if you are putting %R's in front of it."
+Moses says "Something else neat for the graphical display dept. This might be of interest to you, Satyr. You can specify another character to pad the string with, besides a space."
+
++++++++++++++++++++++Test
+
+Moses has seen displays where the entire display was a block of # signs, with 'holes' cut out and text put in.
+Moses says "This was created by padding all of their justifications with the # character."
+Moses says "So, for example: say rjust(Test again,25,#)"
+Moses drops a pin.
+
+--------------------------------> Spammy fun <--------------------------------
+
+Satyr ooohs. =)
+
+Moses says "Woo hoo...someone's playing with center()."
+Moses says "Which was good."
+Moses says "Yes, that is spammy fun."
+Moses says "But, it's a nice way to make a header for something."
+Moses says "You could easily make a function that does: [center(>%0<,78,-)]"
+Moses says "Which would work if %0 were +finger for Wren, or +where -- BubbaMUSH"
+
+BillyBoy says "Hmm Just looking at the page that I can see this all reminds me alot of VB"
+
+Moses nods. There are some similarities, actually.
+
+Wren says "--------------------------------------><--------------------------------------"
+--------------------------------------><--------------------------------------
+
+Bryan applauds.
+
+Wren ooohs, and ahh's.
+
+Moses cheers all.
+Moses says "Now, how does this all help in aligning your categories you ask? Well, I'm so glad you asked. :)"
+Moses says "If you 'set' a number that you are rjust()'ing your category listings too, they will /always/ line up."
+Moses says "Basically, the way I do it is to take the longest word I have, usually Preferences, and add one space to it. And then I rjust() all my categories to that amount of space."
+Moses says "So:
+Name: Position: Preferences:" Wren says "Wait. Won't that just make them all rjust out the same ammount? Wouldn't each one be rjusted a different ammount to line them up?" Moses shakes his head. The game lines them all up so that they all take up XX amount of spaces. Moses shows the code he typed to get that. Moses says "So:%R[rjust(Name:,14)]%R[rjust(Position:,14)]%R[rjust(Preferences:,14)]" Wren says "So:
+
+Name:
+Position:
+Preferences:
+
+Wren ah-has.
+
+Moses says "I added space for the colon character too. You can use a :, a >, a *"
+Moses says "It's visually better to use some character to seperate the category from the data."
+
+Wren says "Is there a way, to make it so two text objects are a certain ammount of spaces away from one another?"
+Wren says "For example, if I wanted three data entries on the same line, but all 10 spaces away from each other?"
+
+Moses nods. Yup.
+Moses says "That was the next thing I was going to talk about, actually."
+Moses says "No, she's not a shill."
+Moses says "Okay, most things like +finger and +sheet have several items on the same line."
+
+BillyBoy says "(reading the backscroll) ... I enjoy counting out 78 = signs... :)"
+
+Moses says "This is a good use of space, because having Name: Bob//Gender: Male//Position: Guest...etc. all on one line each gets to be spammy."
+Moses grins at BillyBoy. You just knock your little self out then.
+Moses says "So, you want everything to be lined up nicely."
+Moses says "The way to do that is to combine an ljust() and an rjust()"
+Moses says "Let's say, for simplicity's sake, you want two things on one line."
+Moses says "Divide your line length in half. So, 78/2=39"
+Moses says "And, then, you'll do something like this: ljust(rjust(Name:,10)<Code for getting name>,39)[rjust(Gender:,10)]<code for getting gender>"
+Moses says "Does that make sense?"
+
+Wren says " Name:<Code for getting name> Gender:<code for getting gender>"
+
+Moses says "Bingo."
+
+Wren says "#-1 FUNCTION (LJUST) EXPECTS 2 OR 3 ARGUMENTS Gender:"
+Wren acks.
+Wren apoligizes. :d
+
+Moses says "And if you have two lines of that, it looks like:
+
+Name: Moses Gender: Male
+Position: Coder Location: Here
+
+Moses says "See how those line up nicely?"
+
+Wren oooohs, and aaaahs.
+
+Satyr is alive, is alive.
+
+Wren is humbled before Moses.
+
+Moses says "It takes the whole string of the right-justified category and data, and left-justifies that entire thing."
+Moses says "Remember that mushcode works inside out."
+Moses says "So, it's doing everything inside the ljust() first, before it left-justifies it."
+Moses says "If you were doing three things to a line, you'd left justify the first two to 26 characters, and then put the last one in."
+Moses says "A coding tip. There is no need to left-justify the last item on the line."
+Moses says "Which is why in the code I put up before, the first item, Name:, was left-justified, then I added the Gender: afterwards."
+Moses says "In general, only left-justify when you need to make room for something after it."
+Moses says "I knew there was going to be nothing after the Gender: listing, so I didn't ljust() it."
+
+BillyBoy says "Ok caught up"
+
+Moses says "Now, we need to spend some time talking about the code involved for displaying the character's data."
+
+Wren nods..
+
+Moses says "Despite our best intentions, guidance, documentation, warnings, restrictions, etc...it is inevitable that the user(our lovely PCs) will put in 'bad data'. By bad data, I mean in this case, data that is too long."
+Moses says "Or none at all. They'll put it in the wrong attribute."
+Moses says "However, since all PCs are super-geniuses, we dont' need to account for this right? :P"
+Moses ahems, and goes on.
+Moses says "For the most part with things like +finger and +sheet, you're going to be retrieving your attributes one by one."
+Moses says "Most commands start out like: &cmd-finger obj=$+finger *:@pemit %#=switch(setr(0,pmatch(%0)),#-1,That is not a player.,<bigass code or ufun call here>)"
+Moses says "And then the player is referred to as %q0 for the rest of the code."
+Moses says "If it's a ufun that gets called, they'll probably be %0."
+Moses notes that pmatch() doesn't exist on Tiny2.2, which we're on right now.
+Moses says "In a case like that, you would use num(*%0)"
+Moses says "Now, while a character's name is rarely going to cause space-management problems, their location or their position may very well."
+Moses says "This is something that applies to both +where, and +finger style displays."
+Moses says "Here comes that truncate word again, Satyr. ;)"
+Moses says "Truncating text is cutting off the text after a certain number of characters."
+Moses says "A failing of ljust() and rjust() is that if the text they are trying to justify is larger than the space you specify, it just displays the whole thing."
+Moses says "So, if you try to ljust() something to 39 spaces, and it's 42, it's going to throw whatever is after that off by 3 spaces."
+Moses says "However, you can correct for this, quite easily."
+Moses says "There are functions left() and right()"
+Moses says "What these do, for those that don't want to read the convoluted help files, is returns a certain number of characters from the left or right of a string."
+Moses says "For example..."
+Moses says "Type: say left(a b c d e f g,3)"
+
+Wren says "a b"
+
+Moses nods. It returned three characters. a, space, and b.
+
+BillyBoy says "len("rats")"
+
+Moses says "Try strlen(), BB"
+
+BillyBoy says "6"
+BillyBoy says "dun show me nothing"
+
+Moses grins. :)
+
+BillyBoy says "there it is"
+
+Moses says "It showed you exactly what you told it to. ;P"
+
+BillyBoy says "lag hehe is there a mid commend light the left and right?"
+
+Moses nods. Yes, there is.
+Moses says "And it works as you would expect. mid(string,starting character,number of characters)"
+Moses says "However, keep in mind that strings start with #0."
+Moses says "So, if you had the string: foobar, and you wanted to get out 'oba', you'd have to do mid(foobar,2,3)"
+Moses says "The left() and right() functions don't make you remember the 0-rule of string numbering, and handle it easier."
+
+Wren says "oba"
+
+Moses says "How this applies to our topic is this, for example: ljust(rjust(Position:,10)%b[get(%q0/position)],39)"
+
+Wren says " Position: #-1 NO MATCH "
+
+Moses says "This might result in a longer than 28-character string."
+Moses says "But if we did: ljust(rjust(Position:,10)%b[left(get(%q0/position),28)],39)"
+Moses says "We wouldn't have to worry, because it would only take the leftmost 28 characters of our string."
+Moses says "is there any confusion about why I only took 28 characters?"
+
+BillyBoy says "bleh I'm lost again beyond hope..."
+
+Moses says "Okay."
+Moses says "Look at what is inside the ljust()."
+
+BillyBoy says " Position: #-1 NO MATCH ""
+
+Moses says "We know that it is going to be 39 characters long, because that is what we have specified."
+Moses says "We know that ten of them are being taken up by our right-justification of the category label Position:"
+Moses says "THen, there is a space, the %b, and then the position."
+
+BillyBoy says "it's just the stuff and the get that is throwing me off"
+
+Moses says "39-10-1=28."
+
+BillyBoy says "what is did I miss that from earlier?"
+
+Moses says "The which stuff()/"
+Moses ?
+
+BillyBoy says "what is %b did I miss that from earlier?"
+
+Moses says "That is a blank space."
+Moses says "%t is a tab, %R is a carriage return, and %b is a blank space."
+Moses says "THey are substitutions, often referred to as formatting characters."
+Moses says "The game treats each of those as one character."
+
+Wren nods..
+
+Moses says "They are the VB equivalent of vbTab, vbCrLf, or the C \n"
+Moses says "I forget the C sub for tab."
+
+Bryan says "\t"
+BillyBoy says "Bleh It's been a couple years for me now... geez"
+
+Moses says "Thank you, Bryan."
+Moses comforts. The learning curve is easier when you are coming back to it than when you are first starting off.
+
+BillyBoy says "Is there such things as loops and stuff so that I could take the word two and made it onto three lines like."
+BillyBoy says "t"
+BillyBoy says "w"
+BillyBoy says "o"
+BillyBoy says "but using a loop and a mid command or something"
+
+Moses nods. Yes. I would suggest looking into the iter() function
+Moses says "The easy way to do that is: iter(lnum(2),%R[mid(two,##,1)])"
+
+Satyr is watching this all go over her head, so is gonna scoot. ;) :) "I'm too idle to be able to digest this kind of knowledge."
+
+BillyBoy says "stay and keep a logh Satyr."
+
+Moses says "You could do that with any word in a simple command:
+&cmd-parse obj=$parse *:@pemit %#=iter(lnum(strlen(%0)),%R[mid(%0,##,1)])"
+
+Satyr says "Eh. I might as well read it when it goes up on the webpage. ;)"
+
+BillyBoy nods
+
+Satyr smooches Moses *MWAH!* and scoots.
+
+Moses says "That would take any word and do what you wanted to do to it."
+Moses smooches Satyr.
+
+Satyr woos!
+Satyr goes southwest, through the double doors, exiting the lecture room.
+Satyr has left.
+
+Moses says "But, back to the last bit of this class, for those that have survived thus far."
+
+BillyBoy says "
+t
+w"
+BillyBoy says "what is the #"
+
+Moses says "## is iter's way of saying 'this is the item from the list that I am working on now'"
+
+BillyBoy nods
+
+Moses says "Each item in your list is substituted in your action list by ##"
+
+BillyBoy shutups so you can continue
+
+Moses grins.
+Moses says "Basically, while it is a parenthetical nightmare, a simple structure of ljust(rjust()%bleft())rjust()left() will handle your displays."
+Moses says "That is like a template."
+Moses says "By filling in what you need to inside each set of parentheses, you're guaranteed to have formatted code."
+Moses says "And, if no one minds, I'll spend my last few minutes talking about the columnar style of code display, such as +where, +who."
+Moses says "The iter() function is your friend on this one."
+
+Wren nods.
+
+Moses says "Basically, those types of commands run off of the lwho() function. For security reasons, it's usually best to do objeval(%#,lwho()"
+
+Wren says "#-1 FUNCTION (ITER) EXPECTS BETWEEN 2 AND 4 ARGUMENTS and I get along really well. :>"
+
+Moses arghs.
+
+Wren acks.
+
+Moses says "Damn enter key."
+Moses says "Don't put iter() at the front of your say, Wren. :)"
+
+Wren's head hangs in shame.
+
+Moses says "Basically, those types of commands run off of the lwho() function. For security reasons, it's usually best to do objeval(%#,lwho()), because that prevents mortal players from seeing some info they perhaps shouldn't."
+
+Wren says "Like Moes Secret Plans?"
+
+Moses says "objeval stands for 'object evaluation', meaning the game is evaluating the function inside the parentheses from the viewpoint of the object you specify. If the object is a wiz, or wiz-powered, then it sees everything. If it's a guest, it sees little."
+Moses says "And that, plus Moe's Harem all connected in one room. *coughAhemcough*"
+Moses says "Even with columnar format like +where/+who, you still have to ljust() and do left() truncation on your data."
+
+BillyBoy says "------------"
+
+Wren says "Thanks, Billy. ;>"
+
+BillyBoy says "trying to figure out how to do something"
+
+Moses says "This is because of the fact that for clarity's sake, most location names are long. Front Room -- Tucker Investigations - Chicago is an example."
+
+BillyBoy says "#-1 FUNCTION (REPEAT) EXPECTS 2 ARGUMENTS"
+BillyBoy says "------------"
+
+Moses says "What are you trying to do, BillyBoy?"
+
+BillyBoy says "How would I say to put a letter s in place of the 2nd character"
+BillyBoy says "then on the next line I want to the 2nd character to be a - again and the third to be a l"
+BillyBoy says "instead of the third being a -"
+BillyBoy chuckles
+
+Moses says "The answer to that question is long, drawn out, and off topic. Ask me after class."
+
+BillyBoy nods
+BillyBoy says "figured so"
+
+Moses says "Again, for columnar format, it's best to truncate the location name, where necessary. Doing left(Master Room,76) is going to have no visible effect, because the string 'Master Room' doesnt' have 76 characters. But, it's better safe than sorry."
+Moses says "Because you don't know when you're going to get a location name like: Art Smart's Dart Mart and Juggling Emporium, Incorporated"
+Moses says "Which is an actual store in the city of Chicago, IL...but I digress."
+
+Bryan has been there!
+
+BillyBoy says ""
+
+Moses says "In the instance of a +who, for instance, you would have [ljust(left(get(player/name),25)][center(get(player/sex),6)][left(name(loc(player)),47)]"
+
+Bryan says "get(player/name)? That's entertaining, Moe. ;)"
+
+Moses says "What that code would do is left justify the leftmost 25 characters of a player's name, center what they have specified for their gender in 6 spaces, and then display the leftmost 47 characters of their location's name."
+Moses says "Oh shut up. name(player)"
+Moses was thinking ahead of himself.
+
+Bryan chuckles and patpats.
+
+Moses says "That would be: ljust(left(name(player),25),25)"
+
+BillyBoy says "llo"
+BillyBoy says "right$(hello,3)"
+
+Moses says "Does that type of display make sense? Particularly after I type it properly?"
+Moses says "My other favorite, Bryan, is inc(lnum(3))"
+Moses tried that once, in a dazzling display of stupidity.
+
+Bryan laughs. I would imagine it'd return 1.
+
+Moses nods.
+Moses says "On Tiny. On Penn, it returned 3."
+
+Bryan nods. "Parsers are a little different. The spaces, to Tiny, make it a string."
+
+BillyBoy says "InStr(1,"Where did she go?","He")"
+
+Bryan shuts up now. :)
+
+Moses nods. Roit.
+Moses grins at BillyBoy. Not all VB functions work here. :)
+
+BillyBoy says "Str(544kl5j43)"
+
+Moses says "Does anyone have any questions?"
+
+BillyBoy says "Just playing with what I can remember"
+BillyBoy says "val(hi11ih)"
+
+Moses pictures Bryan typing up some obscure, cryptic question, just to annoy me. :)
+
+Wren says "Body ljust(Mind,10)ljust(Soul,10)"
+Wren says "Body ,ljust(Mind,10),ljust(Soul,10)"
+Wren hrms.
+
+Moses says "Oh, the other thing I will say at the end is: If you want to use ansi, just put your ansi characters around whatever text you want modified."
+Moses says "You need []'s, Wren."
+
+Wren says "Body ljust(Mind,10)ljust(Soul,10)"
+
+Moses says "And you don't need to ljust() the last one."
+
+Wren says "Body Mind Soul "
+
+BillyBoy says "olleH"
+
+Moses says "Bingo."
+Moses says "Yes, reverse() works, BillyBoy. As does scramble()"
+
+BillyBoy says ": tsaf yllaer sdrawkcab ffuts epyt nac I dna yoblliB si eman yM olleH)"
+
+Wren says "Body [ljust(Mind,26)Soul,10"
+Wren says "Body Mind Soul,10"
+Wren says "Body Mind Soul"
+Wren ahas.
+
+Moses applauds Wren.
+
+BillyBoy says "hello"
+
+Wren says "Body Mind Soul"
+
+Bryan will, if you want. "Could you explain the reasoning behind not creating spaces after the centered string when using center()?" ;)
+
+Wren says "Now.."
+Wren says "#-1 FUNCTION (lcent) NOT FOUND#-1 FUNCTION (lcent) NOT FOUNDSoul"
+
+BillyBoy says "hello"
+
+Wren laughs. "Oops.."
+
+Moses nods. yes, I can. I didn't specify a pad character, so it was automatically padding with white space.
+
+BillyBoy says "helllo"
+
+Wren says "#-1 FUNCTION (lcen) NOT FOUND#-1 FUNCTION (lcen) NOT FOUNDSoul"
+Wren says "What is center?"
+
+Moses says "However, I did only center to six spaces, which was a mistake when dealing with the word 'female'."
+Moses says "Try center()"
+
+BillyBoy says "helo"
+
+Wren says " Body Mind Soul"
+
+Bryan says "Yes, but this should work differently. ;)"
+Bryan hmms. "Never mind. I forgot something." ;)
+
+Moses chuckles.
+
+BillyBoy says " test"
+BillyBoy says "s is a test"
+BillyBoy says " is a test"
+
+Moses closes the log, then.
+Moses thanks you all for coming, and for asking questions.
+
+Bryan says "So what's the next class over? ;)"
+
+Moses is always available for any questions. The next class is going to be over a topic I have recently heard debated quite strenuously on a mailing list. Softcoding an econ system.
+
+BillyBoy says "sayremove(Hello This is a test,hello)"
+
+Bryan oos. Just a small jump. ;)
+
+BillyBoy says "Hello This is a test"
+
+Moses chuckles.
+
+Bryan says "Case sensitive. :)"
+
+Moses says "Well, my series of classes is dealing with coding on a global scale, from a generally adminly perspective."
+
+BillyBoy says "say remove(this is a test, is)"
+
+Moses says "Some classes will be somewhat more intensive than others."
+
+BillyBoy says "why is the remove commnand not working?"
+
+Bryan nods. "But of course."
+
+Moses says "Don't put a space before 'is'."
+
+BillyBoy says "say remove(this is a test,is)"
+BillyBoy says "this a test"
+BillyBoy says "I guess if I didn't type say twice"
+BillyBoy giggle
+
+Moses says "The class after that is going to deal with the battle between efficient code and maintainable code"
+Moses closes the log, really, this time.
+

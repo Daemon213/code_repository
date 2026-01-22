@@ -1,0 +1,49 @@
+Help File:
+------------------------------------------------------------------------------
++directory
+
+  SYNTAX: +directory
+          +directory <category>
+
+  These commands are used to view the building directory of the grid. These
+  are the buildings that exist on the grid for players to use. The first
+  command is used to view the categories that the directory is split up into.
+  The second command is used to view a list of the buildings within a
+  specified category. When using this command, be sure to use the two letter
+  category code.
+
+------------------------------------------------------------------------------
+
+Staff Help File:
+------------------------------------------------------------------------------
++directory
+
+  SYNTAX: +directory/add <dbref/here>=<category>
+          +directory/remove <dbref/here>=<category>
+
+  These commands are used to add and remove a room from the directory listing
+  of the specified category. Rooms can be added to multiple categories, but
+  will need to be done individually for each category the room will be added
+  to. When using these commands, be sure to use the two letter category code.
+  When selecting a room, you can use either a dbref or 'here'.
+
+------------------------------------------------------------------------------
+
+@create Directory Object=10
+&ALL-LIST Directory Object=AH~Apartments & Hotels|BR~Bars & Restaurants|SH~Shops, Services & Financial|RR~Recreation & Entertainment|MH~Medical & Health|EG~Education, Pub. & Gov. Offices|RG~Religious Facilities|TR~Transportation
+&CATEGORY-LIST Directory Object=ah|br|eg|mh|rg|rr|sh|tr
+&AH-LIST Directory Object=#0
+&BR-LIST Directory Object=#0
+&EG-LIST Directory Object=#0
+&MH-LIST Directory Object=#0
+&RG-LIST Directory Object=#0
+&RR-LIST Directory Object=#0
+&SH-LIST Directory Object=#0
+&TR-LIST Directory Object=#0
+&C.DIRECTORY Directory Object=$+directory:@pemit %#=[center(<%b[ansi(h,Directory Categories)]%b>,78,=)]%r%r[edit(columns(sort(u(all-list),a,|),35,|,2),~,%b...%b)]%r[repeat(-,78)]%r[center(To view a category%, type '[ansi(h,+directory <code>)]',78)]%r[repeat(=,78)]
+&C.DIRECTORY2 Directory Object=$+dir*:@fo %#=+directory%0
+&C.LIST Directory Object=$+directory *:@switch [gte(match(u(category-list),%0,|),1)]=1,{@pemit %#=[center(<%b[ansi(h,Directory Listing: [switch(%0,ah,Apartments & Hotels,br,Bars & Restaurants,eg,Education%, Pub. & Gov. Offices,mh,Medical & Health,rg,Religious Facilities,rr,Recreation & Entertainment,sh,Shops%, Services & Financial,tr,Transportation)])]%b>,78,=)]%r%bLocation Name[space(42)]# of Players[space(4)]Dbref%r[repeat(-,78)][iter(sortby(#4/namesort,u(%0-list)),%r%b[ljust([name(##)] - [u(##/area)] - [u(##/zone)],60)][switch(t(setinter(lcon(##),lwho())),1,words(setinter(lcon(##),lwho())),0)][space(10)]##)]%r[repeat(=,78)]},{@pemit %#=[ansi(hr,Error:)] That is not a valid category. Be sure to use the two letter code.}
+&C.ADD Directory Object=$+directory/add *=*:@switch [gte(match(u(category-list),%1,|),1)]=1,{@switch [strmatch(%0,here)]=0,{@switch [hastype(%0,room)]=1,{@switch [isdbref(%0)]=1,{@switch [match([u(%1-list)],%0,%b)]=0,{&%1-list me=[sort([u(%1-list)]%b%0)];@pemit %#=[ansi(hc,Game:)] You have added [name(%0)] %(%0%) to the [switch(%1,ah,Apartments & Hotels,br,Bars & Restaurants,eg,Education%, Pub. & Gov. Offices,mh,Medical & Health,rg,Religious Facilities,rr,Recreation & Entertainment,sh,Shops%, Services & Financial,tr,Transportation)] directory.},{@pemit %#=[ansi(hr,Error:)] [name(%0)] %(%0%) is already on the [switch(%1,ah,Apartments & Hotels,br,Bars & Restaurants,eg,Education%, Pub. & Gov. Offices,mh,Medical & Health,rg,Religious Facilities,rr,Recreation & Entertainment,sh,Shops%, Services & Financial,tr,Transportation)] directory.}},{@pemit %#=[ansi(hr,Error:)] That is not a valid dbref number. Please try again.}},{@pemit %#=[ansi(hr,Error:)] That is not a room. Check the Dbref and try again.}},{@switch [match(u(%1-list),loc(%#),%b)]=0,{&%1-list me=[sort([u(%1-list)]%b[loc(%#)])];@pemit %#=[ansi(hc,Game:)] You have added [name(loc(%#))] %([loc(%#)]%) to the [switch(%1,ah,Apartments & Hotels,br,Bars & Restaurants,eg,Education%, Pub. & Gov. Offices,mh,Medical & Health,rg,Religious Facilities,rr,Recreation & Entertainment,sh,Shops%, Services & Financial,tr,Transportation)] directory.},{@pemit %#=[ansi(hr,Error:)] [name(loc(%#))] %([loc(%#)]%) is already on the [switch(%1,ah,Apartments & Hotels,br,Bars & Restaurants,eg,Education%, Pub. & Gov. Offices,mh,Medical & Health,rg,Religious Facilities,rr,Recreation & Entertainment,sh,Shops%, Services & Financial,tr,Transportation)] directory.}}},{@pemit %#=[ansi(hr,Error:)] That is not a valid category. Be sure to use the two letter code.}
+&C.REMOVE Directory Object=$+directory/remove *=*:@switch [strmatch(%0,here)]=0,{[setq(0,switch(isdbref(%0),1,%0,capstr_all(*%0)))];@switch/first 1=not(strmatch(type(%q0),room)),{@pemit %#=[ansi(hr,Error:)] [name(%0)] is not a valid dbref number. Please try again.},not(match(u(%1-list),%q0)),{@pemit %#=[ansi(hr,Error:)] That location is not listed in the [switch(%1,ah,Apartments & Hotels,br,Bars & Restaurants,eg,Education%, Pub. & Gov. Offices,mh,Medical & Health,rg,Religious Facilities,rr,Recreation & Entertainment,sh,Shops%, Services & Financial,tr,Transportation)] directory list.},{&%1-list me=remove(u(%1-list),%q0);@pemit %#=[ansi(hc,Game:)] You have removed [name(%q0)] %(%q0%) from the [switch(%1,ah,Apartments & Hotels,br,Bars & Restaurants,eg,Education%, Pub. & Gov. Offices,mh,Medical & Health,rg,Religious Facilities,rr,Recreation & Entertainment,sh,Shops%, Services & Financial,tr,Transportation)] directory list.}},{&%1-list me=remove(u(%1-list),loc(%#));@pemit %#=[ansi(hc,Game:)] You have removed [name(loc(%#))] %([loc(%#)]%) from the [switch(%1,ah,Apartments & Hotels,br,Bars & Restaurants,eg,Education%, Pub. & Gov. Offices,mh,Medical & Health,rg,Religious Facilities,rr,Recreation & Entertainment,sh,Shops%, Services & Financial,tr,Transportation)] directory list.}
+@set Directory Object=INHERIT
+@set Directory Object=SAFE

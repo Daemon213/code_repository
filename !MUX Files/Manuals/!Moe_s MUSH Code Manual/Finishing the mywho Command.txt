@@ -1,0 +1,420 @@
+ ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+|\ /| |\ /| |\ /|
+| \ / | | \ / | | \ / |
+| \/ |oe's | \/ |ushkode | \/ |anual
+~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
+Lesson 3 - HOW DO I REALLY MAKE THIS STUFF HUM?
+
+When last we met, we had extended our mywho command quite a ways,
+so that it was now bordered with graphical headers, and displayed its
+information in nicely-justified columns. We had a variety of information
+being displayed, including name, fullname if set, and their gender(@sex).
+We discussed how to put colour into our displays, and we separated our
+code into commands and ufuns.
+When we were done, we had code that looked a lot like:
+
+&cmd_mywho obj=$mywho:@pemit
+%#=u(cmdheader,mywho)[iter(lwho(),u(fn-sex,##),,%R)][u(cmdfooter)] &fn-sex
+obj=[ljust(left(default(%0/fullname,name(%0)),24),25)][default(%0/sex,Not
+set.)]
+
+Look familiar? Make sense? Again, if it at least makes sense, we
+can keep going, and learn some more stuff. If it doesn't make sense, go
+back to Lesson 2, or even 1 if you need to. It's better that you take the
+time to learn it. The MMM will still be here when you get back.
+
+STORING VALUES IN MEMORY
+
+There will often be cases in mushcode where you are going to need
+to reference a value many many times. It's quite possible that this value
+is going to be produced by code you have written. And it's also possible
+that it would be cumbersome to have to type all of that code over and over
+again, each time you wanted that value. All a bunch of hypotheses, right?
+Wrong. Let's show a practical example. Why don't we compute how
+many players are connected, and display that value at the end of our
+mywho. It really is simple, given the combination of the lwho() and the
+words() functions.
+Remember from your rules that in mushcode, everything is a list.
+lwho(), as we know, returns a list of dbrefs of connected players. The
+words() function tells us how many 'words' or elements, are in a list. So,
+words(lwho()) would tell us the number of connected players.
+And here, I'm going to start showing you how to accomodate for
+most every case you're going to find as a mushcoder. Quite often, a player
+will lose their connection, and wind up being on twice. We can account for
+this, in our representation of how many players are online, through the
+use of the setunion() function.
+
+MERGING LISTS
+
+I'll take a minute here and talk about merging lists using the
+setunion(), setdiff(), and setinter() functions. These are functions for
+merging two lists that may or may not have items similar in each list.
+There are two things to remember about using these list-merging functions.
+One, they are all case-sensitive. A bummer, so if case is an issue
+with your lists, make sure that you account for things like this when
+merging them. setinter(dan bob al,Dan bob Billy) is only going to return
+'bob', because 'dan' and 'Dan' don't match.
+Two, the list that these functions returns will be sorted, in the
+best manner the game knows how. Read help sort() for more information
+about how the game's parser sorts things. Standard ways are
+alphabetically(also called lexicographically), numerically, or by dbref.
+The list that is returned will be sorted, so if the original order is an
+issue, then it's likely you should choose another way to merge your lists.
+
+BACK TO MYWHO
+
+Now, why did I go off on that tangent about merging lists? Here's
+why: setunion(lwho(),lwho()) is going to return for us a sorted list of
+dbrefs, with all duplicates removed. Yes, we are merging two lists, as it
+is two instances of the lwho() list. The setunion() function returns all
+members of both lists, with duplicates removed. This can also be
+accomplished with setinter(), and it will produce the same results.
+This is because setinter() returns the individual elements that
+are present in both lists, with duplicates removed. The list will be
+sorted, of course. The particular method you choose to use is up to you,
+as they both produce identical output, in /this/ case. Obviously, their
+behaviour is different when you have two lists that are not identical to
+each other in every way, as our two lwho() lists are.
+Now, to make this work for us, in a manner that tells us how many
+players are connected, we should have the following code snippet, to count
+the number of connected players:
+
+words(setunion(lwho(),lwho()))
+
+For Wizards that are making their own @functions for their games,
+I personally suggest this one just as a nice cosmetic global function,
+named something like nwho(), as opposed to lwho(), or Penn's mwho(). The
+'n' is for 'number', of course. Give yourself a cookie if you figured that
+one out, too.
+Now, where is this going to go? It could conceivably be anywhere
+in the display, but logically, it should go at the end of our display,
+just before the footer graphic.
+
+&cmd_mywho obj=$mywho:@pemit
+%#=u(cmdheader,mywho)[iter(lwho(),u(fn-sex,##),,%R)]
+%R[words(setunion(lwho(),lwho()))] players connected.[u(cmdfooter)]
+
+Now, if you go way back, you'll see that the title of this section
+of the lesson is about setting values into memory. Here's where we will
+give an example of that. You'll notice in the above code that we use
+lwho() three times. Why shouldn't we just use it once, set it into memory,
+and then be able to call that value into our code whenever we want, using
+a simple %-substitution?
+
+SETR() AND SETQ() - NOW YOU SEE 'EM, NOW YOU DON'T
+
+The mush allows you to set ten(on Penn, thirty-six) temporary
+values into memory. These only last as long as it takes to run your single
+piece of code, and then are dropped into the abyss. They are numbered 0-9,
+and are set through the use of the setr() and setq() functions. Both of
+these functions operate on the same set of memory, but their behaviour is
+different. For those of you who thrive on mnemonic learning, the 'r' in
+setr() can stand for 'reveal', and the 'q' in setq() can stand for
+'quell'.
+These words are chosen based on how the two functions act when you
+use them. The setr() function sets a value into memory, and allows it to
+be viewed at the same time, including it in the output. The setq()
+function sets the value into memory and obscures it from view, or quells
+it from the output.
+Here's an example. To the mush, the sentence 'This is a
+[setr(0,good)] test.' would look like:
+This is a good test. However, the sentence 'This is a
+[setq(0,good)] test.' would look like:
+This is a test.
+
+The setq() function removes the value it is setting from the
+output, while setr() both sets it and includes it into the output. As you
+can tell from the examples, you specify the number of the memory register
+into which you wish to place the value. In this example, we used 0.
+Now, whether you have set the value using setr() or setq(), it can
+only be referenced by the substitutions %q0-%q9. In the example above, %q0
+would be 'good'. If you want to test this, run the following code:
+
+think This is a [setr(0,good)] test. %q0
+
+You'll get 'This is a good test. good'. If you don't, you did
+something wrong, I guarantee it. Many people ask why setr() doesn't have
+%r0-%r9. Remember that %r is the substitution for a carriage return. And
+since both setr() and setq() are setting values into memory, why not just
+have one substitution by which to reference them?
+
+APPLYING SETR()
+
+What we want to be able to do is take our first instance of lwho()
+and set it into memory, thereby calling it by %q0 later in the code. Doing
+so will wind up in something that looks a lot like this:
+
+&cmd_mywho obj=$mywho:@pemit
+%#=u(cmdheader,mywho)[iter(setr(0,lwho()),u(fn-sex,##),,%R)]
+%R[words(setunion(%q0,%q0))] players connected.[u(cmdfooter)]
+
+Not overly dramatic? Let's make a more practical example.
+Grammatically, it's more correct to say 'There is 1 player connected.',
+rather than having 'There are 1 players connected.' being the message in
+the case where only one person is on the game. Let's use switch(),
+words(), setr(), and two new functions to us, gt() and ifelse(), to make
+our code use better grammar.
+
+IFELSE() VS. SWITCH()
+
+If you have a situation where you are going to be testing a
+boolean(1 or 0, true or false), it is syntactically better to use the
+ifelse() function, which says if <test case> is true, do <this>, else(if
+it's not true) do <this>. It looks like: ifelse(<testcase>,<actions if
+true>,<actions if false>). You can use switch(), but if all you are
+testing for is 1 or 0, it's best to use ifelse().
+Why am I talking about this? Because our case is that we need to
+test and see if the number of people connected is greater than 1. This is
+a simple binary question, as it either is greater than 1, or it is not
+greater than 1. We can test this using the gt() function, which yes, does
+stand for 'greater than'. And we already have code in place to find how
+many people are connected. So, now we should put it all together.
+
+ifelse(gt(words(setunion(%q0,%q0)),1),There are
+[words(setunion(%q0,%q0))] players connected.,There is 1 player
+connected.)
+
+Interesting, and as you can see, a touch unwieldy. We re-use the
+words 'There' and 'connected.', and re-use the code
+[words(setunion(%q0,%q0))] as well. Let's look at another implementation
+of setr() to help us trim this down a bit, as well as rearranging things
+just a tad to make it smoother.
+
+There [ifelse(gt(setr(1,words(setunion(%q0,%q0))),1),are %q1
+players,is %q1 player)] connected.
+
+As you can see, it's much more streamlined, easy to read, easy to
+maintain, and logical in its function. So, if we fit this into our code,
+it now looks like:
+
+&cmd_mywho obj=$mywho:@pemit
+%#=u(cmdheader,mywho)[iter(setr(0,lwho()),u(fn-sex,##),,%R)] %RThere
+[ifelse(gt(setr(1,words(setunion(%q0,%q0))),1),are %q1 players,is %q1
+player)] connected.[u(cmdfooter)]
+
+MATH! AIEEEEE!
+
+Okay, we're going to put one last flourishing touch on our mywho
+command, by including a third column which will display the idle time for
+each of the connected players. We are going to do this the hard way, using
+a fair number of the math functions. PennMUSH has the timestring()
+function, which does the formatting we're about to do, for you.
+TinyMUSH2.2 and 3.0 do not, nor does MUX, so we shall have to do it for
+ourselves. It's a good exercise, and teaches us about mushcode's math
+functions.
+To start with, we're going to tidy things up a bit, and add some
+column headers to our code. Since our ufun is going to be doing all of our
+display now, doing both fullname, gender, /and/ idle time, we should
+probably change its name to fn-display, rather than fn-sex. Use your
+particularl codebase's flavour of @mvattr to change fn-sex to fn-display.
+And we're going to retype our cmd_mywho in a minute, so we'll do that
+edition there.
+What we want to do is put headers on each of our three columns:
+Name, Gender, and Idle. This is a relatively simple process, and involves
+us left-justifying the first two, and leaving the third to sit by itself.
+We already have the measurement of 25 spaces for the first column,
+leftover from our fn-sex(now fn-display, remember?), so now we just need
+to make a measurement for our middle column. We know that of our two
+primary choices, Male and Female, that Female is six letters long. And we
+also know that unless kept in the strictest of circumstances, some yokel
+is going to put something other than just Male or Female, so we'll give
+them ten spaces to play with. Also remember that we do have it constructed
+to display 'Not set.' which is 8 characters, so ten is a really safe bet
+for us. Now, our mywho will look something like this:
+
+&cmd_mywho obj=$mywho:@pemit
+%#=u(cmdheader,mywho)[ljust(Name,25)][ljust(Gender,10)]Idle
+%R[ljust(----,25)][ljust(------,10)]----%R[iter(setr(0,lwho()),u(fn-display,##),,%R)]
+%RThere [ifelse(gt(setr(1,words(setunion(%q0,%q0))),1),are %q1 players,is
+%q1 player)] connected.[u(cmdfooter)]
+
+Yes, I put a little line under our headers, just to separate them
+from the following text. And now we need to add the functionality of
+computing the idle time to our fn-display. This is our old fn-sex,
+remember? Let's remember what it looks like again:
+
+&fn-display
+obj=[ljust(left(default(%0/fullname,name(%0)),24),25)][default(%0/sex,Not
+set.)]
+
+All familiar, sensible, understandable code, yes? Alright, the
+first thing we need to do is left-justify our gender display. Now it
+becomes:
+
+&fn-display
+obj=[ljust(left(default(%0/fullname,name(%0)),24),25)][ljust(default(%0/sex,Not
+set.),10)]
+
+And at long last, let's dive into the math business. When I say
+computing idle time, I mean I want to be able to display this time in
+days, hours, minutes, and seconds. The mush provides us with a nice
+hardcoded function with which to fetch the number of seconds someone has
+been idle. Conveniently, and not surprisingly, it's called idle(). Go
+figure, eh? Doing idle(dbref) or idle(*name) will return the number of
+seconds a character has been idle, meaning they haven't entered any
+commands.
+We know from gradeschool that there are 60 seconds in a minute, 60
+minutes in an hour, 24 hours in a day. We know that if you multiply 60 x
+60, you get 3600. If you wanted to find that out with mushcode, you could
+use the mul() function. It multiplies two numbers together. mul(60,60)
+returns 3600. Now, we want our display to handle days too, so it would
+help if we knew how many seconds there were in a day. After all, we're
+getting our initial data(the idle() return) in seconds. If you do:
+
+think mul(3600,24)
+
+Which is the number of seconds in an hour, multiplied by the
+number of hours in a day, you learn that there are 86,400 seconds in an
+hour. Nifty, no? Well, kind of, at least. When planning mathematical
+computations such as this, we need to consider how our display should
+look. If the person hasn't been idle more than a day, we don't need to
+display a measurement of days. Similarly, if they haven't been idle more
+than an hour, there is no need to display an hour measurement.
+So, what we can figure on doing two primary math functions. We
+need to be able to find out how many equal divisions we have, and then
+compute the remaineder. There are two easy functions that mush gives us to
+use. They are div() and mod(). They are both divisory functions, but they
+behave quite differently.
+The div() function tells you how many integer divisions you have.
+For example, div(6,3) is 2, since 3 x 2 = 6. div(7,3) is also 2, because 7
+divided by 3 is 2, with a 1 remainder. (You do remember this from 3rd
+grade, yes?). The mod() function, on the other hand, gives us the
+remainder. mod(6,3) is 0. 3 divides into 6 evenly. mod(7,3) is 1, because
+that is the remainder of the basic division. These two functions are going
+to be invaluable to us in our computation of h/m/s notation for the idle
+times of our connected players. SWITCH(), ON STEROIDS
+
+I'm going to combine a great deal of information together here,
+since they are all generally one step towards the writing of our idle
+computation function. And we'd better just plan on putting this into a
+ufun, as it's going to be kind of big, anyway. As I said above, we don't
+need to compute days of idle time if the player hasn't been idle more than
+a day, nor hours if they haven't been idle over an hour. Nor even minutes
+if they haven't been idle for over a minute.
+There are two ways to accomplish this series of tests. The first
+is to nest a number of switches together, a la:
+
+switch(gte(idle(dbref),86400),1,<compute
+time>,switch(gte(idle(dbref),3600),1,<compute
+time>,switch(gte(idle(dbref),60),1,<compute time>,idle(dbref))))
+
+Quite obviously, this is balky, a parenthetic nightmare, and a
+perfect case for using a setr() to store the idle() value. The gte()
+function I used above is a variation on the gt() function we have used
+already. gte() just stands for greater-than-or-equal-to. I used this
+because if their idle() is at /least/ equal to 1 day, 1 hour, or 1 minute,
+we need to report using that format. Below, I offer you a substitute
+method for doing what we did above, using one switch() in place of three.
+I will also reference the player as %0, since we know we're going to have
+this in a ufun, and would pass the value.
+
+switch(gte(setr(0,idle(%0)),86400):[gte(%q0,3600)]:[gte(%q0,60)],1:*:*,<compute
+d/h/m/s format>,*:1:*,<compute h/m/s/ format>,*:*:1,<compute m/s
+format>,%q0s)
+
+Yes, this is a switch() with multiple cases. Since switch() will
+stop on the first match it makes, we can use the wildcards to represent
+the cases we aren't currently testing for. We set our cases up in the
+order in which we want to test them, and we leave the %q0 as a default,
+since we know that if it isn't a value larger than 86400, 3600, or 60,
+then it just needs to be reported as seconds.
+Now, we can work on filling in the computation. Like I said
+before, we're going to rely on the div() and mod() functions to accomplish
+our math work. Let's look at our day computation. We first need to divide
+our idle() value by 86400, to determine how many days the character has
+been idle. Since we have set our idle() return in %q0 in the test data for
+our switch(), this is as simple as: div(%q0,86400).
+Next, we need to find out how many hours outside of those days,
+the character has been idle. In order to get the remainder after our first
+div(), we'll use mod(). And divide that by 3600. div(mod(%q0,86400),3600)
+will give us our hours. Now, the next division down is the minutes. We
+will do another div(mod()) pair, though you will realize that you can get
+into more parenthetic nightmares. Here are two ways to do the next step,
+bad and good, in that order:
+
+div(mod(%q0,86400),3600)h [div(mod(mod(%q0,86400),3600),60)]m
+div(setr(0,mod(%q0,86400)),3600)h [div(mod(%q0,3600),60)]m
+
+Yes, I reset %q0. After our initial division of days, the total
+idle time isn't necessary. What we need to do is just retain one value
+through step of our computation. We can just keep it in one q-register,
+and be fine. Less %q's to keep track of. We will do this one final step,
+to find out our seconds, and since this is a fair chunk of code, we can
+further put this into a ufun, so that now our code is going to look like:
+
+&fn-dayfmt obj=[div(%0,86400)]d [div(setr(0,mod(%0,86400)),3600)]h
+[div(setr(0,mod(%q0,3600)),60)]m [mod(%q0,60)]s
+
+Whoa?! Where'd that %0 come from? As a rule, I don't like to trust
+%q0's to be read between ufunctions. Some people disagree with me, and
+point to x, y, and z piece of hardcode, or a, b, and c system that is
+tried and true and does it. Great, bully for them. I do it my way, because
+I know that it has always worked for me. We will pass the %q0 from our
+fn-idle(we'll call it that since it is computing the idle time), with the
+syntax: u(fn-dayfmt,%q0).
+
+FILLING IN THE HOLES
+
+Let's flesh out our fn-idle, really quick, since we will have
+fn-dayfmt, and fn-hrfmt. Minute/seconds are easily computed, so don't have
+to have their own ufun, and the seconds are the default. fn-idle now looks
+like:
+
+&fn-idle
+obj=[switch(gte(setr(0,idle(%0)),86400):[gte(%q0,3600)]:[gte(%q0,60)],1:*:*,u(fn-dayfmt,%q0),*:1:*,u(fn-hrfmt,%q0),*:*:1,div(%q0,60)m
+[mod(%q0,60)]s,%q0s)]
+
+
+And we need to be able to call fn-idle from our fn-display(the old
+fn-sex, remember?), so we need to change fn-display to look like:
+
+&fn-display
+obj=[ljust(left(default(%0/fullname,name(%0)),24),25)][ljust(default(%0/sex,Not
+set.),10)][u(fn-idle,%0)]
+
+Yeah, it really is that simple. Okay, we've got our fn-idle, and
+our fn-dayfmt. Let's look at the fn-hrfmt, which is going to be an awful
+lot like our fn-dayfmt, just shorter. Our top level of computation is the
+hour, followed by minute and second, respectively. So:
+
+&fn-hrfmt obj=[div(%0,3600)]h [div(setr(0,mod(%0,3600)),60)]m
+[mod(%q0,60)]s
+
+Not too painful? Didn't think so. Now that we have that one in,
+and our minutes and seconds are already being calcualted in
+fn-idle...whoa..we're done! Yep, the mywho command is done, a whole thing.
+It has a number of features that make it a very useful command, and if put
+on an object in the master room of a mush could even be used as a global
+command, like a +who. Try it out, now that we've got it all typed in. Make
+sure you changed all references to fn-sex to fn-display. Give it a reading
+over, making sure that you've matched up all your brackets and
+parentheses.
+If you're interested in higher level math functions(or lower level
+ones like add() and sub()), then go to your mush flavour of choice, and
+type: help math functions. You'll get a whole list of what is available,
+including, but not limited to, logical functions like and(), or(), and
+not(), as well as spunkier math like log(), sqrt() and fdiv().
+
+LE FIN
+
+That's it for Lesson 3. Congratulate yourself if you've gotten
+this far. You've learned a lot(I hope), and you've studied the basics of
+making a mush command, modifying your output, and keeping your code
+logical, sound, and maintainable.
+The latter is perhaps one of the most important things. By
+compartmentalizing some of the more complex functions, you've made it
+possible to isolate where things are breaking, more easily. By keeping a
+consistent naming scheme for your attributes, you've made it easy for both
+yourself and coders that come after you to fix or modify your code. By not
+using excessive brackets and curly braces, you've made your code a lot
+easier to read. And believe me, anything that helps make mushcode easy to
+read is worth putting the effort into doing.
+Lesson 4 is going to go a different direction, as we're going to
+explore how to accept user input in our $commands, and we're going to
+apply that knowledge(as well as everything we have learned here), into the
+making of the infamous mush Vendor. I'm going to discuss what is loosely
+referred to as a 'coding system', meaning a number of commands that all
+act on the same set of data. Some of the things we'll go into in Lesson 4
+can be brought back and applied to your mywho, but as a command, it is
+complete.

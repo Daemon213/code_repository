@@ -1,0 +1,499 @@
+ Topic: Intro to TinyFugue
+Author: Raevnos
+Summary: Raevnos an introduction of TinyFugue (TF). Clear and
+straightforward, this'll give you most everything you'll need to get started
+with the client by which all other clients are measured.
+
+
+Introduction to Tinyfugue
+
+This lecture will provide a quick-start guide to using the tinyfugue mush/mud
+client effectively. It is intented for people who are casual users, or those
+just starting out with the client. If you can program your own macros and
+triggers, this is probably too advanced for you. There's a lot of things I'm
+not going to mention, so please try to hold off on complaining about things I
+missed until the end. If you have questions, raise your hand on <101>, and
+I'll get to you.
+
+1 Introduction
+
+1.1 What is Tinyfugue?
+
+Tinyfugue, more commonly called tf, is a mush client primarily for unix-like
+operating systems, though it can be used on Windows. I haven't done so
+personally, but from what I've heard, it's better on NT than 95 or 98, and
+even then has problems compared to the unix version. I assume you already
+have tf installed somewhere. If you don't, I'll give a quick install guide at
+the end of the lecture. If you have it installed, you can follow along. If
+not, the log of this class will be on the Mush101 web site soon.
+
+Tinyfugue is an extremly powerful client, since it has it's own built-in
+programming language and support for using it in response to any input from a
+game or you. Indeed, many of the client's features are actually implemented in
+it's language, making it highly customizable. However, this isn't about
+programming for tf, so I won't mention it much more.
+
+1.2 Starting Tinyfugue
+
+You start tinyfugue by typing 'tf' at a shell prompt. Upon startup, tf loads
+any commands from a file named '.tfrc' in your home directory, and connects to
+the first defined world - more on both of these later. If you don't want tf
+to auto-connect to a game, start it like 'tf -n'. There's a few other command
+line switches, but I'm not going to mention any of them here.
+
+Now that tf is running, it's time to put it to use.
+
+You say, "Let me know if I go too fast."
+
+1.3 Some useful commands
+
+Normally, when you start tf, you'll see the screen split into two with a line
+of dashes. The top part is the output buffer, where text from a mush appears,
+and the bottom part is the input buffer, where you can type stuff to go to the
+mush. If you don't see this line, try typing /visual on.
+
+All tf commands start with a slash. Anything else is sent to the mush.
+
+/visual on is a command that attempts to split the screen in two. If it
+doesn't work, there's probably something wrong with the settings of your
+terminal.
+
+The most useful command is /help. It is, obviously, the built-in help system.
+
+/help <command or topic> gives help on the given topic, just like a mushes
+help.
+
+/more on is a command that causes new output from the mush to queue up
+instead of immediately being displayed in the output buffer. You can scroll
+down through the queued text with the tab key. When there's queued text, the
+status line will say so on the left side, along with the number of lines in
+the queue.
+
+And, of course, you can exit tf with /quit.
+
+2 Worlds
+
+2.1 What are they?
+
+In tf terms, a world is a game the client knows about, running on a specific
+host and port, possibly with a character and password as well. Multiple worlds
+can be defined, and you can be connected to many worlds at once, with the
+ability to switch between them at will. Non-commands entered into the input
+buffer will be sent to the currently active world. When new text comes in from
+a world that's not the active one, a message will come up letting you know.
+Also, the current world is displayed on the status bar.
+
+2.2 Making a world
+
+Worlds are defined with the /addworld command. Each world needs at least a
+name it's called by, a server, and a port. The typical syntax for a MUSH world
+looks like:
+
+/addworld -T"tiny" M*U*S*H pennmush.org 4201 Raevnos notmypassword
+
+The -T"tiny" switch tells tf that the world is a tiny-style server. The type
+affects wether or not the world has prompts - like some muds do - and how
+auto-login works. In this case, tiny-style servers have no prompt, and login
+is done with ``connect <name> <password>''. tf normally does a good job of
+auto-detecting type if it's not given, but sometimes net lag can trip it up,
+so it's best to always give the specific type. /help /addworld lists more
+types for various flavors of muds. M*U*S*H is the name of the world, which is
+used to connect to it, among other things. pennmush.org is the server, and
+4201 is the port. The last two items are a character name and password. If
+these are present, when you connect to the world, tf tries to log in using
+them. If they aren't present, you have to log in manually.
+
+<101> Trispis raises his hand.
+
+You say, "Yes?"
+
+Trispis says, "Is the "connect <name> <password>" the only distinguishing
+feature of the 'tiny' world type?"
+
+Trispis says, "or is it the only necessary/relevant one?"
+
+You say, "That and the lack of a prompt."
+
+2.3 Connecting and switching between worlds
+
+You can connect to a defined world with /connect <world name>. You can also
+connect to anonymous worlds with /connect <host> <port>. When you;'re
+connected to multiple worlds, you can switch between them in a number of ways.
+
+/fg <world> switches to that world. Esc-f and /fg -> switch to the next
+world, and Esc-b and /fg -< switch to the previous world. There's also another
+way that I'll mention later. Also, in many cases, you can use ALT instead of
+Escape, to the same effect.
+
+When you quit a world, you can no longer make it the active one until you
+reconnect to it.
+
+<101> Trispis says, "Um... another question."
+
+You say, "Yes?"
+
+Trispis says, "I've used tf some... and the esc-f and esc-b things weren't
+setup after I installed. I had to get help (and read some of the /help files)
+to find out how to put those things into the .tfrc so they would work. Can you
+review that briefly?"
+
+Caelum says, "/load world-queue.tf"
+
+Trispis says, "Some kind of way to make keycombo's work, or something (my
+.tfrc is at home)."
+Trispis hrms.
+Trispis says, "Maybe it was something else."
+
+Caelum says, "oh, and /load bind-bash.tf"
+
+Raevnos believes those are default keybindings.
+
+Trispis says, "Oh... wait. I remember..."
+
+You say, "World-q, which I mention later, is a different way of switching
+between worlds."
+
+Trispis says, "I had to /bind ... I wanted them to be ctrl+f and ctrl+b
+(instead of esc+)"
+Trispis says, "Sorry. /:"
+
+Raevnos nods.
+
+Caelum says, "c-b c-f are char movements by default"
+
+2.4 Storing and loading worlds
+
+If you quit tf and restart it, you'll see that any worlds you defined are
+gone. Luckily, it's easy to save all your worlds to a file, with the command
+/saveworld <some file>, which prints out tf code in the given filename that
+will recreate the worlds when it's loaded.
+
+But even after you do this, you still won't automatically get those worlds
+back when you start tf - you need to use another command, /load, that reads a
+file and runs commands in it. In order to do that, you need to use a .tfrc
+file. Remember that tf runs any commands in this file on startup. So, just add
+a line like /load <world file> in your .tfrc file, and you'll have the worlds
+you saved available.
+
+
+Raevnos mentions them (Ctrl-f and Ctrl-b) too, later.
+
+Caelum says, "I kept meaning to write bind-vi.tf but it turned out a bit
+difficult so I didn't go through with it"
+
+Trispis hrms.
+Trispis says, "I thought we put our worlds in the .tfrc. ???"
+Trispis says, "This is a new one on me."
+
+Caelum says, "this is just an easier way"
+
+You say, "They can go there too if you really want."
+
+Trispis says, "If you /addworld again and /saveworld <file> again, does it
+append?"
+
+Trispis says, "Or overwrite?"
+
+Caelum says, "overwrite"
+
+Now, you can use the .tfrc file directly for saving the worlds, but there's a
+few reasons not to. First, /saveworld overwrites the file it saves to, unless
+you use /saveworld -a, in which case it just tacks the worlds onto the end of
+the file. If the file already has world definitions in it, you can get
+harmless but annoying warning messages about redefining them. Secondly, if the
+world file is loaded by the .tfrc file, you can put other things as well in
+.tfrc without having to remember to /saveworld -a, as well as put it on the
+web or give it to other people without having to edit out passwords.
+
+Raevnos answers. ;)
+
+Trispis grins.
+
+3 Useful commands, libraries and keystrokes
+
+3.1 Commands
+
+3.1.1 /log
+
+You can log output from a world to a file with /log -w <filename>.
+When you're logging, the status bar will tell you, and you can turn off
+logging with /log off. The -w switch tells tf to log only output from the
+world that was current when you start logging. There's a number of other
+options to control what gets logged, listed in the /help.
+
+3.1.2 /recall
+
+Tinyfugue's greatest lacking is not having a truely scrolling output buffer.
+You can scroll down through backed-up text with tab, if you have /more on -
+but you can't go back easily, unless your terminal program lets you scroll
+it's window.
+
+Enter /recall. In it's simplest form: /recall <number>, it will bring up the
+last <number> lines and redisplay them. It also accepts a lot of more
+complicated forms, recalling according to time, or a pattern it looks for in
+lines, and others. See /help /recall for more information.
+
+One other useful form, though, is /recall /<number> <wildcard pattern>. This
+will recall the last <number> lines matching the pattern, which is by default
+a wildcard one like the softcode match() function uses. For example, /recall
+/5 *Raevnos* will return the 5 most recent lines with my name in them.
+
+Trispis says, "oooh. neat. (:"
+
+Caelum types /recall /100 <Public> and such alot
+
+Raevnos nods.
+
+3.1.3 /cat
+
+If you're cut-and-pasting large blobs of text with line breaks in them, you
+can use /cat to force it to be sent all as one line to the world. Once you
+enter /cat mode, everything typed in is appended to a buffer, with line breaks
+removed, and sent after a line with a single period is entered.
+
+Trispis says, "Oh, Excellent. Yeah. Very useful."
+Trispis says, "That also looks useful. (:"
+
+Raevnos uses it a lot too.
+
+3.1.4 @decompile/tf
+
+PennMUSH's @decompile lets you use the tf switch to display an attribute in a
+form that a simple tf macro can detect and use to put the attribute into the
+input buffer for editing. TinyMUSH and Rhost don't support this, but you can
+use softcode to display the attribute in the proper format. See help
+@decompile3 on the MUSH for details, and always set your @tfprefix attribute
+to help prevent spoofing!
+
+<101> Trispis says, "No entry for '@tfprefix'."
+
+<101> Professor Raevnos says, "It doesn't have it's own help entry."
+
+<101> Trispis says, "Oh."
+
+3.2 The tf library
+
+Tinyfugue comes with a library of additional commands. I'll cover some of the
+ones I find most useful here. All library files can be loaded with /load
+<library file>, either in your .tfrc, or from tf directly.
+
+The library itself is located in a directory called tf-lib. It's location
+depends on where tf was installed in. ~/tf-lib or /usr/local/lib/tf-lib/ are
+common places for it. Help is available for some of them files, via /help
+<filename>, or in the files themselves.
+
+3.2.1 kbstack.tf
+
+This file provides keyboard bindings to keep a stack of text on. You can be
+typing something in the input buffer, then store it on the stack, type
+something else and send it to the mush, and then restore the orginal text from
+the stack.
+
+ESC-Down saves the contents of the input buffer to the stack, and ESC-up
+returns the most-recently stored item to the buffer.
+
+<101> Trispis says, "You got more detail on this one, or should I ask my
+question?"
+
+<101> Professor Raevnos says, "Ask."
+
+Trispis says, "You say "most-recently stored item" is returned to the buffer.
+I'm guessing that means it can store several things in the stack. When it
+returns that "most-recent" one, is it cleared from the stack, making the next
+esc-down get the one before that one?"
+
+You say, "Yes."
+
+Trispis says, "Okay. Cool."
+
+You say, "It's a last-in, first-out stack."
+
+Trispis nods. Got it.
+
+3.2.2 world-q.tf
+
+This file provides a keyboard binding for another to cycle through worlds,
+going to the next world with activity in it with ESC-w. For example, if WorldA
+is my current world, and text arrives from WorldB, I can use ESC-w to switch
+to WorldB, instead of having to use /fg or cycle through to it with ESC-f as
+described earlier.
+
+When there are no more worlds with activity, ESC-w switches back to the
+previous current world.
+
+Trispis says, "That last bit..."
+
+Trispis says, "Sorta like the quickview on a tv remote? To switch between two
+channels, back and forth?"
+
+You say, "Yeah."
+
+Trispis says, "cool"
+
+3.2.3 spell.tf
+
+This file allows you to use ctrl-s to spellcheck your input buffer. Like old
+versions of Webster, it only reports misspelled words, but that's still very
+useful.
+
+Trispis says, "Cool."
+
+3.3 Keystrokes
+
+These are some useful key combinations, in addition to ones mentioned
+earlier.
+
+3.3.1 Brace matching
+
+When the cursor is on a parenthesis, bracket or brace, you can use ctrl--
+(control dash) to move to the matching one. Handy for softcoding.
+
+Trispis says, "ooooh. I'm gonna like THAT one. (:"
+Trispis says, "does it actually do matching? or just go to the next closing
+one?"
+
+You say, "It goes to the matching one."
+Trispis says, "eeeexcellent. (:"
+
+You say, "Hmm. It seems to be esc-- on my tf here at work, but it was ctrl--
+on my tf at home where I wrote this. :P"
+
+Trispis nods.
+
+You say, "Wierd. Oh well, use whichever one works."
+
+You say, "Whoever made the tf RPM I installed on my comptuer at home might
+have set it up differently, sinc esc-- works on a third tf installation."
+
+3.3.2 History list
+
+Tinyfugue keeps a history of every line you enter, either tf commands or text
+sent to a world. You can cycle to the previous line from your current position
+in the history list with ctrl-p, and to the next line with ctrl-n. If you
+enter the same thing two or more times in a row, it only takes up one entry in
+the list.
+
+3.3.3 Buffer movement
+
+In the input buffer, in addition to the arrow keys for moving single
+characters or rows, there's also keystrokes available for faster positioning.
+
+You can use ctrl-e to move to the end of the buffer, ctrl-a to move to the
+start, ctrl-f to move forward one word, and ctrl-b to move backwards one word.
+
+There are also keystrokes for deleting chunks of text, or manipulating words
+by making them upper case, lower case, or capitalized. These and others are
+listed in /help keys.
+
+4 Conclusion
+
+There's a bunch of stuff I haven't covered, or only touched on briefly. This
+is an introductory class, and I didn't want to be /too/ overwhelming. So, if
+there's enough interest, we can arrange for continuations, getting more
+advanced or covering various topics in detail. But in the meantime, read the
+/help, and try out various features.
+
+There's a tinyfugue mailing list you can join and ask questions on, as well.
+Information on joining it is at the Tinyfugue homepage,
+http://tf.tcp.com/~hawkeye/tf/.
+That's also where you can find the source to download and compile.
+
+Caelum says, "we're at 4.0 s1"
+
+Trispis says, "?"
+
+Caelum says, "of the latest TF version"
+
+Trispis says, "Oh."
+Trispis says, "Um... question/request."
+
+You say, "Yes?"
+
+Trispis says, "I know this is a bit more advanced, but it's common in most gui
+clients these days and will probably be interesting to folks."
+Trispis says, "Most gui clients these days allow you to have your client
+trigger a response to specific displayed text from the game. For example:
+Scrabble: It is now your turn. -- In my tf (and I've forgotten how, I just
+plagiarize from other peoples' stuff), I have that trigger a /beep 5 (to alert
+me it's my turn if I've drifted off to sleep in my la-z-boy."
+Trispis says, "Can you give a basic example of that?"
+
+Caelum says, "yeah, I don't think anything has better trigger facilities than
+tf at the moment"
+
+You say, "tf can do that."
+Raevnos tries an example.
+'/def -w"M*U*S*H" -t"Scrabble: It is now your turn" scrabble_alert=/beep 5'
+will create a trigger that beeps 5 times when the Scrabble string comes from
+the world named M*U*S*H.
+You say, "That's an exact match. If you want to match specific words or parts
+of a line, stick a * on each end of what you want to match."
+
+Trispis says, "and the trigger is named "scrabble_alert" (just in case they
+read about /undef and want to remove it)."
+
+Raevnos nods.
+
+Trispis says, "Thanks."
+
+Caelum says, "something else useful, if I want to paste a bunch of crap on a
+channel I can type /paste +pub, then /endpaste when I'm done"
+
+Trispis hrms.
+Trispis says, "sorta like that thing with /cat and . ?"
+Trispis says, "/cat"
+
+Caelum nods.
+
+Trispis says, "I went to the store and..."
+Trispis says, "You wouldn't believ what I saw..."
+Trispis says, "blah blah"
+Trispis says, "."
+Trispis says, "I could do the same with /paste and /endpaste?"
+Trispis puts "+pub" at the beginning of that /cat example.
+
+You say, "The difference is that /paste will put a prefix before each line,
+and /cat glomps everything into one line."
+
+Trispis says, "Ah."
+Trispis says, "Okay. Cool."
+
+You say, "One more!"
+
+
+5 Installing Tinyfugue on a Unix-like system.
+
+First, download the tinyfugue source from the tf webpage, URL given earlier.
+You want the tf 4.0s1 version. Next, unpack it with tar xzf tf-40s1.tar.gz.
+This will extract the files into a directory called, surprisingly enough,
+tf-40s1.
+
+In that directory, run 'sh unixmake'. You'll see a list of locations where
+the tf files will be installed, and be told what to change if you want them to
+go in different places. Once all the locations are to your liking, sit back
+and do something else for a while while it compiles and installs. Delete the
+tf-40s1 directory, and you're ready to go.
+
+Trispis whees. (:
+
+Caelum says, "cool :)"
+
+Trispis says, "And PuTTY is a cool telnet client for Windows, if you need one
+of those to access your account that has tf. (:"
+
+You say, "Okay, anything else?"
+
+Trispis has lots more questions, but really has to finish setting up this
+fileserver so he can go home and sleep tonight.
+
+David says, "What if you don't run the system? If it's just a shell account?"
+
+Caelum says, "it will put stuff in your home directory, it's pretty
+intelligent about it though"
+
+David nods.
+
+Trispis goes back to work. /:
+Trispis waves. Thanks again, Raev!
+
+Paul will find that really useful, thanks. :o) 

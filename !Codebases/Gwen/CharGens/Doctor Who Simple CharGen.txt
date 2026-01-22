@@ -1,0 +1,63 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;\f1\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @dig/teleport Time Lord RPG CharGen\
+\
+@VA here=#5346\
+\
+@set here=INHERIT\
+\
+@Desc here=%R[u(%VA/FN-SHEET,\'a0%#)][repeat(-, 78)]%RPoints: [ladd(parse(u(%#/_DW-ABIL), power(after(##,\'a0:), 2), |))] in Abilities. [ladd(parse(lattr(%#/_DW-SKILL_*), power(first(get(%#/##), |), 2)))] in Skills. [u(%#/_DW-POINTS)] remaining.\'a0%R%RABILITIES: [itemize(u(%VA/ABILS),,and)]. It is suggested one put between 90 and 110 points into Abilities.%R%R +set  to  ... can be between 0 and 6.\'a0%R%RSKILLS: Invent your own. They typically hang off of an Ability. 1= Better than normal. 2= Much better than normal. 3= Amazing\'a0%R%R +skill/ = ... can be between 0 and 3.\'a0%R%R +reset/\\[abilities/skills/all\\]\'a0%R\
+\
+&ABILS here=Strength Control Size Move Weight Knowledge Determination Awareness\
+\
+&FN-ROLL here=[if(gt(setr(2, add(setr(0, ladd(%0)), setr(1, abs(sub(die(1, 6), die(1, 6)))))), setr(3, ladd(%1))),\'a0%q0 <+%q1> vs Difficulty \'a0%q3=Success <+[sub(%q2,\'a0%q3)]>,\'a0%q0 <+%q1> vs Difficulty\'a0%q3=Failure <[sub(%q2,\'a0%q3)]>)]\
+\
+&FN-GETABIL here=[round(after(grab(u([secure(%0)]/_DW-ABIL), [secure(%1)]*:*, |),\'a0:), 0)]\
+\
+&FN-SETABIL here=[set(%0, _DW-ABIL:[replace(setr(0, u(%0/_DW-ABIL)), setr(1, match(%q0, [secure(%1)]*:*, |)), [before(extract(%q0,\'a0%q1, 1, |),\'a0:)]:[round(%2, 0)], |)])]\
+\
+&FN-SHEET here=[center(-= [ucstr(name(%0))]'S +SHEET =-, 78, -)]%R [parse(u(%VA/ABILS), [ljust(##, 20, .)].[ulocal(%VA/FN-GETABIL,\'a0%0, ##)][ulocal(%VA/FN-SHEET2,\'a0%0, ##)])]%RWounds: [udefault(%0/_DW-WOUNDS, 0)]/[mul(u(%VA/FN-GETABIL,\'a0%0, Strength), 2)]\'a0%R\
+\
+&FN-SHEET2 here=[if(words(setr(0, grepi(%0, _DW-SKILL_*, |%1|))),\'a0%R[columns(parse(%q0, [ljust(ulocal(%VA/FN-NAMEFIX, after(##, _DW-SKILL_)), 22, .)][first(get(%0/##), |)],,|), 25, |, 3)] ,%R)]\
+\
+&FN-NAMEFIX here=[parse(edit(lcstr(%0), ~,\'a0%b), capstr(##))]\
+\
+\
+\
+\
+\
+\
+&CMD-SETABIL here=$+set * to *:@switch/first 0= words(setr(0, grab(u(%VA/ABILS), [secure(%0)]*))), \{@pemit\'a0%#=GAME> Is '[secure(%0)]' an ability? Try one of [itemize(u(%VA/ABILS),, or)] \}, and(isnum(setr(1, secure(%1))), isint(%q1), gte(%q1, 0), lte(%q1, 6)), \{@pemit\'a0%#=GAME> You can only set your\'a0%q0 to an integer between 0 and 6. \}, lte([setr(2, sub(power(%q1, 2), power(ulocal(%VA/FN-GETABIL,\'a0%#,\'a0%q0), 2)))], u(%#/_DW-POINTS)), \{@pemit\'a0%#=GAME> You only have [u(%#/_DW-POINTS)] to work with, and that'd cost\'a0%q2. \}, \{@pemit\'a0%#=GAME> You set your\'a0%q0 from [ulocal(%VA/FN-GETABIL,\'a0%#,\'a0%q0)] to\'a0%q1\'a0%RGAME> That [switch(%q2, 0, is free, -*, will get you [abs(%q2)] more points, will cost you\'a0%q2 points)], leaving you with [sub(u(%#/_DW-POINTS),\'a0%q2)]. [ulocal(%VA/FN-SETABIL,\'a0%#,\'a0%q0,\'a0%q1)][set(%#, _DW-POINTS:[sub(u(%#/_DW-POINTS),\'a0%q2)])] \}\
+\
+&CMD-SETSKILL here=$+skill/* *=*:@switch/first 0 = words(setr(0, grab(u(%VA/ABILS), [secure(%0)]*))), \{@pemit\'a0%#=GAME> Is '[secure(%0)]' an ability? Try one of [itemize(u(%VA/ABILS),, or)] \}, and(isnum(setr(1, secure(%1))), lte(%q1, 3), gte(%q1, 0), isint(%q1)), \{@pemit\'a0%#=GAME> You can only set a skill to a positive integer of 3 or less. \}, lte(power(max(0,\'a0%q1), 2), u(%#/_DW-POINTS)), \{@pemit\'a0%#=GAME> You only have [u(%#/_DW-POINTS)] points to work with, and that'd cost [power(%q1, 2)] points. \}, lte(setr(2, first(edit(secure(%2),\'a0%b, ~))), 20), \{@pemit\'a0%#=GAME> Try to make the skill shorter? '[left(secure(%2), 20)]' is how that would have ended up. \}, hasattr(%#, _DW-SKILL_%q2), \{&_DW-SKILL_%q2\'a0%#=%q1|%q0|[secure(%2)]\'a0;&_DW-POINTS\'a0%#=setr(3, sub(u(%#/_DW-POINTS), power(%q1, 2)))\'a0;@pemit\'a0%#=GAME> You set your\'a0%q0-based skill, '[secure(%2)]' to level\'a0%q1.\'a0%RGAME> This cost [power(%q1, 2)] points, leaving you with\'a0%q3. \},\'a0%q1, \{&_DW-POINTS\'a0%#=setr(3, add(u(%#/_DW-POINTS), power(first(get(%#/_DW-SKILL_%q2), |), 2)))\'a0;&_DW-SKILL_%q2\'a0%#=\'a0;@pemit\'a0%#=GAME> You remove your '[secure(%2)]' skill.\'a0%RGAME> You currently have\'a0%q3 points to work with. \}, \{ &_DW-POINTS\'a0%#=setr(3, add(u(%#/_DW-POINTS), sub(power(first(get(%#/_DW-SKILL_%q2), |), 2), power(%q1, 2))))\'a0;&_DW-SKILL_%q2\'a0%#=%q1|%q0|[secure(%2)]\'a0;@pemit\'a0%#=GAME> You reset your\'a0%q0-based skill, '[secure(%2)]' to level\'a0%q1.\'a0%RGAME> You currently have\'a0%q3 points to work with. \}\
+\
+&CMD-RESET here=$+reset/*:think [setq(A, ladd(parse(u(%#/_DW-ABIL), power(after(##,\'a0:), 2), |)))] [setq(B, ladd(parse(lattr(%#/_DW-SKILL_*), power(first(get(%#/##), |), 2))))]\'a0;@switch/first 1= match(abilities, [secure(%0)]*), \{&_DW-ABIL\'a0%#=[parse(u(%VA/ABILS), ##:0,,|)]\'a0;&_DW-POINTS\'a0%#=[add(%qA, u(%#/_DW-POINTS))]\'a0;@pemit\'a0%#=GAME> You reset your abilities to 0. \}, match(skills, [secure(%0)]*), \{&_DW-POINTS\'a0%#=[add(%qB, u(%#/_DW-POINTS))]\'a0;@wipe\'a0%#/_DW-SKILL_*\'a0;@pemit\'a0%#=GAME> You reset your skills. \}, \{&_DW-ABIL\'a0%#=[parse(u(%VA/ABILS), ##:3,,|)]\'a0;@wipe\'a0%#/_DW-SKILL_*\'a0;&_DW-POINTS\'a0%#=100\'a0;@pemit\'a0%#=GAME> You reset all your stuff.\}\
+\
+&CMD-SHEET here=$+dwsheet*:@pemit\'a0%#=[u(%VA/FN-SHEET, if(controls(%#, pmatch(trim(secure(%0)))), pmatch(trim(secure(%0))),\'a0%#))][repeat(-, 78)]\
+\
+&CMD-ROLL here=$+dwroll * vs *:@switch/first 0= and(isnum(ladd(secure(%0))), isnum(ladd(secure(%1)))), \{@pemit\'a0%#=GAME> Are you sure you're entering numbers? \}, \{@remit loc(%#)=GAME>\'a0%n rolls [ulocal(%VA/FN-ROLL, secure(%0), secure(%1))] \}\
+\
+@@ You'll want to set the @VA as whatever the dbref of the room is. The\'a0%VA thing is so one can move all the functions onto some near-Master Room staff-functions object.\
+\
+@@ Note also, the skill-setting bit really bites. I was pretty much making it up as I went along, and it could probably use some improvements. \
+\pard\pardeftab720\sa240
+
+\f1 \cf0 Below this point is a note about security issues in this chargen:\
+\pard\pardeftab720
+
+\f0 \cf0 @@ I notice you doing this a lot:\
+\
+@@ $cmdpow *:[secure(%0)]\
+\
+@@ This doesn't work.\
+\
+@@ \'93Note: 'say secure(Sneak a peek at Wiz's desc... [get(#1/desc)])' does not produce the expected result because the argument is evaluated BEFORE being processed by secure(), therefore the [get()] call has already been performed."\
+-HELP SECURE\
+\
+@@ Notice the part about the argument is evaluated before hand? Same for $CMD's.\
+}

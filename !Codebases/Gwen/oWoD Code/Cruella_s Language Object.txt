@@ -1,0 +1,28 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @@\
+@@ Should work pretty much as-is\
+@@ change the 58 in [member(u(%#/abils),58)] to \
+@@ the number of your linguistics ability\
+@@\
+\
+@create Language Object=10\
+@lock Language Object=#0\
+&SET_LANG Language Object=$+learn *:@switch/first [sign(member(get(MASTER_LANGS),%0,!))]=0,@pemit\'a0%#=That's not a valid language. Type\'a0!list languages to see valid list.,1,\{@switch/first [u(%#/lrn-lang)]=,@pemit\'a0%#=You are not set to learn languages yet. Type\'a0!setup first.,>0,\{@switch/first [sign(member(u(%#/lang),capstr(%0),!))]=1,@pemit\'a0%#=You already know that language.,0,\{@pemit\'a0%#=You learn\'a0%0.;&lrn-lang\'a0%#=[sub(u(%#/lrn-lang),1)];&lang\'a0%#=[u(%#/lang)]!%0\}\},0,@pemit\'a0%#=You cannot learn anymore languages at this point.\}\
+&SETUP Language Object=$+setup:@switch/first [member(u(%#/abils),58)]=0,@pemit\'a0%#=You have no linguistic score. Either you did not choose linguistics as an ability or you have not gone through +chargen,\{@switch/first [u(%#/lrn-lang)]=,\{&lrn-lang\'a0%#=[extract(u(%#/abilvals),member(u(%#/abils),58),1)];@pemit\'a0%#=You are set up to learn [u(%#/lrn-lang)] languages.\},*,@pemit\'a0%#=You've already used\'a0!setup. Proceed to learning languages. +lang help for instructions.\}\
+@Adesc Language Object=@switch/first [u(%#/lrn-lang)]=,@pemit\'a0%#=Use +setup to prepare to learn additional languages (+lang help for help).,*,@pemit\'a0%#=You can learn [u(%#/lrn-lang)] additional languages (+lang help for help).\
+&LANG_HELP Language Object=$+lang help:@pemit\'a0%#=Available commands on the language setter:%r%r[ljust(+setup,15)] -- Sets you up to use languages. First command to be used.%r[ljust(+learn <lang>,15)] -- Allows you to learn the named language%r[ljust(+list languages,15)] -- List available languages to be learned.%r[ljust(+lang help,15)] -- This message.%r%r\
+@VC Language Object=me\
+@Desc Language Object=This is the language setter object. Use it to learn additional languages. Note that if you don't have a score in the linguistic ability, you won't be able to learn additional languages. +lang help for instructions.If you have any problems please contact staff (+staff for a list of online staff members).\
+&LIST_LANG Language Object=$+list lang*:@pemit\'a0%#=Available languages:%r[iter([v(master_langs)],[##],!)]\
+&DO_SPEAK Language Object=$+speak *=*:@switch/first [sign(member(get(me/lang%#),capstr(%0),!))]=0,@pemit\'a0%#=You don't know that language.,1,\{@pemit\'a0%#=You say in\'a0%0 <<%1>>;@dolist [lcon(%l)]=@switch/first [sign(member(get(me/lang##),capstr(%0),!))]=0,@pemit ##=%N says something in a language you can't understand.,1,\{@switch/first ##=%#,,@pemit ##=%N says in\'a0%0 <<%1>>\}\}\
+&CMD_LANG_NOPARAM Language Object=$+lang:@switch/first [u(%#/lang)]=,@pemit\'a0%#=You don't know any languages. Use the language setter to learn them.,*,\{@pemit\'a0%#=Known Languages:[iter(u(%#/lang),##,!)]\}\
+&CREDITS Language Object=Originally coded by Cruella DeVille @ Texas Twilight. Updated and improved by Gwen Morse (http://www.gwen-morse.com/wiki/index.php/Main_Page).\
+&MASTER_LANGS Language Object=!French!Spanish!Creole!German!Italian!Gaelic!Danish!Norwegian!Swedish!ASL!Portuguese!Afrikaans!Arabic!Chinese!Japanese!Hindi!Serbo-Croat!Polynesian!Latin!Egyptian!Hebrew!Inuit!Russian!Korean!Navajo!Sioux!Cherokee!Greek!Vietnamese!Esperanto!Thai!Romanian!Dutch!Welsh!Hungarian!Finnish!Yiddish!Polish!Tibetan!Indonesian!Turkish!Bantu!Maori!Czech!Mongolian!Icelandic!Sanskrit!Basque!Nigerian!Tagalog!Hindi!Apache!Lakota!Swahili!Nigerian!Pakistani!Slovene!Malaysian!Romany!Garou!Nuwisha!Ratkin!Bastet!Mokole!Corax!Anasasi!Rokea!Kitsuni!Hermetic!Enochian!Lupus!Rat!Cat!Spirit!Bear!Guhral!Sabbat-Hand\
+@set Language Object=INHERIT\
+}

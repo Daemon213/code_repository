@@ -1,0 +1,77 @@
+.*.swp
+config.log
+src/*.o
+src/netmud
+src/info_slave
+game/info_slave
+game/netmush
+game/ssl_slave
+game/txt/help.txt
+game/txt/events.txt
+game/txt/news.txt
+hdrs/svninfo.h
+hdrs/buildinf.h
+game/log/*.log
+game/data/*.gz
+game/data/chunkswap
+game/netmush.pid
+
+# Built configuration.
+Makefile
+config.h
+config.log
+config.status
+
+# Built binaries.
+src/*.o
+src/json/*.o
+src/info_slave
+src/netmud
+src/netmud~
+src/ssl_slave
+
+# Built sources.
+hdrs/buildinf.h
+hdrs/cmds.h
+hdrs/funs.h
+hdrs/svninfo.h
+src/Makefile
+src/cmdlocal.c
+src/flaglocal.c
+src/funlocal.c
+src/local.c
+test/alltests.sh
+
+# Runtime files.
+game/info_slave
+game/netmush
+game/netmush.pid
+game/ssl_slave
+game/data/
+game/log/
+game/save/
+game/*.bak
+
+# Text files.
+game/txt/hlp/index.hlp
+game/txt/nws/index.nws
+game/txt/ahelp/index.ahelp
+game/txt/compose.sh
+game/txt/help.txt
+game/txt/events.txt
+game/txt/news.txt
+game/txt/ahelp.txt
+
+# Text files.
+game/txt/hlp/index.hlp
+game/txt/nws/index.nws
+game/txt/ahelp/index.ahelp
+game/txt/compose.sh
+game/txt/help.txt
+game/txt/events.txt
+game/txt/news.txt
+game/txt/ahelp.txt
+
+.vagrant
+
+*.DS_Store

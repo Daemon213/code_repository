@@ -1,0 +1,77 @@
+@@ DEPENDENCIES: Core
+
+th u(NEWCOBJ,Finger <FINGER>,finger,,,,WIZARD SAFE !NO_COMMAND,INHERIT SIDEFX SAFE)
+
+&CMD`+FINGER`PENNMUSH [u(cobj,finger)]=$^(?s)(?\:\+)?finger(?\:/(\S+))?(?\: +(.+?))?(?\:=(.*?))?$:@attach %!/CMD`+FINGER`MAIN
+@set [u(cobj,finger)]/CMD`+FINGER`PENNMUSH=regexp
+&CMD`+FINGER`RHOSTMUSH [u(cobj,finger)]=$^(?s)(?\:\+)?finger(?\:/(\\S+))?(?\: +(.+?))?(?\:=(.*?))?$:@attach %!/CMD`+FINGER`MAIN
+@set [u(cobj,finger)]/CMD`+FINGER`RHOSTMUSH=regexp
+&CMD`+FINGER`MAIN [u(cobj,finger)]=@attach %!/INC`GETSWITCH=%1;@include %!/INC`[u(strfirstof,%q<switch>,MAIN)]=%2,%3
+@set [u(cobj,finger)]/CMD`+FINGER`[u(choosegame,RHOSTMUSH,PENNMUSH)]=no_command
+
+&SYSTEM`NAME [u(cobj,finger)]=FINGER
+
+&SWITCHES`PLAYER [u(cobj,finger)]=SET|GET|FIELDS
+&SWITCHES`ADMIN [u(cobj,finger)]=CONFIG
+
+&INC`MAIN [u(cobj,finger)]=@attach %!/INC`CHECKPC=u(strfirstof,%0,%#),1;@attach %!/FINGER`[u(conf,FORMATTER)]
+
+&FINGER`STANDARD [u(Cobj,finger)]=th u(setr,co,u(conf,FIELD_COLOR));th u(setq,bord,ansi(u(color,%#,FINGER,BORDER),if(u(op,SYSTEM,SCREEN_READER),%b,|)));@pemit %#=u(HEADER,if(strlen(u(setr,hdr,u(conf,HEADER_CONTENTS))),u(strfirstof,u(getproperty,%q<t1>,%q<hdr>),get(%q<t1>/D`FINGER`%q<hdr>))),,,1);th u(setq,col1,u(conf,LEFT_COLUMN));th u(setq,rjust1,lmath(max,iter(%q<col1>,strlen(elements(##,2,~)),|,%b)));th u(setq,col2,u(conf,RIGHT_COLUMN));th u(setq,rjust2,lmath(max,iter(%q<col2>,strlen(elements(##,2,~)),|,%b)));@pemit %#=align(1. [floor(fdiv(sub(u(width,%#),7),2))] 1. [ceil(fdiv(sub(u(width,%#),7),2))] 1.,%q<bord>,iter(%q<col1>,ansi(%q<co>,rjust(elements(##,2,~),%q<rjust1>)):%B[u(strfirstof,u(getprop,%q<t1>,elements(##,1,~),D`FINGER),elements(##,3,~))],|,%R),%q<bord>,iter(%q<col2>,ansi(%q<co>,rjust(elements(##,2,~),%q<rjust2>)):%B[u(strfirstof,u(getprop,%q<t1>,elements(##,1,~),D`FINGER),elements(##,3,~))],|,%R),%q<bord>);@dolist/inline/delimit | [u(conf,BOTTOM_COLUMN)]=@select/inline strlen(u(setr,found,u(strfirstof,u(getprop,%q<t1>,elements(##,1,~),D`FINGER),elements(##,3,~))))=>0,{@pemit %#=u(SEPARATOR,u(capnames,u(strfirstof,elements(##,2,~),##)),,,1);@pemit %#=align(1. [sub(u(width,%#),4)] 1.,%q<bord>,edit(%q<found>,%t,space(8)),%q<bord>)};@pemit %#=u(FOOTER,if(strlen(u(setr,shdr,u(conf,FOOTER_CONTENTS))),u(getprop,%q<t1>,%q<shdr>,D`FINGER)),,,1)
+
+&INC`FIELDS [u(cobj,finger)]=@attach %!/INC`MSG=Available Fields: [iter(u(FUN`FIELDS,%#),%i0,|,\,%b)]
+
+&FUN`FIELDS [u(cobj,finger)]=setunion(setunion(u(conf,PLAYER_FIELDS),if(u(isadmin,%#),u(conf,ADMIN_FIELDS)),|,|),setunion(if(u(approved,%0),,u(conf,CHARGEN_FIELDS)),if(cor(u(isadmin,%#),not(get(%0/D`APPROVED`EVER))),u(conf,LOCKED_FIELDS)),|,|),|,|)
+
+&INC`SET [u(cobj,finger)]=@attach %!/INC`CHECKPC=if(cand(u(isadmin,%#),strmatch(%0,*/*)),before(%0,/),%#),1;@attach %!/INC`PARTIAL=if(cand(u(isadmin,%#),strmatch(%0,*/*)),after(%0,/),%0),u(FUN`FIELDS,%q<t1>),|,field;@select/inline strlen(%1)=0,{@attach %!/INC`VERIFY={[ansi(hr,WARNING:)] Setting %q<field> to nothing will clear it. Are you sure? Enter that again to verify!},CLEAR FINGER %q<field>},>0,{@attach %!/INC`CHECK`%q<field>=%1};&D`FINGER`%q<field> %q<t1>=%1;@attach %!/INC`MSG=You set [if(strmatch(%#,%q<t1>),your,%q<t1name>'s)] [u(capnames,%q<field>)] Finger Field to: %1;@select/inline strmatch(%#,%q<t1>)=0,{@attach %!/INC`MSG`NOTICE=Your [u(capnames,%q<field>)] Finger Field is now: %1,%q<t1>}
+
+&INC`GET [u(cobj,finger)]=@attach %!/INC`CHECKPC=if(strmatch(%0,*/*),before(%0,/),%#),1;@attach %!/INC`PARTIAL=if(strmatch(%0,*/*),after(%0,/),%0),setunion(setunion(u(conf,PLAYER_FIELDS),u(conf,ADMIN_FIELDS),|,|),u(conf,CHARGEN_FIELDS),|,|),|,field;@pemit %#=u(strfirstof,u(getproperty,%q<T1>,%q<field>),get(%q<t1>/D`FINGER`%q<field>))
+
+&CONFIG`OPTIONS [u(cobj,finger)]=FORMATTER|HEADER_CONTENTS|FOOTER_CONTENTS|LEFT_COLUMN|RIGHT_COLUMN|BOTTOM_COLUMN|PLAYER_FIELDS|ADMIN_FIELDS|CHARGEN_FIELDS|LOCKED_FIELDS|FIELD_COLOR
+
+&CONFIG`FORMATTER [u(cobj,finger)]=+finger calls FINGER`<this> to render the display. Leave this be unless you know how to MUSHcode an alternate renderer!
+&CONFIG`FORMATTER`DEFAULT [u(cobj,finger)]=STANDARD
+&CONFIG`FORMATTER`VALID [u(cobj,finger)]=WORD
+
+&CONFIG`HEADER_CONTENTS [u(cobj,finger)]=Header Text for +finger. See +help dynamicdata
+&CONFIG`HEADER_CONTENTS`DEFAULT [u(cobj,finger)]=ALIASNAME
+&CONFIG`HEADER_CONTENTS`VALID [u(cobj,finger)]=WORD
+
+&CONFIG`FOOTER_CONTENTS [u(cobj,finger)]=Text for +finger's footer. See +help dynamicdata
+&CONFIG`FOOTER_CONTENTS`DEFAULT [u(cobj,finger)]=
+&CONFIG`FOOTER_CONTENTS`VALID [u(cobj,finger)]=WORD
+
+&CONFIG`LEFT_COLUMN [u(cobj,finger)]=Finger definition for Left Column. See +help dynamicdata
+&CONFIG`LEFT_COLUMN`DEFAULT [u(cobj,finger)]=SEX~Sex|SPECIES~Species
+&CONFIG`LEFT_COLUMN`VALID [u(cobj,finger)]=LIST
+
+&CONFIG`RIGHT_COLUMN [u(cobj,finger)]=Finger definition for Right Column. See +help dynamicdata
+&CONFIG`RIGHT_COLUMN`DEFAULT [u(cobj,finger)]=JOB~Job
+&CONFIG`RIGHT_COLUMN`VALID [u(cobj,finger)]=LIST
+
+&CONFIG`BOTTOM_COLUMN [u(cobj,finger)]=Finger definition for vertical column. Below the right/left split. See +help dynamicdata.
+&CONFIG`BOTTOM_COLUMN`DEFAULT [u(cobj,finger)]=GROUPNAMES2~Groups|QUOTE~Quote|PROFILE~Profile|SKILLS~Skills|WIKI~Wiki
+&CONFIG`BOTTOM_COLUMN`VALID [u(cobj,finger)]=LIST
+
+&CONFIG`PLAYER_FIELDS [u(Cobj,finger)]=Fields settable by Players at any time.
+&CONFIG`PLAYER_FIELDS`DEFAULT [u(cobj,finger)]=JOB|SPECIES|QUOTE|PROFILE|SKILLS
+&CONFIG`PLAYER_FIELDS`VALID [u(cobj,finger)]=LIST
+
+&CONFIG`ADMIN_FIELDS [u(cobj,finger)]=Fields settably by Admin only.
+&CONFIG`ADMIN_FIELDS`DEFAULT [u(cobj,finger)]=
+&CONFIG`ADMIN_FIELDS`VALID [u(cobj,finger)]=LIST
+
+&CONFIG`CHARGEN_FIELDS [u(cobj,finger)]=Fields settable by players but only while unapproved/in chargen.
+&CONFIG`CHARGEN_FIELDS`DEFAULT [u(cobj,finger)]=
+&CONFIG`CHARGEN_FIELDS`VALID [u(cobj,finger)]=LIST
+
+&CONFIG`LOCKED_FIELDS [u(cobj,finger)]=Fields settable during chargen on never-approved characters.
+&CONFIG`LOCKED_FIELDS`DEFAULT [u(cobj,finger)]=
+&CONFIG`LOCKED_FIELDS`VALID [u(cobj,finger)]=LIST
+
+&CONFIG`FIELD_COLOR [u(cobj,finger)]=Color for field names. Such as Group: or Sex: or Theme:
+&CONFIG`FIELD_COLOR`DEFAULT [u(cobj,finger)]=hw
+&CONFIG`FIELD_COLOR`VALID [u(cobj,finger)]=COLOR
+
+@@ HELP SECTION
+&HLP`FINGER [u(cobj,finger)]=The +finger system keeps track of and presents in-character information for some community flavor. By reading someone's finger, you can gain a brief overview of what the character is about!%R%R[ansi(hc,Commands)]%R[align(5 72,,[ansi(h,+finger)] - Show your own finger.%R[ansi(h,+finger <name>)] - Show someone else's +finger.%R[ansi(h,+finger/set <field>=<text>)] - Set a finger field. Setting to nothing may clear it.%R[ansi(h,+finger/get <field>)] - Retrieves a field for editing. Can be used on other players as <player>/<field>)]%R%R+finger/fields to get available fields. Fields not listed there are controlled by other factors.
++help/add Character/+finger=[u(cobj,finger)]/HLP`FINGER

@@ -1,0 +1,23 @@
+@@ I rather like this XP system, its simple but it does the job. 
+@@ It awards people for both being online, and engaging in RP.
+@@
+@@ I also like the @switch I use for +vote.
+@@ By setting the leading string to 1 (instead of an expression),
+@@ each pattern can be a different expression that checks for reasons
+@@ to reject a vote. A successful match then spits out a rejection message.
+@@ Only by "failing" every match can a player vote.  
+@@ This is a little cleaner and more elegant than trying to nest switches.
+@@
+@@ The BKAPPROVE check is meant for the SGP Chargen system.
+@@ This system should have semaphore controls added as well as some 
+@@ scrubbing of the vote recipient's name for security purposes.
+@@
+@@ Do not install without sanitizing!
+
+@create XP System=10
+@Aconnect XP System=@switch isstaff(%#)=0,{@switch gte(sub(secs(),get(%#/XPTIME)),604800)=1,{@unlock %#/xptime; &xptime %#=[secs()]; @lock %#/xptime; @unlock %#/xp; &xp %#=[add(get(%#/XP),1)]; @lock %#/xp; @pemit %#=CODE: You have earned one weekly XP.},{@pemit %#=CODE: For debugging purposes, it has not been a week since your last login XP award.}},{@pemit %#=CODE: For debugging purposes you are staff and should not have any XP.}; @switch isstaff(%#)=0,{@switch comp(extract(time(),2,1),get(%#/VOTETIME))=0,{@pemit %#=CODE: For debugging purposes, it has not been a month since your last vote refresh.},{@unlock %#/votetime; &votetime %#=[extract(time(),2,1)]; @lock %#/votetime; @unlock %#/votes; &votes %#=13; @lock %#/votes; @pemit %#=CODE: Your monthly pool of votes has been set to 13.}},{@pemit %#=CODE: For debugging purposes you are staff and should not have any Votes.}
+&VOTE XP System=$+vote *:@switch/first 1=or(isstaff(%#),isstaff(*%0)),{@pemit %#=%chCODE: No Staff +voting.%cn},lt(get(%#/VOTES),1),{@pemit %#=%chCODE: You don't have any remaining votes.%cn},not(match(type(*%0),PLAYER)),{@pemit %#=%chCODE: That is not a valid player.%cn},or(not(match(get(%#/BKAPPROVE),Approved*)),not(match(get(*%0/BKAPPROVE),Approved*))),{@pemit %#=%chCODE: No unapproved player +voting.%cn},match(extract(get(%#/LASTVOTE),1,4,|),num(*%0),|),{@pemit %#=%chCODE: You may not vote for the four most recent players in your vote list.},match(%#,num(*%0)),{@pemit %#=%chCODE:You may not vote for yourself.},{@unlock %#/VOTES; &VOTES %#=[sub(get(%#/VOTES),1)]; @lock %#/VOTES; @unlock *%0/XP; &XP *%0=[add(get(*%0/XP),.25)]; @lock *%0/XP; @pemit %#=%chCODE: You have voted for [name(*%0)].%cn; &LASTVOTE %#=[switch([words(get(%#/LASTVOTE),|)],0,[num(*%0)],[num(*%0)]|[extract([get(%#/LASTVOTE)],1,14,|)])]; @pemit *%0=%chCODE: Someone just voted for you.%cn}}
+&XP XP System=$+xp:@switch [isstaff(%#)]=0,{@pemit %#=[center(%ch%cy>%b%ch%cg[mudname()] XP System%b%ch%cy<%cn,78,%ch%cy=%cn)]%rYou have [get(%#/XP)] Experience Point(s), and [get(%#/VOTES)] Vote(s).;[center(%ch%cy>%b%ch%cgRecent +VOTES%b%ch%cy<%cn,78,%ch%cy-%cn)]%r[setq(0,[extract([get(%#/LASTVOTE)],1,3,|)])][switch([words(%q0,|)],0,You have not voted for anyone yet!,1,[name(*%q0)],[andlist([iter(%q0,[name(*##)],|)])])]%r[repeat(%ch%cy-%cn,78)]%rDon't forget to +vote for good RP!%r[repeat(%ch%cy=%cn,78)]},{@pemit %#=@CODE: For debugging purposes, you are staff and should not have any Votes or XP.}
+&CREDITS XP System=This XP tracker was coded by Gwen Morse (http://www.gwen-morse.com/wiki/index.php/MUSHcode).
+@set XP System=INHERIT
+@set XP System=SAFE

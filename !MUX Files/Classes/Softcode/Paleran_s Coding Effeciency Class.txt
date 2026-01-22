@@ -1,0 +1,537 @@
+ Date: Sun, 22 Sep 1996 21:11:58 -0400 (EDT)
+Subject: Effeciency class log -- Paleran
+
+Paleran says, "I believe we have enough players to begin."
+
+Paleran says, "First thing: Please page if you wish to speak so that the spam level
+may be decreased in the room."
+
+Paleran says, "Welcome to the Coding School's Nth class on efficiency. Eru knows how
+many of these have been done, but it is always a topic everyone enjoys
+hearing about as different players have different views."
+
+Paleran says, "The first topic will be on fundamentals of efficient coding."
+
+Paleran says, "To start off with, the old @commands versus functions debate."
+
+Paleran says, "Now everyone should realize one thing: You need at least one
+@command, or 'think' in order to have your command evaluated when invoked
+(this goes without saying that ufun()s are an exception.)"
+
+Paleran says, "But now the question is (rhetorically): What should I use after the
+initial stages of the code are in place?"
+
+Paleran says, "Most people believe that functions are the end all be all to
+efficient coding. This is not necessarily true."
+
+Paleran says, "Example: Try to think of how to code a +clear for a +mail system. In
+this command, an edit of multiply accessed attributes is invoked to
+decrement a counter that contains the number of players that contain
+that message in their mailbox."
+
+Paleran says, "This, of course, is one method, but in order to do this, a simple
+'think functions' will not suffice as queue evaluation becomes a
+serious factor."
+
+Paleran says, "So, one must resort to @dolist instead of iter() for this example."
+
+Paleran says, "In most cases, however, functions are the most efficient way to solve
+a coding problem."
+
+Paleran says, "Any questions so far before I move on?"
+
+Stoney says, "YEs. Why exactly do you have to use an @dolist in that situation?"
+
+Paleran smiles, "I figured someone would ask that."
+
+Paleran says, "It is a result of a topic I shall be covering a little later; the
+queue evaluation. I will explain this in a bit, but were you to code
+that command with an iter(), a situation might arise that would force
+a horrible lag on the MUSH. Imagine someone deleting 100 messages.
+That takes only one queue call with an iter(), but 100 with a @dolist.
+I'll explain why the latter is more desirable."
+
+Paleran says, "Any other questions?"
+
+Paleran says, "Okay, moving on: The @wait <gasp>...Everyone hates the @wait command."
+
+Stoney says, "Ah"
+
+Jas says, "I do?"
+
+Gruumsh loves it. :)
+
+Paleran says, "HOld up a moment here, gaskin?"
+
+Gruumsh puts @wait's on everything.
+
+Gruumsh grins. :)
+
+Gaskin says, "How much CPU time do MUSHcode functions use up, anyway? Surely
+even something like the Pentium Elendor runs on should be able to cope
+with anything we could throw at it?"
+
+Paleran says, "In most cases, yes..."
+
+Paleran says, "A simple addition or subtraction scheme takes nanoseconds for the
+CPU to process, but something like an iter() can become seriously CPU
+extensive were it abused; as in the +clear example I drew upon before."
+
+Gruumsh steps closer to his screen, so he will see the text nanoseconds faster.
+
+Paleran says, "Moving on to @waits."
+
+Gaskin nods.
+
+Paleran says, "There is only one instance where @waits become a serious problem:
+Expansive timed waits. This may include a very large timed wait, or a
+counter-type wait where an infinite loop is invoked."
+
+Paleran says, "The reason this is a problem is as follows:"
+
+Gruumsh raises his hand.
+
+Paleran stops mid-sentence, "Gruumsh?"
+
+Gruumsh says, "This morning I coded a warg with multiple @waits on its @a*'s,
+making it have timed grunts and snarls for effect, so you would not
+know what caused it to do that.."
+
+Gruumsh says, "My max was like 6 seconds.. is this a really bad thing? :)"
+
+Paleran says, "For @a* commands, not necessarily. I code those instances on objects,
+myself."
+
+Stoney sneaks ou tof the room while the teacher isn;t looking...
+
+Paleran says, "Better, though, to have it respond to actions via ^-listen commands,
+so that way you can narrow down when it gets invoked."
+
+Gruumsh nods.. "Thats a good idea. :)"
+
+Gruumsh writes that down in his notebook.
+
+Paleran says, "Which brings me to my point I was going to express before...On a
+small MUSH, using @waits is common and perfectly acceptable. As soon
+as you start growing, and these @waits become more extensive, you run
+into the problem of queue delay, which ultimately lags the MUSH."
+
+Paleran says, "Most of you may or may not have noticed, but there is always one
+object that resides in the @wait queue...Anyone (besides Frodo) know
+what this is?"
+
+Paleran looks around, "Guess not...It's what is called a cron counter."
+
+Paleran says, "A cron counter is a process that is set up to run infinitely,
+triggering objects across the MUSH at certain time intervals."
+
+Paleran says, "+species, +culture, bulletin board updates, mobile objects are all a
+part of this cron counter."
+
+Paleran says, "Now, although some may argue that this is no more efficient than
+having numerous @waits on the queue, I'll suffice it to say that it is
+much more amiable from the administrative perspective."
+
+Paleran says, "Perhaps Lukthil would be able to answer this question, but he's not
+here :) (I don't think)"
+
+Paleran says, "Moving along in series, we come to queue management. Some of you
+probably do not know why there are two sets of queues for @wait
+processes: semaphore and timed waits."
+
+Gruumsh says, "Not a clue."
+
+Gaskin says, "For getting your code to run in order?"
+
+Gaskin says, "Semaphores, I mean. Though I never actually managed to work out
+how. :)"
+
+Paleran says, "The answer is complicated, but semaphores do allow an object to
+repond to queue cycles more effectively. Example: a @wait me= in an
+attribute will force an object to sit in the semaphore queue until
+@notified."
+
+Paleran says, "Yes Gaskin, exactly."
+
+Gruumsh mumbles. "Show off."
+
+Paleran says, "Here is how the MUSH works on a very basic level:"
+
+Gruumsh eeps, and must go code. He will read the log.
+
+Paleran says, "It sits, waiting for some invocation of a command to pass the parser.
+As soon as the parser sees this, it examines the source of the
+invocation and the type of command. If it is a basic MUSH command,
+such as WHO or PAGE, it will evaluate immediately from this MUSH queue.
+If it is a user-defined command (+com, +who, any commands on
+yourself), it is placed into the player/object queue. If it is a
+@wait/semaphore, it is shoved into those respective queues. Now, when
+the MUSH queue cycles through and completes its actions, it retrieves
+the first queued item on the player queue and object queue, and
+evaluates it."
+
+Paleran says, "@wait/semaphores are weird. I'm not sure exactly how they are
+parsed, aside from the knowledge that it is a separate process from
+the MUSH queue, and a clock checks to make sure what needs to be
+evaluated."
+
+Paleran says, "Now, to reiterate Gaskin's point, since the MUSH evaluates things at
+different speeds, a command that was called 5 seconds before a simple
+command might not finish evaluation until after it. Which leads to
+serious problems in many cases."
+
+Paleran phews, "Any questions? :)"
+
+Paleran says, "OKay, moving on once again: function usage."
+
+Paleran says, "ufuns() are everyone's favorite function, well most players at least :)"
+
+Paleran says, "Reason: not only does it cut down on code length making code easier
+to read (we all know how horrid that is), it not only speeds up
+evaluation, but also allows for multiple uses of this function from
+different commands"
+
+Paleran says, "Can anyone give an example of where a ufun would be more desirable?"
+
+Paleran says, "Anyone awake? ;)"
+
+Gaskin is, but doesn't understand the question. :)
+
+Guareth has never coded on a MUSH before, he just has nowhere to be right now ;)
+
+Mara nods and thinks if gaskin doesn't understand it she definately won't
+
+Searonett is, but has never used the ufun. "Haven't coded since last year. got
+burnout." :)
+
+Guareth says, "Oh ufun... I've used something like that on a MUSE."
+
+Paleran says, "Okay... How about this: Which is better:
+switch(u(test),cases,u(actions based on cases)) or
+switch(example,cases,actions for each case) when coding something like
+a +who/switch command?"
+
+Paleran says, "Think about this carefully :)"
+
+Gaskin hmmms. "The second? But it'd be spammier." :)
+
+Paleran says, "To whom?"
+
+Paleran says, "the player, of course :) But not to the MUSH."
+
+Gaskin nods, "Whoever is ex'ing the object..."
+
+Gaskin says, "Well, it'd be harder to update, then? Or slightly slower. :)"
+
+Gaskin says, "No, slightly faster!"
+
+Paleran says, "In a +who/switch, you need to evaluate different levels of output
+based on the given switch. A PERSONAL switch needs to check the
+executor's LIST_PERSONAL (or whatever it is) for dbrefs, or a LOCATION
+switch needs to check the location of the given input"
+> It may be pointed out here that usually it is better coding style to
+> separate the switches into multiple commands
+
+Gaskin gives up.
+
+Paleran is coming to it, Gaskin :)
+
+Gaskin sorries.
+
+Paleran says, "Now first, the second method of checking each input and basing
+actions on that input (switch = input) requires a simple check of the
+argument, then parsing the correct case based on the argument. The
+delay that comes from doing this can be minimal, or numerous."
+
+Paleran says, "Let's say that a +who command takes four lines of code to create.
+Now for each case, you'd have to repeat that same command (or series
+of functions) and parse the output based on the switch (filtering, in
+other words)."
+
+Paleran says, "Now, you can either repeat these four lines of code for EACH SWITCH,
+or! You may use a ufun() to cut down on this"
+
+Paleran hopes everyone is a little clearer on this. I don't want to dwell too
+long on this topic :)
+
+Paleran will reserve further discussion of this for another class. Moving on
+
+Paleran says, "The xget() versus get() debate."
+
+Paleran says, "Anyone have any thoughts as to which is faster?"
+
+Paleran sees the class has withered greatly.
+
+Frodo raises his hand, "xget is alleged to be faster, but my guess is that the
+difference is trivial"
+
+Paleran says, "Not so much trivial, but based on what exactly you are doing with
+it. The answer is, it's complicated :)"
+
+Paleran says, "Simple put, though:"
+
+Paleran says, "xget() is faster than get if you need to evaluate both arguments,
+whereas get is faster if the second argument requires NO evaluation."
+
+Gaskin writes that one down. :)
+
+Paleran can get into a long-winded discussion as to why, but I'll spare you
+guys :)
+
+Paleran says, "Another example: iter() versus map()"
+
+Paleran says, "Which one is faster? :)"
+
+Frodo thinks that iter() would be faster, since it doesn't have to go and
+dereference the function, since it is inline.
+
+Gaskin says, "Map()=Ufun() for lists? :)"
+
+Paleran says, "Usually, yes. But there is one isolated case that map() is faster"
+
+Paleran says, "Where the first argument of the iterative function requires a
+retrieval of an attribute."
+
+Frodo nods.
+Paleran says, "Example: iter(get(#10000/shire_list),stuff) is slower than
+map(#10000/shire_list,stuff)"
+> Azahkil pointed out to me later that this wasn't the best example, I'll keep
+> those pages in the log
+
+Paleran says, "filter, fold, and numerous others need to be examined thoroughly if
+you're striving for the most efficient coding possible."
+
+Paleran will skip right along to...
+
+Paleran says, "Efficient coding: how necessary is it?"
+
+Azakhil has never seen map used like that...I thought the first arg was the
+function and the 2nd the list
+
+Paleran says, "Yup, you're right :)"
+
+Paleran got the arguments flipped, sorry.
+
+Paleran says, "Back to the efficient coding question, the answer is, it really
+doesn't for 95% of all player's code."
+
+Paleran says, "Reason being:"
+
+Frodo suspects that the limiting factor in lag is usually things like checking
+permissions on zones and things, along with net lag, and that
+squeezing a few cycles here and there doesn't make much difference.
+
+Paleran says, "The sole 5% are the global functions on a MUSH, the ones that are
+invoked on a daily basis by numerous players."
+
+Frodo nods. "The globals need to be efficiently coded. That's where the
+machine spends its time."
+
+Paleran nods, "Pretty much, Frodo. It's a case-by-case scenario."
+
+Frodo says, "A lot of functions only get executed once a month... no point
+worrying about time there."
+
+Paleran says, "Right, whereas the local objects that makes up the 95% of the MUSH,
+such as guards, books, etc., are really incosequential to the
+effeciency of the MUSH."
+
+Gaskin mumbles, "Hacker mentality."
+
+Azakhil pages: not to interrupt your class further, but with map() to get the
+list, you still need a get....ie:
+map(function,get(oject/list))
+if Function is on the object calling map()
+
+Paleran says, "Although...It is generally appreciated to code as efficiently as to
+the limits of your abilities :) As soon as you start worrying about
+whether xget or get is more efficient, you need to re-evaluate exactly
+how much this command will be invoked and if this is actually
+worth the trouble :)"
+
+Paleran pages Azakhil with 'It was a bad example, yeah.'.
+
+Paleran pages Azakhil with 'It's not usually something I worry about
+too much, but was the best I could come up with on the fly :)'.
+
+Paleran says, "Note that global code also encompasses ZMO coding. Not invoked
+nearly as much as the commands in the Master Room, but should be coded
+semi-efficiently as they will be executed more than local commands."
+
+Paleran says, "One last point before I open the floor: external coding."
+
+Paleran says, "Were you able to see the entire MUSH, you would notice a large
+number of players with OOC code, com macros, etc. (well, maybe not
+so much now as before). These things are much more amiably placed
+on external programs such as tf where you may execute them
+locally, instead of making the MUSH do the work."
+
+Paleran says, "Personally, I have 2436 bytes on my object character. Probably
+one of the lowest in the game due to one fact: Most of my
+macros/code is placed into tf, where the MUSH-tf interaction is
+much faster than completely via the MUSH."
+
+>From afar, Azakhil nods, "I'm not ripping on you, your doing fine, I
+agree with most or your examples..just thought I'd point it
+out....what you mentioned was true in speed if the function, is on
+the same object....and if it is a v() list...I think...
+
+Long distance to Azakhil: Paleran nods, "That is the case I had thought
+about before...Not sure why I used #10000 exactly :)
+
+Frodo nods. "TF is also good for storing wardrobes and stuff off line."
+
+Paleran says, "Well, that's all I have to say for this session. Any questions
+on any point I have covered?"
+
+Across Middle-earth, Eonwe shouts, "+wardrobe is offline while I work on it."
+
+Paleran says, "Weird :)"
+> Although unrelated to the class, I kept that there because it was cool:)
+
+Samwise only takes up 2190..:P
+
+Paleran nods, "Yeah, I do have a /ic and /ooc macro where my description
+gets updated based on my WHO status.
+
+Paleran says, "You don't need a &HISTORY, sammy :)"
+
+Samwise grins.
+
+Gaskin grins.
+
+Gaskin says, "I've got a few questions..."
+
+Paleran says, "Shoot :)"
+
+Paleran quickly hides behind Frodo as a guard.
+
+Gaskin says, "Though perhaps not related to your points. :) First, is
+working with a large object slower than working with a small one?
+ie. is getting attributes from a 2k object faster than from a 20k
+one?"
+
+Paleran says, "Minimally, yes."
+
+Paleran says, "Were you to say 7 meg as opposed to 2k, I would say most
+definately :)"
+
+Frodo says, "I believe there are clever hashing functions in the way that
+attributes are stored and located."
+
+Paleran nods, "hashing is the fastest attribute retrieval method, I
+believe, for these objects."
+
+Paleran says, "The Mail database takes a serious amount of time for the parser
+to extract the attribute it needs, whereas an object such as a
+palyer character as myself takes fractions of a second."
+
+Paleran says, "And we're talking in small increments here :) milliseconds as
+opposed to nano or picoseconds. Not something altogether
+noticeable isolated, but compounded can be quite harsh on the MUSH
+process altogether."
+
+Gaskin OKs, "Another question- do the length of attribute names make any
+difference at all to the MUSH? Is getting
+#19499/GASKIN_MADE_THIS_ATTRIBUTE faster than #19499/GMTA?"
+
+Paleran says, "Does that answer your question, Gaskin? It's not something to
+worry about :)"
+
+Frodo has to run and will catch Gaskin's questions in the log. "Thanks,
+Paleran!"
+
+Paleran says, "Thank you, Frodo :)"
+
+Gaskin was just wondering. These are the questions he never got to ask
+before. :p
+
+Frodo says, "Lukthil once told me that attribute names don't make any
+significant difference."
+
+Frodo leaves the classroom.
+
+Paleran says, "They don't for this reason:"
+
+Paleran says, "Attribute names are checked character by character. As soon as
+it finds a perfect match and has no unresolved conflicts, it will
+return the value of the attribute."
+
+Paleran says, "Were you to have a number of attributes like
+#19499/GASKIN_MADE_THIS_ATTRIBUTE1 then 2, then 3, etc...that
+*might* have a small impact, but isolated nothing to be concerned
+about."
+
+Paleran says, "Also, I think there is a limit as to the attribute name's
+length. Not too sure, though. Something to find out :)"
+
+Paleran eeps as his guard is gone, "Well, shoot em off if you got em, Gaskin :)"
+
+Gaskin grins. "While I'm on a roll, what's the maximum length an
+attribute can be?"
+
+Paleran bzzzt, "Already answered. Next question :)"
+
+Gaskin says, "Is was? Curses. :)"
+
+Paleran says, "Also, I think there is a limit as to the attribute name's
+length. Not too sure, though. Something to find out :)"
+
+Baria leaves the classroom.
+
+Celwe has a question that has nothing to do with the topic. :) "Where can
+I find a good coding FAQ besides Amberyl's?"
+
+Paleran says, "There's one somewhere on the Web that I found the other day.
+Derned if I knew the URL, however."
+
+Paleran says, "Do a search in altavista for 'MUSH code' :)"
+
+Samwise has a question related to that, "Is there a place to learn about
+hardcoding?"
+
+Paleran says, "No, there isn't Samwise."
+
+Gaskin buys C++ for Dummies.
+
+Paleran says, "In order to hardcode you have to be one of the following:
+extremely adaptive to noticing patterns and creating extensions to
+those patterns, or extremely knowledgable in C and UNIX coding. Or
+any intermix between the two :)"
+
+Samwise ohs, "Darn."
+
+Paleran says, "MUSHcode is in straight C, not C++ :)"
+
+Gaskin buys C for Dummies.
+
+Samwise says, "Well, I just need to learn UNIX and C, I guess..<sigh>"
+
+Gaskin raises his hand, and actually meant the maximum size of attribute
+*contents* back there. :p
+
+Paleran says, "For example, Belegril/Xatra knows absolutely nothing about C,
+yet he created a series of functional equivalents to @wait and
+@force. Not altogether too hard if you're an excellent problem
+solver. Then myself, I learned C first so it was slightly
+easier for me to hardcode more original functions."
+
+Paleran says, "Contents! Oh :)"
+
+Paleran says, "4K, I believe..."
+
+Gaskin ahs.
+
+Paleran says, "Or it might be 8K on Elendor. Not sure what Lukthil modified it
+to. I know for a fact that it is 4K by default :)"
+
+Paleran says, "Any other questions? Gaskin or anyone?"
+
+Samwise shakes his head, "Nope. Good class..:)"
+
+Gaskin agrees, "Time for a quick code spring cleaning..."
+
+Paleran says, "Okay, well I thank you all that stuck my boring lecture out
+until the end, and happy coding :)"
+
+Samwise waves

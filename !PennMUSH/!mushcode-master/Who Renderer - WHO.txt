@@ -1,0 +1,64 @@
+@@ DEPENDENCIES: Core
+
+th u(NEWCOBJ,Who Renderer <WHO>,who,,,,WIZARD SAFE !NO_COMMAND,INHERIT SIDEFX SAFE)
+
+&CMD`+WHO`PENNMUSH [u(cobj,who)]=$^(?s)(?\:\+)?who(?\:/(\S+))?(?\: +(.+?))?(?\:=(.*?))?$:@attach %!/CMD`+WHO`MAIN
+@set [u(cobj,who)]/CMD`+WHO`PENNMUSH=regexp
+&CMD`+WHO`RHOSTMUSH [u(cobj,who)]=$^(?s)(?\:\+)?who(?\:/(\\S+))?(?\: +(.+?))?(?\:=(.*?))?$:@attach %!/CMD`+WHO`MAIN
+@set [u(cobj,who)]/CMD`+WHO`RHOSTMUSH=regexp
+&CMD`+WHO`MAIN [u(cobj,who)]=@attach %!/INC`GETSWITCH=%1;th u(setq,portable,u(u(cobj,grid)/FUN`LISTROOMS));@attach %!/INC`[u(strfirstof,%q<switch>,MAIN)]=%2,%3
+@set [u(cobj,who)]/CMD`+WHO`[u(choosegame,RHOSTMUSH,PENNMUSH)]=no_command
+
+&SYSTEm`NAME [u(Cobj,who)]=WHO
+&SWITCHES`PLAYER [u(cobj,who)]=IDLE
+&SWITCHES`ADMIN [u(cobj,who)]=CONFIG
+
+&INC`MAIN [u(cobj,who)]=@attach %!/INC`SORT`MAIN;@select/inline gt(strlen(%0),0)=1,{@attach %!/INC`SEARCH=%0};@attach %!/INC`LIST=,%0
+
+&FUN`WHO`MAIN [u(cobj,who)]=u(sortname,setunion(u(lwhoid,%#),))
+
+&INC`SORT`MAIN [u(cobj,who)]=@check words(u(setr,who,u(FUN`WHO`MAIN)))=@attach %!/INC`MSG=No players to show!
+
+&INC`SEARCH [u(cobj,who)]=@check words(u(setr,who,namegraball(%q<who>,%0)))=@attach %!/INC`MSG=Search for '%0' turned up with nothing.
+
+&INC`IDLE [u(cobj,who)]=@attach %!/INC`SORT`IDLE;@select/inline gt(strlen(%1),0)=1,{@attach %!/INC`SEARCH=%1};@attach %!/INC`LIST=Idle,%1
+&INC`SORT`IDLE [u(cobj,who)]=@check words(u(setr,who,revwords(u(sortidle,u(FUN`WHO`MAIN)))))=@attach %!/INC`MSG=No players to show!
+
+&INC`LIST [u(cobj,who)]=@pemit %#=u(HEADER,Who[if(strlen(%0),%b-%b%0)]);@attach %!/INC`HEADER`[strfirstof(%0,MAIN)];@pemit %#=u(separator);@dolist %q<who>={@pemit %#=u(FUN`WHO`PLAYERLINE`[strfirstof(%0,MAIN)],##);@select/inline eq(#@,words(%q<who>))=1,{&MAXPLAYERS %!=u(setr,max,max(get(%!/MAXPLAYERS),words(%q<who>)));@pemit %#=u(SUBHEADER,words(%q<who>) Characters[if(u(conf,SITES),%Bfrom [words(setunion(iter(%q<who>,get(%i0/LASTSITE),,|),,|),|)] IPs)]%BConnected - Record is %q<max>)}}
+
+&CONFIG`OPTIONS [u(cobj,who)]=HEADER|COLUMNS|SITES
+
+&CONFIG`HEADER [u(cobj,who)]=List of column names and widths in format of Text~Length. Like Name~20|Location~40. See +shelp +who.
+&CONFIG`HEADER`DEFAULT [u(cobj,who)]=Name~20|Alias~11|Fac~3|Idle~4|Conn~4|G~1|Location~29
+&CONFIG`HEADER`VALID [u(cobj,who)]=COLUMNS
+
+&CONFIG`COLUMNS [u(cobj,who)]=List of Column GETPROPERTIES and widths in format of GET~Length. Check +shelp +who.
+&CONFIG`COLUMNS`DEFAULT [u(cobj,who)]=NAMELINK~20|ALIAS~11|FACABBR~3|HIDEIDLE~>4|HIDECONN~>4|SEX/1~1|LOCATION/1~29
+&CONFIG`COLUMNS`VALID [u(cobj,who)]=GETTABLE
+
+&CONFIG`SITES [u(cobj,who)]=Display number of unique IPs connected to the game at the +who footer?
+&CONFIG`SITES`DEFAULT [u(cobj,who)]=1
+&CONFIG`SITES`VALID [u(cobj,who)]=BOOL
+
+&INC`HEADER`MAIN [u(cobj,who)]=@pemit %#=ansi(u(color,%#,COLUMN_NAMES),u(columnline,u(conf,HEADER)))
+&INC`HEADER`IDLE [u(cobj,who)]=@attach %!/INC`HEADER`MAIN
+
+&FUN`WHO`PLAYERLINE`MAIN [u(cobj,who)]=u(playerline,%0,u(conf,COLUMNS))
+&FUN`WHO`PLAYERLINE`IDLE [u(cobj,who)]=u(FUN`WHO`PLAYERLINE`MAIN,%0)
+
+&STARTUP [u(cobj,who)]=@hook/override WHO=%!,CMD`+WHO
+
+@@ JSON
+&J`WHO`PLAYER [u(cobj,who)]=json(object,id,json(number,get(%0/D`ID)),name,json(string,name(%0)),objid,json(string,objid(%0)),idle,json(number,idle(%0)),conn,json(number,conn(%0)))
+
+&J`WHO`PLAYERS [u(cobj,who)]=u(J`CREATE`ARRAY,iter(%0,%i0,%b,chr(176)),WHO`PLAYER,%1)
+
+&J`WHO`PLAYERS`ALL [u(cobj,who)]=u(J`WHO`PLAYERS,u(lwhoid,%0))
+
+&J`WHO`PLAYERS`PACKAGE [u(Cobj,who)]=json(object,system,json(string,who),pages,json(number,%3),page,json(number,%2),data,u(J`WHO`PLAYERS,%1,%0))
+
+&W`WHO`RECEIVE [u(cobj,who)]=@dolist/inline lnum(1,u(setr,pages,ceil(fdiv(words(u(setr,lwho,u(lwhoid,%0))),u(setr,per,50)))))={@pemit %0=wsjson(u(J`WHO`PLAYERS`PACKAGE,%0,elements(%q<lwho>,lnum(add(1,mul(%q<per>,sub(%i0,1))),mul(%q<per>,%i0))),%i0,%q<pages>),null())}
+
+@@ COMMUNITY - WHO
+&HLP`WHO [u(cobj,who)]=[ansi(hc,Commands)]%R[align(5 [sub(u(width,%#),6)],,[ansi(h,+who)] - Show all visible\, connected players.%R[ansi(h,+who/idle)] - Like above\, but sorts by idle times.%R%R[ansi(h,+who <text>)] - Search for online players starting with <text>.)]
++help/add Community/+who=[u(cobj,who)]/HLP`WHO

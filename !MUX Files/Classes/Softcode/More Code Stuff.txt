@@ -1,0 +1,803 @@
+ Topic: More Code Stuff
+Author: Trispis
+Summary: A continuation of concepts introduced in Code Bascis lecture.
+
+9/13/97
+
+Trispis says, "In the last class, we learned to navigate the PennMUSH help
+files. We also learned to create basic user-defined commands ($commands)."
+
+Trispis says, "For the most part, we only covered the use of @commands in our
+code. Today, we're going to expand our skills to include functions."
+
+Trispis says, "In our lab project we created a 'waver'... a user command,
+$wave, which used the @force command to force you, the user, to do - :waves
+[blah, blah, blah]."
+
+Trispis says, "Today, we're going to write a new version of that command using
+a different approach."
+
+Trispis says, "First, let's look at the command we'll be using. Read: help
+@remit"
+
+@REMIT
+@remit[/noeval] <object> = <message>.
+
+Sends the message to all contents of <object>, which can be a room,
+thing, or player. (The TinyMUSH 2.0 equivalent is @pemit/contents).
+The /noeval switch prevents the MUSH from evaluating the message.
+
+See also @emit, @pemit, @oemit, SPOOFING, NOSPOOF and CONTROL.
+
+Trispis says, "Note, first, the syntax... It has an optional parameter:
+[/noeval]"
+
+Trispis says, "We'll discuss this in a few minutes... let's move along to the
+rest of the syntax... It requires an <object> and a <message>."
+
+Trispis says, "The <object> is the location where the <message> will be
+displayed."
+
+Trispis says, "This command (@remit), like all @commands, can be directly
+entered from your keyboard... or it can be placed in a user-defined command
+(like your $wave command)."
+
+Trispis says, "Okay... that's a basic overview of the @remit syntax... We'll
+be putting this to use in a moment, but we have a few more things to look at
+first."
+
+Trispis says, "One of the other things we did in the last class was to create
+a PennMUSH Quick Reference List for the help files."
+
+Trispis says, "Today, we're going to add one more thing to that list."
+
+Trispis says, "This isn't a 'help file', though. ... However, it /is/ a list
+of help topics."
+
+Trispis says, "Type: @config/functions"
+
+Functions: ABS ADD AFTER ALPHAMAX ALPHAMIN AND ANDFLAGS ANSI APOSS ART ATRLOCK
+BEEP BEFORE CAPSTR CAT CEMIT CENTER CHANNELS CLONE COMP CON CONN CONTROLS
+CONVSECS CONVTIME CREATE CTIME CWHO DEC DECRYPT DEFAULT DELETE DIE DIG DIST2D
+DIST3D DIV DOING EDEFAULT EDIT ELEMENT ELEMENTS ELOCK EMIT ENCRYPT ENTRANCES
+EQ EVAL ESCAPE EXIT EXTRACT FILTER FINDABLE FIRST FLAGS FLIP FOLD FOLDERSTATS
+FOREACH FUNCTIONS FULLNAME GET GET_EVAL GRAB GRABALL GREP GREPI GT GTE HASATTR
+HASATTRP HASATTRPVAL HASATTRVAL HASFLAG HASPOWER HASTYPE HIDDEN HOME IDLE
+IDLESECS INC INDEX INSERT ISDAYLIGHT ISDBREF ISNUM ISWORD ITER ITEMS LAST
+LATTR LCON LCSTR LDELETE LEFT LEMIT LEXITS LINK LIT LJUST LNUM LOC LOCATE LOCK
+LPARENT LSEARCH LSEARCHR LSTATS LT LTE LWHO MAIL MAILFROM MAILSTATUS
+MAILSUBJECT MAILTIME MAP MATCH MATCHALL MAX MEMBER MERGE MID MIN MIX MOD MONEY
+MTIME MUDNAME MUL MUNGE MWHO NAME NEARBY NEQ NEXT NOT NUM OBJ OBJEVAL OBJMEM
+OEMIT OPEN OR ORFLAGS OWNER PARENT PARSE PEMIT PLAYERMEM PMATCH POLL PORTS POS
+POSS POWERS R RAND REMIT REMOVE REPEAT REPLACE REST REVERSE REVWORDS RIGHT
+RJUST RLOC RNUM ROOM S SCRAMBLE SEARCH SECS SECURE SET SETQ SETR SETDIFF
+SETINTER SETUNION SHL SHR SHUFFLE SIGN SORT SORTBY SOUNDEX SOUNDLIKE
+SOUNDSLIKE SPACE SPLICE SQUISH STARTTIME STATS STRCAT STRIPANSI STRLEN
+STRMATCH SUB SUBJ SWITCH T TABLE TEL TIME TIMESTRING TRIM TRUNC TYPE UCSTR
+UDEFAULT UFUN ULOCAL U V VAL VALID VERSION VISIBLE WHERE WIPE WORDPOS WORDS
+XGET XOR ZEMIT ZFUN ZONE VADD VSUB VMUL VDOT VMAG VDIM VUNIT ACOS ASIN ATAN
+CEIL COS E EXP FDIV FLOOR LOG LN PI POWER ROUND SIN SQRT TAN
+
+Trispis says, "Those are all of the standard PennMUSH functions."
+
+Trispis says, "A great many of them, as you will soon see, are duplicates of
+@commands."
+
+Trispis says, "The first one we want to look at is the 'loc' function..."
+
+Trispis says, "The proper way to get help on a function is to type: help
+<function-name>()."
+
+Trispis says, "Example: help loc()"
+
+Trispis says, "Note the parentheses."
+
+Trispis says, "They are necessary on some of these help files, so get into the
+habit of using them on /all/ function help files."
+
+Trispis says, "Type: help loc()"
+
+LOC()
+loc(<object>)
+
+Loc returns the dbref of the location that object is at. The
+object has to either be yours or be in the same room as you to
+work. The location of an exit is its destination (the source of
+an exit is its home). The location of a room is its drop-to
+(if one is not set, then the location is #-1).
+
+Trispis says, "Note the syntax... Nothing optional. Only one thing is needed,
+and that is the <object>."
+
+Trispis says, "It returns the #dbref of the location of the <object>."
+
+Trispis says, "Example: loc(me) would return #233 (this room, my location)."
+
+You say, "It doesn't work."
+
+Trispis says, "Good point."
+
+Yosh says, "#233"
+
+Yosh says, "works for me :)"
+
+You say, "Then what am I doing wrong?"
+
+Trispis says, "Hang on."
+
+Trispis will explain.
+
+Calico hangs. :)
+
+Trispis says, "functions, unlike @commands, cannot be issued directly (don't
+jump to hasty conclusions, there's more to it)."
+
+Trispis says, "Remember in the 'help @remit', there was an optional parameter
+called [/noeval]... this 'switch' means "don't evaluate functions or
+substitutions" ... A function is intended for evaluation, and must be placed
+into a command that allows evaluation... There are a number of ways to achieve
+this result..."
+
+Trispis says, "One way is to 'say' the function (which is what Yosh did), the
+other way is to 'think' it."
+
+Trispis says, "So, you can do either of these two things...
+
+a) "loc(me)
+
+or
+
+b) think loc(me)
+"
+
+#233
+
+You say, "Ah. (:"
+
+Trispis says, "Although those are not the only ways, they are probably the
+most common."
+
+Trispis says, "Saying is noisy (to others). 'think'ing is private (only you
+see it)."
+
+Trispis says, "Okay. Having cleared that up, I have one more thing to add to
+your quick reference list..."
+
+Morpheus says, "I did it via page to myself to test it"
+
+Trispis says, "Two very useful help files are 'help substitutions' and 'help
+substitutions2'"
+
+Trispis says, "Add these to your list."
+
+Trispis says, "The file we want to concern ourselves with at this time is the
+second.. read: help substitutions2"
+
+Trispis says, "A couple things worty of note about this list of substitutions
+(heretofore referred to as %-subs)."
+
+SUBSTITUTIONS2
+
+Other substitutions, such as %va-%vz, %wa-%wz, %xa-%xz, and %0-%9
+may also be used and are equivalent to v(?) (See V-FUNCTIONS)
+where ? is a-z or 0-9. In these substitutions and pronoun substituions,
+if the first letter of the name is capitalized, the first letter of
+the substitution will also be capitalized.
+
+Other possible substitutions are:
+%# (player number) = #<actor's number>. Equivalent to num(%N)
+%@ (caller number) = #<caller's number>. No equivalent. Initially
+equal to %#, but changes when things like u() are called.
+%! (object number) = #<message holder's number>. Equivalent to num(me)
+%l (location number) = #<actor's location>. Like loc(%N). This
+works even if the LOC() function would normally not, since the
+enactor has "volunteered" his location by triggering another object.
+%c = text of last command, _before_ evaluation.
+%r (newline) = Carriage return and newline in output. Note that this
+counts as two characters, in functions like strlen(). (puts "\r\n")
+%t (tab) = Tab character in output.
+%b (blank) = Space in output.
+%qN = the equivalent of r(N), a register set by a setq() function.
+
+Trispis says, "The first one, %#. This %-sub refers to the player or thing
+activating the code (the 'actor'), and always evaluates to the actor's
+#dbref."
+
+Trispis says, "The fourth one, %l. This one refers to the actor's location.
+Note that they say it is the same as loc(%N). For the moment, pretend this is
+a typo and that it should have said 'loc(%#)'."
+
+Trispis says, "Now, I'll clear that up."
+
+Trispis says, "Read: help substitutions (the first file)"
+
+SUBSTITUTIONS
+SUBSTITUTIONS
+
+All messages may contain %-substitutions. Some common ones return
+pronouns if the player's gender is set. They are:
+%s (subjective) = Name, he, she, it, they.
+%o (objective) = Name, him, her, it, them.
+%p (possessive) = Name's, his, her, its, their.
+%a (absolute possessive) = Name's, his, hers, its, theirs.
+%N (player's name) = Name.
+If you need a '%', use %%. Case matters; for example, "%S" returns "His",
+"%s" returns "his".
+Ex. '@ofail teapot=burns %p hand on the hot teapot.' would, for a male,
+return "burns his hand on the hot teapot."
+
+HALTed objects do not perform substitutions.
+
+More substitutions are listed in "help SUBSTITUTIONS2".
+See also subj(), obj(), poss(), aposs()
+
+Trispis says, "This is a list of personal substitutions (pronouns, names,
+etc.)"
+
+Trispis says, "That's where they got %N."
+
+Trispis says, "There's another function worthy of mention at this time (just
+to confuse the issue further)... and that is 'name()'. read: help name()"
+
+NAME()
+name(<object>[,<new name>])
+
+Name returns the name of object <object>. For exits, name returns
+the displayed name of the exit.
+
+If function side effects are allowed, this function, given two arguments,
+will rename <object> to <new name>.
+
+Related functions: FULLNAME()
+
+Trispis says, "Note this one has an optional parameter and can be used to
+rename an object (like the @name command). However, it's greatest use is to
+return the name of a #dbref... THUS... name(%#) is the same as %N."
+
+Trispis says, "In code, %# and %N can often be used interchangably...
+however... if you don't need the 'name', it is best to use %# (the #dbref) of
+the actor."
+
+Trispis says, "Okay... Let's go back to @remit and start putting some of these
+things together..."
+
+Trispis says, "We're going to add a new $command to our lab project. It will
+achieve basically the same results as our old command, but will use a
+different set of code."
+
+Trispis says, "Um... Hang on one second... Before we do that, let me summarize
+the %-subs we discussed..."
+
+Trispis says, "%# = <actor>"
+
+Trispis says, "%N = name(%#)"
+
+Trispis says, "And... %l = loc(%N) = loc(%#)"
+
+Trispis says, "Now, here's our new 'wave' using @remit written in several
+forms. You may choose the one you like the best. They all do the same thing...
+
+&wave2 #<lab proj>=$wave2 *:@remit %l=%N waves to %0.
+
+&wave2 #<lab proj>=$wave2 *:@remit [loc(%#)]=[name(%#)] waves to %0.
+
+&wave2 #<lab proj>=$wave2 *:@remit [loc(%N)]=%N waves to %0.
+"
+
+Trispis says, "Those all do the exact same thing."
+
+Trispis says, "The first form is probably the most efficient."
+
+Trispis says, "Now for another twist to this, let's learn a new function and
+rewrite this..."
+
+Trispis says, "read: help remit()"
+
+REMIT()
+remit(<object>, <message>)
+
+Sends a message to the contents of <object>, as per @remit.
+
+Trispis says, "Remember that huge list of functions in '@config/functions'?
+Well, 'remit' was listed there... It is one of the many functions which
+duplicates a @command."
+
+Trispis says, "remit() and @remit are identical... at least in their purpose."
+
+Trispis says, "Note, however, that the syntax for the function form differs in
+that all of the 'stuff' is enclosed in parentheses: remit(<obj>,<msg>)"
+
+Trispis says, "This is the way of functions (and that's why I emphasized the
+use of the parentheses when calling up the help files). functions all work in
+this way... their name, followed by some stuff in parentheses."
+
+Trispis says, "What about those square brackets I used in the 'wave2'
+examples?"
+
+You say, "So it would look like remit(<#lab project>,#233=Calico waves to )"
+
+Trispis says, "Square brackets are a good habit to get into when using
+functions... the opening brace comes before the function name, and the closing
+brace comes after the closing parenthesis."
+
+Trispis says, "Um... no."
+
+You say, "No?"
+
+You say, "It didn't quite come out right."
+
+Trispis says, "Here's how the wave2 will look when you use the function
+form...
+
+&wave2 #<lab proj>=$wave2 *:think [remit(%l,%N waves to %0.)]
+"
+You say, "Oh.."
+
+You say, "Okay."
+
+[IMPORTANT NOTE: Please take notice that this example begins the "code"
+portion of this user-defined command with the MUSH command 'think' -- All
+user-defined commands MUST begin with a command (in this case 'think', in
+previous examples: @remit, @force, @pemit, etc.).
+
+The object above executes a 'think' command to prevent the parser from
+searching for a bogus command and, thus, returning an error message. Although
+the PennMUSH parser will succeed in evaluating the remit() without the 'think'
+command, it is invalid syntax -- and very sloppy form -- to leave it out.
+'think' can be abbreviated to 'th' in PennMUSH (but 'th' is the alias for
+'throw' in some servers, so be careful when using the shortened form).]
+
+Trispis says, "One little note about function <message>s."
+
+Trispis says, "When placing text into a function, you must watch your commas,
+colons, and semicolons very carefully (there are others to watch, too. I'll
+give you the file with the whole list soon. These are just the most common
+trouble makers, because they are used commonly in text). Since commas, colons,
+and semicolons can all have meaning to a function (to separate the various
+elements of its 'stuff'), any one of these symbols that you want to include as
+part of your text MUST be 'escaped' ... To 'escape' a symbol simply means to
+turn it into a 'literal text symbol'... To do this, you precede the symbol
+with either a % or a \."
+
+Trispis says, "So..."
+
+Trispis says, "If you wanted your wave to do this...
+
+Trispis waves to Joe and says, "Hi." (<-- note the comma)
+
+You would have to enter your command as follows...
+
+&wave2 #<lab proj>=$wave2 *:think [remit(%l,%N waves to %0 and says\, "Hi.")]
+"
+
+Trispis says, "If you don't 'escape' the comma, you'll get an error message
+telling you that 'remit() expects two arguments' (meaning two things separated
+by /one/ comma)." READ: help escape() for a list of 'dangerous characters'
+
+Cleomine nods.
+
+Trispis says, "We're now to the midpoint of today's class... I'm going to take
+a 15 minute break to get something to eat... Before I go, though, I'm going to
+assign some reading for this interim period... Type: @config/functions and
+read down through them and notice how many of them are similar to @commands
+(like: @remit=remit, @name=name, @pemit=pemit, @emit=emit, etc., etc.,
+etc.,)."
+
+Trispis says, "This is where I'll pick up when I return."
+
+Trispis idles for about 10-15 min.
+
+Trispis returns and proceeds.
+
+Trispis says, "In the interim, you should have noticed a great number of
+functions that are basically duplicates of @commands."
+
+Trispis says, "Why is this?"
+
+Trispis says, "Well, that's because you can't put a @command inside of a
+function."
+
+Trispis says, "But, you /can/ put a function inside of a function. (:"
+
+Trispis introduces a new function called 'switch()'.
+
+Trispis says, "Read: help switch()"
+
+SWITCH()
+switch(<string>, <expr1>, <list1>, [<exprN>, <listN>], ...[<default>])
+
+This function matches <string> against the <expr>essions, returning the
+corresponding <list>. If nothing is matched, the <default> is returned.
+This is similar to @switch/first, but instead of executing the list,
+it simply returns it. Wildcard patterns are allowed. There may be
+a maximum of ten arguments total to the function.
+
+If the string "#$" appears in the <list> to be executed, it will be
+replaced with the evaluated value of <string> before execution.
+
+Example:
+> say switch(test, *a*, foo, *b*, bar, *t*, neat, baz)
+You say, "neat"
+> say switch(ack, *a*, foo, *b*, bar, *t*, neat, baz)
+You say, "foo"
+> say switch(moof, *a*, foo, *b*, bar, *t*, neat, baz)
+You say, "baz"
+> say switch(moof, *a*, foo, *b*, bar, *t*, neat, #$)
+You say, "moof"
+
+Trispis says, "switch() is probably one of the most used and abused functions
+in all of MUSHcode."
+
+Trispis says, "It is basically a duplicate of @switch/first (that is, @switch
+with the /first option included)."
+
+@SWITCH
+@switch [/<switch>] <string> = <expr1>, <action1> [,<exprN>,
+<actionN>]... [,<default>]
+This is a general control structure which can be thought of as a
+combination if/then/else and switch/case. It compares <string> against
+the expressions <expr1>, <expr2>, ..., <exprN> until a match is found.
+It then performs the associated action list. It matches all expressions
+which conform to the string pattern, and executes all the associated
+actions. (To match only the first, use "@select"). If no match is found,
+the <default> is executed. Wildcards and the < and > operators are
+allowed in the targets.
+This is the default. @switch also can take two switches, /all and
+/first. The default is /all; /first is equivalent to @select.
+Example:
+> @va thing = $foo *:@switch %0=*a*,:acks,*b*,:bars,*c*,:cheeps,:glurps
+> foo abc
+thing acks
+thing bars
+thing cheeps
+> foo xxx
+thing glurps
+The string "#$" in <action>'s will be expanded to the evaluated result
+of <string> before it is acted on.
+
+Trispis says, "In the @switch command, you other @commands (like @remit) for
+the action portions... but, if you're using the switch() function, you have to
+use functions, such as remit(), for the corresponding expressions, to be able
+to do the same thing."
+
+Trispis says, "Now... just a point to note... functions evaluate slightly
+faster than @commands when they run through the parser. This is due to the
+fact that PennMUSH is basically a list processing language. Each @command is
+placed sequentially into the queue and processed in its turn. Functions,
+however, can be placed end-to-end and processed in a *single* queue cycle,
+making them run slightly faster than their @command counterparts.
+
+Trispis says, "This doesn't mean you can't make good code with @commands, it
+just means your code will be slightly faster or 'seem more responsive' if
+written using functions. And, it is often touted that functions are a 'more
+luxurious' way of coding than @commands."
+
+Trispis says, "So... let's look at switch()."
+
+Trispis says, "Making the jump from @remit to @switch, or from remit() to
+switch(), is a huge leap in both syntax and in your thinking process."
+
+Trispis says, "@switch and switch() aren't straight-forward 'do this' types of
+processes (like remit: emit <object> this <message>). switch says something
+like this... Take a <string> (any string, even one that depends on some
+code)... and compare it to something else (possibly many things)... and the
+first 'match' you come to, do the next thing (something like that)."
+
+Trispis says, "Here's a better illustration (I hope)..."
+
+Trispis says, "Example: I want to make sure that when I use my waver on
+someone, that they are actually in the same location as me... so the 'check'
+for this would be to take my location and if their location matches mine, then
+do the 'wave'... like this:
+
+In @command form, this would be:
+
+&wave3 #<labproj>=$wave3 *:@switch loc(%0)=loc(me),@remit %l=%N waves to %0.
+
+In function form, this would be:
+
+&wave3 #<lp>=$wave3 *:think [switch(loc(%0),loc(me),remit(%l,%N waves to
+%0.))]
+"
+
+Trispis says, "This will also work if the two 'loc()'s' are reversed... since
+it is only checking the one match...
+
+In @command form:
+
+&wave3 #<lp>=$wave3 *:@switch loc(me)=loc(%0),@remit %l=%N waves to %0.
+
+In function form:
+
+&wave3 #<lp>=$wave3 *:th [switch(loc(me),loc(%0),remit(%l,%N waves to %0.))]
+"
+
+
+Trispis says, "@switch and switch() also offer the option of a 'default'
+action... in case there is no match... which could be something like this...
+
+In @command form:
+
+&wave3 #<lp>=$wave3 *:@switch loc(me)=loc(%0),@remit %l=%N waves to %0.,@pemit
+%#=%0 is not here.
+
+In function form:
+
+&wave3 #<lp>=$wave3 *:think [switch(loc(me),loc(%0),remit(%l,%N waves to
+%0.),pemit(%#,%0 is not here.))]
+"
+
+Trispis says, "A breakdown of the syntax is:
+
+For @switch:
+
+@switch <match to this>=<option1>,<action for option1>[,<opt2>,<action for
+opt2>[,<opt-etc>,<action for opt-etc>]][,<default if no opts match>]
+
+switch(<match this>,<opt1>,<action for opt1>[,<opt2>,<action for
+opt2>[,<etc-option>,<action for etc-option>]][,<default if nothing is
+matched>])
+"
+
+Trispis says, "@switch and switch() only require /one option/ and /one
+action/... everything else (additional options and the default) is optional."
+
+You say, "Why use it if you only have /one option/?"
+
+Trispis says, "It's often used to confirm operations (as my last example for
+the waver illustrated... using the 'default' to let you know that the single
+condition was not matched. Or... If you don't want the default notification,
+it can be used somewhat like an additional 'lock' on an object... Example to
+follow."
+
+Trispis says, "Let's say you want to make sure that an object (your waver, for
+instance) can only be used by players... and you don't care if puppets or
+other objects get an error message or not... the whole point is you only want
+players to be able to use it..."
+
+Calico nods.
+
+Trispis says, "Then, you could put a switch into the code to make sure the
+/type/ of object giving the command was 'PLAYER'... as follows...
+
+&wave4 #<lp>=$wave *:@switch hastype(%#,PLAYER)=1,think [remit(%l,%N waves to
+%0)]
+
+[NOTE: The above example illustrates a mixture of all items learned to this
+point.]
+
+Note, the result of the 'hastype()' function is either a 1 or a 0. 1 means the
+object has the given type (in our case, player). 0 means it doesn't have that
+type. So, this code only performs the remit if %# has the type PLAYER. (:"
+
+You say, "Aha. :)"
+
+Trispis says, "And that's /all/ it does."
+
+Trispis says, "This is a good time to mention the subtle difference between
+'hastype()' and 'hasflag()'."
+
+Trispis says, "Although PLAYER, ROOM, and EXIT show up as 'flags' in the list
+of flags (like when you examine an object and see 'Name #dbref(Flags)' at the
+top) (P=Player, R=Room, E=Exit)... these are actually considered 'types' not
+'flags'. Therefore, you use the 'hastype()' function to check an object's
+/type/... and you use the 'hasflag()' function for all other flags."
+
+You say, "But when I examine myself.. PLAYER is a type. :)"
+
+Trispis says, "Yes, but the capital 'P' is included in your 'flags'"
+
+Trispis says, "Do: think flags(me)"
+
+You say, "Oh. I see."
+
+PenAC
+
+Calico grins.
+
+You say, "Is that why when I examine me/type... I get 'no matching
+attributes'?"
+
+Trispis says, "Dont confuse 'attributes' with 'flags' or 'types'."
+
+Trispis says, "they are three distinct things."
+
+You say, "I'm not.. It's just the message I get."
+
+Trispis says, "examine me/type looks for a &type attribute (which you could
+put on yourself if you wanted to)."
+
+You say, "Oh?"
+
+Trispis says, "Do this...
+
+&type me=Strange
+
+Then do: examine me/type
+"
+
+Calico/TYPE - Set.
+
+TYPE [#983]: Strange
+
+Calico grins.
+
+Calico/TYPE - Cleared.
+
+Trispis says, "You now have an attribute named 'type' which contains the text
+'Strange'... but your /type/ is still PLAYER. (:"
+
+Calico giggles.
+
+You say, "So the only way to see the type is to think type(me)?"
+
+You say, "Or think flags(me)?"
+
+Trispis nods. Either of those.
+
+Trispis says, "Now..."
+
+Trispis says, "Here's a cool thing you can do with switch()."
+
+Trispis says, "switch will honor the wildcard symbols * and ?... So, you use
+the 'flags()' function to check for the player flag in a switch as follows...
+
+&wave5 #<lp>=$wave5 *:th [switch(flags(%#),*P*,remit(%l,%N waves to %0.))]
+
+this matches the actual flags returned from 'flags(%#)' to the wildcarded
+string '*P*' (not *p*, which would be PUPPET)."
+
+Trispis says, "This does the same thing as the last example, but uses the
+'flags()' function to do it."
+
+You say, "I see."
+
+Trispis says, "Note right now!!!! 'hasflag()' will /not/ match to the PLAYER,
+ROOM, or EXIT flags!!!"
+
+Trispis says, "Only 'hastype()' will do that."
+
+You say, "Right."
+
+Trispis says, "And, hastype will also match to the type THING and, to the type
+GARBAGE (which is what a thing becomes when it is nuked)."
+
+Trispis says, "Okay... a few more things, then I'm going to adjourn this
+class."
+
+Calico nods.
+
+Trispis says, "I had intended to cover a couple more functions thoroughly, but
+instead I'm going to do a bit of function summary and offer an optional
+assignment in the form of learning a new function (one that I specifically
+choose) on your own. (I'll give you some clues)."
+
+Trispis says, "Here's the summary first..."
+
+Trispis says, "Functions are categorized into several groups, based on what
+they do... I'm going to be creating a +global to list all of the functions in
+these categories eventually, but right now, PennMUSH only offers a few
+examples. So.."
+
+Trispis says, "read: help function list"
+
+FUNCTION LIST
+
+Several major variants of functions are available. The help topics
+are listed below, together with a quick summary of the function type
+and some examples of that type of function.
+
+Attribute functions: attribute-related manipulations (GET, UFUN)
+Boolean functions: produce 0 or 1 (false or true) answers (OR, AND)
+Dbref functions: return dbref info related to objects (LOC, LEXITS)
+Floating point functions: floating point math (SIN, ROUND)
+Information functions: find out something about objects (FLAGS, MONEY)
+List functions: manipulate lists (REVWORDS, FIRST)
+Math functions: number manipulation, generic or integers only (ADD, DIV)
+String functions: string manipulation (ESCAPE, FLIP)
+Utility functions: general utilties (TIME, COMP)
+
+The command "@config/functions" lists all of the game's built-in functions.
+
+Trispis says, "Okay... having pointed out that 'summary' of function
+purposes... I'm going to back up and remind you of a few things..."
+
+Trispis says, "Reminder: Many functions duplicate @commands (@remit=remit, and
+the like)..."
+
+Trispis says, "Through this 'duplication', you can learn a lot about functions
+and how they work."
+
+Trispis says, "A good thing to study would be the way @switch and switch() are
+similar and how they are different. (@switch allows the /first and /all
+options, among others, which make the @switch behaved differently than the
+switch() function)."
+
+Trispis says, "Now... two things for 'on your own study' (not an assignment
+for any credit here, just a 'teaser' to get you moving on your own)..."
+
+Trispis says, "The first is 'setq()' (this allows you to put something into a
+temporary variable and use it again later... it is very useful if your code
+begins to grow complex from using 'name(%#)' repeatedly... you can do:
+[setq(<a number from 0 to 9>, name(#4))] ... then recall that with that
+number> ... example...
+
+"[setq(0,name(me))] My name is %q0. Everyone calls me %q0. Yes, %q0 is my
+name.
+
+would return the following..."
+
+Trispis says, " My name is Trispis. Everyone calls me Trispis. Yes, Trispis is
+my name."
+
+Trispis says, "it's a sort of silly example, but it works nonetheless."
+
+Calico giggles.
+
+Trispis says, "setq() can be used to set a temporary variable (called a
+'register') to be recalled repeatedly throughout complex code..."
+
+Trispis says, "the last thing for 'outside study' is: iter()"
+
+Trispis says, "This is probably the second most used and abused function in
+all of PennMUSH."
+
+ITER()
+iter(<list>,<pattern>[,<delimiter> [,<output separator>]])
+
+This works in a manner very similar to @map, except that it returns
+a string directly. <list> is a space-separated list of words, and
+<pattern> is what will be "mapped" onto each element of the list,
+with the token "##" being replaced successively by the next word in
+the list, and the token "#@" being replaced by the word's position
+in the list. The result is concatenated and returned as a space
+separated list. This is similar to @dolist, but the results are
+made into a list rather than executed.
+
+The list may be <delimiter>-separated.
+
+By default, the return list will be space-separated. However,
+by including the output separator (which requires explicitly
+including the delimiter), you can have it separated by any string.
+
+See "help ITER2" for some examples.
+
+Trispis says, "This one, like @remit, /does/ have a @command counterpart...
+however, their names are not the same (simply because they are conceptually
+different in their actual evaluation). The @command counterpart for 'iter()'
+is: @dolist."
+
+You say, "Why does the help file say that its similar to @map?"
+
+Trispis says, "@map and @dolist are very similar. (:"
+
+Trispis says, "@dolist is more 'intuitively' related to its name, though.
+
+That's why I referenced @dolist instead of @map."
+
+You say, "Okay. :)"
+
+Trispis says, "@map has a function equivalent... yes, it's map(). (:"
+
+Trispis says, "@map and map() require other attributes... @dolist and iter()
+do not."
+
+Trispis says, "Here's a sample of iter()...
+
+Do this: "iter(lcon(here),name(##))
+
+That is, 'say' that function with that code..."
+
+Trispis says, "Durhan Calico Trispis Cleomine Morpheus Fred Erinstar Shadox
+Yarric Zipporah Otis"
+
+You say, "Durhan Calico Trispis Cleomine Morpheus Fred Erinstar Shadox Yarric
+Zipporah Otis"
+
+Trispis says, "lcon(here) is a 'list' (it's a list of every object in this
+room)... iter() takes a list... and performs an action on each member of that
+list."
+
+Trispis says, "Okay... that's all for today."
+
+Trispis says, "Class dismissed." 

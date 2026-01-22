@@ -1,0 +1,50 @@
+@dig/teleport Main Room -- Ski Lodge
+@Desc here=%r[space(5)]The interior of this retreat is both rustic and luxurious, built around a gigantic center room shaped like a hexagon. The soaring wooden ceiling is supported by hefty crossbeams of rough-hewn cedar. Perfectly-fitted cedar planks gleam in an elongated patchwork on the floor. A winding staircase leads up to a loft lined with handsome bookcases. Four of the six walls are made entirely of crystal-clear shatterproof glass, offering a breaktaking view in any sort of weather. The fifth wall is built of local stone with an enormous fireplace carved into the center above a raised hearth. Silver and green seating pillows decorate the hearth. More pairs of chairs are arranged near the windows, and a small and sturdy cedar secretary is tucked kittycorner where two walls meet.%r
+@Succ here=[space(5)]Up the stairs is the loft, where the individual rooms can be found. The 'places' provide dining and conversational areas. You can 'ask rates' to get help booking a room.%r
+&PLACESMAX here=5
+&PLACESCLEANUP1 here=^* has left.:placescleanup(%#)
+&PLACESCLEANUP2 here=^* has disconnected.:placescleanup(%#)
+&PLACENUMS here=|||||
+&PLACE1 here=Hearth Pillows|4|4||I'm sorry, there's no room to add a place there.|I'm sorry, there's no place to move there.|You sit down at|sits down at|You stand and leave|stands and leaves|At your place
+&PLACE2 here=Secretary|2|2||I'm sorry, there's no room to add a place there.|I'm sorry, there's no place to move there.|You sit down at|sits down at|You stand and leave|stands and leaves|At your place
+&PLACE3 here=Table 1|4|4||I'm sorry, there's no room to add a place there.|I'm sorry, there's no place to move there.|You sit down at|sits down at|You stand and leave|stands and leaves|At your table
+&PLACE4 here=Table 2|6|6||I'm sorry, there's no room to add a place there.|I'm sorry, there's no place to move there.|You sit down at|sits down at|You stand and leave|stands and leaves|At your table
+&PLACE5 here=Table 3|2|2||I'm sorry, there's no room to add a place there.|I'm sorry, there's no place to move there.|You sit down at|sits down at|You stand and leave|stands and leaves|At your table
+&CMD_GUEST_LIST here=$guest list:@pemit %#=%r[space(5)]**Registered Guests of [u(HOTEL)];@pemit %#=[iter(iter(edit([lattr(me/r_*)],R_, ),%%r ## %%b %%b [get(me/r_##)]),[ifelse(isdbref(##),name(##),##)])]
+&CHECKOUT_ROOM2 here=$check * out:@switch %#=[owner(me)]=0,{@pemit %# = You are not authorized to 'check out' guests.},{@switch member(iter(lattr(#2812/r_*),get(#2812/##)),[num(*%0)]) = 0,{@pemit %#=[u(clerk)] quickly informs you that %0 is not registered.},{@pemit %# = [u(clerk)] clears %0's guest registration and unbooks the room/suite.; @trigger #2812/dest_room=[num(*%0)]}}
+&MAPAY-SUITE here=$book suite:@switch member(iter(lattr(#2812/r_*),get(#2812/##)),%#) = 0,{@switch [hasattr(me,SUITENUMS)]=0,{@pemit %# = %r[u(clerk)] informs you that you must choose two names to be registered to the suite before you book it. 'suite <Name1>+<Name2>' will work. Be sure to include the '+' sign between the names.%r},{@trigger #2812/MAKE_SUITE = %#; @set me = suite_count:[add(v(SUITE_COUNT),1)]; @pemit %# = %rYou register for a suite with [u(clerk)]%r%rYou are informed "If you head up to the Loft, you will find the door to the suite, with both names on it. If you did not register your own name on the suite, you will not be able to access it. If there is anything you need, please let the [v(HOTEL)] staff know. Enjoy your stay."%r}},{@pemit %# = [u(clerk)] notifies you that you are already a registered guest of [v(HOTEL)];}
+&MAPAY-ROOM here=$book room:@switch member(iter(lattr(#2812/r_*),get(#2812/##)),%#) = 0,{@trigger #2812/MAKE_ROOM=%#; @set me = room_count:[add(v(ROOM_COUNT),1)]; @pemit %# = %rYou register for a room with [u(clerk)].%r%rYou are informed "If you head up to the Loft, you will find the door to your room, with your name on it. If there is anything you need, please let the [v(HOTEL)] staff know. Enjoy your stay."%r},{@pemit %#=[u(clerk)] notifies you that you are already a registered guest of [v(HOTEL)].;}
+&CHECK-EARN here=$check earn:@switch %#=[owner(me)]=0,{pemit %#=You are not authorized to 'check earn'ings.},{@pemit %#=[u(clerk)] has registered [v(ROOM_COUNT)] room(s) and [v(SUITE_COUNT)] suite(s).}
+&CMD_CHECKOUT here=$check out:@switch member(iter(lattr(#2812/r_*),get(#2812/##)),%#)=0,{@pemit %#=[u(clerk)] efficiently informs you that you are not registered in the [u(HOTEL)], but if you would like information about staying here, just 'ask rates'.},{@pemit %#=[u(clerk)] clears your guest registration and unbooks the room/suite. Don't forget to +mail the owner "[name(owner(me))]" about how you liked your visit.; @tr #2812/dest_room=%#}
+&CMD_SUITENAMES here=$suite *+*:@switch type(*%0)=PLAYER,{@switch type(*%1)=PLAYER,{@pemit %#=%rBoth names you entered are players. You may now 'book suite'. If at least one of the names submitted was not yours, you will not have control over the room, and you will not be able to check out%r;&suitenums me=[num(*%0)] [num(*%1)]},{@pemit %#=%r"%1" is not a player but "%0" is. Please try 'suite <Name1>+<Name2>' again.}},{@pemit %#=%r"%0" is not a player. Please try 'suite <Name1>+<Name2>' again.}
+&HOTEL here=Eldora Resort Ski Lodge
+&RATES here=$ask rates:@pemit %#=%r[u(clerk)] informs you "We have two ways to register. A single room (which allows full access for one guest), and a suite (which allows full access for 2 guests). These accomodations will be registered for 30 RL days before they will be automatically destroyed (however, we prefer you 'check out' when you're done here)."%r%r[space(5)]'book room' for a room.%r[space(5)]'suite <Name1>+<Name2>' to set up the names for the suite, and then %r[space(5)]'book suite' for a suite.%r
+&ROOM_COUNT here=7
+&SUITE_COUNT here=0
+&CLERK here=Darla the Clerk
+@set here=MONITOR
+@set here=COMMANDS
+
+@open Ski Lodge <SL>;ski lodge;lodge;ski;sl;lo;sle
+@Succ Ski Lodge <SL>=You enter the Ski Lodge Entrance.
+@Osucc Ski Lodge <SL>=enters the Ski Lodge Entrance.
+@Odrop Ski Lodge <SL>=enters from outside.
+@Fail Ski Lodge <SL>=The Ski Lodge Entrance is locked.
+@Ofail Ski Lodge <SL>=tries the Ski Lodge Entrance, which is locked.
+@Desc Ski Lodge <SL>=%R%TA large building sits at the base of the slopes where you can rent skis, snowboards and even rooms as well as purchase lift tickets and food.%R
+
+@dig/teleport Ski Area - Eldora Resort
+@Desc here=%r%tThe ski lodge is located in the middle of a small, snowy valley. The mountains tower around as far as the eye can see, many of their peaks lost in the clouds. Ski lifts rise up in several directions. Coded runs for every ability level mark the mountain slopes, green circles for beginners, blue squares for average skill levels, and the famed black diamonds for the most dangerous routes. There is even a "bunny hill" for those new to their skis. Way up at the top of several of the peaks, dark specks can been seen descending the mountainside between the colored lines that mark each run. [switch(u(hot-cold),cold,{The air seems heavy and very cold. Tall evergreens whose branches are covered with new white snow line the area.},hot,{The air seems heavy and somewhat moist. There is almost no snow in the cup of the valley, and the snowmakers are humming with life on the slopes.})]%r%r%tThe runs are marked as 'places'.%r
+&SEASON here=[switch(mid(vtime(), 4, 3), Jan, WINTER, Feb, WINTER, Mar,TRAN-SPRING, Apr, TRAN-SPRING, May, SPRING, Jun, switch(gte(mid(vtime(), 8, 2),21),1,SUMMER,SPRING),Jul, SUMMER, Aug, SUMMER, Sep,switch(gte(mid(vtime(), 8, 2),21),1,AUTUMN,SUMMER), Oct, TRAN-AUTUMN, Nov, TRAN-AUTUMN, Dec, WINTER)]
+&HOT-COLD here=[switch(u(season),WINTER,cold,TRAN-AUTUMN,cold,TRAN-SPRING,cold,hot)]
+&SEASON-COLD here=[switch(u(hot-cold),cold,1,0)]
+&PLACESMAX here=4
+&PLACESCLEANUP1 here=^* has left.:placescleanup(%#)
+&PLACESCLEANUP2 here=^* has disconnected.:placescleanup(%#)
+&PLACENUMS here=||||
+&PLACE1 here=Bunny Hill|10|10||I'm sorry, there's no room on the Bunny Hill.|I'm sorry, there's no room on the Bunny Hill.|You hop on the lift and arrive at|hops on the lift and arrives at|You depart the|departs the |On the Bunny Hill
+&PLACE2 here=Easy Green Run|10|10||I'm sorry, there's no room on the Easy Green Run.|I'm sorry, there's no room on the Easy Green Run.|You hop on the lift and arrive at|hops on the lift and arrives at|You depart the|departs the |On the Easy Green Run
+&PLACE3 here=Moderate Blue Run|10|10||I'm sorry, there's no room on the Moderate Blue Run.|I'm sorry, there's no room on the Moderate Blue Run.|You hop on the lift and arrive at|hops on the lift and arrives at|You depart the|departs the |On the Moderate Blue Run
+&PLACE4 here=Challenging Black Run|10|10||I'm sorry, there's no room on the Challenging Black Run.|I'm sorry, there's no room on the Challenging Black Run.|You hop on the lift and arrive at|hops on the lift and arrives at|You depart the|departs the |On the Challenging Black Run
+@set here=JUMP_OK
+@set here=MONITOR}

@@ -1,0 +1,71 @@
+#59 - Phone Directory Database
+
+-----------------------------------------------------------------------------
+phones
+
+  The following commands are for setting up and using a phone. Please make
+  sure that you have the permision of the room's owner to set up a phone in
+  that room. Thank you:
+
+                          ***** FOR ALL PHONES *****                          
+ +phone/register <Name> .. Sets up a phone in the specified location. Name can
+                           be 'me', 'here', a name or a db#. If the specified
+                           location is a player's name or Dbref, then the phone
+                           will be registered as a Cell Phone.
+ +phone/dir .............. Displays a directory of all current landline numbers.
+ +cphone/dir ............. Displays a directory of all current cell phone
+                           numbers.
+ +phone/dial ###-#### .... Dials number ###-####
+ +phone/call <Name> ...... Dials the number for <Name>.
+ &phone-voice me=<test> .. Sets the description of your phone voice which will
+                           precede any message you give over the phone system.
+                           (IE: A sultry female voice). If nothing is set, it
+                           will appear as an anonymous voice.
+
+                         ***** LAND PHONES ONLY *****                         
+ +phone/answer ........... Answer's the phone
+ +phone/setting <setting>  Toggle between settings. Voice-Speaker-Video
+ +p <text> ............... Sends <text> to the person on the other end.
+ +phone/hangup ........... Hangs up your phone, ending the conversation.
+
+                         ***** CELL PHONES ONLY *****                         
+ +cphone/answer .......... Answer's your cellphone.
+ +cphone/setting <setting> Toggle between settings. Voice-Speaker-Video
+ +cp <text> .............. Send <text> to the person on the other end.
+ +phone/text <Name>=<Text> To send a text message.
+ +cphone/hangup .......... Hangs up your phone, ending the conversation.
+-----------------------------------------------------------------------------
+
+@create Phone System=10
+@create Phone Directory=10
+
+&FOOTER Phone System=[ansi(g,|[repeat(_,76)]|)]
+&HEADER Phone System=[ansi(g,%B[center(/ Phone Directory %\,76,_)]%R|[center(NAME:,30)] [rjust(PHONE:,8)] [center(LOCATION:,25)][space(11)]|%R|[repeat(-,76)]|)]
+&NAMESORT Phone System=[comp(u(names,%0),u(names,%1))]
+&PHONE-SET-TYPES Phone System=cell room | Voice Speaker Vid
+&REGISTER Phone System=$+phone/register *:@switch [setr(0,switch([setq(9,u(dir))][hasattr(%q9,dir-[switch(%0,me,%#,num(*%0))])]-[hasattr(%q9,dir-%0)]-[hasattr(%q9,dir-%l)]-{%0},?-?-0-Here,%l,?-0-?-#*,%0,0-?-?-*,[switch(%0,me,%#,num(*%0))],*1*-#*,INVALID))]=#*,{&dir-%q0 %q9=[setr(1,u(pickphone,%q0))];&ph-%q1 %q9=%q0;@pemit %#={[ansi(hc, <* PHONE *>)] REGISTERED: Phone # - %q1 is now registered to [name(%q0)].}},@pemit %#=[ansi(hc,<* PHONE *>)] INVALID: That Person/Room has already been Registered.
+&PHONEAVAIL Phone System=[filter(me/isopen,[setq(7,rand(10))][edit(iter(extract(shuffle(lnum(%q7000,%q7999)),1,50),round(fdiv(##,10000),4)),0.,[switch(type(%0),player,505,switch(left(name(%0),1),W,631,C,632,O,634))]-)])]
+&DIR Phone System=#59
+&ISOPEN Phone System=[not([hasattr([u(dir)],ph-*-%0)])]
+&TEST Phone System=$test:@pemit %#=[u(pickphone)]
+&PICKPHONE Phone System=[first([filter(me/isopen,[u(phoneavail,%0)])])]
+&DIRECTORY Phone System=$+phone/DIR:@pemit %#=[u(header)][iter(sortby(namesort,iter(iter(lattr(u(dir)/ph-*),u(u(dir)/##)),switch(type(##),ROOM,##))),%R[ansi(g,|)] [ansi(switch(mod(#@,2),0,hx,n),[ljust([u(names,##)]%b,30,.)] [u(#59/dir-##,-)][space(4)] [ljust([mid([u(##/address)],0,30)],30)])] [ansi(g,|)])]%R[u(footer)]
+&DIAL Phone System=$+phone/dial *:@switch/first [hasattr([setr(3,[u(dir)])],dir-%#)]-[hasattr(%q3,dir-%l)]-[hasattr(%q3,ph-%0)]=1-0-1,{&speaker %#=%#;&phone-set %#=Voice;&phone %#=[u(ph-%0)];&phone [u(ph-%0)]=%#;@oemit %#=[ansi(hc,<* CELL PHONE *>)] %N picks up %p cell phone and dials a number.;@pemit %#=[ansi(hc,<* CELL PHONE *>)] You pick up your cell phone and dial {%0}.},?-1-1,{&speaker %l=%#;&phone-set %l=Voice;&phone %l=[u(ph-%0)];&phone [u(ph-%0)]=%l;@oemit %#=[ansi(hc,<* PHONE *>)] %N picks up the phone and dials a number.;@pemit %#=[ansi(hc,<* PHONE *>)] You pick up the phone and dial {%0}.},0-0-1,{@pemit %#=[ansi(hc,<* PHONE *>)] Please move to a room with a phone system.},*-0,{@pemit %#=[ansi(hc,<* PHONE *>)] That number you have dialed is disconnected or no longer in service. Please check the '+phone/dir' and dial again.};@switch [type([setr(4,[u(ph-%0)])])]=PLAYER,{@oemit %q4=[ansi(hc,<* PHONE *>)] [name(%q4)]'s cell phone is ringing.;@pemit %q4=[ansi(hc,<* CELL PHONE *>)] Your Cell Phone is ringing. Type '[ansi(hg,+cphone/answer)]'},ROOM,{@pemit/contents %q4=[ansi(hc,<* PHONE *>)] The Phone is ringing. Type '[ansi(hg,+phone/answer)]' to answer it.}
+&ANSWER Phone System=$+phone/answer:@pemit/contents %l=[ansi(hc,<* PHONE *>)] %N picks up the phone.;&speaker %L=%#;&phone-set %L=Voice;@pemit [u([u(%l/phone)]/speaker)]=[ansi(hc,<* PHONE *>)] The phone picks up on the other end. '[ansi(hg,+P <Message>)]' to talk on the phone.
+&CANSWER Phone System=$+cphone/answer:@switch [hasattr([u(dir)],dir-%#)]=1,{@pemit/contents %l=[ansi(hc,<* CELL PHONE *>)] %N picks up the phone. '[ansi(hg,+CP <Message>)]' to talk on the phone.;&speaker %#=%#;&phone-set %#=Voice;@pemit [u([u(%#/phone)]/speaker)]=[ansi(hc,<* [switch([type([u(%#/phone)])],PLAYER,CELL )]PHONE *>)] The phone picks up on the other end. '[ansi(hg,[switch([type([u(%#/phone)])],PLAYER,+CP,+P)] <Message>)]' to talk on the phone.},{@pemit %#=[ansi(hc,<* CELL PHONE *>)] You do not own a cell phone.}
+&P-MESSAGE Phone System=$+p *:@switch/first [setr(1,[u(%l/phone)])]-[u(%l/phone-set)]-[u(%q1/phone-set)]-[u(%l/speaker)]=#*-Voice-Voice-%#,{@pemit %#=[ansi(hc,<* PHONE *>)] %[YOU%] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}";@oemit %#=%N [default(%#/say-message,says)] into the phone, "{%0}";@pemit [u(%q1/speaker)]=[ansi(hc,<* [switch([type(%q1)],PLAYER,CELL )]PHONE *>)] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}" },#*-Speaker-*,{@pemit %#=[ansi(hc,<* PHONE *>)] %[YOU%] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}";@oemit %#=%N [default(%#/say-message,says)] into the phone, "{%0}";@pemit/contents [switch([type(%q1)],Player,[loc(%q1)],%q1)]=[ansi(hc,<* [switch([type(%q1)],PLAYER,CELL )]PHONE *>)] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}" },#*-Video-Video-*,{@pemit/contents %l=[ansi(hc,<* VIDEO PHONE *>)] %N [default(%#/say-message,says)] towards the Vid Phone, "{%0}";@pemit/contents [switch([type(%q1)],PLAYER,[loc(%q1)],%q1)]=[ansi(hc,<* [switch([type(%q1)],PLAYER,CELL )]VIDEO PHONE *>)] %N [default(%#/say-message,says)] over the vid phone, "{%0}" },#*-Voice-Voice-%#,{@pemit %#=[ansi(hc,<* PHONE *>)] %[YOU%] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}";@oemit %#=%N [default(%#/say-message,says)] into the phone, "{%0}";@pemit [u(%q1/speaker)]=[ansi(hc,<* [switch([type(%q1)],PLAYER,CELL )]PHONE *>)] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}" }
+&CP-MESSAGE Phone System=$+cp *:@switch/first [setr(1,[u(%#/phone)])]-[u(%#/phone-set)]-[u(%q1/phone-set)]-[u(%#/speaker)]=#*-Voice-Voice-%#,{@pemit %#=[ansi(hc,<* PHONE *>)] %[YOU%] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}";@oemit %#=%N [default(%#/say-message,says)] into the phone, "{%0}";@pemit [u(%q1/speaker)]=[ansi(hc,<* [switch([type(%q1)],PLAYER,CELL )]PHONE *>)] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}" },#*-*-Speaker-%#,{@pemit %#=[ansi(hc,<* PHONE *>)] %[YOU%] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}";@oemit %#=%N [default(%#/say-message,says)] into the phone, "{%0}";@pemit/contents [switch([type(%q1)],Player,[loc(%q1)],%q1)]=[ansi(hc,<* [switch([type(%q1)],PLAYER,CELL )]PHONE *>)] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}" },#*-Video-Video-%#,{@pemit/contents %l=[ansi(hc,<* VIDEO PHONE *>)] %N [default(%#/say-message,says)] towards the Vid Phone, "{%0}";@pemit/contents [switch([type(%q1)],PLAYER,[loc(%q1)],%q1)]=[ansi(hc,<* [switch([type(%q1)],PLAYER,CELL )]VIDEO PHONE *>)] %N [default(%#/say-message,says)] over the vid phone, "{%0}" },#*-Voice-Voice-%#,{@pemit %#=[ansi(hc,<* PHONE *>)] %[YOU%] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}";@oemit %#=%N [default(%#/say-message,says)] into the phone, "{%0}";@pemit [u(%q1/speaker)]=[ansi(hc,<* [switch([type(%q1)],PLAYER,CELL )]PHONE *>)] [default(%#/phone-voice,switch(u(%#/sex),F*,A Female Voice,M*,A Male Voice,An UNKNOWN Voice))] [default(%#/say-message,says)], "{%0}" }
+&HANGUP Phone System=$+phone/hangup:@pemit/contents %L=[ansi(hc,<* PHONE *>)] %N hangs up the phone.;@pemit/contents [u(%l/phone)]=[ansi(hc,<* PHONE *>)] [name([u([u(%l/phone)]/speaker)])] hangs up the phone.;@dolist %l %# [u([u(%l/phone)]/speaker)] [u(%l/phone)]={&phone ##=;&speaker ##=;&phone-set ##=}
+&CHANGUP Phone System=$+cphone/hangup:@pemit/contents %l=[ansi(hc,<* CELL PHONE *>)] %N hangs up the phone.;@pemit/contents [u(%#/phone)]=[ansi(hc,<* CELL PHONE *>)] [name([u([u(%#/phone)]/speaker)])] hangs up the phone.;@dolist %l %# [u([u(%#/phone)]/speaker)] [u(%#/phone)]={&phone ##;&speaker ##;&phone-set ##}
+&ADDRESS Phone System=$+phone/address *:@pemit %#=[ansi(hc,<* PHONE *>)] Address Set: {%0};&address %l={%0}
+&SETTING Phone System=$+PHONE/SETTING *:@switch {%0}=Vi*,&phone-set %l=Video,Spe*,&phone-set %L=Speaker,Vo*,&phone-set %l=Voice;@pemit/contents %l=[ansi(hc,<* PHONE *>)] %N switches the phone over to [switch({%0},Vo*,Voice,SP*,Speaker,Vi*,Video)].
+&CSETTING Phone System=$+CPHONE/SETTING *:@switch {%0}=Vi*,&phone-set %l=Video,Spe*,&phone-set %L=Speaker,Vo*,&phone-set %l=Voice;@pemit/contents %l=[ansi(hc,<* CELL PHONE *>)] %N switches the phone over to [switch({%0},Vo*,Voice,SP*,Speaker,Vi*,Video)].
+&NAMES Phone System=[switch(1,[hasattr(%0,business)],[u(%0/business)],hasattr(%0,owner),[u(%0/res-1)]%, [left(u(%0/owner),1)].,[last(u(%0/full-name))]%, [left(first(u(%0/full-name)),1)].)]
+&DIRECTORY2 Phone System=$+cphone/DIR:@pemit %#=[u(header2)][iter(sortby(namesort,iter(iter(lattr(u(dir)/ph-*),u(u(dir)/##)),switch(type(##),PLAYER,##))),%R[ansi(g,|)] [ansi(switch(mod(#@,2),0,hx,n),[ljust([u(names,##)]%b,30,.)] [u(#59/dir-##,-)][space(4)] [ljust(Cell Phone,30)])] [ansi(g,|)])]%R[u(footer)]
+&HEADER2 Phone System=[ansi(g,%B[center(/ Cell Phone Directory %\,76,_)]%R|[center(NAME:,30)] [rjust(PHONE:,8)] [center(LOCATION:,25)][space(11)]|%R|[repeat(-,76)]|)]
+&CALL Phone System=$+phone/call *:@switch/first [hasattr(setr(3,u(dir)),dir-%#)]-[hasattr(%q3,dir-%l)]-[hasattr(%q3,dir-[setr(0,pmatch(%0))])]=1-0-1,{&speaker %#=%#;&phone-set %#=Voice;&phone %#=%q0;&phone %q0=%#;@oemit %#=[ansi(hc,<* CELL PHONE *>)] %N picks up %p cell phone and dials a number.;@pemit %#=[ansi(hc,<* CELL PHONE *>)] You pick up your cell phone and dial {%0}.},?-1-1,{&speaker %l=%#;&phone-set %l=Voice;&phone %l=%q0;&phone %q0=%l;@oemit %#=[ansi(hc,<* PHONE *>)] %N picks up the phone and dials a number.;@pemit %#=[ansi(hc,<* PHONE *>)] You pick up the phone and dial {%0}.},0-0-1,{@pemit %#=[ansi(hc,<* PHONE *>)] Please move to a room with a phone system.},*-0,{@pemit %#=[ansi(hc,<* PHONE *>)] The number you have dialed is disconnected or no longer in service. Please check the '+phone/dir' or '+cphone/dir' and dial again.};@switch [type(%q0)]=PLAYER,{@oemit %q0=[ansi(hc,<* PHONE *>)] [name(%q0)]'s cell phone is ringing.;@pemit %q0=[ansi(hc,<* CELL PHONE *>)] Your Cell Phone is ringing. Type '[ansi(h,+cphone/answer)]'}
+@set Phone System=INHERIT
+@set Phone System=SAFE
+@link Phone Directory=Phone System
+@tel Phone Directory=Phone System
+@tel Phone System=#2

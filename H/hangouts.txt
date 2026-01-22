@@ -1,0 +1,34 @@
+Help File:
+------------------------------------------------------------------------------
++hangouts
+
+  SYNTAX: +hangouts
+          +hangouts/tel <dbref>
+
+  The first command is used to list the available hangouts on the grid and
+  shows how many players are currently at that location. The second command
+  is used to travel to the location selected using the dbref of that room.
+
+------------------------------------------------------------------------------
+
+Staff Help File:
+------------------------------------------------------------------------------
++hangouts
+
+  SYNTAX: +hangouts/add <dbref/here>
+          +hangouts/remove <dbref/here>
+
+  The first command is used to add a location to the +hangouts list. The
+  second command is used to remove a location from the +hangouts list. These
+  commands can only be used with a Dbref number or 'here'.
+
+------------------------------------------------------------------------------
+
+@create Hangouts Object=10
+&HANGOUTS-LIST Hangouts Object=#0 #11
+&C.HANGOUTS Hangouts Object=$+hangouts:@switch [t(v(hangouts-list))]=0,{@pemit %#=[center(<%b[ansi(h,[mudname()] Hangouts)]%b>,78,-)]%r%b[ljust(DBref,7)][ljust(Location,55)]Players%r[repeat(-,78)];@pemit %#=%r[center(There are currently no hangouts.,78)]%r%r[repeat(-,78)]},{@pemit %#=[center(<%b[ansi(h,[mudname()] Hangouts)]%b>,78,-)]%r%b[ljust(DBref,7)][ljust(Location,55)]Players%r[repeat(-,78)];@pemit %#=[list(v(hangouts-list),%b[ljust(num(%i0),7)][ljust(name(%i0) - [get(%i0/area)] - [get(%i0/zone)]%b,57,.)]%b[words(setinter(lcon(%i0),lwho()))])][repeat(-,78)]%r[center(Type '[ansi(h,+hangouts/tel <dbref>)]' to teleport to a location.,78)]%r[repeat(-,78)]}
+&C.TEL Hangouts Object=$+hangouts/tel *:@switch [hastype(%0,room)]=1,{@switch [match(loc(%#),%0)]=0,{@switch [gte(match([u(hangouts-list)],%0,%b),1)]=1,{@oemit %#=[ansi(hc,Game:)] [name(%#)] will be departing soon to [name(%0)].;@remit %0=[ansi(hc,Game:)] [name(%#)] will be arriving soon.;@pemit %#=[ansi(hc,Game:)] You will be departing soon for [name(%0)].;@wait 5=@tel %#=%0;@wait 6=@pemit %#=[ansi(hc,Game:)] You have arrived at your destination.},{@pemit %#=[ansi(hr,Error:)] That dbref is not on the hangouts list. Please try again.}},{@pemit %#=[ansi(hr,Error:)] You are already at that location. Please try again.}},{@pemit %#=[ansi(hr,Error:)] You can not travel to a non-room. Check the Dbref and try again.}
+&C.ADD Hangouts Object=$+hangouts/add *:@switch [strmatch(%0,here)]=0,{@switch [hastype(%0,room)]=1,{@switch [isdbref(%0)]=1,{@switch [match([u(hangouts-list)],%0,%b)]=0,{&hangouts-list me=[sort([u(hangouts-list)]%b%0)];@pemit %#=[ansi(hc,Game:)] You have added [name(%0)] %(%0%) to the hangouts list.},{@pemit %#=[ansi(hr,Error:)] [name(%0)] %(%0%) is already on the +hangouts list.}},{@pemit %#=[ansi(hr,Error:)] That is not a valid dbref number. Please try again.}},{@pemit %#=[ansi(hr,Error:)] That is not a room. Check the Dbref and try again.}},{@switch [match(u(hangouts-list),loc(%#),%b)]=0,{&hangouts-list me=[sort([u(hangouts-list)]%b[loc(%#)])];@pemit %#=[ansi(hc,Game:)] You have added [name(loc(%#))] %([loc(%#)]%) to the hangouts list.},{@pemit %#=[ansi(hr,Error:)] [name(loc(%#))] %([loc(%#)]%) is already on the +hangouts list.}}
+&C.REMOVE Hangouts Object=$+hangouts/remove *:@switch [strmatch(%0,here)]=0,{[setq(0,switch(isdbref(%0),1,%0,capstr_all(*%0)))];@switch/first 1=not(strmatch(type(%q0),room)),{@pemit %#=[ansi(hr,Error:)] [name(%0)] is not a valid dbref number. Please try again.},not(match(u(hangouts-list),%q0)),{@pemit %#=[ansi(hr,Error:)] That location is not listed in the +hangouts list.},{&hangouts-list me=remove(u(hangouts-list),%q0);@pemit %#=[ansi(hc,Game:)] You have removed [name(%q0)] %(%q0%) from the +hangouts list.}},{&hangouts-list me=remove(u(hangouts-list),loc(%#));@pemit %#=[ansi(hc,Game:)] You have removed [name(loc(%#))] %([loc(%#)]%) from the +hangouts list.}
+@set Hangouts Object=INHERIT
+@set Hangouts Object=SAFE

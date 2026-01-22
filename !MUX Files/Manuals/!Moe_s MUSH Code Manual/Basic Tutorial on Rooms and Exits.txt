@@ -1,0 +1,483 @@
+ ~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+|\ /| |\ /| |\ /|
+| \ / | | \ / | | \ / |
+| \/ |oe's | \/ |ushkode | \/ |anual
+~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+
+BUILDING, YA DIG?
+
+So, you're mushing. And you're going around in these environments that
+have been crafted by those that came to that site before you. And you're ready
+to make a contribution to the environ, but don't have the foggiest how you're
+going to do it. So, you ask someone, and they point you to the ever-infamous
+cryptic help files for about a half-dozen commands, including but not limited
+to: @dig, @open, @link, @succ, @osucc, @odrop, @fail, @lock, @desc, and @idesc.
+What IS all this gibberish, you ask? Well, I shall endeavour to teach
+you the beginner's guide to building on a MUSH. Will it teach you absolutely
+everything you could ever know? No. Will it teach you how to make rooms and
+exits that will conform to the building standards of most games, and allow you
+to impress your friends and neighbours with your building savvy? Yes.
+
+PUTTING THE 'FUN' BACK IN FUNDAMENTALS
+
+There are four main types of objects on a MUSH. Player objects(your
+character, for instance), things(objects created with @create. More on this
+later), exits(the objects you use to get from one room to another), and
+rooms(the places you go to RP on a MUSH). All objects are best referenced by
+their dbref, which stands for database reference number. There is no more
+specific way to reference an object on a MUSH than by dbref. So, we shall
+endeavour to do that whenever possible, whether building or coding. In most
+cases, the dbref is easier to type because it's shorter, anyways. For most
+building purposes, you only need to work with rooms and exits. Some basic
+concepts on these:
+
+Room - A room on a MUSH is identifiable because it has the R immediately after
+the dbref. Example: The Room(#1234RnJ) tells you that you are in a room named
+'The Room', its dbref is #1234, it's of the type ROOM, and has the flags
+'no_command and jump_ok'. A room can be thought of as a 'box'. It is something
+that can hold other objects inside of it. It can have most any name you can
+think of, and can have practically any description you want.
+
+Exit - Exits on a MUSH are what connect rooms together. An exit is a ONE-WAY
+door. This is a very important concept that most people don't have when they
+start building. Exits are a lot like 'doors', yes. But, doors are a single
+object that let you go both ways. Not so with exits. Exits only provide a
+one-way connection between one room and another.
+The best analogy I can make is that an exit is like a radio. It takes
+things from a source(radio waves in the air), and spits them out somewhere
+else(in the room). You can't talk to the clock radio(in most cases) by your
+bedside, and have people in the radio station hear you. You need something to
+transmit back. So it is with exits. You have to have an exit going from Room A
+to Room B, AND an exit going from Room B BACK to Room A if you want to mimic a
+'doorway'.
+Another feature of exits is that they can have multiple aliases you can
+use to trigger their usage. This is evident in exits that are named Out <O>,
+for instance, where you can type 'out' or just 'o' and either one will take you
+through that exit. Exits are named with all their aliases in their name, so it
+looks something like: Out <O>;out;o;exit;leave. The ; in between each alias
+separates them into a list. Any of those options may be typed. You only ever
+see the /first/ name in the ;-separated list, in the list of exits in a room.
+This is why there is the convention of putting the 'Out <O>' as the first name
+there.
+
+WERE YOU BORN IN A BARN?
+
+No, but we'll build one. A simple two-room barn that has a Barn, and a
+Hayloft. In doing so, we will learn about how rooms link together in a virtual
+environment, how to use exit messages to personalize your building, and what
+the various exit messages do.
+To start with, we have to assume that you're standing in a room. All
+MUSHes have at least one. There is one and only one command to create a room,
+but there are several variations on how it can be used. Most people use one of
+three ways, and I shall list them here for their educational value:
+
+1) @dig Barn
+2) @dig/tel Barn
+3) @dig Barn=Barn <B>;barn;b,Out <O>;out;o;exit;leave
+
+You'll notice that all three of these start with @dig. This is because
+@dig is the command to create a room. You are literally 'digging' into the
+virtual stuff that makes a MUSH, and carving out the shape of your box. In all
+three cases, the one thing that is guaranteed to happen is that you will create
+a room named 'Barn'. This room will be assigned a dbref. You'll see this dbref
+when it's assigned, because you will be given a message that looks like:
+
+Room 'Barn' created with dbref #100.
+
+For the sake of our hypothetical barn, let's say that this Barn was given the
+dbref #100.
+
+Let's look at the differences between the three. The first version will
+create the room and nothing more. There will be a room, unconnected to
+anything, floating out in the etherspace, waiting for you. The second version
+will first dig the room, and then @teleport you into it. You can teleport into
+any room you own. The point in teleporting you into the room is so that you can
+do your work from within the room, rather than outside of it. @dig/tel is used
+in @decompiles of MUSH building.
+The last version of the command is more complicated, but in my woefully
+unhumble opinion, the most useful. This version does three things, all in one
+line. It digs the room for you. It then opens an exit from where you are(the
+room you are currently in) TO the new room. And, it opens an exit back from
+your brand new room to where you are. In one command, you've taken care of
+building your room, and exits in and out of it!
+Because we will be needing some other methods to make our barn,
+we'll discuss how to create exits by themselves. The basic command to do
+this is @open, and it too has two variations.
+
+AN @OPEN AND SHUT CASE
+
+The @open command does just that. It 'opens' an exit from one location
+to another location. As was pointed out above, when you create or name an exit,
+you can give it multiple aliases that let you have a variety of commands to
+type that utilize the exit. The most basic way to open an exit is:
+
+@open Exit Name;alias1;alias2;...;aliasN=#dbref
+
+This opens an exit from the room you are in to the target specified by
+the dbref. You can't use the name of the room, because if you are in one room
+you cannot technically 'see' another room. You must use the dbref to open an
+exit.
+There is a slightly more advanced version of @open that works similarly
+to what we witnessed above in the #3 version of @dig. Its syntax is:
+
+@open Exit Name;alias1;alias2;alias3;...;aliasN=#dbref,Exit
+Back;alias1;alias2;alias3;...;aliasN
+
+Yes, this version does the same thing as the long version of @dig, with
+the exception that it doesn't create the room. This simply makes the two-way
+path between the room you are in and the target room, specified by dbref. The
+first exit(before the =) is the exit TO the next room. The last exit(after the
+#dbref,) is the exit BACK to the room in which you are currently standing.
+
+RAISING THE ROOF
+
+Alright, so let's start with our barn. I'm going to use the long
+version of the @dig command, because to me, it saves time. There's no need to
+match up dbrefs in @open. Some basic rules before you begin any building
+project:
+- You have to have permission to build! Some games restrict building. Read the
+posted news files and bulletin boards to see if this is the case.
+
+- You have to be able to link exits to and from the room you're in. If you
+don't have permission to do this, find out if your game has a 'Building Zone'
+where such privileges are okay. A room set with the LINK_OK flag can have exits
+linked to it.
+
+- You have to know what you're building! This sounds somewhat silly, but many
+people skip this step, which leads to a number of errors later. Take two
+minutes and sketch out the rough 'map' of what you're going to build on a piece
+of paper. That way, you can see the spatial relationships better, and plan out
+what exits are needed.
+
+- You have to have enough pennies to build. In general, rooms cost ten pennies
+to @dig, exits cost 1 penny to open and 1 penny to link. So, to make one room
+with an exit going in and out takes 14 pennies. A number of games have quotas
+as well. See how much quota you have, and try and design a building project
+that can be accomodated in that.
+
+All those rules aside, let's build. We'll assume you have sufficient
+quota, money, and privileges, and that you are in room #99. Now, we'll get
+started. Our first command:
+
+@dig Barn=Barn <B>;barn;b,Out of the Barn <O>;out;o;exit;leave;out of the barn
+
+This creates a room named Barn. Again, we'll say it's #100. It also
+creates two exits. One of them is #101(the exit named Barn <B>), the other is
+#102(Out). These are numbered in order, taking up the next two available
+numbers in your db. They will not /always/ be sequential, but more often than
+not, they will. It's a good idea when building to keep a little scratch pad
+nearby, for marking down dbref numbers to remember while you build.
+This is important especially if you are a mortal(non-Wizard,
+non-Royalty), because it costs 100 pennies on most games to use @search or
+@find, and that eliminates 7 rooms and 14 exits from your possible building
+project!
+Alright, so we have a room and two exits. The first thing we want to do
+is put the messages on our exit going INTO the barn. There are four messages
+that are considered 'standard' to put on /every/ exit you make. These are the
+@desc, @succ, @osucc, and @odrop messages. These confuse a lot of people, so I
+will outline them here with what I hope are easy to understand definitions:
+
+@desc - Description. Short for @describe. What you see when you 'look' at
+something. Exits are like the other three types of objects(Room, Thing,
+Player), in that you can look at them. Try typing 'look barn'. You'll get: You
+see nothing special. This is the default MU* message for something having no
+description.
+
+@succ - Short for @success. This is the message seen when a player
+successfully(hence the name) goes through the exit. It is seen /by/ the player
+going through the exit. So, if you put an @succ message on your Barn <B> exit,
+and then go through the exit, YOU see the message. An example is:
+@succ barn=You pass through the door, and enter the barn.
+And if you go in through the barn exit(by typing 'barn', or 'b'), you
+will see: You pass through the door, and enter the barn.
+
+@osucc - Short for @osuccess. Any MUSH command that begins with @o means that
+it is a message (O)ther people will see when something happens. And it's a
+'succ' messages, meaning it is shown when something successfully happens. In
+this case, it is you going through the exit. Also, any MUSH command that begins
+with @o means that the name of the object that triggered the message will be
+put in front of it. That cannot be helped. The MUSH is coded to do it that way,
+and has been so for about a dozen years. This will happen every time. All you
+have to provide is what will be shown /after/ the object's name.
+Now, some small bit of talk needs to be given to which other people
+will see this message. Exits have a source(called its 'home') and a
+destination(called its 'location'). The home is where it is going from, and its
+location is where it is going to. You 'use' the exit in its home, at its
+source. So, other people in the same room as the home, or source, of the exit
+are the ones that are going to see it. For example:
+@osucc barn=enters the barn.
+Then, in room #99 where you started, your friend Bubba is standing
+there. Bubba decides to go into the barn.
+Bubba types: barn
+Bubba sees: You pass through the door, and enter the barn. (the @succ message)
+You see: Bubba enters the barn.
+
+@odrop - Not short for anything. Again, we have an @o message, which means a)
+it is a message that (o)ther people will see and b) it will have the object's
+name that triggered it, put in front of whatever you set the message to be. Why
+is it called 'drop', you ask? Because technically, when you go through an exit,
+it is 'dropping' you in a new location. This is the same as if you pick up a
+Book in Room #99 and @teleport yourself to room #100(your Barn) and type 'drop
+book'. It is the best way to describe what the exit does. It drops you in the
+next room, its location. Because of this, the 'o' in the odrop means that
+(o)ther people in the destination of the exit are going to see the message. Not
+the people at the source. They see the osucc. People in the destination room
+see the odrop. Here's an example:
+@odrop barn=comes through the door, into the barn.
+So, hypothetically, Bubba is back in Room #99 with you. Jethro is in
+the Barn, waiting on Bubba.
+
+Bubba types: barn
+Bubba sees: You pass through the door, and enter the barn. (the @succ message)
+You see: Bubba enters the barn. (the @osucc message)
+Jethro sees: Bubba comes through the door, into the barn. (the @odrop message)
+
+The description on the exit is usually just that, a description of
+whatever passage the exit represents. If it is a hallway, it should be
+described as a hallway. If it is a door, then it should be described such.
+Something else that can be done is to set an exit with the TRANSPARENT flag,
+which lets you see the description in the room beyond when you look at the
+exit. Please note that even with the TRANSPARENT flag set, if you look at an
+exit that does not have an @desc, you will still see 'You see nothing special.'
+before you see the desc of the room beyond.
+For our barn door, I would suggest something like:
+@desc barn=This is a sturdy wooden door that slides to the right to admit
+entrance to the big, red barn.
+If you've done all the messages I've outline here, you've got your
+first exit done, and you're ready to go into the Barn itself. Type 'barn', and
+go in. You won't see much. You'll see:
+
+Barn(#100R)
+
+Obvious exits
+Out <O>
+
+From this point, you have two responsibilities. You have to describe
+your room, and you have to message your out exit. Let's take care of the exit
+first, as that's easiest to forget about, if you leave it too long. A room with
+no desc tends to attract your attention more than an exit with no odrop.
+This is the exit that will be used to exit your barn, so I would
+suggest putting messages on it that reflect this. Here are some suggestions:
+@desc out=This is the inside of the sturdy wooden door that slides to one side,
+allowing passage in and out of the barn.
+@succ out=With a rumble as it moves on the rails, you slide the door to one
+side, and exit the barn.
+@osucc out=slides the big barn door to one side and exits.
+@odrop out=comes out of the barn.
+
+As a general rule, it is helpful to provide a reference in the osucc
+and odrop messages to let the people seeing them know where the person was
+coming from. If there are four doors into a room, and the odrop reads 'comes
+into the room.' then you don't know from which room they entered!
+Similarly, unless it's for a specific effect, an osucc and odrop that
+are four or five lines long becomes spammy to those who might be seeing four or
+five people come through an exit at once. However, I /do/ recommend putting
+some descriptive messages in your @succ messages. While some players might
+scoff and say they never read those things, I personally feel that they are a
+very effective way of developing a roleplay-like interaction between you and
+your environment. The @succ can provide some really interesting information to
+the user, should you choose to put it in.
+
+A DESC JOB
+
+Describing a room is regarded by some as an art form, some as the
+equivalent of hard labor, and even others as an exact science. The same command
+used to describe your character, an exit, or an object, is used to describe a
+room. @desc here=<your description here>. As a general rule, remember that
+there are still many viewers who will be viewing your description on an
+80-column screen with 24 to 28 rows. Two or three solid paragraphs can describe
+most environments well, and if there are things that are absolutely crucial to
+your room or building project, I suggest the use of +view code, senses code, or
+other such softcoded devices to add ambience to your building.
+Since I've mentioned them, let's discuss how to make paragraphs on a
+MUSH. How DO people get those carriage returns and tabs in there, anyways?
+Without teaching you a bunch of arcane mushcode, I will tell you simply that
+there are two 'codes' that you put into your text that create those things.
+They are: %r and %t. They are for carriage returns, and tabs, respectively. It
+doesn't matter if you have them upper case, or lower case. %r does the same
+thing as %R. %T the same as %t. Whichever one you choose to use is up to you.
+They go into your text where you want them to be. People viewing your
+descs won't see them, all they will see is a beautifully-formatted paragraph.
+An example is: @desc here=Roses are red%R%tViolets are blue%R%t%tI can make line
+breaks%R%t%t%tAnd now you can too!
+This gives us:
+Roses are red
+Violets are blue
+I can make line breaks
+And now you can too!
+
+I just put the carriage returns and tabs in where I wanted them, and
+the game did the rest. For readability(easing the user's comprehension), I
+suggest starting /every/ room desc with %R%t and ending /every/ room desc with
+%r. This provides a blank line and an indent at the beginning, and a blank line
+at the bottom. It frames the desc nicely on the screen, and makes it stand out
+from the poses and channel spam around it.
+Back to this room, you're in a barn. Think to yourself what a barn
+looks like on the inside. Or what you THINK a barn looks like on the inside, if
+you've never been in one. Oftentimes, we will find ourselves describing
+something that either isn't real, or we've never seen. So, it falls upon our
+creative writing skills and imaginations to create with language an image of
+the environment. Try and be descriptive. Better descriptions are enjoyed as
+things of beauty by MUSHers, to be hailed and logged, and read over and over
+again. Bad descriptions, or ones without any character, are the ones which
+become wholly ignored.
+Not every description is Pulitzer-worthy, and not every desc is going
+to please everyone, every time it's read. But, you can still try. This is how
+you are setting the tone for your environment. I leave it up to you to @desc
+your Barn room, using the command: @desc here=<your description>
+
+LOFTY AMBITIONS
+
+Now, we have described our barn, we've messaged our exits in and out,
+and we want to build another room from this one, which is a hayloft. I'm just
+going to walk you through the basic process of this, as it is exactly what we
+have done in building our original Barn room, just with a different room name,
+and exit names.
+
+1) @dig Hayloft=Up to Hayloft <Up>;up;u;up to hayloft;hayloft,Down to Barn
+<Down>;down;d;down to barn;barn
+2) @set up= transparent (We do this because it's 'logical' that you could see
+up into the hayloft from the barn floor.)
+3) @desc up=This is a sturdy wooden ladder that leads up into the dim reaches
+of the hayloft. Looking up into the hayloft, you see...
+(This puts some language to connect the desc of our up exit with the desc of
+the next room, in this case the hayloft)
+4) @succ up=You climb the ladder, the strong wood rails supporting your weight
+without wobbling.
+5) @osucc up=climbs the ladder into the hayloft.
+6) @odrop up=comes up the ladder from the barn floor below.
+7) up
+8) @set down=transparent (see #2 above)
+9) @desc down=Peering down from the hayloft, you see the ladder and... (see #3
+above)
+10) @succ down=Using the ladder to defy the forces of gravity, you descend from
+the hayloft to the barn floor below.
+11) @osucc down=goes down the ladder to the barn floor below.
+12) @odrop down=comes down the ladder from the hayloft above.
+13) @desc here=<desc of hayloft>.
+
+Now, let's add a nice 'touch' to our hayloft. It's possible that your
+players might want to play out the experience of 'falling' from the hayloft.
+But, you don't want to have an exit listed that says: Fall <F>, of course. So,
+let's make a dark exit leading from our hayloft to our barn floor.
+First, let's remember that our Barn is dbref #100. And let's go up a
+bit and read what was shown about @open being used to open an exit from one
+room to another. We don't need an exit back, since the point of the exit is
+just to go from the hayloft down to the barn floor.
+So, our commands look like:
+1) @open fall=#100 (opens the exit named 'fall' to the Barn below. We don't
+really need aliases.)
+2) @set fall=dark
+3) @desc fall=Careful you don't want to 'fall' out, do you? (The quotes give a
+little hint, just in case someone should happen to look at it.)
+4) @succ fall=Whoa! You slip and fall out of the hayloft, tumbling down to the
+barn floor below!
+5) @osucc fall=tumbles out of the hayloft, falling down to the barn floor
+below!
+6) @odrop fall=falls out of the hayloft!
+
+In a case like this, I strongly suggest adding a quoted 'hint'(like
+that) in the desc of the room as well, so that players can clue in that 'fall'
+might be a command they can type in this room to produce an effect. This didn't
+take any softcode, no teleporting, and you now have a way to fall out of the
+hayloft!
+
+@TEL ME ABOUT THE MISSING @LINK
+
+If you already have an exit that connects one room to another, a
+mistake in the name, a missing alias, an error in any of the messages, an exit
+that doesn't connect to the right room, or any number of other common errors
+that occur with messages, you can fix any of them...without destroying the
+exit! A lot of people tend to @nuke a lot of things when they are first
+building, because it has a 'mistake'. The only time you ever need to do that is
+if you don't need the object anymore. If there is a mistake in it, either in a
+message, its name, or some other attribute, change /that/ instead of @nuking.
+Exits can be picked up and moved, if you own them. You simply 'get
+<exit>', move to the new location and then 'drop <exit>' where you want it. Or,
+you can @teleport the exit to its new location, using the dbref numbers. This
+effectively 'moves' the exit, without changing its destination.
+If you /do/ need to change the destination of an exit, all you need to
+do is @link <exit>=<new dbref>. Again, you need to always reference the new
+destination with the dbref of the room. This changes the destination of your
+exit from the old room, to the new one that you have specified. Messages can
+always be reset, or edited.
+
+EDIT SHMEDIT
+
+One of the most powerful commands at your disposal when building is
+@edit. For many MUSHers, it is easy to cut and paste a description, for others
+it is just a matter of scrolling back a few commands and editing the mistake
+you made. But, there are times when you come across something glaring, perhaps
+something you built a few weeks ago and so the command isn't in your buffer
+anymore. Or perhaps you just realized how often you've been spelling
+'the' as 'teh'.
+
+The @edit command allows you to take the contents of an attribute,
+specify text to change, and text to change it to, and it does it. There are two
+points to note about using @edit. The first is, it will edit EVERY instance of
+the text, inside that attribute. So, if you only need to change one small
+error, make sure you give a specific enough example.
+The second is, if the text you are wanting to edit contains commas, put
+your text inside curly braces( { } )! Here is the syntax for @edit:
+
+@edit <object>/<attribute>=<text to change>,<new text>
+
+The reason for being so picky about the commas should be clear. @edit
+uses a comma to separate its old text from its new text. So, the first comma it
+sees that is not inside a curly brace is going to be treated as the divider.
+Here is a brief example:
+
+@desc ball=This is a big red ball, with a broad white strip around it.
+
+There is a typo in there, deliberately. So, I could retype this, or I
+can use @edit. Since I'm trying to teach YOU to use @edit, let's do it that
+way:
+@edit ball/desc=strip,stripe
+
+The desc now reads:
+This is a big red ball, with a broad white stripe around it.
+Now, what if we wanted to put a phrase after 'ball,' that says 'about
+eight inches in diameter,'? This is where we would need to use the {}.
+@edit ball/desc={ball,},{ball, about eight inches in diameter,}
+
+The desc now reads:
+This is a big red ball, about eight inches in diameter, with a broad white
+stripe around it.
+@edit takes a little bit of practice to have it work every time. But,
+once you have mastered it, you have one of the most powerful text-editing tools
+on the MUSH, at your disposal.
+
+SUMMARY
+
+Well, look at what you know now! You now know how to sit atop a pile of
+virtual matter, carve out a space to serve as a room, and make portals that
+carry you to and from that room. You're armed with the skills to make those
+devices interactive and descriptive, and you know how to edit any mistakes you
+might make. All in all, you're able to do a fair amount with only a little bit
+of training. And you thought this was going to be hard!
+
+Some last words of advice I will give. Building is all of the things I
+listed at the opening to this tutorial. It is an exact science, it is an arcane
+art, it is frustrating at times, but it is also the method by which you create
+your vision and imagination for the enjoyment of others. Like all creative
+pursuits, you get better at it, the more you do it. Hemingway's first writings
+were certainly not what garnered him the fame he has today. You don't have to
+be Hemingway to build, though. It is much less about how good your building is
+compared to someone else's. That's /your/ judgement. Do your best to use the
+best language you can to describe what you see in your head, and be proud of
+what you have created.
+
+Last, be aware of spatial relationships when building. Mainly, this is
+present in what you name your exits. If you are building a house, make sure
+that the upstairs rooms are 'virtually' over a downstairs room, otherwise
+they're probably going to be hanging out in space. If you're building a forest,
+make sure that your directions(N, S, E, W) remain consistent. Don't have your
+players going north, then west, and being back where they started. Be aware of
+how large each room is supposed to be, and describe it accordingly. All rooms
+on a MUSH are the same size: Infinite. How large they appear depends on how you
+describe them. @dig does not diffrentiate between a closet and a ballroom.
+Most of all, enjoy yourself. Again, this is an exercise in creativity.
+Enjoy setting your hand to the creation of an environ that is hopefully going
+to add flavour, character, and a viable venue for RP to your MUSH.
+
+Happy Building! 

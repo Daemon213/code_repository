@@ -1,0 +1,776 @@
+ Topic: Successful Tinyplotting
+Author: Octavian, et al
+Summary: Octavian organized a small, but exceptionally informative seminar
+about the management of TinyPlots.
+
+Thursday, April 01, 1999
+
+Octavian waves. "Hail there. The topics I've got right now are:
+
+how much planning should be done (open ended/closed ended),
+predicting success and failure of plots in different ways,
+how much you need to tell people involved a plot,
+plotting on the fly,
+ownership of plot authoring,
+plotting for various numbers of players,
+overlapping/sequel plotting,
+features and temporary characters,
+and advertising,
+
+... not really in that order, and whatever else comes up. Anything else to
+add right off the bat? :)"
+Octavian wonders if starting in about 5 minutes is good for people.
+
+Brody says, "Works for me."
+Killa nods.
+Marretta says, "Okay with me!"
+Nova nods
+
+Trispis says, "Okay, folks. Can I have your attention please."
+
+Brody swivels his chair so he can look at Trispis. It squeaks. Just a little.
+
+Trispis says, "Octavian and I have decided that I'll moderate, rather than be
+an unspecified panelist (I volunteered to make sure he'd have some people, but
+it seems that's no longer necessary.). Instructions to follow..."
+Trispis says, "First: @chan/on 101"
+
+<101> Nova has joined this channel.
+<101> Brody has joined this channel.
+<101> Killa has joined this channel.
+<101> kalouri has joined this channel.
+<101> Octavian has joined this channel.
+
+Trispis says, "If you're here as a panelist/speaker, please page me with your
+topic."
+Trispis says, "er... topic/expertise/interest/etc."
+
+David flips his name the right way around.
+
+Trispis says, "Next, please use the +101 chat channel to raise your hand for
+speaking or whatever."
+Trispis says, "It will make it a whole lot easier to edit the log if you use
+the channel for such things."
+
+Brody nods
+Killa noddles.
+
+<101> Skyflight has joined this channel.
+
+Trispis says, "Okay. I think I've got everyone accounted for (at least
+nominally)."
+Trispis says, "Next, I'd like to thank Octavian for putting this all together.
+This is a first of sorts for 101, in that someone actually volunteered to
+hold a presentation. I'm very grateful for that. It's also a first in another
+respect: It's our first Roleplay oriented presentation. Being a coder, I can
+only apologize for it taking this long to get an RP presentation to occur.
+Thanks again, Oct. This sorta rounds out the 101 purpose."
+Trispis says, "Some of the presenters have asked if I have any order I intend
+to introduce them. The answer is: Yes. Randomly."
+
+Killa grins.
+Brody chuckles
+David says, "Clever."
+Grinna smiles
+kalouri says, "Bold move"
+Nova grynz
+
+Trispis says, "I'll give most of them a break, though, and begin with the
+instigator of this mess. So... let's give a warm welcome to Octavian, former
+troublemaker on CDI and current god of COE. Octavian... the floor is yours.
+(Remember, folks: Raise your hand and stuff on +101)."
+
+Kyieren applauds as Octavian takes the floor.
+Killa claps.
+Brody claps as well
+
+Octavian says, "Thanks for that brutally honest introduction. :)"
+Octavian says, "The purpose of this discussion is to, hopefully, share what we
+have learned from plotting experience, as well as give some guidance to people
+new to tinyplotting (TPing). To start heading in that direction, I'd like to
+do a brief, if overly academic, introduction on TPs and their importance."
+Octavian says, "Also, as I'm typing this and my hands don't always connect to
+my thoughts, if I say something that doesn't parse, you can just page me and
+I'll fix it. :)"
+
+<101> Trispis says, "In order to get all of the presentations done in a timely
+manner, I'll be moving from one presentation to the next. After all of the
+presentations have been given, we can open the floor to semi-organized
+questions/answers, eventually moving toward unmoderated discussion, depending
+on how long people stay."
+
+Octavian says, "Marshall McLuhan, the famous and celebrated media theorist,
+noted that, in any given medium, the content itself is always *another*
+medium. For example, the content of the daily paper is news, and the content
+of the billboard is advertising."
+Octavian says, "MUSHes, in their way, are themselves a new mass medium. Most
+are open to anyone who would wish to access them, they have content, and they
+reach an audience that spans distance and time."
+Octavian says, "Therefore, in keeping with McLuhan's theory, it can be said
+that the content of the MUSH is often the story."
+Octavian says, "On M*U*S*H, that story is your real life story. :) But on many
+other MUSHes, those stories are ones we roleplay. The story arcs that move
+through that roleplay are TinyPlots."
+Octavian says, "In particular, today's discussion will be about how to create
+those stories, and by doing so, how to guide the content for this medium.
+Thanks for reading my incredibly slow typing, and I hope you enjoy the rest.
+:)"
+
+<101> Octavian is done.
+<101> Trispis nods.
+
+Trispis says, "Thanks, Oct. If I must say so myself, that presents a nice
+canvas on which we can discuss the more intricate details."
+Trispis says, "As a long-time champion of newbies and underdogs, I must say
+that the newbie, in general, can throw obstacles into the best organized TP.
+So, without further ado, I'd like to get the 'newbie issue' placed onto this
+fine canvas of discussion. Everyone give a warm welcome to Killa..."
+
+Killa grins and stands.
+
+David claps.
+Brody claps.
+Grinna applauds. :)
+Marretta welcomes warmly.
+Nova applauds "Go girl!"
+kalouri joins the applause
+
+Killa says, "Thank you. First off we should define exactly what a newbie is to
+a mush. Newbies are players who generally have little to no experience with
+MUSHing and specifically your mush. Before a newbie even enters ICdom, they
+should be aware and familiar with the important aspects. If you have a combat
+system, they should know how to use it effectively. They should have already
+met the TP Coordinator and the tpstaff. On Star Wars:Galaxy's Edge, we have a
+newbie tpstaffer. That's what this person does all day, everyday...but I
+digress...."
+Killa says, "There are horror stories about newbies that sat in the bar all
+day. I know, I've been one:) Newbies are the lifeblood of a mush. Tpstaff
+should have any number of generic tps that can be implemented with little
+fuss. Ever hear of the Flaming Winnebago that's prone to being burned down by
+some shady character? Surprise them. Not only does this buy time for tpstaff
+to integrate them into the current tp but it helps the newbie to connect to
+the other players...."
+Killa says, "Now of course is the question many Tplotters deal with:How to
+successfully integrate the newbie into the tp. Depending on the format and
+theme, this can be entirely too easy or as hard as chewing on a boulder. My
+personal experience has been on faction based MUSHes so therefore there is
+always a good fight to be had somewhere. For those that stress an ongoing
+storyline where there is little opportunity for direct physical conflict, I
+find having a TPchar who just LOVES to 'help' the new char out by telling them
+the latest gossip serves the same purpose. However you do it, it is important
+to remember that it needs to happen pretty quickly. Don't let your newbies
+wait weeks before finding them. They'll leave and word of mouth kills...."
+Killa steps down and takes her seat.
+
+<101> Killa is done.
+
+Trispis says, "Thank you, Killa."
+
+Nova clapclaps
+Brody claps
+Marretta applauds, on behalf of newbies everywhere.
+kalouri waves a newbie over her head and cheers.
+Brody grins at Kal
+Killa acks and faints!
+David cheers.
+Dyason exclaims "Put me down!"
+Grinna LOL
+Killa shakes her head and smiles.
+
+Trispis says, "I'm sitting here looking at the topics of the final two
+presenters, and I'm having a hard time deciding which to have next/last. I
+think the obvious choice is to have an overview/summary last. So, without
+further ado, let's give a warm welcome to kalouri..."
+
+Nova applauds
+
+Brody golf claps
+Killa claps.
+Grinna staps her feet and applauds.
+
+kalouri stands and smiles, then smirks at Brody.
+
+Knighthawke claps
+
+kalouri says, "Actually, I think the previous topic flows rather well into
+this one. I'm the RP coordinator at OtherSpace, the original theme science
+fiction MUSH that Brody started. Newbies get a double whammy on an original
+MUSH, because not only do they have to learn commands, they have to learn all
+about a new universe that doesn't have 20 or 30 years of commercial canon
+information out in the public marketplace. So, one thing that we do to help
+ease people into the game and to encourage their participation in TPs and
+longer story arcs, is the use of feature characters and NPCs. Some of the best
+hold position like bartender, or clothier, or a private investigator, for
+example. It's easy for these characters to chat with a newbie, giving them
+information ICly rather than sitting in the OOC area, trying to explain what's
+been going on."
+kalouri says, "It has also helped, because of the original theme, to begin the
+game with NPCs in certain positions of power: The Stellar Consortium
+president, the Vanguard military Commander in Chief, etc. They help establish
+a precedent that will eventually be used to encourage a PC to rise through the
+ranks to replace them. In fact, we're proud to say we're in the process of
+electing a PC president in the wake of an incredibly nasty cloning scandal
+during the most recent story arc (long story, check it out sometime). But this
+is an important step. The MUSH has been around for nearly a year, and it's
+time now for the handoff. The power goes from the NPCs to the PCs, because now
+they have enough knowledge and understanding of the universe to fill the role.
+That leaves us more time to focus on smaller fish NPCs, like the bartenders,
+or new challenges, like new races. Or new political situations. All kinds of
+nasty stuff."
+kalouri says, "On a bookkeeping note, if you manage a multitude of NPCs (we
+have three regions of space on OS, so they add up), it is an excellent idea to
+keep notes built into the characters - bios, distinguishing characteristics.
+Not only can you forget the nuances of an NPC, but no one can be on all the
+time, and sometimes another director may pick up where you left off. It's good
+to give them a road map."
+kalouri says, "That concludes my presentation, such as it is. I'll be glad to
+answer questions later. Thank you. :)"
+
+<101> Trispis says, "identify the strings to the puppet. Interesting. (:"
+
+kalouri returns to her seat.
+
+Trispis says, "Thank you, kalouri."
+
+Killa claps and waves an NPC over her head.
+kalouri ROFL
+Marretta ducks and claps.
+Brody cheers
+Grinna applauds
+Nova clapclaps!!
+Knighthawke chuckles.
+
+Trispis says, "Our final speaker is Brody (who got an indirect intro during
+kalouri's presentation, so I won't say much here). Let's welcome Brody..."
+
+Brody nods, then stands.
+
+Killa applauds and puts the NPC down.
+David claps, a bit late.
+Knighthawke claps.
+Nova claps for Brody
+kalouri raspberries...in a very respectful and polite way, mind you.
+Killa heehees and blueberries.
+
+Brody says, "I'll keep my intro brief: As Kal noted, I'm the creator of
+OtherSpace MUSH. I'm going to discuss plotting - open ended/closed-ended.
+That sort of thing. It's a topic rather near and dear to my heart, and
+probably an unhealthy obsession, but I have a great time doing it...so, there
+ya go."
+Brody says, "Even before Kal helped me get OS off the ground, we did TPs on
+other MU**es. We've carried over a philosophy from the early days that still
+applies where we're at now. It's pretty much the same theory as most generals
+follow when discussing strategy: Every plan for attack is effective until you
+actually commence the attack, then you throw the plan out the window. But
+first, at least, you have a plan."
+
+kalouri laughs
+Killa grins.
+David says, "Good plan."
+Killa watches the plan die as it splats on the ground. "poor Plan."
+
+Brody says, "I plan on a *big* scale, currently. I've drafted basic plotlines
+for eight story arcs so far on OtherSpace. We are commencing the third this
+weekend. Each arc lasts about three months. A lot happens during each arc,
+most of it ultimately interwoven together in some way so that it brings the
+maximum number of people together at the end."
+Brody says, "When I plot, I have a definite idea of how I want to start, a
+solid idea of what the climactic event should be, and a lot of flexibility on
+how it actually shakes out in the end. If I don't have that flexibility, I
+*will* snap. Because newbies, while posing a challenge on the front-end, don't
+present near the challenge that a veteran PC who has *been* through one of my
+arcs before poses. They are creative and intelligent people, and they'll think
+of some wrinkle to throw at me. Frankly, those curve balls they throw that I
+don't expect are what really keep me hopping. I love flying by the seat of my
+pants with RP creation at times like that."
+Brody says, "Now, as I said, in the big plan, I know how I want to start and
+where the climax should be, and a general idea of how it ends. The PCs, I
+prefer, determine specifically how it ends, through their actions."
+Brody says, "If I dictate everything, then I'm nothing but a puppet master,
+and not an interactive storyteller. I need their interaction to complete the
+story."
+Brody says, "Within the big arcs, of course, we've got to have smaller TPs,
+just to keep the action moving. It doesn't even have to be arc-related. It can
+be monster-of-the-week. A bounty hunt. Anything. Just to keep them busy and
+entertained and in the habit of RP."
+Brody says, "With smaller TPs, I try to set up situations and characters for
+the PCs to deal with. I don't *plan* these so much as sit down and say: Ok,
+we'll establish that a bounty is out on this guy, and turn the PCs loose to
+catch him/her/it."
+Brody says, "The smaller TPs are extremely loosely scripted on OS, if for no
+other reason than to give the RP coordinator a break from the more rigid
+details I demand of her in the arc events."
+Brody says, "If you are blessed to have very good RPers, they will often come
+up with their own plot ideas, break into small groups, and do things amongst
+themselves. We encourage that, and we encourage them to generate ideas that
+they can share with others. That also lightens the load for the RP
+coordinator. Occasionally, you get a kook who only wants to do something for
+his own glory, but that's another reason to have the RP coordinator around: to
+weed that out, and help encourage that player to dream up something with
+broader vision."
+Brody says, "That does it for me. Thanks for listening."
+Brody smiles and takes his seat.
+
+Trispis says, "Thank you, Brody."
+
+<101> David says, "Kooks are bad."
+<101> Trispis wants all the glory for himself.
+<101> David holds up his hand.
+<101> Octavian says, "Too many kooks spoil the broth."
+<101> David hehe.
+
+Trispis says, "Before I open the floor to questions, I'd like to make an
+observation."
+Trispis says, "As I was reading Brody's presentation, I got the impression
+that he and kalouri work together nicely as a team. *pauses briefly for
+confirmation*"
+
+Brody nods. "Yep."
+
+Trispis nods and continues...
+
+kalouri says, "I hate him SOOO much"
+
+Brody ponders a scattergun
+Killa heehees.
+Nova heheehehs
+Grinna bol
+Knighthawke smiles wryly and chuckles.
+
+Trispis says, "This brings to mind my own experience with MUSH101 and more
+recently here on M*U*S*H. Our successes came about through supportive
+teamwork. I, like Brody, tend to be the central figure, often the most
+acknowledged individual. However, the success of our ventures (as I assume so
+for OS, too) depend on supportive cooperation."
+
+Brody nods. "Absolutely."
+
+<101> David says, "(This is what's called 'sucking up to the people who work
+for you, so you don't have to pay them anything. :)"
+
+Trispis says, "I'll not digress into the details and mutual admirations that
+could stem from that comment, but I do feel it's crucial to any successful
+venture (online or off)."
+
+Brody smiles and nods
+
+<101> Trispis says, "Stop giving me a way, David."
+<101> Brody chuckles
+<101> Knighthawke grins
+<101> David says, "I wouldn't, but you forgot to suck up to me."
+
+kalouri says, "True enough."
+
+Trispis says, "That being said, I'll move directly to the question/answer
+phase and begin with David (who had the first question, but hasn't asked it),
+then move to Skyflight's question."
+
+<101> David says, "Alright, I forgot my oher question, but I have a different
+one."
+
+Trispis says, "Ask away..."
+
+<101> Professor Raevnos raises his hand.
+
+David asks here, to confuse things, "Brody, you said you already did two
+'story arcs' on OS...can you give an example of one of them...and the ways it
+could have ended up, and the way it did, and what went weird..." (big
+question, huh?)
+
+Brody nods. "Well, probably best to talk about the most complicated arc, which
+we just finished a few weeks ago."
+Brody says, "The most recent arc, titled "Walls Fall Down," had one general
+goal: To turn everything upside down and topsy turvy. Old conventions were
+shattered, empires fell apart, heroes became, at one time or another,
+villains."
+Brody says, "Now, let's focus specifically on events in the Consortium, to
+simplify things."
+Brody says, "The biggest deal in the whole arc for the Consortium was the
+discovery that the president, the Vanguard CinC and a world government had
+been involved in a scheme to clone warriors to use against potential enemies.
+This was in violation of a 400 year old treaty, yadayadayada, very bad thing
+to do. How I wanted it to work out was for my NPC, General Dimitri Volstov
+(the CinC) to end up on trial for his crimes, very publicly. What really
+happened, when the PCs got into the mix, was that he ended up dead. Now,
+Volstov was a bad, bad man. I loved playing him. Hated to let him go. But,
+that's the way that particular NPC crumbled."
+Brody says, "He died for the greater glory of RP - many folks were involved,
+it led to a court martial for one PC who wound up kicked out of the Vanguard
+for it. So, a twist I didn't expect, but we all enjoyed."
+Brody is done.
+
+<101> kalouri says, "What he's not saying is that he was an emotional wreck
+for about a week. Volstov was a real mean and nasty and very cathartic to play
+;)"
+<101> Trispis chuckles.
+
+Trispis says, "Thanks again, Brody."
+
+<101> Brody says, "I immediately started playing Garunth. He's a reptiloid
+Zangali, eight feet tall and mean by genetics"
+<101> Brody says, "I got over it quick!"
+
+Brody nods
+
+David says, "Thanks."
+
+Trispis says, "Skyflight posed this dilemma earlier. I found it very
+interesting at the time, and upon re-reading it I see it as being very
+reminescent of some (many?) of my RP experiences. (question to follow)"
+
+Skyflight says, "Well, I just wanted to comment briefly that what was missing
+at all MUSHes I've been too is a reliable objective IC history of the MUSH,
+after it's started. All the MUSHes I've seen have a news history, but nothing
+after the opening day. An objective record helps players relate the events to
+their characters, see it through their eyes. It helps the newbies see the flow
+of events better, and get used to the style of the MUSH. And that can lead to
+some TP ideas too I feel, if people can look back and say "Oh that's right, we
+have this loose thread, let's do something with that.""
+
+<101> kalouri is helping a newbie. Can you take that, Bro?
+<101> Brody nods to Kal
+
+Trispis notes...
+Trispis says, "Skyflight didn't really care who addressed it. It was more of a
+'food for thought' statement. However, I'd like to know how OS deals with this
+issue, because B & k seem to have their s#!+ together."
+
+Brody says, "I think it's vital that people be capable of being brought up to
+speed on past events as rapidly as possible. Otherwise, it's like tuning in to
+Babylon 5 in the middle of the Shadow War and going - HUH? I want people to be
+able to check out what has gone before. So, I regularly update our web page
+(www.otherspace.org), to reflect the current year and status of the
+
+<101> kalouri whews. "We've got him snowed, Bro" ;)
+
+Brody says, "But I also want guests who are just logging on to be able to
+check it out too."
+
+Trispis says, "Do you maintain any on-MUSH history? Or is it all web-based?"
+
+Brody says, "So, we've got an archive of +help files. Some are extensive
+summaries of the arcs that have been completed. Then I have two, so far (for
+the years 2650 and 2651) which are quick thumbnail sketches of events."
+
+Brody says, "On MUSH too"
+
+Trispis nods.
+
+Brody says, "The +help files are almost always more up to date than the web
+page, although the web page isn't too far behind"
+
+Trispis says, "I think this probably works very similar (on a larger scale) to
+the NPC stat info k mentioned earlier."
+
+Brody nods. "Exactly."
+
+Trispis nods.
+
+Skyflight says, "If I may, one complication of that is that new players may
+have trouble keeping OOC and IC info seperate. They may not realize that their
+character may not know all of this info."
+
+kalouri says, "It's good to remember that some people want extensive
+background, some only want to get the gist. You have to offer both."
+
+Brody says, "They might certainly know a lot of it. And I need to trust the
+players to keep them separate."
+Brody says, "So far, it hasn't been a problem."
+
+Trispis nods to Brody, "IC vs OOC info is always the responsibility of the
+player."
+
+Brody acks
+
+Trispis pokes around the room... anyone else have a question/comment/opinion?
+
+Skyflight says, "On any TP-related topic?"
+
+Trispis nods.
+
+Skyflight says, "I'd like to note that maintaining a stable TP staff is always
+difficult. It seems to me that if someone gets the job, they pretty much keep
+it, regardless of whether they are qualified to run TPs, or to manage their
+underlings. How does eveyone keep this from becoming a problem?"
+
+Trispis reiterates his earlier comments about effective teams. I really don't
+know of any other successful means.
+
+Brody nods. "I agree with Trispis there. Kal and I were a team before OS.
+We've added people to our RP team who are enthusiastic RPers and good
+teamworkers."
+Brody says, "In other words, we *don't* put that in the hands of just anyone."
+
+Octavian says, "I find that the whole issue of maintaining a staff is greatly
+simplified when there's one person who everyone else answers to."
+
+Brody nods.
+Brody says, "Too many cooks..."
+
+Trispis says, "If you select someone for a task and no one can stand to work
+with them, they're obviously not doing you any good. This is an example of the
+*wrong* end of the spectrum. Your leaders (admins, coordinators, whatever you
+call them) need to be good with people."
+
+Skyflight says, "What point is it appropriate to issue warnings and eventually
+fire a staffer who doesn't fit those catagories?"
+
+Brody hmms. "Seems like that can apply anywhere, not just RP admins."
+
+Trispis nods to Oct. On M*U*S*H, some newbies often mistake me for the main
+admin here simply because I have no offline life (thus, I'm here about 16
+hours a day). But, I do answer (as do all of the admins) to just one person:
+Javlin. And no one answers to me.
+
+Brody says, "When you as a leader see someone going astray and hear people
+grumbling, better take that person aside and discuss it. If that doesn't fix
+things, issue warnings."
+
+Skyflight says, "True, but it's been my experience that TP staffers are the
+ones who last the longest in positions they aren't qualified for."
+
+Octavian says, "Generally, if you're in charge of the hiring and firing,
+you're also the one who can make the big decisions. Just keep overruling their
+decisions and eventually they'll either make better decisions or quit. :)"
+
+Brody nods to Octavian.
+
+Octavian says, "But it means being highly reactive, which can be more tiring
+than being proactive sometimes."
+
+kalouri says, "Amen"
+
+Trispis says, "I think I see a different point that Skyflight is making...]"
+
+Trispis says, "I'm reminded of +admin/all"
+Trispis says, "We have 11 admins listed here, only about 5 of which are even
+remotely active."
+
+Grinna nods.
+
+Trispis says, "The point being: Who are those wizards and royals? I never see
+them. I have no idea what they do, but they seem to be hogging a position that
+some *active* person could fill."
+Trispis says, "Javlin is recently addressing these issues (for the 2nd or 3rd
+time since I've been on M*U*S*H). It's a sort of 'housekeeping' thing...
+maybe 'spring cleaning' is more accurate. Every now and again, you have to do
+an assessment of your resources: Are all of your staff productively
+contributing to the game?"
+
+kalouri says, "I'm a newspaper writer. In this business, we often see the best
+writers promoted into editorial positions. Well, the truth of the matter is
+that writing stories and managing writers require two *entirely* different
+sets of skills. Often, something similar happens on MUSHes. Good roleplayers
+and skilled coders are given the opportunity to become admin/director and it's
+just not always a good mix. Don't get me wrong, it often works out well, but
+sometimes they simply lack the people skills. It's never easy to reprimand or
+fire, but we have to keep the players in mind. They are like customers."
+kalouri says, "Exactly, Trispis"
+
+Brody nods. "We just went through something like that. Not with our RP
+coordinator, of course, but other staffers not pulling their weight."
+Brody says, "We reassigned them."
+
+Grinna says, "I've seen that done kalouri...good roleplayers often don't make
+good admin/directors"
+
+Brody grins. "Kal's an exception to the rule."
+
+<101> kalouri rolls her eyes at Brody
+
+Octavian plays devil's advocate briefly. ;) "I agree, this happens (and I'm a
+journalist, too, and I think kalouri will notice this trend as well), but
+occasionally it happens with the unusually talented. For example, I have one
+Wizard who refuses to go in-character. He'll write plot ideas but will never
+participate in them. But he's so good at writing the ideas that I never
+complain about it. If he wants to show up once a month and drop off his ideas,
+that works for me because I couldn't replace him if I wanted to. :)"
+
+<101> Brody says, "Just following Trispis' rule."
+<101> Brody says, "Can't pay ya, gotta flatter ya."
+
+Octavian notes that you'll notice he didn't say who it was. This way none of
+*you* will get him. ;)
+
+Grinna says, "Well... being admin (a good admin) means giving up a bit of your
+ability (freedom) to roleplay."
+
+Trispis says, "too often, admin positions are given as rewards to good
+players. It's a subtle differentiation, but good admins are usually *more*
+than just good players... they're the ones who are already doing the work
+*before* you hire them."
+
+Brody says, "Yeah, we try to avoid shacking players like that, because, in the
+end - it really isn't a reward."
+Brody says, "Shackling, even"
+
+Grinna says, "Being an admin is NOT a reward..its a responsibility"
+
+Brody says, "Our best admins are the ones who were newbie helpers and
+theme-gurus before we even dreamed of putting them in charge of anything"
+
+Trispis says, "amen."
+
+Brody looks to Octavian. "And if you've got a guy who's productive even if he
+can't be on 24/7, hey, roll with it. There's nothing wrong with that."
+
+Trispis says, "Okay, folks. I'm tired. You're welcome to continue this as long
+as you like, but I need to wrap up my stay here and head for bed."
+Trispis says, "Oh... that reminds me... one last thing..."
+
+Brody nods. "Thanks for having us here."
+
+Trispis says, "Halatir."
+Trispis says, "That kid is amazing."
+
+Brody grins
+
+Grinna grins!
+
+kalouri says, "How unusually well-balanced, Trispis. I'm not sure I can deal
+with that :)"
+
+Trispis says, "He completely coded this entire schoolhouse *OFFLINE*."
+
+Grinna says, "Yes he is... we all owe him for reinventing scrabble."
+
+Brody chuckles
+
+Grinna giggles. "He did that too."
+
+Brody says, "Send him my way if he wants to reinvent the slot machine."
+Brody grins
+
+Trispis says, "His contributions to 101 cannot be measured in 'online
+participation'."
+Trispis says, "or to M*U*S*H."
+Trispis says, "This schoolhouse is a fully integrated set of all 3 types of
+ZONES. PLUS, Javlin's exit dependent room parent. I couldn't begin to
+comprehend all of the stuff that went into piecing this place together (wander
+the halls, you'll see my artwork, but it's being presented to you through
+Halatir's handywork). He did it by setting up his own offline PennMUSH on a
+linux box. Everything was tested before put into place. You can't trade that
+kind of contribution for anything in the world."
+
+Brody wows. "No, indeed."
+
+Grinna grins. "We should make him a plaque."
+Grinna says, "Seriously"
+
+Trispis says, "Nah. Jav already gave him a wizbit."
+
+Brody grins
+
+Trispis smirks.
+
+Trispis says, "Raevnos... You had a question?"
+
+Raevnos says, "What do you do when, despite all the work of putting together
+plots or situations for people to RP in and use, they don't, despite much
+prodding to do so?"
+
+Trispis says, "ah... a motivational question... excellent concept to wrap this
+all together."
+Trispis defers to B & K.
+
+kalouri says, "Is this a problem of people doing their own RP thing or sitting
+around in the OOC room chatting, Raevnos?"
+
+Raevnos says, "Getting them to RP, at all."
+
+Brody hrms
+
+Trispis says, "motivating players to participation."
+
+<101> kalouri says, "Whip and a chair?"
+
+Trispis offers a comment...
+
+<101> Dyason says, "Fear"
+<101> Dyason says, "First she swings newbies about and now a whip and a chair"
+
+Trispis says, "The one thing I've discovered about *my* activities is: I have
+to participate. -- I can't coordinate something, then expect others to carry
+it to completion. They lose interest. I think this has something to do with
+being a central figure. Newbies wanna hang out in my crate (for you outsiders,
+that's my office). In fact, newbies aren't the only ones. (This isn't a
+complaint. I've never complained about people who hang out... the ones who
+come and go excessively, yes, but the hanging out is fine and welcomed)."
+Trispis says, "The point being, players seem to expect their leaders
+(admins/coordinators) to be 'in the thick of it' somehow. They want their
+leaders to lead."
+
+Brody says, "That's actually a good question. For the story arcs, so far, we
+haven't really had that problem. People *come* for that. The fact is, I worry
+more about people not RPing when we are between arcs. That's when I want to
+get out the cattle prod. I don't think *you* as a MUSH leader can do
+*everything*. You can't *make* them RP. If they aren't willing, then I don't
+know why they're wasting their time or yours hanging around. But it helps to
+draw folks as PCs who will encourage other PCs to play. We have quite a few of
+those (in addition to some who just linger and wait for someone to hit them
+over the head with a big ol' arc, and complain about having nothing to do).
+And Trispis hit it right on the head. Kal and I are both visible. I may be the
+creator of the game and the theme, but I can't be an absentee landlord. I make
+them *regret* it if they miss an event. Here's one thing we've started
+doing..."
+Brody says, "We've got a skills system we just integrated. You can get
+experience for participating in RP events, and therefore add skills down the
+road. A little carrot and stick, but a bonus for folks who play anyway."
+
+kalouri says, "Do all of you remember how absolutely brutal high school dances
+were? The gym is dark. The toilet paper streamers are up. But NOBODY would
+dance? When OS first started, I sometimes felt like I was back there. What it
+took for us was to create a pool of NPCs and just start playing. Eventually,
+the PCs started coming around to find out what the h was going on. As time has
+passed, we do that less and less. *shrug* Sometimes, I actually miss it :)"
+
+Brody grins
+Brody says, "Yeah."
+
+<101> enahS notes if a TP hasn't been going very well, it might be worth
+taking a poll on why/revising the rest of it
+<101> Brody nods. "But the problem is getting them involved to begin with, to
+get an opinion, sounds like"
+
+kalouri says, "My point being that somebody has to dance first :)"
+
+Trispis likes k's analogy. (:
+Trispis remembers those days well. (;
+
+<101> Dyason says, "I'm always scared off of trying by the fact that I have no
+idea what to do and people assume you know."
+
+kalouri shudders
+
+<101> Brody says, "Get to know the theme. Talk to players OOCly. Get familiar
+:)"
+<101> Brody says, "A lot of times, it's easier than it looks."
+<101> Trispis has mixed feelings about Shane's comment.
+<101> Trispis says, "It depends on your leadership style."
+<101> Professor Raevnos says, "Yeah, it's getting people involved in the first
+place that's the problem. We admins will start something, but nobody will
+continue it unless one of us kicks them and leads it, for each RP session."
+<101> Brody says, "That's a definite problem, and I can see the frustration
+coming from it"
+<101> Brody says, "Can you be more specific, an example?"
+<101> Professor Raevnos says, "And sometimes, people then have the gall to
+complain about lack of RP."
+<101> kalouri says, "Ouch"
+<101> Professor Raevnos says, "An example? Hmm. A city holds a fair, inviting
+people from other cities and lands all around. People come (Or are dragged by
+the admins, rather). RP happens when an admin herds people together into the
+same room, and start something. When the admins aren't doing that, people just
+sit around the city and idle. They make no effort to continue things started
+in earlier RP sessions, or start new ones, even though possibilities abound."
+<101> Brody nods. "What's happening at the fair?"
+<101> Grinna giggles.
+<101> Professor Raevnos says, "Trading, a tournament, various political
+meetings and agreements..."
+<101> Brody says, "Are these generally veteran players?"
+<101> Brody says, "All familiar and comfortable with the theme?"
+<101> Professor Raevnos says, "A mix of old and new players."
+
+Trispis pages (Grinna Octavian): Someone email me a log when it finally dies.
+
+<101> Brody says, "They need to be the ones to help you get the newbies in the
+habit of RPing, even if it's just people sitting in a tavern"

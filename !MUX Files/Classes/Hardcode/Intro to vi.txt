@@ -1,0 +1,104 @@
+ Topic: Intro to vi
+Author: Trispis
+Summary: Trispis gives a quick and dirty tour of vi, a text editor sure to
+exist on virtually any unix (or unix clone). Clear and straightforward,
+this covers everything you'll need to get started editing those config
+files on your *nix box.
+
+<101> Trispis says, "vi"
+<101> Trispis says, "vi is a very powerful editor, which comes as a core
+component of almost every unix or unix clone (linux, *bsd, etc.)."
+<101> Trispis says, "vi has two 'modes' of operation."
+<101> Trispis says, "one mode is 'control mode'."
+<101> Trispis says, "the other mode is 'input mode'"
+<101> Trispis says, "in control mode, all of the keyboard keys have 'control'
+actions (such as deleting, copying, pasting, etc.)."
+<101> Trispis says, "in input mode, the keyboard keys act as normal 'typing'
+keys."
+<101> Trispis says, "The best way to illustrate the rest of this is with
+'hands on' practice."
+<101> Trispis says, "so..."
+<101> Trispis says, "in a unix shell, at the prompt, type: vi testfile.txt"
+<101> Trispis says, "this will bring up a blank screen with tildes (~'s) all
+down the left hand side of the screen"
+<101> Trispis says, "that's what vi looks like."
+<101> Trispis says, "at this point, you want to input some text, so you need
+to go into 'input mode'. To do this, press the 'i' key."
+<101> Trispis says, "after doing that, you'll see at the bottom of your screen
+something like: -- INSERT --"
+<101> Trispis says, "this means you're in input mode and your input type is
+'insert' (as opposed to 'replace', aka typeover, which is another input type
+you can use)."
+<101> Trispis says, "Now, type some text: The quick brown fox jumps over the
+lazy dog. 1234567890."
+<101> Trispis says, "Now, press the 'Esc' key. This will take you back to
+control mode."
+<101> Trispis says, "In a moment, I'll show you how to save and quit, but
+right now I want to illustrate some control mode features."
+<101> Trispis says, "using the cursor keys (aka the arrow keys) move the
+cursor left so that it rests on the '1' in the string of numbers."
+<101> Trispis says, "now press the 'x' key, and notice that the 'x' key acts
+like the 'delete' key (this is only true in control mode)."
+<101> Trispis says, "now press 'dw' and notice that 'dw' deletes the whole
+string of numbers (dw == delete word)."
+<101> Trispis says, "now press 'dd' and notice that 'dd' deletes the whole
+*LINE*."
+<101> Trispis says, "Okay, now that we've deleted everything. It'd be nice to
+know how to recover from an error, if you delete something you didn't meant
+to."
+<101> Trispis says, "simple."
+<101> Trispis says, "press the 'u' key."
+<101> Trispis says, "(u == undo)."
+<101> Trispis says, "this will undo the 'dd' you just did."
+<101> Viila says, "Does VI have multiple levels of undo?"
+<101> Trispis says, "press the 'u' key again, and it will undo the 'dw' you
+did. And press it again, and it will undo the 'x' that you did. (not sure how
+many 'undos' vi will remember, but it's definitely more than 5)."
+<101> Viila says, "Apparently it does :)"
+<101> Javelin says, "vim does, original vi doesn't."
+<101> Trispis says, "evidently my vi is aliased to vim, then."
+<101> Trispis says, "cuz my vi has multiple levels of undo."
+<101> Trispis says, "anyway, moving along..."
+<101> Trispis says, "some ways to enter 'input/insert' mode. 'i' (lowercase)
+== begin inserting at the cursor's present location. 'I' (uppercase) == Begin
+inserting text at the beginning of the current line. 'a' (lowercase) == begin
+inserting at the location immediately after the cursor's present location. 'A'
+(uppercase) == begin inserting text at the end of the current line."
+<101> Trispis says, "And only one way to return to control mode: Esc."
+<101> Trispis says, "dd == delete the current line."
+<101> Trispis says, "5dd == delete the next 5 lines, starting with the current
+line."
+<101> Trispis says, "dw == delete the current (or next, if at a space) word."
+<101> Trispis says, "5dw == delete the next 5 words."
+<101> Trispis says, "u == undo."
+<101> Trispis says, "Finally, to save and/or exit."
+<101> Trispis says, "Press 'Esc' (to enter control mode)."
+<101> Trispis says, "type -> :w (colon w) and press enter. (the colon is to
+enter 'command mode' from control mode, allowing you to issue commands to
+vi)."
+<101> Trispis says, "colon w (:w) == write (or 'save') the file."
+<101> Trispis says, "colon q (:q) == quit vi"
+<101> Trispis says, "if you open a file, make some changes (but haven't saved)
+and want to quit without saving, do --> :q! (colon q exclamation)"
+<101> Trispis says, "colon q exclamation (:q!) == quit without saving."
+<101> Trispis says, "and finally, a 'quick save'... you made a small change to
+a file (a typo in a news file, for example) and you want to save and exit and
+be done... then ... colon w q (:wq)"
+<101> Trispis says, "colon w q (:wq) == write and quit (aka save and exit)."
+<101> Trispis says, "In summary (for quick editing)..."
+<101> Trispis says, "at the prompt: vi <file> (will either start a new file,
+if <file> doesn't exist, or open an existing file if there is one)."
+<101> Trispis says, "'i' to enter 'input/insert' mode."
+<101> Trispis says, "(note, while in insert mode, backspace and delete usually
+behave as intended, depending on your system's configuration)."
+<101> Trispis says, "'esc' to return to control mode."
+<101> Trispis says, "to save --> :w"
+<101> Trispis says, "(note, you cannot 'unsave' -- once you 'write' it's done
+-- if you want to undo the changes, use 'u' and then write again)"
+<101> Trispis says, "to quit --> :q"
+<101> Trispis says, "to quit without saving (explicitly: ignore changes since
+last write) --> :q!"
+<101> Trispis says, "to save and exit (write and quit) --> :wq"
+<101> Trispis says, "this concludes the quick and dirty lecture on vi."
+<101> Javelin says, "Highly recommended site for a vi/vim reference card of
+commands: http://vh224401.truman.edu/~dbindner/mirror/" 

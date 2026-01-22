@@ -1,0 +1,36 @@
+ Topic: Reporting Bugs to the PennMUSH Developers
+Author: Trispis
+Summary: Trispis summarizes what he's learned about reporting bugs to
+the penn-devs.
+
+Halatir inquires about how to report a bug he found in the PennMUSH source.
+
+Trispis suggests sending bug reports to
+
+pennmush-bugs@pennmush.org
+
+Trispis says, "Jav doesn't like getting them in @mail... and if you send them
+to that email address, all of the developers can participate."
+
+Trispis says, "Plus..."
+
+Trispis says, "Since there are only 3 developers at present ... and they all
+hang out here ... (Jav, Talek, and Trivian)... they'll be familiar with
+anything you reference here on M*U*S*H (i.e., bring your examples here and
+reference them in your email)."
+
+Trispis says, "This serves another purpose, too..."
+
+Trispis says, "It lets you test your bug here... on the most recent patchlevel
+(this game is /always/ ahead of all others)."
+
+NOTE: Suggestions may be sent to this address:
+
+pennmush-developers@pennmush.org
+
+Trispis says, "How about you logging this little conversation and emailing it
+to me. I'll gladly put it on my website."
+
+Halatir says, "sure"
+
+Sun Jul 19 06:30:31 1998 

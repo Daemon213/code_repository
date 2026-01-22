@@ -1,0 +1,151 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @@ Some commands came from me, others were modified from code that originally came from Texas Twilight.\
+\
+@create Shifter FormChange Global <SFG>=10\
+@lock Shifter FormChange Global <SFG>=#2\
+&CMD_+SHIFT Shifter FormChange Global <SFG>=$+shift *:@switch/first [strmatch(get(%#/race),were)][gt(match(v(list_forms),%0),0)][not(strmatch(get(%#/current_form),%0))][gt(match(extract(v(list_forms),u(fn_which_list,%#),1,|),%0),0)]=0*,\{@pemit\'a0%#=Huh?%b%b(Type "help" for help.)\},10*,\{@pemit\'a0%#=That form is not anywhere within the system.\},110*,\{@pemit\'a0%#=You are already in that form.\},1110,\{@pemit\'a0%#=That form does not match the type of shifter you are.\},1111,\{&current_form\'a0%#=[capstr(%0)];&tattr\'a0%#=[setq(0,0)][iter(get(%#/attr),[setq(0,add(%q0,1))][setq(1,add(##,[setq(2,extract(v([switch(get(%#/class),bastet,bastet_[get(%#/tribe)]_%0,mokole,mokole_[get(%#/tribe)]_%0,[get(%#/class)]_%0)]),%q0,1))][switch(%q2,X,-##,%q2)]))][switch(lt(%q1,0),1,0,%q1)])]\'a0;@desc\'a0%#=[get(%#/desc_%0)];@tr\'a0%#/ashift_%0;@remit\'a0%l=%N [switch(hasattr(%#,shift_%0),1,[get(%#/shift_%0)],shifts into\'a0%p\'a0%0 form.)];@pemit\'a0%#=You shifted to "[capstr(%0)]".\}\
+&CMD_+SHIFT_LIST Shifter FormChange Global <SFG>=$+shift/list:@switch [strmatch(get(%#/race),were)]=1,\{@pemit\'a0%#=[center(*%ch%cr +Shift/List Report\'a0%cn*,79,-)][ljust(%b%b%bRace:,20)]Forms:%r[u(#560/drawline)]%r%b[setq(0,0)][iter(Garou Nuwisha Gurahl Corax Ratkin Mokole Rokea Ananasi Bastet,[ljust(%b%b##,15)] - [setq(0,add(%q0,1))][extract(v(list_forms),%q0,1,|)]%r)][repeat(-,79)]%r\},\{@pemit\'a0%#=Huh? (Type "help" for help.)\}\
+&DO_HOWL Shifter FormChange Global <SFG>=$+howl *:@switch [or(orflags(%#,WZw),strmatch(get(%#/class),garou))]=0,\{@pemit\'a0%#=Huh? (Type "help" for help.)\},\{@dolist [who()]=@pemit ##=[switch(or(orflags(##,WZw),strmatch(get(##/class),garou)),1,\{%N lets out a throaty howl that seems to mean:\'a0%0\},\{[u(gen_howl)]\})]\}\
+&DO_HOWL2 Shifter FormChange Global <SFG>=$+howl/*:@switch 0=[or(orflags(%#,WZw),strmatch(get(%#/class),garou))],\{@pemit\'a0%#=Huh? (Type "help" for help.)\},[member(get(me/howl_list),%0)],\{@pemit\'a0%#=You do not know that type of howl. Try one of these: [iter(get(me/howl_list),'##')].\},\{@dolist who()=@pemit ##=switch(or(orflags(##,WZw),strmatch(get(##/class),garou)),1,get(me/%0_howl),get(me/gen_howl_%0))\}\
+&DO_GNOSIS Shifter FormChange Global <SFG>=$+recover gnosis=*:[setq(8,abs(%0))]; @switch/first 0 = gte(u(%#/gnosis),1),\{@pemit\'a0%# = Huh? \\(Type "help" for help.\\)\},isnum(%0),\{@pemit\'a0%# = CODE: '%0' is not a proper numeric value for the number of hours you would like to meditate to regain Gnosis.\},not(match(get(%#/gnosis),get(%#/gps))),\{@pemit\'a0%# = CODE: You have as much gnosis as you can hold.\},not(hasattr(me,valid_%#)),\{@pemit\'a0%# = CODE: You are already meditating to regain Gnosis.\},\{[setq(5,rolls(add(stat(%#,Perception),stat(%#,Meditation)),8))] [setq(6,sub(u(%#/gnosis),u(%#/gps)))] [setq(7,abs(%0))] [setq(8,min(%q5,%q6,%q7))]; @pemit\'a0%# = CODE: The results of your meditation attempt to regain Gnosis will be provided to you in '%q7' RL hour(s). You may disconnect and allow the time to pass if you choose.; &valid_%# me = 1; @wait mul(%q7,3600)=@switch/first\'a0%q5=<0,\{@pemit\'a0%# = CODE: You botched your attempt to meditate and regain Gnosis.; &valid_%# me\},0,\{@pemit\'a0%# = CODE: You failed in your attempt to meditate and regain Gnosis.; &valid_%# me\},\{@pemit\'a0%# = CODE: You succeed in attempting to meditate and regain\'a0%q8 point(s) of Gnosis.; &GPS\'a0%# = [add(get(%#/gps),%q8)]; &valid_%# me\}\}\
+&DO_RAGE Shifter FormChange Global <SFG>=$+rage:@switch/first 0 = hasattr(%#,rage),\{@pemit\'a0%#=Huh? \\(Type "help" for help.\\)\},lt(get(%#/rp),get(%#/rage)),\{@pemit\'a0%#=CODE: You cannot recover rage until after you spend some.\},gt(sub(vsecs(),get(%#/LASTRAGE)),86400),\{@pemit\'a0%#=You must wait an IC day between attempts to recover rage.\},\{[setq(0,switch(vmoon(),*New*,1,*Half*,3,*Waning*,2,*Waxing*,3,*Full*,4,0))] [setq(1,min(stat(%#,rage),%q0))]\'a0; @switch get(%#/class)=garou,\{[setq(2,switch([get(%#/AUSPICE)]+[vmoon()],?hroun+*Full*,stat(%#,rage),?aggabash+*New*,stat(%#,rage),?heurge+*Crescent*,stat(%#,rage),?hilodox+*Half*,stat(%#,rage),?alliard+*Gibbous*,stat(%#,rage),%q1))] [setq(3,min(stat(%#,rage),add(get(%#/rp),%q2)))]; &rp\'a0%#=%q3; @unlock\'a0%#/LASTRAGE; @pemit\'a0%# = CODE: You succeed in recovering rage. You now have [get(%#/rp)] point(s).; &LASTRAGE\'a0%#=vsecs(); @wait 0=@lock\'a0%#/LASTRAGE\},\{@pemit\'a0%#=Bete cannot yet recover rage.\}\}\
+&NULL Shifter FormChange Global <SFG>= \
+@set Shifter FormChange Global <SFG>=INHERIT\
+@set Shifter FormChange Global <SFG>=TRACE\
+@set Shifter FormChange Global <SFG>=SAFE\
+@set Shifter FormChange Global <SFG>=VERBOSE\
+@@ Change this dbref to the debref of the Shifter Global Storage object that follows\
+@parent Shifter FormChange Global <SFG>=#322\
+\
+\
+\
+@create Shifter Global Storage <SGS>=10\
+&FN_WHICH_LIST Shifter Global Storage <SGS>=[switch(get(%0/class),garou,1,nuwisha,2,gurahl,3,corax,4,ratkin,5,mokole,6,rokea,7,ananasi,8,bastet,9)]\
+&LIST_FORMS Shifter Global Storage <SGS>=homid glabro crinos hispo lupus | homid tsitsu manabozho sendeh latrani | homid arthren crinos bjornen ursus | homid crinos corvid | homid crinos rodens | homid archid suchid | homid crinos squamus | homid lilian pithus crawlerling | homid sokto crinos chatro feline\
+&GAROU_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&GAROU_GLABRO Shifter Global Storage <SGS>=2 0 2 0 -1 -1 0 0 0\
+&GAROU_CRINOS Shifter Global Storage <SGS>=4 1 3 0 -3 X 0 0 0\
+&GAROU_HISPO Shifter Global Storage <SGS>=3 2 3 0 -3 0 0 0 0\
+&GAROU_LUPUS Shifter Global Storage <SGS>=1 2 2 0 -3 0 0 0 0\
+&NUWISHA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&NUWISHA_TSITSU Shifter Global Storage <SGS>=1 1 2 0 -1 0 0 0 0\
+&NUWISHA_MANABOZHO Shifter Global Storage <SGS>=2 3 3 0 -3 X 0 0 0\
+&NUWISHA_SENDEH Shifter Global Storage <SGS>=2 3 3 0 -3 0 0 0 0\
+&NUWISHA_LATRANI Shifter Global Storage <SGS>=0 3 3 0 -3 0 0 0 0\
+&GURAHL_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&GURAHL_CRINOS Shifter Global Storage <SGS>=5 -1 5 0 -3 X -1 0 0\
+&RATKIN_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&RATKIN_CRINOS Shifter Global Storage <SGS>=1 4 1 -2 0 X 1 0 0\
+&RATKIN_RODENS Shifter Global Storage <SGS>=-1 2 2 -3 0 0 3 0 0\
+&MOKOLE_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_SUCHID Shifter Global Storage <SGS>=3 -2 3 0 -4 0 0 0 0\
+&MOKOLE_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&ROKEA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&ROKEA_CRINOS Shifter Global Storage <SGS>=4 1 4 X X X 0 0 0\
+&ROKEA_SQUAMUS Shifter Global Storage <SGS>=4 0 3 X X X 0 0 0\
+&ANANASI_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&ANANASI_PITHUS Shifter Global Storage <SGS>=4 2 2 0 X X 0 0 0\
+&ANANASI_CRAWLERLING Shifter Global Storage <SGS>=X X X X X X 0 0 0\
+&BASTET_BAGHEERA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&BASTET_BAGHEERA_SOKTO Shifter Global Storage <SGS>=1 1 2 0 -1 -1 0 0 0\
+&BASTET_BAGHEERA_CRINOS Shifter Global Storage <SGS>=3 3 3 0 -3 X 0 0 0\
+&BASTET_BAGHEERA_CHATRO Shifter Global Storage <SGS>=2 3 3 0 -3 -2 0 0 0\
+&BASTET_BAGHEERA_FELINE Shifter Global Storage <SGS>=1 3 2 0 -3 0 0 0 0\
+&BASTET_BALAM_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&BASTET_BALAM_SOKTO Shifter Global Storage <SGS>=2 1 2 0 -1 -1 0 0 0\
+&BASTET_BALAM_CRINOS Shifter Global Storage <SGS>=3 3 3 0 -4 X 0 0 0\
+&BASTET_BALAM_CHATRO Shifter Global Storage <SGS>=3 2 3 0 -4 X 0 0 0\
+&BASTET_BALAM_FELINE Shifter Global Storage <SGS>=2 3 2 0 -3 0 0 0 0\
+&BASTET_BUBASTI_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&BASTET_BUBASTI_SOKTO Shifter Global Storage <SGS>=0 1 0 0 0 1 0 0 0\
+&BASTET_BUBASTI_CRINOS Shifter Global Storage <SGS>=1 3 1 0 -2 X 0 0 0\
+&BASTET_BUBASTI_CHATRO Shifter Global Storage <SGS>=2 4 1 0 -2 X 0 0 0\
+&BASTET_BUBASTI_FELINE Shifter Global Storage <SGS>=-1 4 1 0 0 0 0 0 0\
+&BASTET_KHAN_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&BASTET_KHAN_SOKTO Shifter Global Storage <SGS>=2 1 2 0 -1 -1 0 0 0\
+&BASTET_KHAN_CRINOS Shifter Global Storage <SGS>=3 2 3 0 -3 X 0 0 0\
+&BASTET_KHAN_FELINE Shifter Global Storage <SGS>=2 2 3 0 -3 0 0 0 0\
+&BASTET_KHAN_CHATRO Shifter Global Storage <SGS>=4 2 3 0 -3 X 0 0 0\
+&BASTET_PUMONCA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&BASTET_PUMONCA_SOKTO Shifter Global Storage <SGS>=1 2 2 0 -1 0 0 0 0\
+&BASTET_PUMONCA_CRINOS Shifter Global Storage <SGS>=3 3 4 0 -3 X 0 0 0\
+&BASTET_PUMONCA_CHATRO Shifter Global Storage <SGS>=3 3 3 0 -3 X 0 0 0\
+&BASTET_PUMONCA_FELINE Shifter Global Storage <SGS>=2 3 3 0 0 0 0 0 0\
+&BASTET_QUALMI_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&BASTET_QUALMI_SOKTO Shifter Global Storage <SGS>=0 2 0 0 0 1 0 0 0\
+&BASTET_QUALMI_CRINOS Shifter Global Storage <SGS>=1 3 1 0 -2 X 0 0 0\
+&BASTET_QUALMI_CHATRO Shifter Global Storage <SGS>=1 4 1 0 -2 X 0 0 0\
+&BASTET_QUALMI_FELINE Shifter Global Storage <SGS>=0 4 0 0 -2 0 0 0 0\
+&BASTET_SIMBA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&BASTET_SIMBA_SOKTO Shifter Global Storage <SGS>=2 1 2 0 -1 1 0 0 0\
+&BASTET_SIMBA_CRINOS Shifter Global Storage <SGS>=3 2 3 0 -2 X 0 0 0\
+&BASTET_SIMBA_CHATRO Shifter Global Storage <SGS>=3 2 3 0 -2 X 0 0 0\
+&BASTET_SIMBA_FELINE Shifter Global Storage <SGS>=3 3 2 0 -1 0 0 0 0\
+&BASTET_SWARA_SOKTO Shifter Global Storage <SGS>=1 2 1 0 -1 0 0 0 0\
+&BASTET_SWARA_CRINOS Shifter Global Storage <SGS>=2 4 3 0 -3 X 0 0 0\
+&BASTET_SWARA_CHATRO Shifter Global Storage <SGS>=2 4 3 0 -3 X 0 0 0\
+&BASTET_SWARA_FELINE Shifter Global Storage <SGS>=1 4 2 0 -3 0 0 0 0\
+&CORAX_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&CORAX_CRINOS Shifter Global Storage <SGS>=1 1 1 0 -2 -2 3 0 0\
+&CORAX_CORVID Shifter Global Storage <SGS>=-1 1 0 0 -3 0 4 0 0\
+&GURAHL_BJORNEN Shifter Global Storage <SGS>=4 -2 4 0 -3 0 2 0 0\
+&GURAHL_URSUS Shifter Global Storage <SGS>=3 0 3 0 -3 0 2 0 0\
+&BASTET_CEILICAN_SOKTO Shifter Global Storage <SGS>=0 2 1 0 0 1 0 0 0\
+&BASTET_CEILICAN_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&BASTET_CEILICAN_CRINOS Shifter Global Storage <SGS>=1 3 1 0 0 -2 0 0 0\
+&BASTET_CEILICAN_CHATRO Shifter Global Storage <SGS>=0 4 1 0 -2 -2 0 0 0\
+&BASTET_CEILICAN_FELINE Shifter Global Storage <SGS>=-1 4 0 0 -2 0 0 0 0\
+&GEN_HOWL Shifter Global Storage <SGS>=You think you hear a faint howling off in the distance.\
+&MOURN_HOWL Shifter Global Storage <SGS>=A long, sad howl fills the sky, undulating in deep, rich tones.\
+&VICT_HOWL Shifter Global Storage <SGS>=A sharp, victorious howling rings out across the land, singing of success.\
+&WAR_HOWL Shifter Global Storage <SGS>=A sharp, inspiring howl sings to the heart, the sound rallying as the call to battle brings with it a primal feeling.\
+&HUNT_HOWL Shifter Global Storage <SGS>=A long, low howl sounds out, the call to the hunt!\
+&WARN_HOWL Shifter Global Storage <SGS>=A series of sharp pitched howls warn you of the wyrm's approch!\
+&SUCCOR_HOWL Shifter Global Storage <SGS>=Howling breaks out, the sounds reminiscent of a puppy calling for its mother, someone is in trouble!\
+&BSD_HOWL Shifter Global Storage <SGS>=A mad whine reverbrates everywhere, filling you with a deep rage as the BSD's howl into the sky!\
+&GEN_HOWL_WAR Shifter Global Storage <SGS>=A strong howl sings out, the sound inspiring, almost like a battle cry!\
+&GEN_HOWL_MOURN Shifter Global Storage <SGS>=A long, sad howl fills the sky.\
+&GEN_HOWL_HUNT Shifter Global Storage <SGS>=A long, low howl sounds out, seeming to sound as hounds on the hunt, but more primal.\
+&GEN_HOWL_WARN Shifter Global Storage <SGS>=A series of brief, sharp pitched stacto bursts of howling sound out, the cries urgent!\
+&GEN_HOWL_SUCCOR Shifter Global Storage <SGS>=A series of frantic near-puppy yips howl out!\
+&GEN_HOWL_BSD Shifter Global Storage <SGS>=A terrifying, mad whine reverbrates throughout the area, the mockery of wolf howls striking terror into most hearts!\
+&HOWL_LIST Shifter Global Storage <SGS>=vict mourn war hunt warn succor bsd\
+&GEN_HOWL_VICT Shifter Global Storage <SGS>=A sharp howl rings out across the land, sounding of victory.\
+&MOKOLE_HALPATEE_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_PISA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_UNKTEHI_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_KARNA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_CHAMPSA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_GHARIAL_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_SYTRA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_MAKARA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_HALPATEE_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&MOKOLE_PISA_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&MOKOLE_UNKTEHI_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&MOKOLE_KARNA_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&MOKOLE_CHAMPSA_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&MOKOLE_GHARIAL_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&MOKOLE_SYTRA_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&MOKOLE_MAKARA_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&MOKOLE_ORA_ARCHID Shifter Global Storage <SGS>=4 -1 4 0 -3 X 0 0 0\
+&MOKOLE_ORA_HOMID Shifter Global Storage <SGS>=0 0 0 0 0 0 0 0 0\
+&MOKOLE_ORA_SUCHID Shifter Global Storage <SGS>=0 0 2 0 -4 0 0 0 0\
+&MOKOLE_HALPATEE_SUCHID Shifter Global Storage <SGS>=2 -1 3 0 -2 0 0 0 0\
+&MOKOLE_PISA_SUCHID Shifter Global Storage <SGS>=2 -1 3 0 -2 0 0 0 0\
+&MOKOLE_UNKTEHI_SUCHID Shifter Global Storage <SGS>=-1 0 1 0 -3 0 0 0 0\
+&MOKOLE_KARNA_SUCHID Shifter Global Storage <SGS>=3 -2 3 0 -4 0 0 0 0\
+&MOKOLE_CHAMPOSA_SUCHID Shifter Global Storage <SGS>=3 -2 3 0 -4 0 0 0 0\
+&MOKOLE_GHARIAL_SUCHID Shifter Global Storage <SGS>=1 0 2 0 -3 0 0 0 0\
+&MOKOLE_SYTRA_SUCHID Shifter Global Storage <SGS>=1 0 2 0 -3 0 0 0 0\
+&MOKOLE_MAKARA_SUCHID Shifter Global Storage <SGS>=2 -1 3 0 -4 0 0 0 0\
+@set Shifter Global Storage <SGS>=INHERIT\
+@set Shifter Global Storage <SGS>=STICKY\
+@set Shifter Global Storage <SGS>=NO_COMMAND\
+@set Shifter Global Storage <SGS>=SAFE\
+}

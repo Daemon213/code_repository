@@ -1,0 +1,123 @@
+ TINYTIM HELP TOPIC:
+CONCEPT: XANADU, OR WHY PEOPLE GENERALLY DON'T VISIT YOUR LAUNDRY ROOM
+
+"In Xanadu did Khubla Khan a stately pleasure dome decree.."
+
+The poem "Xanadu" is incomplete, because the author, in a opium-filled
+haze, was interrupted by an insurance salesman at his door. This
+salesman kept talking long enough to completely fratz that precious
+state of mind required to maintain an epic poem. As a result, the
+poem "Xanadu" stands at a mere couple of stanzas and is forever
+incomplete.
+
+In TIM, the open building system allows you to create some real
+humdinger places, IN THEORY. Ideally, you can have a stately manor that
+will stretch from here to the hills, filled with TIMsters oohing and
+aahing at the splendor of your creations. In theory, anyway.
+
+The general reality is that TinyTIM has a lot of homes and places
+built that start out strong, trail off quickly, and eventually fall
+apart into a pile of text dung.
+
+Now, this may sound like a harsh and cruel condensation of the place,
+but unfortunately it's very true. More often than not, it's because
+the Player/Builders didn't spend a few minutes to work out their own
+motivations for building a place. There are some questions you want
+to ask yourself, and here they are in a handy checklist form.
+
+___ AM I BUILDING THIS JUST FOR ME, OR FOR OTHER PEOPLE TO SEE?
+
+TinyTIM is, after all, a MULTI-USER Shared Hallucination, which
+means that other people will be visiting your place. If you
+fill rooms with shorthand descriptions that invoke NO image in
+your guests' minds, then you're wasting their time and if you
+have something you wanted them to think or feel, you might not
+succeed if people turn away after the first couple of Rooms.
+Build a place you want to share, not a place you want to hoard.
+
+___ IS EVERY ROOM IN MY PLACE A PART OF THE WHOLE, OR IS IT USELESS?
+
+If you're building a house, you want each and every Room to be
+an IMPORTANT contribution to the feel of the place, and not just
+a creme filling in the twinkie of your Mansion. Do you NEED a
+Laundry Room, if all it is is a description and some more exits?
+You want what Rooms you DO choose to put in your home to be
+either wonderful places in themselves, or vital links in the
+chain.
+
+___ DOES ALL MY STUFF HAVE A DESCRIPTION, A USE, AND A PART TO PLAY?
+
+By this, it means that you should be adding Objects in your
+Rooms ONLY when the Description of the Room doesn't say enough.
+If the Description says there is a Waterfall that goes down
+to a stream with rocks in it, THERE'S NO NEED TO MAKE THE ROCKS
+unless you're going to make them really special and purposeful
+for people visiting. (Maybe they could sit on them, or touch
+them, or the like). This holds especially true indoors, where
+there's no need to build Furniture Objects if the furniture is
+mentioned in the Description. Making an Object indicates that
+that Object is to be Interacted with, and that means having a
+Description (HELP @DESC), Senses if you can, (HELP SENSES),
+shouldn't be able to be picked up unless you intended them to
+(HELP @LOCK), and maybe even could have a special command or
+use that you programmed in. (HELP @USE, HELP $ COMMANDS).
+Just remember.... If you make an object that doesn't DO
+anything near another Object that you spent a lot of time
+programming, people might never check out your work on the
+second object. Players learn fast, and if you show a certain
+style of carelessness, they adapt to it quickly.
+
+___ DO ALL OF MY EXITS FUNCTION CORRECTLY, LIKE OTHERS WILL EXPECT?
+
+This means that when you @OPEN Exits between your Rooms, you
+should make sure that others will see you pass through the
+portal (HELP @OSUCC) and that others in the destination Room
+will see you come in (HELP @ODROP). Otherwise, people will just
+see "<Yourname> has arrived." and not have any idea where you
+came from or where you're going off to, breaking up parties of
+TIMsters like nobody's business. It would probably help a lot
+if you set the @DESC of the Exit as well, so people who type
+LOOK NORTH will get some idea of where the path leads.
+
+___ DO I THINK TOPOLOGY IS SOMETHING OTHER THAN THE STUDY OF TOPS?
+
+Topology, or the layout of the land, is something that is
+up to you. If people go NORTH into a Room, they kind of expect
+that they could go SOUTH and end up in the Room they came from.
+If this ISN'T the case, you should have a very good reason why,
+like a locked door or a steel slide leading down, or maybe a
+programmed object that pushes the Players along to the next
+Location. You should NOT have the exits just link to each of
+the Rooms willy-nilly unless this is SPECIFICALLY the effect
+you wish to have. Also, you can define multiple names in an
+Exit, like NORTH;N;NO;AHEAD;FORWARD... You should use this
+feature to anticipate what Players might type to go into that
+direction.
+
+___ AM I LEAVING A LOT OF MY PLACE UNDONE AND UNFINISHED?
+
+The cardinal sin in building on TIM is to build a lot of empty
+Rooms with the intention of filling them "later". Some Players
+who do this do so because they want to keep the layout fresh
+in their minds. Our advice is to use a piece of paper and draw
+little squares with lines between them. This saves everyone
+time in the long run; players who stumble into your house by
+mistake won't get drawn in and misled by the empty rooms, and
+you'll have a way to work on your TIM project while riding
+around in a bus. The Wizards of TIM can't guarantee that your
+many multiple empty Rooms will be waiting for you the next
+time you log in.
+
+___ HAVE I BUILT A PLACE I'M PROUD TO PUT MY NAME ON?
+
+The last thing to keep in mind is: You're Never Really Done. A
+place on TIM, like a garden or living space in real life,
+should be given attention every once in a while, with changes
+in spelling or grammar, or the addition of features as you
+become more proficient in programming, and the like. It should
+be a LIVING PLACE, a place that grows and changes with you.
+Very little on TinyTIM is truly static.
+
+With this checklist, you could be on your way to building a place
+that will knock the socks off your visitors, although ideally they'll
+be unable to find a "Laundry Room" to put them in. 

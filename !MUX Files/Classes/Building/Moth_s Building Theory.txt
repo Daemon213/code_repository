@@ -1,0 +1,249 @@
+ ©2001 Moth@OGR. You may copy and redistribute this document provided that it remains complete, with credits intact, and is used only for non-profit purposes.*
+*****
+
+Thanks for Joining Today's Discussion on Building Theory!
+Points for Today's Discussion
+
+* Building as it pertains to character.
+* Using the grid as a storyteller.
+* Building Tools. (ANSI, ambiance, places)
+* How building impacts and influences your grid, theme, and RP.
+
+Format for Today's Discussion
+* Each point will be addressed, followed by a period of Q & A. To be involved in a Q & A session, you will need to page Lillith that you have a question. She will then put you on the waiting list and let you know when you can bring up your question. Thanks again for being involved in our discussion!
+
+You say "First and foremost, thank you all for coming. Before I get started, just a little note on the structure of this. Please take a look at the Building Theory object, if you haven't already. I'll be presenting information and then open it up to a Q&A after it's done. Lillith will be taking names and going in order, so please page her. I will also be logging this, just so everyone is aware."
+
+Taline nods
+
+You say "How many of you are building administrators or builders in general? (I've been both, even a mercenary builder-for-hire...)"
+
+Taline is just learning to build and code
+
+Alec umms, "I suppose I am a builder, though more of a coder, really. (yeah yeah, big difference)"
+
+nails says "it is a big difference." nails is a decent coder, but a mediocre builder. "I'm a builder by default. :)"
+
+Taline chuckles
+
+Moth figures we have a good mix of folks, then. New and old (that's me)...that's good!
+
+Moth: "As some of you know then -- and others are discovering -- setting up a space or building project/grid and how you approach this process has a great deal to do with the writing and roleplay that occurs within those spaces. The layout, mood and textures of a space, as well as "feeling" of location, lend to either the realism or the fantastical elements of the mu* in general, and how your theme integrates into the various storylines of the characters who 'live' there. This is the architecture that underlies all mu*s, no matter their focus..."
+
+Moth: "I think that this notion can be taken a step further, and that the environment you're setting up, whether city or countryside or past, present or future has its own story to tell, and that the mood and textures and location included are a part of an overall characterization and storyline. And that is what I intend to focus on today..."
+
+Moth: "So the first point: Building as a Character
+
+As in character development, motif and archetypes form your 'Who Am I' and 'What Am I'. When approaching a character, I often use this as the first stage of development, to form the foundation of how he/she thinks and how he/she moves in the world, to establish a subconscious motive for things that might occur."
+
+Moth: "For setting up a space, and I will use my virtual Venice as an example, my approach is the same. With Venice, I asked the questions: 'Who' do I want Venice to be and What sort of place is it? The motif/archetype I chose was Magic In Motion. Throughout Venice, there are incantations translated into (what is probably very bad) Italian by the miracle of Altavista's Babelfish, and the construction of Venice is 'elemental'; by that meaning I weave 'elements' of earth, air, fire and/or water into the descriptions. Venice, in this way, becomes a magical entity. Magic forms the basis of who and what Venice is."
+
+Moth: "In the context of a mu* grid vs. an individual project, when developing your ideas for your theme and story, the environment and building would be a part of that. You have a theme, now how do you convey it? Your grid is your primary storyteller. It is the embodiment of your theme and is your first character."
+
+Moth: "Of course, what separates characters from one another is a little thing called Personality. Individuality for spaces/building projects is no different from that of characters. In fact, the point of this is to begin thinking of them in the same way. In building, personality can come from code you choose to utilize, take the form of 'views' and 'places', or could be expressed in the style of description itself. For India, I have used quotations from the text of the Bhagavad-Gita and Indian poetry. That's the great thing about building. It is open to creativity and experimentation. Even if you're not a coder by nature -- and I am not -- there is a great deal you can do here with very little or very simple coding."
+
+Moth: "And it's the little things that make the story..."
+
+Moth: "Point #2: Building as storyteller, or having a story
+
+Now that you have a 'character', what's your story? For Venice, one of the main story threads is Revelation, magic revealing itself, even as the city is sinking. I 'tell' this story in a variety of ways -- by how one moves around the city itself, in the ambiance @emits, in the various 'people' (very simply coded gondoliers and 'views' written as NPCs) that one meets along the way. The buildings in Venice that I chose to construct play into this overall story. Again, it's really open to development and experimentation here. // *waves to Avacus*"
+
+Moth: "Even in the way that a character chooses to leave the city; depending on what method he/she uses to travel out of Venice, he/she is gifted with something that was given to them by one of the NPCs (gondoliers or a person named in a 'view'). A story is therefore made of the tiny accents, the things that seem insignificant at the time, that if taken into a whole form a story. With a character, it's no different. You may have one primary life event, but what ends up forming the story of that person's life are the thousand other things that happened before, after or along the way. I think we can look at building as offering a great platform for this type of storytelling."
+
+"Again, in the context of a mu* grid vs. an individual project, this allows for mu* wide storytelling in connection with your theme. It gives you a basis on which you can build, dramatize, etc."
+
+Moth: "This way, I have a built-in way to connect with characters and to craft stories. It's a great foundation, and a method of keeping in-tune with the overall story for the mu* involved..."
+
+"There are so many tools... some of which even after 8 years online (yes, I know), I'm scratching the surface on...@filtering and @forwardlisting. Ambiance @emits. Smaller, easier things like +views or places -- particularly if the places code you are using allows for descriptions. And ANSI, in limited use, can provide a great tool for calling attention to something..."
+
+Moth: "In Venice, I have done away with visible exits and any OOC note of 'views' and 'places' and the like by using ANSI to point out actions that a character might take. That won't work everywhere, but again it's playing around with what's available to aid the storytelling process..."
+
+"Some places, Paris is a good example, have utilized travel code for taxis and mobility around the grid. This is another device. And a few places, and I've worked on a few, have tied in their building descriptions to their weather/time and/or seasons code. Not for the faint-hearted, but again... a great tool."
+
+Moth: "All of this can be used not just to indicate location and mood or "feel" but can be used as elements of storytelling. Weather can become an NPC. Views can have a voice."
+
+"What does it mean to your grid? Your theme? The stories you ultimately end up telling?"
+
+* With the space/environment having its own characterization and storyline, you have a subtle but important avenue and tool to reinforce your theme. Again, your own grid becomes a primary player in the events that unfold within it. It reinforces and, I think, strengthens it..."
+
+* From an administrative point of view, with the space/environment having its own story built in, you have a beginning series of TPs that you can develop, secrets you can reveal, questions that could be answered by the players/writers. And more will develop as time goes on, as always, but you have something to springboard off of, to rely on when other plots come and go. You have a unifying theme."
+
+* From more of a personal point of view, with built in stories come built-in conflicts and relationships, which in turn support plotting, storylines and characterizations."
+
+Moth: "And the storylines of the place and the people in it can and do feed off of one another. So... with that said... I'd like to open it up for any Questions, discussion and all that..."
+
+Taline says "In section 2 you talk about using building as a storyteller and how you've done ambience emits and how you've also had the code give players 'gifts'. How do you do this and/or is there a place I can go to read more about it? I presume they're coded into that room and don't need an admin to actually trigger them, but instead are triggered by something the player does/says. This is a really neat idea, so I'm wondering how best to execute it."
+
+Moth: "A lot of the code, such as +views, places and, depending on the mu* involved, weather/time, is soft-coded, that is added on by folks far more competent than I at doing so. Most mu*s have some form of these, but they all differ. Ambiance is an example of that. Where Venice resides, we have a global ambiance object that records the ambiance set on individual rooms and then randomly tosses them out every 5-15 seconds. Other mu*s will have a different way of doing that, and there are simple objects you can make just for a room if your mu* doesn't have ambiance code. There are a lot of ways to go about it. What I have learned has come from the folks I've been lucky to meet up with over the course of my time online. That's the best suggestion for learning what's available to you on a given site, get connected with staff. OGR is also a resource. The coding bulletin board would be a great place to start connecting with folks who code."
+
+Taline nods "Thank you. I'll start poking around and asking." :)
+
+Moth: "And I think that'd be a great little tool and I've seen something like it in action. I'd post on the code +bboard here :)"
+
+"Okay! Aleriel... your go!:)"
+
+Aleriel says "I'm not really a builder, but I've a question anyway. :) What happens when an individual project has to be integrated with the grid? Should one be altered to fit another? How can a 'merge' like that be made seamless?"
+
+Moth: "There does need to be consistency. You don't want it to look "all over the place", even if you do want to experiement. If it's not readable, in short, no one's going to bother and then there's no real need for a story. From an administrative point of view, you will want to use consistent naming, a consistent way of presenting your exits, a consistent paragraph style (%R and %T or both or what-have-you). Even if the language or tone differs, having the same basic look or feel will help tie it together. If you're a player creating a business that's public, the same would need to apply, basically. It depends on the staff, then, and what sort of building guidelines they have stipulated. I tend to be a bit more free with private dwellings, but that's just me.
+
+Vadiv has a suggestion here.
+
+Moth: "Go for it...Oh, Lillith... @bap me if I give cuts or get out of order..." Moth grins
+
+Vadiv: "With regard to standards, it's best if you at least create *guidelines*. For example, with +view, if you say '+view objects are marked by -dashes- around them', it's a lot more consistent. Not to say that anyone has to follow the guidelines, but at least they will be there. Same with paragraph formating."
+
+Moth nods, "Some mu*s will have a way of doing things. For the mu* on which Venice resides, I set a basic guideline for ANSI usage and naming conventions. I left the rest intentionally open. But there does need to be -some- guidelines, whatever they are."
+
+Vadiv notes he's really in favor of one +view standard, those saving countless 'This room has +viewable objects.' at the bottom of descs. ;)
+
+Aleriel mmms. "Great. Thanks :)"
+
+Lillith is a building wizard on two MU*s, in charge of all this stuff and just wants to put in her two cents. "What I find works very well, is indeed having similar formats for naming and desc formats and guidelines that everyone has to follow. I also agree that homes should be given more liberty. However, I also, make a division between public and private usage rooms. A theme wizard is really helpful for looking over building, because if the room is character owned and is going to be used as a place for public RP (IE, a tavern, restaurant, hotel, etc...), then there is a higher mark that the character has to achieve to make sure that it is themely and fits more completely into the rest of the grid. Building wizards are key in facilitating that, and if a soon-to-be public room is dramatically different than the rest of the grid in feel and usage, that's when they need to step in and help make a smoother seam between the private project and staff-built grid. But then again, that's just my experience. :)"
+
+
+Avacus applauds Lillith "perfect response!"
+
+Muse grins
+
+Moth: "And this gets to a good point that I didn't cover as I am a combo theme-building wizard, not every mu* will have the same structure, and if you're a builder or a building wizard on a site, then the theme wizard would be the perfect person to involve when formulating and constructing building projects. Alright! Now, Avacus..."
+
+Avacus: "comment on ANSI - with so many clients and way people set up what they see color can be quite difficult. Any suggestions on how to treat ANSI with so many differant clients and individualized displays?"
+
+Moth: "We struggled with this, too. Very few of the ANSI choices will work with a variety of backgrounds. Highlighting/bright text can work well with a black bg, might look like utter trash on a grey..."
+
+Aleriel has a suggestion.
+
+Vadiv has always wanted to set up some usercustomizable ansi.
+
+Muse sticks pretty much to red as a highlighter, "Because red is red, and looks decent on most background colours, and in plain or bold."
+
+Aleriel says "I've seen this done on some MUSHes, and while it's not really solving the problem, it's sort of a step in the right direction - place a note somewhere (a connection screen, for example) saying that the MU* is best viewed on black (or whatever the case may be) background. And I think that moderate use of ANSI would be good as well."
+
+Moth: "We suggested a combination of background and text that would be optimal, and tried to steer away from using colors that would simply be invisible on a white background/black text. Magenta and red are usually the most consistently easy to read."
+
+Aleriel says "Colors can sometimes be configured in the client, btw."
+
+Moth nods, "It's so variable. Sometimes it comes down to trial and error. I tested ours with different screen configurations.
+
+Aleriel: "So, if someone changes their background to white, it'd only be logical for them to change other colors to match it. Of course, not everyone would do that."
+
+Moth: "It's like building a webpage. You have to take into consideration that not everyone has your fonts...etc. I would recommend testing a few different background/text schemes.. and compare that with other folks you're working with, if you're using different clients. That's what we did."
+
+Alec nods, "I personally strip ansi (when I remember) and rely on writing ability to make stuff work. But then, even my web pages are minimalist. :)"
+
+Muse says "But they're pretty, Al. ;)"
+
+Vadiv thinks the best bet woudl just be to do normal defaults, but let the user override, with an ANSI_HILITE attrib, just use those colors for that play's hilite. ;)
+
+Moth uses ANSI like 'link' colors on a webpage. If you see ANSI it means something. But again, it's not a tool for everyone or every space. In some environments, it simply might not "work". There's no hard and fast or one way of doing anything. That's the beauty of it. Any other questions?"
+
+Avacus says "Can I ask another question?"
+
+Moth: "Okay... it's Alec's turn. First question..."
+
+Alec: "I's wondering... where would I get my archetypes for locations? Would the same ones apply as for characters? Oh, and as for personality in an area, would you switch writing style to fit the personality, or how can you let it shine through?"
+
+Moth: "There really isn't a single place to get an archetype for a location. Archetypes are based, ultimately, on how you perceive a place to be. I have a particular perception of Venice that I wanted to use, for example, not that the water smelled and you can see the echoes of the last plague in their architecture. Some locations lend themselves to certain ideas. The idea of Enlightenment can be associated with India, as an example. Archetypes can come from history or philosophy or literature but mostly from one's own imagination."
+
+"As far as personality in an area is concerned, I think a lot of this can be done with writing style. You don't need bells and whistles to convey the nature of a thing. Those tools simply help round it out. I have used quotations from literature of a region for a region. For a temple in japan, I am considering doing it all in haiku. Things like that..."
+
+Moth: "I think using +views as NPCs is another good way of adding personality and spark to a project..."
+
+Alec nods, "So to put it bluntly, one would write baby talk when describing a kindergarten place? :P"
+
+Moth: "If you wanted..."
+
+Alec nods.
+
+Moth: "Again, there's not one way to do any of this. But that certainly would be a way of doing it. You might also convey that kind of space with some ANSI, as kindergarten rooms are notoriously loud."
+
+"Ambiance would certainly help there... and I use that sort of code to add personality."
+
+Alec says "How does that lend to consistency, though... I can see how it'd work within the area, but if you move from high-prose long-winded business street thing and into badass-gangsta rapper alley, wouldn't that mess up continuity?"
+
+Moth: "It is a very delicate balance. And I think this is where ambiance and +views really come in... again, it depends upon the larger space you're working within. I tend to use +views, places and ambiance to add 'personality' ... while the names of things and the way that I desc a particular project has a similar look/feel."
+
+Lillith says "Using said examples of kindegarten room and gangster alley, you could take the teacher's viewpoint as well, and use a higher tone, the one of education and nurtuing voice... And describe the room fondly. And use that same educated voice to describe the horror that is the alley... You have lots of options. As a builder, you're an artist of words. So the medium can be handled very differently... even in just words."
+
+Moth: "There isn't one way to approach it... and there isn't one way to make certain it's consistent with other things around it. You have to take the surroundings into consideration, but that doesn't limit what you're able to do with a particular room on a greater grid."
+
+Moth: "I think Aleriel is next...."
+
+Lillith: "Nope! Alec has his seconf question, right?"
+
+Moth: "Oh, sorry!" Moth thought that was it, my bad
+
+Alec: "Sorry... rl phone call... Those would be two different areas, though, possibly even built by different builders... it'd need some coordination, I suppose... Next question:"
+
+Alec says "How often do you make modifications to a room desc to give your area feel more alive, if at all?"
+
+Moth nods, coordination is always important...// I do modify grid sections from time to time. In fact, I will be adding that weather/time/season desc'ing option to Venice that I mentioned briefly and as horrendous as it is to set up, I am going to update the grid at that time. I have the great fortune to have great liberty where I am to make changes or modifications as necessary. When I learn something new, I want to use it! When something new becomes available and I can incorporate it without disturbing the flow, then I incorporate it. And sometimes a story doesn't work :) and one has to modify earlier design. I'm a writer/editor by trade and nature, so I'm always looking at what it conveys and how well it does it. Again, this is where coordination would be critical among staff -- particularly between Theme and Building. And how often you make modifications, if you make them, also depends upon how significant the modifications would be and how sensitive your player base is to change.
+
+Avacus says "IMHO having the weather time appear in the room desc adds a great deal to a room."
+
+Moth: "It's incredible what it can do..."
+
+Taline: "You can also add lighting and temperature to things like rooms on a ship. I've seen one where it lets the user set the lighting and temperature conditions within a specific room."
+
+Alec nods, is, as a matter of fact working on doing a big weather system... yet another project... *sigh*
+
+Moth: "I have seen time/season/weather changing descs and... it adds such a depth. Alright, time's running out. I can talk about this subject all day :) Okay. Two more questions pending..."
+
+Lillith: "Aleriel?"
+
+Aleriel: "The webpage analogy earlier reminded me of something.. description lengths. Granted, the more detail a description provides is usually the better, but I know it's sometimes difficult to quickly read a long description in the middle of a scene or even while simply exploring. And then there still are clients with no scrollback. So, where do you draw a line saying 'this is enough'?"
+
+Lillith quickly steps up to the plate to address that one. "When I'm building, I usually try to make my descriptions 7-17 lines in length. The reason for that is because the standard screen fits about twenty-five lines or so, in my experience. The maximum, seventeen, that I work with allows for the name, a space, the description, a space, and then the contents of that room. It usually fits everything that you need onto a single screen. I also use the minimum, seven, to keep myself from leaving things undescribed. There are lots of things that one can describe about a room. Smells, sights, sounds... Distinctive marks on the floor, wall, dead bodies(kidding. I just have to keep you on your toes... O.~ ), etc... You want to be as in-depth as possible while keeping things at a workable and easily managed length (like 17 lines). If nothing else, you stand a better chance of conveying what you were thinking when you created the room in the first place.
+
+Avacus: "I have a laptop and HATE long desc!"
+
+Moth: "I am notoriously verbose. But, I have learned a trick to help with this. I keep my descs relatively short and I flesh them out with +views and places and/or places-descriptions if available. I also let my ambiance take some of the burden off the main desc. Works like a charm..."
+
+Lillith uses above-stated because she's lazy and usually doesn't like having to type in lots of commands just to get a good idea of the room. ;) She usually can get a lot into seventeen lines.
+
+Moth nods, and grins, "Getting to the point helps, too. Some folks are better at that than others. Alright, last question?"
+
+Lillith: "That would be Avacus. :)"
+
+Avacus: "Moth you said b4 a view would have a voice? what did you mean ?"
+
+Lillith: "I've always been of the belief that "Voice" is the language and description of the scene that a character walks into that relays a view about it. It could be a dump, and if the opinion of that dump is that it's beautiful piles of things that people so carelessly threw away or that it's heaps upon heaps of useless junk and stinky garbage... that's going to come across in the way that the description and ambiance code is written."
+
+Moth: "That was a bit poetic, not bad for one cup of coffee. In Venice, I have given the +views the 'voice' of NPCs. A person stopping on the street to tell you about this or that, to answer a question. It's just another way of presenting the same information. I have the gondoliers that I use (there are 5-10) appear in different parts of the city, same with the characters in the +views. You may meet them several times in your visit..."
+
+Moth nods to Lillith, "And that is another example of voice. Again, just different ways of presenting extra information, more detailed or more sweeping. It's up to you and how it fits the vision and story you're trying to tell...
+
+Lillith grins. Her English Major background rears its ugly head. ;)
+
+Alec says "hmm... won't that get tired eventually? I mean, NPCs that are always available in the same spot and with the same message tends to bug me to great extent."
+
+Avacus chuckles. "Alec you can set up stuff so has random messages."
+
+Moth: "There are ways to get around that..."
+
+Muse: "It won't always be the same message, though, if the theme and roleplay are flowing quickly enough."
+
+Moth nods. "Well, we're running over into Sadistic's time :)"
+
+Muse oopses.
+
+Alec nods, "Well... implement Eliza in mushcode, and watch the gang go whee :)"
+
+Muse: "We had a Nevyn, Alec. :)"
+
+Moth: "This was great fun :) and thank you all for coming. Great questions, everyone. And thanks, Lillith, for helping and with your input. It was great..."
+
+Muse: "Which was a Maas-Neotek, I think."
+
+Lillith applauds Moth for facilitating!
+
+Avacus: "thank you!"
+
+Moth: "My pleasure :)"
+
+Taline: "Thank you so much for your time Moth and Lillith. :) This was great. I've learned quite a bit and will pass it along."
+
+Muse: "Thank you for the talk, Moth. It made me think about a lot of things I could do better in my building."
+
+Aleriel: "Yes, thank you, and thank you. I got a few ideas now, as well. :)"
+

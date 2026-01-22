@@ -1,0 +1,554 @@
+ Yes, it's time again for a TIM Coding Workshop, this time part of the "MasterTrack" series (you know coding and want to really nail it down) on Flags. Come on in, just sit in the back if you want, or dive in with the fun. Tonight's Lecturer: Sketch. Beginner courses will continue to be held on Thursday evenings.
+
+-------------------------------------------------------------------------------
+
+Sketch (It's what's for dinner.)
+
+Sketch has arrived.
+
+Squeaky all waving
+
+Kahlua has arrived.
+
+Biff the Wonder Parrot has arrived.
+
+Kahlua says "Howdy folks."
+
+Br'fin says "Heya"
+
+Patrick says "Kahhhloooahhhh"
+
+Kahlua says "Sketch, if you care, your sign doesn't actually mention where the class is tonight"
+
+Kahlua says "Ho Br'fin, and Patreek."
+
+Sketch would hope people know where now.
+
+Kahlua says "Cool. :)"
+
+Squeaky says "You can get very lost on TIM. A whole lotta rooms."
+
+Kahlua says "Is Pretty Printer feeling better?"
+
+Mara has arrived.
+
+Sketch has had no time to spend on pretty printer.
+
+Kahlua nods.
+
+Sketch will do so, one of these days.
+
+Kahlua hugs Mara. Howdy. :)
+
+Mara hugs kah. evnin
+
+Reo says "By the way, does anyone know a web site they find to be designed particularly well? Efficient?"
+
+Sketch shouts "Coding Class is starting."
+
+Empedocles has arrived.
+
+Sketch shouts "Can't find it, page me."
+
+Br'fin waves
+
+Squeaky gets out the pencil and log-amajig
+
+Zahira has arrived.
+
+Sketch bows to Zahira.
+
+Zahira says "hello :)"
+
+Biff the Wonder Parrot staggers for a moment, hacking and wheezing. After a brief struggle, he coughs up a hairball. He looks confused for a moment, then shrugs and returns to Kahlua's shoulder.
+
+Mara has left.
+
+Biff the Wonder Parrot goes home.
+
+Biff the Wonder Parrot has left.
+
+Sketch gives Biff a new lease on life.
+
+Sketch says "OK!"
+
+Sketch says "Tonight, we're going to try for a slightly shorter class, trying to focus on getting out the info and generally making it so people aren't fighting fatigue and deciding to "wait for it to come out on log"."
+
+Sketch says "We're doing FLAGS. How to use flags to the fullest."
+
+Sketch says "You all understand flags, I believe? Page or whisper if you need a bracer."
+
+Farward(#77523PZc) understands flags in general.
+
+Sketch says "OK, so Flags. Those great things on the end of our database numbers and the database numbers of our things."
+
+Sketch says "We've all figured out by know that they all have meaning in some fashion or another. For example, the P is Player, and you can't change that."
+
+Sketch says "Actually, wizards can't do that on TIM, either. I'm told that some versions of MUSH could let you set someone !P. That's mean."
+
+Sketch says "There's also c, which on Players means "Connected"."
+
+Sketch says "People often want to know information about a room, but don't always know how to get it easily."
+
+Sketch says "There's horrible things you can do with the WHO() function, to figure out players, but that's a big pain in the ass."
+
+Sketch says "Luckily, R'nice added some cool features to the LIST() function."
+
+Sketch says "Specifically, you can list everything with a certain flag. Example."
+
+Sketch says "Try SAY LIST(CON(HERE),+Pc)"
+
+Squeaky says ""
+
+Kahlua says "Ooh."
+
+Br'fin makes a note to check his phone function.
+
+Empedocles isn't sure he ever knew that feature. Certainly didn't remember it.
+
+Sketch says "That might just be numbers, but you can also say NAMELIST(CON(HERE),+Pc) which gives the same list, but just the names of the numbers."
+
+Squeaky says ""
+
+Squeaky is messing up :<
+
+Reo says "Are you using "? You have to type say."
+
+Reo says "Or think."
+
+Sketch says "You'll get it. You have to type say, yes."
+
+Squeaky says "I did."
+
+Sydney says "Zahira Empedocles Kahlua Sketch Guest Farward Reo Patrick Sydney Squeaky Br'fin "
+
+Sydney says "I got a blank with think, though."
+
+Kahlua says "it worked OK with me with think"
+
+Squeaky says "#65267 #9741 #35157 #500 #64039 #77523 #38783 #74740 #25694 #55950 #49607 "
+
+Squeaky says "Got it :>"
+
+Kahlua says "yay"
+
+Sketch says "There you go. NAMELIST is OK, but the problem with it is that if someone has a two word name (and in the case of players, you're safe, of course), then you're going to have a hell of a time making sure that you're not missing something."
+
+Br'fin ponders what he can do with his not-here function to work better :)
+
+Sketch says "For example, as an aside, I believe you'd have to do it like this: SAY DOLIST(NAMELIST(LIST(CON(HERE),+Pc),[edit(##,spaces(1),_)])"
+
+Sketch says "And THAT, is ass."
+
+Sydney says "Does that put spaces in multi-word names?"
+
+Reo says "That's totally child molester."
+
+Sketch says "Yes."
+
+Sketch says "Well, actually, it puts in the _ character in spaces in multi-word names."
+
+Kahlua says "Function (DOLIST) expects exactly 2 argument(s)"
+
+Sketch says "For later removal."
+
+Squeaky says "I got that, too"
+
+Kahlua says "Well. Hmm."
+
+Sketch probably missed a ... Oh, there we go.
+
+Kahlua says "Oh, I think I see."
+
+Sketch says "For example, as an aside, I believe you'd have to do it like this: SAY DOLIST(NAMELIST(CON(HERE),+Pc),[edit(##,spaces(1),_)])"
+
+Sketch says "Sorry, put in LIST after NAMELIST."
+
+Squeaky says "Nope"
+
+Sketch says "Common mistake."
+
+Sketch says "Worked for me."
+
+Kahlua says "That works for me"
+
+Sydney says "Missing a parenthesis."
+
+Squeaky says "I got Edit, edit"
+
+Sketch says "Now, the Flags Function, is useful as well."
+
+Sketch says "If you SAY FLAGS(ME), you'll get your flags listed."
+
+Reo says "Plec"
+
+Squeaky says "Pc"
+
+Sketch says "However, we run into the problem that some of the flags are case sensitive, and then you have to use... THE GREP FUNCTION."
+
+Sketch says "The Grep Function is a real bear. Some time ago, R'nice ported "Grep" into TinyTIM."
+
+Sketch says "This resulted in @grep and grep()."
+
+Br'fin aiees :)
+
+Sketch says "Does everyone here get the concept of 'Grep'? Or should I explain that quickly?"
+
+Br'fin says "Or in other words, the only way to even consider trying to exec myself"
+
+Sydney knows of its existence.
+
+Sydney does not actually know what it does.
+
+Kahlua says "Go ahead and explain quickly, please"
+
+Reo says "It's exactly what I need to understand to fix the logs, I think. :)"
+
+Zahira has left.
+
+Sketch says "Basicaly, to grep something is to look for a specific "regular expression" inside a load of text."
+
+Sketch says "For example, try this: @grep 5 = @dolist genlist(1,5)=think ##"
+
+Sketch says "@dolist genlist(1,5) = think ## will make you think the numbers 1 through 5, in order."
+
+Sydney says "I got 5 followed by @grep Finished."
+
+Sketch says "However, the @grep 5 = means that you will only see what comes after the = sign if it has a 5 somewhere in it."
+
+Sketch says "Right. GREP filtered out everything that matched 5."
+
+Sydney says "Aha."
+
+Coolman has arrived.
+
+Sketch says "A nastier approach is to type @GREP P = @find"
+
+Sketch says "This will show you everything with a P flag or that has the letter P in it, that you own."
+
+Coolman sits down in the front of the room, and gets his notepad out.
+
+Sydney says "Is there help on this?"
+
+Squeaky says "The help is looong on it"
+
+Reo says "So why's it called GREP and not something happy like SEARCH?"
+
+Sketch says "There's some help on it, though it's somewhat weird."
+
+Sketch says "Because GREP is what the command is called in UNIX, Reo."
+
+Reo says "Oh."
+
+Br'fin says "And because it's somewhat more powerful than just a search."
+
+Sketch says "That's exactly right."
+
+Sketch says "For example, if you were to type this: @grep {^P} = @find"
+
+Sketch says "What THAT says is "Tell me everything in my @FIND that has a P as the first letter."
+
+Coolman has disconnected.
+
+Sydney can't get the help on @grep or grep().
+
+Squeaky says "Help grep"
+
+Sketch says "For those of us who are more UNIX-oriented, I would like to point out that the use of the curly brackets, is a TIMism and is required for proper parsing."
+
+Sketch says "Try HELP GREPPING."
+
+Sydney says "Thanks."
+
+Sketch says "Reo, Regular expressions are amazing."
+
+Sketch says "They also are way out of the scope of tonight's class on Flags. But they're worth your time."
+
+Sketch says "Imagine being able to say "Tell me everything in the room that has vowels. {aeiou]}"
+
+Sketch says "Imagine being able to say "Tell me everything in the room that has vowels. {[aeiou]}"
+
+Sketch missed a bracket.
+
+Kahlua says "Ah, natural language commands."
+
+Kahlua says "Cool."
+
+Sketch says "Actually, it should really be {[AaEeIiOoUu]}"
+
+Sydney sees some application for that sort of thing. :)
+
+Empedocles says "Regular expressions are the subjects of whole classes in CS."
+
+Sketch says "But I digress."
+
+Reo says "CcOoOoLl."
+
+Empedocles nods.
+
+Sketch says "So, what's the general opinion on the MARKED Flag?"
+
+Reo says "Never heard of it."
+
+Sketch says "Completely useless flag."
+
+Sydney doesn't really see the point of MARKED.
+
+Sketch says "Doesn't change a thing. You can set it and unset it."
+
+Sketch says "@SET ME = MARKED will not change a thing."
+
+Sketch says "HOWEVER..."
+
+Br'fin says "I've little opinion over the flags with no obious use, like Builder."
+
+Kahlua was just about to set himself marked...
+
+Farward says "You'd then be a marked man, Kahlua."
+
+Sketch says "Imagine you want an easy way to track what things in the Room have been looked at, or which have been picked up and dropped, or have been given some sort of neat aspect in your adventure."
+
+Reo says "Viola, you mark them."
+
+Empedocles says "There is some research going on as to whether or not the MARKED flag causes cancer in rats..."
+
+Sketch says "MARKED works pretty well with LIST(CON(HERE),-P,+M)"
+
+Sketch says "(i.e., Everything not a player, but which is Marked.)"
+
+Br'fin hsms.
+
+Sydney says "But you'd have to set something up to MARK the things which are used in the ways you mentioned. Right?"
+
+Sketch says "Yes. I think in most semi-complicated quests and adventures, you'll find there's a need for some sort of central accounting/setup/checking object/machine."
+
+Br'fin nods "Right at which point why not an attribute used somewhere?
+
+Sketch says "Something which kind of looks the whole place over and makes decisions, etc."
+
+Sketch says "Although to a lesser extent, this can be done with the @DETAILS of the room."
+
+Sketch could see arguments pro and con for the use of something like a DOLIST function to grab the attributes.
+
+Sketch says "Let's try this weird ass one."
+
+R'nice shouts "The Wiz Of Your Dreams is here."
+
+Sketch says "If you set the details of the room to be: switch(list(con(here),-P,+M),0,The room is sad and devoid of treasure.,1,The room is lit somewhat from your treasure.,2,The room glitters from treasure.,3,The room shines from treasure!,The room is blindingly lit from treasure!)"
+
+Sketch says "You have the ROOM doing the work of telling people that 1. Treasure should be brought here, and 2. That there's probably more and more treasure to find."
+
+Reo says "I have a question!"
+
+R'nice shouts "Well, they often call me Speedo, but my real name is Mr. Earl."
+
+Sketch says "of course, anything over 4 pieces of treasure, and it gets to be monotonus, but you were only seeking the 5 sacred Nuts of Sack, anyway, so it's OK."
+
+Sketch says "Sure."
+
+Reo says "Would that detect only your marked objects, or anyone's? Say someone else dropped their marked piece of lint in the room. Would it still see it as 'treasure?'"
+
+Br'fin mmms and nods at the details example
+
+R'nice arrives in a flash of wizardly brilliance!
+
+R'nice has arrived.
+
+Patrick goes home.
+
+Patrick hops into Flounder's car and zooms off to the Food King.
+
+Patrick has left.
+
+Sketch says "The answer is, it would detect all the objects as Marked regardless of owner."
+
+R'nice says "So what are we doing tonight? I can't seem to get in the groove of remembeing the schedule for these things."
+
+Kahlua says "Flags."
+
+Kahlua says "Lots of Flags"
+
+Sketch is using Flags as a jumping off point for lots of crazy stuff.
+
+R'nice nods
+
+Sketch says "But the fact is, Reo, that in a True Quest or Adventure, you would take some severe pains to add some DROP-TOs to the rooms to get rid of crap that isn't relevant to the adventure."
+
+Sketch says "Because it can really be annoying to find out the Platinum Comb isn't actually a part of the way into the castle, no matter where you drop it or use it."
+
+Sketch says "Then again, the insane and masterful art of building a Good Adventure is a whole class in itself, and will be covered in the future."
+
+Sydney yays.
+
+Sketch says "Know how long it took me to make the SNUHventure?"
+
+R'nice says "Class? I think it should be the term project!"
+
+Reo says "40 days and 40 nights?"
+
+Sketch says "2 years."
+
+Squeaky says "No..I got lost in there "
+
+Sketch says "With some severe breaks, I should note."
+
+Farward says "There must be some serious stuff behind the scenes, then?"
+
+Sketch says "But the thing is, there's nothing better than taking your project to fruition."
+
+Br'fin umfs. "Got all the tech, but none of the scenariop for an adventure"
+
+R'nice says "Well, except sex, of course."
+
+Sketch says "Well, if sex is the project you're taking to fruition..."
+
+Farward figures anything that looks so simple must have taken loads of effort to make look that way.
+
+Kahlua says "Well, yeah, there's sex..."
+
+Sketch says "LOCKS and FLAGS!"
+
+Sketch says "Many flags are affected by the Locks of the objects with the flag, and the players/objects interacting with the thing with the flag."
+
+Sketch says "A great example is DARK and LIGHT flags."
+
+Sketch says "Set a room DARK, and nothing can be seen in it."
+
+Sketch says "...unless something is set LIGHT."
+
+Sketch says "Meanwhile, if you set the room DARK >AND< LIGHT, then the lock on the ROOM determines who can see or not see."
+
+Sketch says "The classic use of this is the old "Need a lantern to see in the room" thing."
+
+Sketch says "Now, a lot of that can be somewhat avoided by using @DETAILS, but the use of DARK and LIGHT and the right kind of lock can make a big difference."
+
+Sketch says "I don't want to go into LOCKs this week (that's next week), but you should definitely be aware that locking a room to a lantern with the standard @LOCK HERE = is not the way to go. We have better locks than that for THAT sort of thing."
+
+Sketch says "Another such flag is the NO_EMIT Flag. If the room is set NO_EMIT, then only those who pass the lock of the room can @EMIT."
+
+Sketch says "KEY! We're so far away from Adventuring these days that we've forgotten KEY."
+
+Sketch says "Simply put, something set KEY will stay in the same room if the person carrying it @TELEports away."
+
+Sketch says "@TELEporting was never really a problem in the old games. This key helps fix that new problem."
+
+Empedocles says "I think it also can't get picked up by puppets, or maybe that's not true anymore."
+
+Br'fin says "IT can't go through some exits I recall"
+
+Sketch says "Some of these Flags go way back, and were intended to stop the problems one would get with a multi-player game that had required objects to solve."
+
+Sketch says "So, I'm sure questions are abounding."
+
+Empedocles says "The desert adventure is a good example of a classic old-fashioned adventure, with *no* MUSH programming allowed."
+
+Sydney says "You said a lot of things can be done with the @details of a room."
+
+Sydney says "How would you use @details to do the 'need a lantern' thingy, for example?"
+
+Sketch says "Well, the most basic idea behind the @details of a room is that it is an EVALUATED ATTRIBUTE."
+
+Sketch says "What this means is, basically, that you could set the @details to be a FUNCTION and have that FUNCTION do work."
+
+Sketch says "By doing this, people are given a description based on what the function things they should see."
+
+Sydney nods.
+
+Sketch says "For example. Type LOOK."
+
+Squeaky nods.
+
+Sketch says "Look at the line after "floor beneath the seats.""
+
+Sydney hadn't noticed that. Neat.
+
+Sketch added it just now.
+
+Sketch says "Now, obviously, when people leave, it stays the same, right? Nope."
+
+Sydney says "Well, then, I don't feel bad about not noticing it before. :)"
+
+Sketch says "That is a function, that is making itself each time it is looked at."
+
+Sketch just typed @details here={You look around and see and .}
+
+Sketch just typed @details here={You look around and see [#69/listing(namelist(con(me),+P))]}
+
+Sydney programmed her @details to show a random Midnight Oil lyric.
+
+Sketch has to fight the parser sometimes. Apologies.
+
+Br'fin says "Parser fighting will presumably be covered in a later class :)"
+
+Sketch says "Parser fighting is a samurai art."
+
+Sketch is going to make you cover it.
+
+Sydney never remembers to double the percents when talking about them.
+
+Sketch says "You have more scares than anyone."
+
+Sketch says "Scars."
+
+Br'fin says "Both are appropriate when referrign to the parser Sketch :)"
+
+Sketch says "When you're building, or looking at your stuff, you often see the flags after your own creations. Useful for building, but not good if you want to get an idea what others will see. Enter NEARSIGHTED."
+
+Sketch says "Setting yourself NEARSIGHTED will take them away when you LOOK."
+
+Reo says "I had that set for months, and had almost forgotten about flags."
+
+Br'fin giggles
+
+Sydney says "Is con the concatenation function?"
+
+Sketch says "No, that's the CONTENTS function."
+
+Sketch says "The contents of a room, or object, or player. (Exits have no contents)"
+
+Sketch is now going to leave the floor open to anything flag or otherwise.
+
+Sketch says "I will say this one last thing: Each of the Flags we have often have different meanings in different situations. And it will behoove you to read the FLAGS literature/Help files, because it rates as the most complete information in the help system."
+
+R'nice says "Note that the con() function doesn't exactly give you the contents, it gives you the *first*thing in the contents. To get the *whole* contents, you use one of the list functions, list or namelist"
+
+Sketch says "Very true."
+
+Sketch raps his ruler on the desk.
+
+Sketch says "WELL then. :)"
+
+Sketch says "Like I said, next week we do locks. Those are going to be something."
+
+Squeaky blinks
+
+R'nice blinks back
+
+Farward says "Locks look like a whole language unto themselves."
+
+R'nice says "They are, unfortunately."
+
+R'nice says "The good news is that you can kind of bypass that and use the old language instead."
+
+R'nice says "That is, you can use normal old functions in your locks"
+
+Sketch smiles.
+
+Sketch says "OK, Class dismissed!"
+
+Br'fin taunts R'nice with locks,
+
+R'nice says "What? No homework? :)"
+
+Br'fin dropped foo.
+
+Reo says "Thanks! Great class."
+
+R'nice dropped mitch!
+
+Sketch will be back in slamming condition this Thursday.
+
+Sketch explodes in a cloud of bovine smoke.
+
+Sketch has left.
+

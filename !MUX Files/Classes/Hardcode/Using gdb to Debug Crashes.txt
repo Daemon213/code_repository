@@ -1,0 +1,172 @@
+ Topic: Using gdb to debug crashes
+Author: Javelin
+Summary: Javelin explains how to use gdb, the GNU Debugger, to debug a MUSH
+crash using a core file.
+
+
+<Hardcode> Hopful Romantic Javelin says, "I'm about to help blaze debug a mush
+crash using a core file. Does anyone else have interest in this topic? If so,
+I'll do it here (And someone could log it as a class, even). If not, I'll do
+it privately."
+<Hardcode> Knife() 'n' Fork() BlaZe logs.
+<Hardcode> 0xfeeddeadbeebeef Zebranky says, "I'm interested."
+<Hardcode> 0xfeeddeadbeebeef Zebranky gets out his GDB reference cards :)
+<Hardcode> Hopful Romantic Javelin says, "Yeah, Blaze, if you want that,
+http://www.refcards.com/download/gdb-refcard-letter.pdf"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Nifty."
+<Hardcode> Hopful Romantic Javelin says, "Okee, go to your game dir, and: gdb
+netmush mycore"
+<Hardcode> Goldberg says, "what is gdb?"
+<Hardcode> @dump 'n' @wipe Time wonders..
+<Hardcode> Knife() 'n' Fork() BlaZe says, "GCC debugger."
+<Hardcode> Hopful Romantic Javelin says, "gdb is the GNU debugger"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Really? Thought it was just GCC"
+<Hardcode> @dump 'n' @wipe Time says, "What's the difference in that and what
+I use: gdb core netmush"
+<Hardcode> @dump 'n' @wipe Time says, "?"
+<Hardcode> Hopful Romantic Javelin says, "No, gdb debugs more than just gcc"
+<Hardcode> Hopful Romantic Javelin doesn't think gdb core netmush would work,
+but I've never tried, Time.
+<Hardcode> @dump 'n' @wipe Time uses it all the time, jav :)
+<Hardcode> 0xfeeddeadbeebeef Zebranky says, "Time, I think that uses netmush
+as the core file and core as the executable (though I might be wrong)"
+<Hardcode> @dump 'n' @wipe Time says, "It may work both ways..."
+<Hardcode> Hopful Romantic Javelin says, "gdb may be smart enough to figure it
+out."
+<Hardcode> @dump 'n' @wipe Time says, "Anyway, go on.."
+<Hardcode> Hopful Romantic Javelin says, "Ok, got it up, Blaze?"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Aye."
+<Hardcode> @dump 'n' @wipe Time pulls up a core to test it.
+<Hardcode> Hopful Romantic Javelin says, "Type 'where'"
+<Hardcode> Hopful Romantic Javelin says, "That will produce a stack trace"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Spammy. Yep."
+<Hardcode> Hopful Romantic Javelin says, "It's a set of lines showing you
+where the program was when it crashed."
+<Hardcode> Hopful Romantic Javelin says, "The first line is where the crash
+happened, the second line is where the function that called the first line's
+function was, etc."
+<Hardcode> Hopful Romantic Javelin says, "So what's the first couple lines?"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "#0 0x400c1548 in strcasecmp ()
+from /lib/libc.so."
+<Hardcode> @dump 'n' @wipe Time says, "Ah..that's why...I use gdb -c core
+netmush"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "#2 0x080ace7b in simple_matches
+(who=146, name=0x0, flags=17843184) at match.c:312"
+<Hardcode> @dump 'n' @wipe Time says, "The -c is the corefile name"
+<Hardcode> Hopful Romantic Javelin says, "Ok, so it crashed when calling
+strcasecmp during simple_matches(), which is a function in match.c"
+<Hardcode> @dump 'n' @wipe Time shuts up as to not confuse anyone.
+<Hardcode> Hopful Romantic Javelin says, "What was #1?"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Not due to that though?"
+<Hardcode> Hopful Romantic Javelin is assuming #1 was match_me?
+<Hardcode> Knife() 'n' Fork() BlaZe says, "#1 0x080ad453 in match_me
+(who=146, name=0x0) at match.c:462"
+<Hardcode> Knife() 'n' Fork() BlaZe nods
+<Hardcode> Hopful Romantic Javelin says, "Ok. You start out in the lowest (#0)
+stack frame. Let's go up to #1. Type: up"
+<Hardcode> Knife() 'n' Fork() BlaZe is still there.
+<Hardcode> Hopful Romantic Javelin says, "If you type 'l' now, you'll see the
+source code around match_me"
+<Hardcode> Knife() 'n' Fork() BlaZe thinks he just went down (scrolled)
+<Hardcode> Hopful Romantic Javelin says, "You can type 'frame 1' to go there
+directly"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Ah, back at prompt. I see."
+<Hardcode> Hopful Romantic Javelin says, "Clearly, the problem here is that
+match_me is getting called with a null pointer for name (name=0x0), and
+passing that to strcasecmp(), which is puking."
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Okay."
+<Hardcode> Hopful Romantic Javelin says, "We want to figure out what's passing
+NULLs into the matcher. In #2, you can see that simple_matches was given a
+NULL name parameter. SO let's look at who called simple_matches"
+<Hardcode> Hopful Romantic Javelin says, "Type: frame 3"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "who"
+<Hardcode> Hopful Romantic Javelin says, "When you're in frame 3, 'info args'
+will probably be useful. What's the output of that?"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "who = 146 name = 0x0 type = 65535
+flags = 17843184"
+<Hardcode> Hopful Romantic Javelin says, "Do: info frame 3"
+<Hardcode> Hopful Romantic Javelin thinks that'll show us the name of the
+function we're in, too.
+<Hardcode> Goldberg has now made a fresh release of ASpace+Penn using a new
+Penn177p13 tarball and manually inserting the relevant code
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Okay."
+<Hardcode> Hopful Romantic Javelin says, "So, what function are we in, Blaze?"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "match_result_internal I think"
+<Hardcode> Hopful Romantic Javelin says, "Makes sense. Go 'up'"
+<Hardcode> Hopful Romantic Javelin says, "Now what function?"
+<Hardcode> Hopful Romantic Javelin says, "(Probably match_result or one of the
+variants...)"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "noisy_match_result"
+<Hardcode> Hopful Romantic Javelin says, "Great. Ok, now 'up' again and we
+find out how we got a NULL into the matcher."
+<Hardcode> Knife() 'n' Fork() BlaZe says, "We do?"
+<Hardcode> Hopful Romantic Javelin hopes so. What called noisy_match_result?
+<Hardcode> Knife() 'n' Fork() BlaZe is currently at #5? There's no
+noisy_match_result.
+<Hardcode> Hopful Romantic Javelin says, "But what's the function at #5?"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "fun_accname"
+<Hardcode> Hopful Romantic Javelin says, "Ok, so that's where the problem
+lies. What line number?"
+<Hardcode> Hopful Romantic Javelin says, "funstr.c 1431ish?"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "fundb.c:1430"
+<Hardcode> Hopful Romantic Javelin says, "Right, that's what I meant. :)"
+<Hardcode> Hopful Romantic Javelin says, "Ok, type 'l'"
+<Hardcode> Hopful Romantic Javelin says, "You'll see the code there. The line
+that went bad was: dbref it = match_thing(executor, args[0]);"
+<Hardcode> Knife() 'n' Fork() BlaZe notes he made a small hack so name() is
+just an alias for accname. Would that make much of a difference?
+<Hardcode> Hopful Romantic Javelin isn't sure yet.
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Okay. Yes it does."
+<Hardcode> Hopful Romantic Javelin says, "Let's see what args[0] was. Type: p
+args[0]"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "NULL."
+<Hardcode> Hopful Romantic Javelin says, "When you made that hack..."
+<Hardcode> Hopful Romantic Javelin says, "You just changed fun_name to
+fun_accname in the function table entry for "NAME"?"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Yup."
+<Hardcode> Hopful Romantic Javelin says, "Yep, your fault. You broke it."
+<Hardcode> 0xfeeddeadbeebeef Zebranky grins.
+<Hardcode> Knife() 'n' Fork() BlaZe grins. "How and why?"
+<Hardcode> Hopful Romantic Javelin says, "The function table entry for NAME
+reads: {"NAME", fun_name, 0, 2, FN_REG},"
+<Hardcode> Hopful Romantic Javelin says, "fun_name knows how to deal with 0
+and 2 arguments."
+<Hardcode> Knife() 'n' Fork() BlaZe aaaahs.
+<Hardcode> Hopful Romantic Javelin says, "fun_accname expects and only can
+deal with 1 argument, exactly."
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Aye, just spotted that"
+<Hardcode> Hopful Romantic Javelin says, "When someone passes in 0 args to
+accname() (via name()), it'll die."
+<Hardcode> Knife() 'n' Fork() BlaZe takes a look at the call.
+<Hardcode> Hopful Romantic Javelin says, "The proper way to make that hack, if
+you want it..."
+<Hardcode> Knife() 'n' Fork() BlaZe says, "name(%0). Right. if %0 is null."
+<Hardcode> Knife() 'n' Fork() BlaZe is to change 0, 2, to 1, 1?
+<Hardcode> Hopful Romantic Javelin says, "Is to leave "NAME" pointing at
+fun_name, and edit fun_name, replacing the shortname() call at line 1413 with
+accented_name() instead."
+<Hardcode> Hopful Romantic Javelin says, "You can change 0,2 to 1,1, and
+that's safe."
+<Hardcode> Hopful Romantic Javelin says, "But then people won't be able to use
+the side effect version of name()"
+<Hardcode> Knife() 'n' Fork() BlaZe says, "How do you mean?"
+<Hardcode> Hopful Romantic Javelin says, "And code that expects that name()
+returns nothing (which it historically has) will suddenly get an error."
+<Hardcode> Hopful Romantic Javelin says, "Well, name(myobj,newname) will stop
+working if you don't allow 2 args."
+<Hardcode> Knife() 'n' Fork() BlaZe says, "Ah, okay."
+<Hardcode> Hopful Romantic Javelin recommends against any hacking of name() at
+all, but if you must force accented output, do it the way I suggested above.
+<Hardcode> Hopful Romantic Javelin says, "In any case, we've found the problem
+and you can 'quit' gdb :)"
+<Hardcode> Knife() 'n' Fork() BlaZe will do. "And the lecture was very
+helpful."
+<Hardcode> Hopful Romantic Javelin says, "The stack trace showed us that the
+crash was due to strcascmp() getting a null arg."
+<Hardcode> Hopful Romantic Javelin says, "Looking back, we found that the null
+arg was a null name that was passed to the matcher."
+<Hardcode> Hopful Romantic Javelin says, "We then found that it was
+fun_accname() that was running the matcher with a null argument, and we could
+wonder how fun_accname was called with no arguments."
+<Hardcode> Hopful Romantic Javelin says, "Which led to the conclusion that the
+tweak in function.c was at fault. Successful debug. Whee." 

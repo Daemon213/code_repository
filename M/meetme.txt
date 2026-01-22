@@ -1,0 +1,33 @@
+#  Author: Ellan West (Ellan@Lost Tribes [lost.strange.com 1066])
+#  Format: Mark Hassman (12/6/96)
+
+------------------------------------------------------------------------------
++meetme
+
+  +meetme was inspired by a similar global on mucks. The premise is the same.
+  In a place where the majority of the rooms are publicly owned, and
+  deliberately set not-jump-ok to preserve a sense of privacy and realism,
+  nevertheless, it is useful for roleplay to be able to invite  people to
+  where you are, and move them quickly 'onstage'. Unlike JUMP_OK, no one will
+  ever arrive without at least one person in the room knowing in advance.
+  
+  To use this command: type +meetme
+  
+         Playername has offered to 'meet' you.
+         To go where they are: Type +Mjoin Playername
+         To bring them here:   Type +Msummon Playername
+         To decline:           Type +Mdecline Playername
+
+         This offer will expire in 3 minutes.
+------------------------------------------------------------------------------
+
+@create MeetMe Object
+@set MeetMe Object=SAFE
+@set MeetMe Object=COMMANDS
+&cmd-meet-offer #265=$+meetme *:@switch [hastype(*%0,player)]=1,{@switch [hasflag(*%0,connected)]=1,{@switch [strmatch(name(*%0),name(%#))]=0,{&meetme *%0=%#;@pemit %#=You offer to meet [capstr_all(%0)].;@pemit *%0=[u(msg-meetme,%N)];@wait 180=&meetme *%0},{@pemit %#=[ansi(hr,Error:)] You can not offer to meet yourself. That would be weird.}},{@pemit %#=[ansi(hr,Error:)] [name(*%0)] is not currently connected to the game.}},{@pemit %#=[ansi(hr,Error:)] You can only offer to meet players.}&MSG-MEETME MeetMe Object=%r[center(<%b[ansi(h,+MeetMe System)]%b>,78,-)]%r%r[space(2)][moniker(%#)] has offered to 'meet' you.%r%r[space(2)][ljust(To go where they are:,22)]Type [ansi(h,+Mjoin [capstr_all(%0)])]%r[space(2)][ljust(To bring them here:,22)]Type [ansi(h,+Msummon [capstr_all(%0)])]%r[space(2)][ljust(To decline:,22)]Type [ansi(h,+Mdecline [capstr_all(%0)])]%r%r[space(2)]This offer will expire in 3 minutes.%r[space(2)]This is an OOC service of your local DaemonCorps.%r%r[repeat(-,78)]
+&CMD-MJOIN MeetMe Object=$+mjoin *:@switch [u(%#/meetme)]=[num(*%0)],@tel %#=[loc(*%0)],@pemit %#={You have no meetme attribute, perhaps the invitation ran out of time or you misspelled the name.}
+&CMD-MSUMMON MeetMe Object=$+msummon *:@switch [u(%#/meetme)]=[num(*%0)],@tel *%0=%l,@pemit %#={You have no meetme attribute, perhaps the invitation ran out of time or you misspelled the name.}
+&CMD-MDECLINE MeetMe Object=$+mdecline *:@switch [u(%#/meetme)]=[num(*%0)],@pemit *%0=%N declines your invitation to meet.,@pemit %#={You have no meetme attribute, perhaps the invitation ran out of time or you misspelled the name.}
+&AUDITION-LOCK MeetMe Object=[hasflag(%#, suspect)]
+@lock MeetMe Object=AUDITION-LOCK/1
+@lock/UseLock MeetMe Object=AUDITION-LOCK/0

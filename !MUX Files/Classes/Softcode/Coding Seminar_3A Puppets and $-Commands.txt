@@ -1,0 +1,759 @@
+
+Coding Seminar I
+
+On April 18th, the first coding seminar was offered. It was for beginners and is titled "Puppets and $ commands". Schmidt, one of the best coders on the net, was to be hosting, but was unable to attend, so Leto filled in quite expertly.
+
+
+Leto says, "Hi everyone. Seems Schmidt is having some access trouble (or
+something), so I've been called in from the bullpen."
+
+Leto says, "Okay... you'er going to have to bear with me on this, since I
+obviously have nothing prepared. And I'm no Schmidt. :)"
+
+A murmer of agreement ripples across the audience.
+
+Leto says, "Okay. I believe the topic tonight was puppets and $commands."
+
+Leto says, "Okay, I know that alot of the people in this room know as much
+or more about this than I do... so I'll have to ask that for the
+people who know what I'm talking about, to please just pipe up when
+asked, or when I'm wrong :)"
+
+Leto says, "As I go along, feel free to ask any questions."
+
+Leto says, "Let's get started."
+
+Leto says, "Now, as you all probably know, a puppet is an object that its
+owner can control. Usually, a puppet is used to add some spark to RP,
+and are often things like Guards, servants... that sort of thing."
+
+Siobhan raises his hand.
+
+Leto says, "Siobhan?"
+
+Siobhan rises.. "Better make the distinction between RP puppet and the flag
+of the same name.. You can control any object you own to the same
+degree.. it's the feedback that changes.
+
+Siobhan sits.
+
+Leto says, "Well, what we'll do tonight, since we can't do much, is just
+talk about making a simple puppet, and we'll put some $commands on it.
+We're talking about a puppet in the traditional sense... which
+hopefully you'll understand as we go along."
+
+Leto says, "Now, I'm not going to attempt to make the most secure puppet,
+or the most code efficient puppet. What I want to do, is to cover the
+basics. We can grow on those later."
+
+Leto says, "Now, first and foremost, a puppet is an object. And you make
+any object with the @create command. So I'll start by @creating our
+sample puppet. And remember, if yu have ANY questions... ask me. :)"
+
+Leto says, "Okay, to make that puppet, I just types @create Sample Guard
+Puppet."
+
+Leto says, "Now, right now, that puppet is about as useful as something
+like a chair object. I can get it, I can probably give it to you...
+but I can't do alot more."
+
+Leto says, "I'd like you all to 'ex puppet'"
+
+Leto says, "I've set the visual flag on it with the @set puppet=visual'
+command, so you can all look at it."
+
+Sample Guard Puppet(#5338Vn)
+Type: Thing Flags: VISUAL NO_COMMAND
+Owner: Duke Leto Key: *UNLOCKED* Coins: 1
+Parent: *NOTHING*
+Zone: *NOTHING*
+Use Key: *UNLOCKED*
+Enter Key: *UNLOCKED*
+Powers:
+Warnings checked: none
+Created: Tue Apr 18 19:29:24 1995
+Last Modification: Tue Apr 18 19:29:24 1995
+Home: Auditorium(#2116Rnt)
+Location: Auditorium(#2116Rnt)
+
+Leto says, "At the top, you'll see that right now, the puppet has two
+commands, VISUAL and NO_COMMAND. Visual lets anyone see the code of
+the object, and NO_COMMAND means that the mush won't look at the
+object's code to see if it has any commands on it. In this case, we're
+going to want to put some commands on it though, so we'll remove the
+NO_COMMAND flag by typing '@set puppet=!no_command'"
+
+Leto says, "The '!' in front of the flag name means you want to remove the
+flag."
+
+Leto says, "If you are making an object and parenting it to something in
+the parentables room, and find it doesn't work, usually the reason is
+that you haven't removed that flag. I do it all the time myself."
+
+Leto says, "Okay... now that we've done that... I am going to do a couple
+of other common things that you would do with any object that you own."
+
+Leto says, "I'm going to lock it so only I can pick it up, by typing '@lock
+puppet=me'. This is actually really important, since right now any of
+you could just pick it up and run off with it. :)"
+
+Leto says, "We could easily spend a whole night on the various kinds of
+locks in mushcode... but we won't. If any of you have any problems or
+questions about locks... you can ask me or any of the other code type
+people around here just about any time."
+
+Leto says, "Okay, so right now, we have a locked, visual, !no_command, very
+very boring object. :)"
+
+Leto says, "Now the first thing you'd do with the puppet is @describe
+it... remember that people don't know what an object is except for its
+name, how it looks, and how it acts... so the description is very
+important."
+
+Leto says, "Since I dont' know what this thing is going to be for, I'll
+give it a really simple description."
+
+Leto says, "Now, we can put most of the same things on a puppet that you
+can put on yourself, like ADESCRIBEs, OMOVEs, etc., but I think Loki
+is going to be covering that sort of thing in her seminar, so I won't
+go into them."
+
+Leto says, "Especially since this thing isn't even a puppet yet :)"
+
+Takezo raises his hand.
+
+Leto says, "Sure Takezo... go ahead"
+
+Takezo says, "ex still shows no command?"
+
+Sample Guard Puppet(#5338Vn)
+Type: Thing Flags: VISUAL NO_COMMAND
+Owner: Duke Leto Key: [1mDuke Leto[0m(#5POWXenACMcJ) Coins: 1
+Parent: *NOTHING*
+Zone: *NOTHING*
+Use Key: *UNLOCKED*
+Enter Key: *UNLOCKED*
+Powers:
+Warnings checked: none
+Created: Tue Apr 18 19:29:24 1995
+Last Modification: Tue Apr 18 19:40:04 1995
+Home: [1mAuditorium[0m(#2116Rnt)
+Location: [1mAuditorium[0m(#2116Rnt)
+
+Loki beams:)
+
+Leto says, "It seems I'm all talk and no action :) I'll take it off now :)"
+
+Shibboleth pulls up a chair, and sits down
+
+Leto says, "Okay... let's make this thing a real puppet."
+
+Leto says, "To do this, you simple set a flag on it, called puppet. The
+command to do this is '@set puppet=puppet'"
+
+Sample Guard Puppet is now listening.
+
+Leto says, "Okay.... I've done it. Here's what it means."
+
+Leto says, "From now on, this puppet is like an extra pair of eyes and ears
+for me."
+
+Leto says, "Right now, it doesn't really make any difference to me... since
+I'm in the same room. But if I were to leave, anything that was said
+or posed in this room would be relayed to me by the puppet, prefixed
+by its name."
+
+Leto says, "I'll demonstrate. Once I'm gone... I want someone to say
+something."
+
+You step into a glass elevator and are going down....
+
+Sample Guard Puppet> Duke Leto has left.
+
+OOC Room(#47RtF)
+
+***The center of all out of character life!***
+
+Helpful rooms surround you! Check out, in particular, the Newbie Room to
+the south and the Recruiting Lounge to the west! Both have important
+information on channels in them!
+Contents:
+Notice board(#5278n)
+Obvious exits:
+Elevator Up <UP> leads to Auditorium.
+Northwest <NW> leads to Oleo's OOC Sauna Room.
+North <N> leads to Admin Lounge.
+South <S> leads to Newbie Room.
+East <E> leads to Parentables Room.
+West <W> leads to Recruiting Lounge.
+
+Back IC
+
+Sample Guard Puppet> Loki tells you all good storeis.
+
+Sample Guard Puppet> Loki says, "er stories too:)"
+
+You step into the glass elevator and head up, up, and away...
+
+Sample Guard Puppet> Duke Leto steps out of the elevator.
+
+Auditorium(#2116Rnt)
+
+A large auditorium with circular tiers of seats leading down to a podium.
+Chairs with swing up arms that serve as desks ring the auditorium.
+Contents:
+Shibboleth(#5179PenAc?)
+Sample Guard Puppet(#5338Vp)
+Loki(#883Pec)
+Siobhan(#906PIOeACcm)
+Leander(#791PUentAcx)
+Takezo(#3701PIUnNc)
+Taolo(#4765POenAc)
+Rudolfo(#2865PUenANc)
+Fezzad(#2749POenANc)
+Ulrika(#77POenrACMc)
+Obvious exits:
+Elevator Down <DOWN> leads to OOC Room.
+
+Loki says, "he's alush:)"
+
+Loki eeps.
+
+Duke Leto smiles.
+
+Leto says, "What I saw was: Sample Guard Puppet> Loki tells you all good
+storeis."
+
+Leto says, "So you know who said it, just like I was in the room. I also
+know the name of the puppet. Sometimes you have more thanb one puppet,
+so the name is pretty important. If I had 6 puppets all named "Sample
+Guard Puppet", I'd get mightily confused."
+
+Leto says, "Of course a puppet that just stands there is no fun at all."
+
+Leto says, "An interesting puppet does things. "
+
+Leto says, "Here's how you make a puppet "do your bidding". You use the
+@force command."
+
+Leto says, "To make the puppet dance, simply type something like this:
+'@force puppet=:dances around.'"
+
+Duke Leto demonstrates.
+
+Sample Guard Puppet dances around.
+
+Leto says, "You'll notice that by putting a colon there, the puppet acted
+just like I would have if I started a line of type with a colon."
+
+Leto says, "That's the key to the force command. What you're doing, in
+effect, is forcing it to type whatever you put after the '=' in the
+@force command."
+
+Leto says, "So now, I can make the puppet talk, or pose... or even type in
+other mush commands. And whatever it sees will be relayed back to me."
+
+Sample Guard Puppet says, "So now I can teach the class through the
+puppet.""
+
+Sample Guard Puppet says, "Now, a puppet doesn't have to be in the same
+room as me to do it's thing when it comes to listening, as you've
+seen... but there is a slight problem when it comes to making a puppet
+DO things from a distance.""
+
+Leto says, "See, when I type @force <whatever>, the mush tries to find that
+<whatever> in the same room that I'm in, or in my inventory. If I am
+in another room, as you would often be, you have to tell the mush
+where to look."
+
+Leto says, "To do this, you tell the mush the exact database number for the
+puppet. "
+
+Huh? (Type "help" for help.)
+
+Sample Guard Puppet(#5338Vp)
+This is my sample puppet object.
+
+Leto says, "If you 'ex' the puppet, you'll see that its number is #5338...
+so if I want to control the puppet from afar, I'll have to @force
+#5338, instead of just typing @force puppet."
+
+Leto says, "If you're like me, remembering that pesky number will be your
+number one beef when it comes to puppets. :)"
+
+Leto says, "So, an easy thing to do is to make a command to remember it for
+you, in effect."
+
+test steps out of the elevator.
+
+test has arrived.
+
+Leto says, "Now, I could put this command on myself, but that's not very
+secure... so I'm going to make a special puppet "remote control" to do
+it for me."
+
+Leto says, "Okay... so following the priciples discussed earlier... I'm
+going to whip up a remote control right now."
+
+Leto says, "Okay, to make your remote control the puppet... you have to
+give it a special flag of its own... called INHERIT"
+
+Leto says, "The INHERIT command give your remote the ability to @force
+YOU... which is admittedly a confusing concept."
+
+Leto says, "The easy way to look at this is that you're putting a complex
+command on the remote, and giving it a simple name. When you type that
+simple name, you trigger the remote to make you do the complex
+command... that way , you can forget about the complex command. "
+
+Leto says, "That didn't make much sense, even to me... so feel free to ask
+a question :)"
+
+Leander says, "Do we have to @set the remote control !no_command too?"
+
+Leto says, "In this case... the command we're going to put on the remove is
+the '@force #5388=' that I always forget :)"
+
+test says, "What are the limits on what puppets can do?"
+
+Leto says, "Do you mean codewise? Or in RP terms?"
+
+Leto says, "For RP terms, see 'rules puppets'"
+
+test says, "in RP terms."
+
+Leto says, "Okay... back to the remote. "
+
+Leto says, "The remote is already set to go.... so let's add the command."
+
+Leto says, "The command that we want, in english, is 'find out what leto
+wants to do, then make him make the puppet do that."
+
+Leto says, "In mush terms, that translates into:"
+
+A drum roll is heard...
+
+Leto says, "&force_puppet remote=$fp *:@fo [owner(me)]=@fo #5338=%0"
+
+Rudolfo yuck
+
+Leto says, "Okay... let's walk through that... since it's scary looking
+even to me... and I typed it :)"
+
+Leto says, "The '&force_puppet' is the name of the attribute that we'll be
+storing the command on. An attribute is used to stare commands or data
+on an object. Your description is an attribute for example, as is your
+&email and more."
+
+Leto says, "The 'remote' is the name of the object that you're putting that
+attribute on. In this case, it's the remote control, as you know."
+
+Leto says, "The '$fp' is the name of the command you are making. I called
+it 'fp' as a short form for 'force puppet'."
+
+Leto says, "The * in the '$fp *' means that you want to get some sort of
+input for the command. Let me explain."
+
+Leto says, "I could make a command that doesn't require anything from me
+other than me triggering it. Like a "puppet sit down" command. In that
+case, I'd just have something like '$sit down', to which the puppet
+would do something like ':sits down'."
+
+Leto says, "By putting the '*' there, the remote will listen for
+anything I type after the 'fp', allowing you to use that
+input later in the command."
+
+Leto says, "In this case, the remote will be listening for what you want to
+force the puppet to do."
+
+Leto says, "The command again, is:
+&force_puppet remote=$fp *:@fo [owner(me)]=@fo #5338=%0"
+
+Rudolfo raises his hand.
+
+Leto says, "You see right there at the end of it, is a %0. THAT is where
+the input that is caught by the * is passed to the puppet."
+
+Leto says, "Rudolfo?"
+
+Rudolfo says, "Won't the white space you type after tf get shoved into the
+rest of the -varialbles ?"
+
+Rudolfo meant ...after fp...
+
+Leto says, "I'm not sure I know what you mean by -variables"
+
+Rudolfo says, "Sorry, forgot my formating rules. %-variables."
+
+Leto says, "People are using my remote :)"
+
+Leto says, "At least the code works. :)"
+
+Leto says, "Okay... I'm sorry Rudolpho, I think I still don't
+understand.... sorry."
+
+Rudolfo says, "I'm know about the range of input variables (%0...%9), and
+they've gotten me confused about how the puppet will know how many
+variables to assign the input string to."
+
+Leto says, "Ahhhh."
+
+Rudolfo smiles.
+
+Leto says, "That's a good question... though it could actually confuse
+people who have never dealt with variables before."
+
+Leto says, "The short story is that unless you have more than one '*', all
+the stuff you type, no matter how many words, will get stuffed into
+%0"
+
+Rudolfo says, "I'm more used to straight C than to Unix-style commands with
+a variable number of parameters."
+
+Rudolfo lowers his hand.
+
+Leto says, "Okay... "
+
+Leto says, "Let's play with the puppet a little. I want you all to make the
+puppet say things or pose things. "
+
+Leto says, "Just don't make it leave the room. :)"
+
+Sample Guard Puppet smiles and waits.
+
+Leto says, "If you are unsure of the syntax... just 'ex' the remote."
+
+Leto says, "That was good... anyone else want to try?"
+
+Sample Guard Puppet bats its lashes at Loki.
+
+Sample Guard Puppet does a jig.
+
+Sample Guard Puppet bows and spins
+
+Sample Guard Puppet says, "Leto wears pink socks"
+
+Leto says, "Okay. Now that we've done that... I'm going to lock the puppet
+so only I can use it. I do this by typing '@ulock puppet=me'"
+
+Leto says, "Sorry, @ulock remote=me"
+
+Takezo raises hand
+
+Leto says, "The reason being, you generally don't want other people
+slandering your socks with your own puppet. :)"
+
+Leto says, "Takezo?"
+
+Takezo says, "remote works by forcing you?"
+
+Takezo says, "what locks on you?"
+
+Leto says, "The remote forces the puppet by forcing me to force the puppet,
+yes. "
+
+Leto says, "You don't usually have to do that though. For other things...
+you can have the remote itself do actions."
+
+Takezo says, "is inherit the key to forcing you?"
+
+Leto says, "Now, as to the 'what locks on you', I don't know what you mean
+for sure."
+
+Leto says, "Ahhh. INHERIT is the flag that allows the remote to force me,
+yes."
+
+Takezo says, "if remote can force you can i?"
+
+Takezo nods and shuts up
+
+Leto says, "No you can't, but that's a good question."
+
+Leto says, "The only things that you can @force, are your own objects. The
+only things that can @force YOU are yourown objects that are set
+INHERIT, and wizards."
+
+Takezo nods thanks
+
+Leto says, "Okay. Let's do another command on the remote to show you that
+you dn't need all that forcing in there to have fun :)"
+
+Leto says, "Something that would be really useful on a REAL remote would be
+a way to keep it from getting lost."
+
+Leto says, "So let's put a command on it that will make it beep whenever I
+can't find it."
+
+Leto says, "Here's a simple one:"
+
+Leto says, "&beep remote=$beep:@emit BEEP! BEEP!"
+
+Leto says, "So, what I've done is created an attribute on the object called
+"beep", that has a command called "beep", and whenever I type "beep",
+the remote will... well... beep :)"
+
+Duke Leto demonstrates
+
+BEEP! BEEP!
+
+Leto says, "So you see... it's a scary looking command ... but once you
+break the whole thing down into parts... it's pretty simple."
+
+Leto says, "Now, let's do one other fun thing before we wrap this up."
+
+Leto says, "Let's make the remote work like that item that I know you all
+love... The Clapper (tm)"
+
+Shibboleth says, "the clapper?"
+
+Leto says, "Now, using what we've talked about so far, we could simply make
+a command called "clap" that would make the remote beep... but let's
+do something more tricky."
+
+Leto says, "The clapper... it's a device from Ktel or Ronco or something...
+it listens for someone clapping and turns tvs or lights on and off. "
+
+Shibboleth says, "ahh..."
+
+Shibboleth nods in understanding/
+
+Leto says, "The nice thing about mushcode is that you can make objects
+respond to commands, or just plain listen for things that people say
+or do."
+
+Leto says, "What I'm talking about is what's called a listen command."
+
+Leto says, "Here's what it looks like:"
+
+Leto says, "&clapon remote=^*claps on.:@emit The remote goes, "BEEP BEEP!""
+
+Fenring hangs from the banners and croons, "Shake your groove thing, shave
+your groove thing, yeah yeah, show them how we do it now!"
+
+Leto says, "That's basically like a $command... but instead of a $, you
+have a ^, which means that the remote is going to listen for something
+that someone says or does instead of a command that someone types."
+
+Leto says, "Now, if I do this: "
+
+Duke Leto claps on
+
+Leto says, "Nothing happens :)"
+
+Leto says, "Because I forgot the period :)"
+
+Duke Leto claps on.
+
+Leto says, "No.. that wasn't it either... hold on :)"
+
+Duke Leto feels like the chemistry teacher who can't get the bunsen burner
+going :)
+
+Loki grins.
+
+Leto says, "Ahhh."
+
+Duke Leto claps on
+
+Duke Leto claps on.
+
+The remote goes, "BEEP BEEP!"
+
+Leto says, "There we go :)"
+
+Shibboleth cheers
+
+Loki claps on
+
+Shibboleth claps on.
+
+Leto says, "The problem was that I didn't tell the remote that I wanted it
+to listen for things. To do that, you need ANOTHER FLAG, called
+MONITOR."
+
+Leto says, "I'll turn off the usage lock. Then yo ucan all clap on. :)"
+
+Leto says, "Go ahead. "
+
+Rudolfo covers his ears.
+
+Takezo claps on.
+
+The remote goes, "BEEP BEEP!"
+
+Shibboleth claps on.
+
+The remote goes, "BEEP BEEP!"
+
+Leto says, "Funny thing was, I was about to warn you all that I had to do
+that :)"
+
+Loki smiles.
+
+Leto says, "Okay... the only other thing I ought to say, is that the '*' in
+the clapon command works a little differently from the * in the other
+command."
+
+Leto says, "In our previous command, the '*' passed a variable, which was
+%0. In this case, it really only functioned as a wildcard, saying that
+the remote should listen for <anything>claps on."
+
+Duke Leto demonstrates:
+
+Duke Leto does a back flip, combs his hair and eats a microwave burrito,
+then after much pomp and circumstance, claps on.
+
+The remote goes, "BEEP BEEP!"
+
+Leto says, "And with that... I think I'll wrap up this seminar so Loki and
+Paul will have something left to teach later in the week. "
+
+Duke Leto steps out of the elevator.
+
+Duke Leto has arrived.
+
+Leto says, "Does anyone have any questions?"
+
+Loki hmms.
+
+Rudolfo raises his hand, again.
+
+Loki raises her hand.
+
+Shibboleth puzzles.
+
+Duke Leto says, "AS you can see, puppets can be really helpful."
+
+Leto says, "Rudolpho?"
+
+there is a flash of lightning and the thunderclaps on.
+
+The remote goes, "BEEP BEEP!"
+
+Rudolfo says, "Exactly how do the wildcards in the two versions of the
+command differ? Is it because of $ and ^?"
+
+Leto says, "Right. The mush sees a ^ and says, This is what I am supposed
+to look for to trigger the command. In that case, * is used as a
+wildcard for matching purposes. "
+
+Rudolfo says, "Anything triggering the command?"
+
+Rudolfo says, "Excuse me, the wildcard applies specifically to the trigger
+of the command?"
+
+Leto says, "When it sees a $ it says, "whatever comes after the $ is the
+command that people type in to trigger whatever is after the : in the
+attribute, and it treats * as wildcard user input markers."
+
+Rudolfo says, "Riiight..."
+
+Leto says, "The wildcard in the case of the ^ applies to whatever the
+remote is listening to in order to trigger whatever comes after the :"
+in the same attribute."
+
+Rudolfo says, "Got it, thank you very much for the lesson."
+
+Leto says, "Just like we didn't need the * in the $ command, we didn't need
+one in the ^ command. "
+
+Leto says, "The * in the $ command allows the user to enter additional
+information for the command to use. The * in the ^ command makes the
+object listen to variable things... treating the * as a wildcard."
+
+Leto says, "Okay... Loki?"
+
+Loki says, "ok...'member when you were making the controller...you said it
+was for 'security' thats why you couldnt do it on yerself.."
+
+Loki doesnt get that.
+
+Leto says, "Ahhh. Okay. That's a good question."
+
+Loki beams:)
+
+Leto says, "Now, with the remote in the middle of the room here... any of
+you can type the beep command, or any command on the remote. Usually
+though, the remote would be in my inventory, so nobody but me could
+'get at it'."
+
+Loki nods.
+
+Leto says, "If the command was on me, anyone could activate it... and that
+isn't a good thing."
+
+Leto says, "Let me give you an example."
+
+Leto says, "Back on Dune I, I was Tuek, the pseudo fremen smuggler. I used
+to occasionally speak the fremen language, but I always hated typing
+"speak fremen" before everything I wanted to say. So I created a
+command, called '$sf *' that would take whatever I typed after 'sf'
+and make me say it in fremen."
+
+Leto says, "It worked great :) "
+
+Leto says, "Then one day, I was roleplaying with Stilgar, the Fremen Naib,
+and it just so happened, that Stilgar ALSO had a command, coded on
+himself, called 'sf' that did exactly the same thing."
+
+Leto says, "A coincidence... but not an unreasonable one. :)"
+
+Loki nods..
+
+Leto says, "So what happened was, I typed 'sf Greetings old friend', and
+both Stilgar and I said, at exactly the same time, in Fremen,
+"Greetings old friend"."
+
+Leto says, "Then Stilgar typed something, and I said it at the same time he
+did... "
+
+Loki sees.
+
+Leto says, "In that case.... it wasn't really a security problem... just
+humourous :)"
+
+Takezo raises hand
+
+Leto says, "Now, if I had a command on me to make me punch someone whenever
+anyone typed 'sf', and they had one on them to speak fremen... it
+would have gotten ugly, fast :)"
+
+Leto says, "Takezo?"
+
+Takezo says, "similar problem on remote solved by use lock- what about on
+you?"
+
+Leto says, "Well, the idea is good in principle, but in the crazy world of
+mushcode, it wouldn't work, because the @ulock of a player is used to
+set page locks - so people can't page you."
+
+Takezo says, "what about internal test on cmd?"
+
+Leto says, "I know... it's confusing, because it's very different from what
+a @ulock does on an object, but that's the way it is :)"
+
+Takezo nods
+
+Takezo says, "thank you."
+
+Leto says, "Ahhh, so make the command check to see who the person who typed
+the command was? Yes, you can do that... though generally, it's easier
+to just put it on an object you carry - so you can avoid all the
+@switches etc."
+
+Takezo nods.
+
+Leto says, "Okay... well... I'd like to thank you all for being so patient
+with me as I fumbled about trying to figure out what to say. :)"
+
+Takezo applauds the speaker
+
+Leto says, "And if you have any other code questions, I'd urge you all to
+go to the other code seminars... see events upcoming. You can also
+always get help on the +code channel ,or just asking people."
+
+Last Modified: Thu Mar 1 23:59:48 EST 2001
+Created and Maintained by: Christian Gilmore
+Comments and Questions: curator@fremen.org
+
+Museum Arrakeen Dune II MUSH Home Page

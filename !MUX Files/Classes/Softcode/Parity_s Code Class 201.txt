@@ -1,0 +1,1267 @@
+ ©2000 Parity@OGR. You may copy and redistribute this document provided that it remains
+complete, with credits intact, and is used only for non-profit purposes.
+******
+Parity starts logging and calls the class to order. "Speak now if you want to be edited
+out of the log or forever hold your peace. ;o"
+Dunross chuckles, "I'm cool with it."
+Moth is cool
+Parity says "Dunross, you don't already have an object. You'll need one for the practical
+parts of class. Make one with '@create <some object name>' and then '@lock/uselock <some
+object name>=me' and '@set <some object name>=visual'"
+(post-log addendum: also, @set <some object name>=commands)
+Dunross nods.
+Parity says "Visual lets me see what you've done, and the uselock means only -you- can
+trigger the commands you put on the object, which is helpful if we all create a command
+with the same name. :)"
+Dunross nods.
+Moth grins
+Dunross finishes.
+Dunross says "Okay, I changed it to a gondola."
+Moth lafs
+Moth almost did that
+Dunross chuckles, "might as well."
+Parity says "Okee, in the last class I introduced $-commands in a kind of 'do this' way,
+and we created commands by making attributes like, '&my-cmd myobject=$command:@pemit
+%#=Something'"
+Dunross nods.
+Parity says "Everybody understand that?"
+Dunross nods, has done that a lot.
+Moth noddles
+Parity nods, "Good. :) Now, you can do more with commands than that, as you might have
+noticed. Commands often take arguments, like '+finger <some name>'
+Dunross says "So +finger is basically a command string with a lot formatting in the emit?"
+Parity nods, "That's precisely it."
+Moth says "Ahhhhhh"
+Dunross nods, "Okie. Huh."
+Parity says "Now, the way we get arguments into our command is pretty simple. When we
+make a $-command, we can put a '*' anywhere we want to allow arbitrary text."
+Parity says "For example, '&echo-cmd myobj=$echo *:@pemit %#=You typed '%0'.' will create
+an 'echo' command that will tell you what you typed."
+Parity invites everyone to try making a command like that.
+Moth says "Is that what folks do to have a pemit that 'so and so just looked at you'?"
+Moth says "Basically?"
+Parity says "Not quite. That's more like the drop/adrop/odrop example from last class.
+There's a set of those attributes, desc/adesc/odesc."
+Dunross says "Oh, did I need to se my object COMMANDS?"
+Parity says "Desc is what people see when they look at you, obviously."
+Moth nods... wasn't sure if it was similar or not
+Parity says "Adesc is an arbitrary action that happens when somebody looks at you."
+Moth says "Oh yeah you do, Dun"
+Dunross nods.
+Parity says "So, '@adesc me=@pemit me=%n just looked at you.' does that."
+Moth says "Ah okay... thanks;)"
+Dunross ahs!
+Dunross gets the gondola to speak!
+Moth lafs
+Parity grins.
+Parity says "If you can drop your objects so I can see your work..."
+Dunross nods.
+Moth sets Prospero down.
+Dunross dropped gondola.
+
+Prospero:
+ECHO-CMD:$echo *:@pemit %#=You typed '%0'.
+
+Prospero wiggles his way across the floor in search of raisins.
+
+gondola:
+ECHO-CMD:$echo *:@pemit %#=You typed '%0'.
+
+Moth grins
+Moth offers Prospero a raisin.
+Parity nods, "Okee. Now, you don't have to limit yourself to a trailing '*' that gets put
+into %0. A lot of the time you want a command that takes two arguments, like '+mail
+bob=subject'.
+Parity says "That's easily handled, with a command like "$twoargs *=*:@pemit #384=You
+claim that '%0' is equal to '%1'." ..."
+Parity invites everyone to try that.
+Parity says "Err."
+Parity says "With %#, not my dbref. :)"
+Moth grins, you sure?;)
+Parity is sure. :)
+Dunross says "Do you have to do the & part for the attribute?"
+Parity nods, "Sorry, I was doing shorthand... what I typed was only the value. You need to
+do '&some-attrib myobj=... '
+Parity digresses, "You should pick an attribute naming scheme and stick to it. I use
+'some-cmd' 'some-fn' and 'some-data' ; other people prefer 'cmd-something' 'fn-something'
+'data-something' etc; others prefer '.' to '-'; I advise against '_' because it requires
+a shift key which makes it annoying to type repeatedly.
+Dunross is confused.
+Parity backs up.
+Dunross looks at his object.
+Parity says "When I said, '$twoargs *=*:@pemit %#=You claim that '%0' is equal to '%1'.'
+I meant that as the value that goes into an attribute."
+Parity says "You get that value into an attribute with something like,"
+Parity says "&twoargs-cmd myobj=$twoargs *=*:@pemit %#=You claim that '%0' is equal to
+'%1'."
+Dunross nods, fixes.
+Parity's digression means, it's just as valid to say, '&cmd.twoargs myobj=...'
+Dunross can't get anything to emit?
+
+gondola(#1161V$)
+TWOARGS:$twoargs *=*:@pemit %#=You claim that '%0' is equal to '%1'.
+TWOARGS-CMD:$twoargs *=*:@pemit %#=You claim that '%0' is equal to '%1'.
+
+Moth isn't sure what the trigger is
+Parity says "type 'twoargs one=1'"
+Dunross says "Ah..."
+Moth says "Oh:)"
+
+gondola(#1161V$)
+TWOARGS-CMD:$twoargs *=*:@pemit %#=You claim that '%0' is equal to '%1'.
+
+Dunross says "Okay, I couldn't figure out what the syntax to use it was."
+Parity says "Dunross probably sees it twice, because he has both a 'twoargs' and a
+'twoargs-cmd' attribute."
+Dunross says "I got rid of the other. ;)"
+Parity nods, "The * can be replaced by any arbitrary text, but everything else in your
+command, that is, between the '$' and the ':' needs to be literal.
+Dunross says "So, is 'twoargs' something special or just the word you used?"
+Dunross nods, sees now.
+Dunross says "Okay, so it's up to the : not the ="
+Parity says "So, if I have a command like, '$foo * and bar *:...' it needs to be
+triggered with something like 'foo is 2 and bar is 7'"
+Parity nods.
+Parity says "It gets confusing. Let's break it down."
+Moth nods, is all in favor of that
+Parity says "&mything-cmd myobj=<stuff>"
+Parity says "That part sets the attribute to whatever <stuff> is."
+Dunross says "Right-o"
+Parity says "<stuff> in a $-command, looks like '$<command format>:<command actions>'"
+Dunross says "Right."
+Moth nods
+Moth follows!
+Parity says "<command format> looks like any arbitrary text, with * being special."
+Parity says "Like, 'twoargs *=*'"
+Dunross nods.
+Moth nods
+Parity says "<command actions> looks like any string of commands that you can put in an
+@adrop or the like, and sort of like any string of commands that you can type direct into
+the mush."
+Parity says "The problem is, MUSH does -not- treat things typed directly exactly the same
+as things in commands."
+Dunross says "Right, Moth, it's how the travel emits are done that we do."
+Moth says "Oh yah"
+Parity says "This makes life difficult sometimes, but, basically, -always- test your code
+by making it into a command."
+Dunross nods.
+Parity says "'cause if you get a long string of code working typed directly, and then it
+breaks when you make it a command, you're going to be one not-happy camper."
+Moth says "Okie..."
+Parity speaks from experience. ;)
+Dunross says "So &<attname>-cmd <object>=$<command string>:<command action>"
+Parity nods.
+Moth coolbeans
+Dunross says "And command action is anything you can do normally, with @commands?"
+Parity says "Though, it's actually '&<attname> <object>=$<command string>:<command action>
+... attname -can- be anything, I just recommend a '-cmd' suffix so you can easily do things
+like 'exa myobj/*-cmd'"
+Parity nods to Dunross, "Exactly. :)"
+Moth says "Like @emit, @oemit, etc... like the ferret...@pemit, etc..."
+Dunross says "I guess and things like iter(), but that's hwere I draw the line."
+Dunross noddles, "i see."
+Moth nods, gets it...
+Dunross nods on <attname> being anything but -<suffix> being useful.
+Parity says "iter() is a function, not a command."
+Moth is using &blah-cmd...
+Dunross nods, is scared of functions.
+Moth nods, iter() is cool
+Parity says "If I oversimplify and ignore the exceptions, a function is simply a
+specially-formatted bit of text that gets replaced with other text."
+Dunross says "Well, I don't mean to get you off if you had a syllabus. :)"
+Parity is going to cover switch() .. .which is a function... and @switch... which is
+a command, so by the end of to-day you'll know the difference. :)
+Moth says "Oh good..."
+Dunross says "Oh, great. cool."
+Moth would like to see a real-live application of a function() <like iter, which was
+cool, but I'm not sure what it would be used for practically>...
+Moth woos... lets you get back to beeswax;)
+Parity says "iter() is used whenever you want to do the same thing to more than one
+piece of data, which happens a whole lot. Turning lwho() into a +who, getting all
+the titles from a bboard group or a notebook, etc."
+Moth nods, cool
+Parity says "Okay. So, one thing we see a lot, is a set of commands like, '+ch/who'
+'+ch/list' '+ch/join' '+ch/leave'"
+Dunross nods.
+Moth nods
+Parity says "THere's two ways to do this. The simple way, that you should use whenever
+you can, is to create multiple commands."
+Parity says "We create a command like, '$+various/first *:@pemit %#=You typed '%0'.'
+and another, '$+various/second *:@pemit %#=Flag was second, input was '%0'.'"
+Parity says "To the user, it -looks- like one comand '+various' that is called with a syntax
+of '+various/<flag> <input>'"
+Moth says "And the attribute portion is always the same syntax-wise..."
+Moth says "Or is this something different?"
+Parity says "And if we carefully make another command, '$+various *:@pemit %#=Basically:
+%0', because -this- command has a space after the word 'various' it will never be mixed
+up (by the mush parser) with the '+various/' commands."
+Parity says "You should store each command in its own attribute."
+Parity says "I usually use something like, '&various-first-cmd' '&various-second-cmd'
+'&various-base-cmd'"
+Moth says "Oh, good, that's what I was about to do"
+Parity says "Which gets some pretty unwieldy names, but makes it easy to find things with
+exa myobj/various-*-cmd"
+Dunross blinks, is still rereading. :P
+Parity gets some coffee and pauses for questions.
+Moth has the three set. Now what would these be used for?
+Dunross says "Okay, so that's a series of various commands, but what does $various *:
+return? just the list of options of various/flags?"
+Parity says "Whatever you want. :o"
+
+Prospero:
+VARIOUS-SECOND-CMD:$+various/second *:@pemit %#=Flag was second, input was '%0'.
+VARIOUS-FIRST-CMD:$+various/first *:@pemit %#=You typed '%0'.
+VARIOUS-BASE-CMD:$+various *:@pemit %#=Basically: %0.
+
+Moth says "If I type +various prospero, I get: Basically: prospero"
+Parity nods.
+Parity says "In this example, they all just @emit."
+Moth says "b/c I used Basically: %0"
+Moth nods
+Parity says "In the channel case, you would have '+ch/who *' '+ch/join *' '+ch/leave *'
+and '+ch *=*'"
+Moth ahhhhhs
+Moth says "Instead of +various/first, etc"
+Parity says "Where /who pemits a who list, join adds you to the channel, leave removes
+you from the channel, and *=* speaks text onto a channel."
+Parity nods. :)
+Moth says "Oh:)"
+Parity says "+various is just an example of how to use a command/flag syntax."
+Parity says "It doesn't actually -do- anything. ;)"
+Parity says "Everybody clear now?"
+Dunross ahs.
+Moth says "So it'd be, as an example: &channel-who-cmd=$+ch/who *:@pemit #386=<whatever>"
+Parity nods, "Except you meant to type %%# to escape the substitution, but yes.
+Moth says "Yah;)"
+Moth says "Okay!"
+Parity says "Dunross, you clear now?"
+Dunross says "Yeah, I think so. That's how you get +ch/flags. They're really separate
+commands, where the /flag is included in the $-command?"
+Parity nods, "Almost always, yes."
+Dunross says "But to the user, it transparent."
+Parity says "Precisely!"
+Dunross <---is the cerebral one. :P
+Moth snorts
+Dunross says "And then for something like channels, all the commands reside on the same
+object, say like Channel Object?"
+Moth says "to the user, everything is transparent..."
+Dunross says "Well, this is true."
+Moth <--- is the existential one
+Parity nods, "If I oversimplify, yes. ;) That's how it used to be, anyway, but these
+days channels are usually built into the MUSH. (On TinyMUX, TinyMUSH3.0 and PennMUSH).
+Dunross says "Right."
+Parity says "We're on a 2.2 here though, so that's probably exactly how it is done."
+Dunross nods.
+Moth nods
+Parity is going to digress now. :)
+Moth lafs
+Moth says "Okay;)"
+Parity says "We're going to discuss the 'hasflag()' function."
+Parity says "Everybody try 'say hasflag(me,connected)'"
+Moth says "1"
+Parity says "Then try, 'say hasflag(*gorgo,connected)'"
+Moth says "0"
+Dunross says "1"
+Dunross says "0"
+Dunross says "1=yes. 0=no."
+Parity says "If it isn't yet obvious, what is happening is that 'hasflag()' is a function,
+and it gets replaced with '1' or '0' depending on the test."
+Dunross nods.
+Moth nods
+Parity nods, "1 for yes, 0 for no, in this particular case, we're testing for the
+'connected' flag, and now, if we didn't know it before, we know that we all have the
+connected flag, and Gorgo doesn't.
+Dunross nods.
+Dunross says "Cool."
+Parity notes the '*' before a name is to make sure that MUSH understands 'this is
+a player name' so it looks at the player-list instead of the objects in the room.
+Moth nods
+Moth says "Cool..."
+Dunross nods. "That's the same issue when you are ex'ing someone from another room?"
+Parity says "If you do 'hasflag(gondola,connected)' it will check your inventory and
+the inventory of the room you're in, find the 'gondola' in this room, and then inform
+you that it does not have a connected flag, which isn't suprising - only players ever
+have a connected flag."
+Parity nods to Dunross, "Exactly."
+Moth nods...
+Dunross nods on the flag.
+Parity proceeds to introduce the 'switch()' function...
+Dunross says "1"
+Dunross says "Moth is connected. :)"
+Moth gasps!
+Parity says "Sometimes, we don't want to do exactly the same thing every time we execute
+a sequence of code."
+Parity says "switch() and @switch take care of this for us."
+Moth ahhhhhs
+Parity says "'switch(1,1,yes,0,no)' will turn into the word 'yes'"
+Parity says "'switch(0,1,yes,0,no)' will turn into the word 'no'"
+Dunross says "ooh. That's scary."
+Parity says "'switch(hasflag(%0,connected),1,yes,0,no)' might become yes or no depending
+on what 'hasflag()' becomes..."
+Moth hmmmmms
+Parity says "Using *, we can do 'switch(hasflag(*%0),...)' and always get a player, and
+make a command to check whether or not someone is connected."
+Parity asks you all to try that, and ask questions if you're not sure how.
+Dunross says "Can you say again what returns?"
+Dunross says "Oops. //"
+Moth says "We 'say' that right?"
+Dunross says "%0"
+Dunross says "Okay. Can you say again waht %0 does again?"
+Moth says "..."
+Moth says "oops;)"
+Parity says "Okay, '%0' will contain whatever was in the first '*' in a command description."
+Parity says "%1 will contain whatever is in the second '*', and %2 the third *, and so
+on, up to %9 containing the tenth *."
+Moth hmms
+Dunross says ""
+Moth thinks I got lost somewhere, but isn't sure where. **scrolls and rereads**
+Parity says "Like, in 'echo-cmd' we had '$echo *:@pemit %#=You typed '%0'' ..."
+Dunross says "..."
+Parity says "The %0 was replaced with what we typed in the place of the *."
+
+gondola(#1161V$)
+ECHO-CMD:$echo *:@pemit %#=You typed '%0'.
+TWOARGS-CMD:$twoargs *=*:@pemit %#=You claim that '%0' is equal to '%1'.
+
+Parity says "In, 'twoargs-cmd' we had '$twoargs *=*' and what was typed in place of the
+* before the equals got put into '%0', and what was typed in the place of the * after
+the equals got put into '%1'."
+Parity says "Making sense now?"
+Moth says "Yeah, that part does... I'm hung up on the switch bits"
+Parity ahhhs.
+Dunross says "Okay, can we go back to switch(1,1,yes,0,no)? I don't understand the
+commad syntax, maybe that's it. What are the 5 arguments saying in the ()?"
+Dunross d'ohs.
+Moth says "When I do: say switch(hasflag(*%0),...), I get: "..." but not a player..."
+Parity says "Okay. switch(). switch(<value>,<conditional-value-1>,<on-condition-1>,
+<conditional-value-2>,<on-condition-2>,<conditional-value-3>,<on-condition-3>,...)"
+Parity ohhhs, "Sorry."
+Parity says "By '...' I meant, 'What I typed before'"
+Moth says "Oh...laf... sorry"
+Moth takes this stuff very literally.
+Parity says "But when you 'say switch(hasflag(*%0),0,no,1,yes)', %0 will actually
+-be-
+'switch(hasflag(*%0),0,no,1,yes)'"
+(Post-lecture addendum: Actually, this is a little bit of a confusing situation. If I
+'say switch(hasflag(*%0),0,no,1,yes)' %0 will actually be 'switch(hasflag(*),0,no,1,yes)'
+because the %0 in what I say gets evaluated with %0 being 'nothing' and -then- what's left
+gets passed to say. Anyway. Don't worry about it, it's only a curiousity, the point is,
+don't 'say' things with %0, %1, etc, in them.)
+Dunross says "switch(hasflag(*,connected)"
+Parity says "Because the 'say' command has a syntax of '$say *:<stuff>'"
+Parity says "You need to use %0 only in commands."
+Moth says ""
+Parity says "If you're going to 'say' things, try, 'say switch(hasflag(*dunross),0,no,1,yes)'"
+Moth says ""
+Parity hms.
+Moth says "Weird"
+Dunross says ""
+Moth is saying switch(hasflag(*dunross),0,no,1,yes) and gets ""
+Parity expands on switch, "switch can also take a 'default' argument... if it didn't match
+any of the previous tests, it will evaluate to the default."
+Parity hrms.
+Parity says "Oh. Duh."
+Parity says "hasflag(*dunross,connected)"
+Moth ohs;)
+Parity was typing too fast.
+Moth says "Okay!"
+Parity says "yes"
+Moth says "yes"
+Dunross says "Right. I got that part. hasflag(*dunross,connected)"
+Dunross says "It's after that that I'm still sorta lost. ;)"
+Moth says "Okay, I -sort- of get it, but I don't want to slow you down... I'll reread it
+later"
+Parity wants people to understand switch().
+Parity says "That's one of the main goals of this class."
+Parity says "If you don't understand, people reading the log might not understand."
+Parity says "Okay, let's do this."
+Parity says "Make a command, '&myswitch-cmd <myobj>=$myswitch *:@pemit %#=You entered a
+value [switch(%0,0,zero,1,one,2,two,bigger than two)]."
+Dunross nods.
+--> myswitch 0
+You entered a value zero.
+--> myswitch 1
+You entered a value one.
+--> myswitch 2
+You entered a value two.
+--> myswitch 3
+You entered a value bigger than two.
+
+Parity says "Now, try 'myswitch 1'"
+Dunross ahs.
+Parity says "Try, 'myswitch 19'"
+Parity says "And try, 'myswitch 0'"
+Dunross says "Switch is like an if-then?"
+Parity nods! "Exactly! :)"
+Parity says "Actualy, it's like an 'if-then-else-if-then-else-if-then-else... '"
+Dunross says "Oh, well, why didn't you just say so? ;)"
+Parity didn't want to assume anyone knew other programming languages.
+Dunross noddles. "Understandable."
+Moth doesn't;p
+Dunross figures that's just logic?
+Parity says "But it is like 'if-then-else', or more accurately, like a C 'switch/case'
+or a pascal 'case'."
+Moth nods
+Moth says "If it's %0 or 0 then zero... if it's 1, then one... I "roundly" get it."
+Moth says "Which is what I understood from the <condition>,<conditional> bits"
+Parity says "So, it says, 'if 0, then return 'zero', else if 1, return 'one', else if 2,
+return 'two' else return 'bigger than two'"
+Moth nods
+Dunross says "Right. The %0 is still throwing me, but that's alright. dunno why it is."
+Parity says "And the value being compared to in each 'if' is the first argument of the
+'switch'."
+Dunross says "Ah..."
+Parity says "%0 is simply replaced with what you put in the place of the '*' in the
+command syntax."
+Dunross ahs and nods.
+Moth says "So ... because %0=no...that's what all that was about"
+Dunross says "That's the part of myswitch *=*"
+Moth follows
+Dunross says "What Moth said."
+Parity says "So, when I do 'myswitch 1' then 'switch(%0,0,zero,1,one,2,two,bigger than
+two)' becomes,"
+Parity says "switch(1,0,zero,1,one,2,two,bigger than two)"
+Parity says "Which in turn, becomes,"
+Parity says "one"
+Parity says "And then 'one' gets put into the string that is being @pemitted in the
+myswitch command."
+Parity says "Is that clear?"
+Dunross is still examining. :)
+Moth nods, thinks I have it
+Moth says "More or less"
+Parity says "Okay."
+Moth chuckles
+Parity says "Why don't you try tackling the exercise again - create a command that uses
+switch to @pemit 'yes' if someone is connected and 'no' if they're not."
+Dunross says "Okay. So, it says for 0, zero. For zero, it say 'a value bigger than two'?"
+Dunross says "That's cause it doesn't know 'zero' for the %0?"
+Parity nods to Dunross, "That's because we're checking explicitly for '0' '1' and '2'. We
+assume anything else is a value bigger than two, and return 'bigger than two'.
+Dunross nods.
+Parity says "If you change the switch to not have the 'default' case of 'bigger than
+two' you'll just get 'A value .'"
+Parity says "This is what we call non-robust code. :)"
+Parity says "We didn't check to make sure that %0 was even a number before doing our
+conversion."
+Parity says "This kind of thing is why MUSHcode commands sometimes return confusing
+things if they weren't well written, and why, if you read a well-written MUSHcode
+command, it always seems really complicated."
+Moth hmms...
+Parity notes MUSHcode is a bad, bad, horrible, evil, twisted language that will make
+your brain into cottage cheese. :)
+Parity says "However, if you can become proficient in MUSHcode, you can master -any-
+programming language. I promise."
+Moth says "Woo!"
+Prospero(#1160V$)
+CONNSWITCH-CMD:$connswitch *:@pemit %#=[switch(hasflag(*Scaramouche),0,no,1,yes)]
+Parity peers at prospero, "That looks good, except you have 'scaramouche' hardcoded
+into your command instead of using %0.
+Moth says "Oh:)"
+Parity says "So it will always tell you whether scaramouche is connected. :)"
+Moth says "But that's what I wanted;)"
+Parity says "Even if you do 'connswitch moth' ;)"
+Moth says "Oh;)"
+Moth lafs
+Dunross says "Um, okay, try that?"
+Moth likes to live in a fantasy world of my own creation!
+gondola(#1161V$)
+ISCONNECTED-CMD:&isconnected *:@pemit %#=[switch(hasflag(*%0,0,is not connected,1,
+is connected)]
+Moth tries it again
+Parity notes that Dunross is missing the closing-parentheses on hasflag().
+Moth says "Okay, got it"
+Prospero(#1160V$)
+CONNSWITCH-CMD:$connswitch *:@pemit %#=[switch(hasflag(*Scaramouche),0,no,1,yes)]
+Dunross hmms.
+Parity nods to Moth, "Good!"
+Dunross pokes moth.
+Moth grins
+gondola(#1161V$)
+HERE-CMD:&here *:@pemit %#=[switch(hasflag(*%0,0,is not connected,1,is connected))]
+Moth had to scroll up and put it all together, but I get it...
+Parity says "Dunross, change 'hasflag(*%0,' to 'hasflag(*%0),'"
+Dunross okies?
+Parity hmms?
+Parity is looking at gondola/here-cmd and seeing a broken command. ;o
+Parity says "Oh."
+Moth offers Prospero a raisin.
+Dunross says "Oh. wait."
+Dunross says "Doh."
+Parity says "Also, it should be '$here *' not '&here *'"
+Dunross nods.
+gondola(#1161V$)
+Owner: Dunross Key: *UNLOCKED* Pennies: 1
+UseLock:Dunross
+HERE-CMD:$here *:@pemit %#=[switch(hasflag(*%0),0,is not connected,1,is connected)]
+Dunross noticed.
+Dunross says "Okay, cool. I got nothing. laf. Better than getting Huh? :)"
+Dunross keeps fixing this.
+Parity hmmms.
+Moth offers Prospero a raisin.
+Parity says "Oh, you're missing the flag to check for."
+Moth says "Like connected?"
+Dunross says "ta da."
+Parity says "Everybody should try, 'say hasflag(something)'"
+Dunross says "Well, I couldn't figure out how that went."
+Dunross says "#-1 FUNCTION (HASFLAG) EXPECTS 2 ARGUMENTS"
+Moth says "#-1 FUNCTION (HASFLAG) EXPECTS 2 ARGUMENTS"
+Dunross noddles.
+Moth gahs
+Parity nods. ;)
+Moth says "#-1 FUNCTION (HASFLAG) EXPECTS 2 ARGUMENTS"
+Parity says "Now try, 'hasflag(something,connected)'"
+Moth says "#-1 NOT FOUND"
+Parity says "And finally, 'hasflag(moth,connected)'"
+Moth says "#-1 NOT FOUND"
+Moth says "1"
+Moth says "So if I were on twice, it would say 2"
+Parity says "The first error is saying you didn't give the right things to hasflag()."
+Moth nods...
+Moth says "So it's looking for a name or something and then the flag is the second argument"
+Parity says "No, flags are either on or off."
+Moth says "Oh okay"
+Parity says "You will only ever get a 1 or a 0 or an error out of hasflag."
+Moth nods
+Dunross says "Hmm. laf. I'm trying to get it to put a name in there and it put a wrong
+dbref for you, Moth."
+Moth says "#528 #273 #386 #2 #252 #1098 #384"
+Moth believes I'm 386
+Moth is afraid to ex myself b/c of the major spam that would occurr
+Dunross says "Yeah, but it tells me #2786 or something. :P"
+occur
+Parity notes that it often writes commands with 'switch(<something>,<test-1>,<return-1>,
+<test-2>,<return-2>,<return-error>)'
+Moth says "Que?"
+Moth says "Ohhhhh"
+Moth says "No, I'm 386"
+Parity says "Like, 'switch(hasflag(*%0,connected),0,no,1,yes,oops!)'"
+Moth grins
+Parity says "or in a real case of @Pemit %#=switch(<something>) I often make my default,
+'Something has gone wrong! Please contact Parity about this problem.'"
+Moth says "Suddenly that Harley motorcycle code makes sense;p"
+Parity has defaults even in switches that should -never- be able to trigger the code.
+Moth nods...
+Dunross says "Oh wait. laf. It's telling me my own dbref. Hmm."
+Dunross nods.
+
+gondola:
+HERE-CMD:$here *:@pemit %#=[switch(hasflag(*%0,connected),0, #% is not connected,1,
+%# is
+connected)]
+
+Parity says "Ah, You're trying to be clever."
+Dunross laughs.
+Moth was keepin it simple;p
+Dunross says "Apparently not. :P"
+Parity says "You want to put '%0' in for the name, in this case."
+Dunross nods, was about to try that next.
+Moth ahhs, "I see.."
+Parity will teach you how to be clever in a future class. :)
+Moth will need it;p
+Dunross says "Interesting. If it's a person without a dbref, it's confused. That's cause
+we haven't a statement for non-existent people?"
+Dunross grins.
+Parity nods.
+Moth says "Wow, you could muse over that for days..."
+Parity says "You can make the conditional part of your switch '0,is connected,1,is not
+connected,is not a player'"
+Moth oooohs
+Dunross says "And it knows the difference?"
+Parity says "That would be a more robust solution."
+Dunross nods.
+Moth hmms
+Dunross says "How does it know which one to pick, not connected or not a player?"
+Parity says "Well, what -we- know is that if someone is not a player, 'hasflag
+*some-arbitrary-string,connected)' will return '#-1 NOT FOUND'"
+Dunross says "In your syntax?"
+Dunross says "Ah."
+Dunross says "That's part of hasflag"
+Parity says "We could actually put '#-1 NOT FOUND' in as a condition, and have a
+default of 'Oops!', but we don't expect 'Oops!' to ever be possible."
+Parity says "So, it depends on how robust you want your code to be."
+Dunross nods, sees how hasflag already knows how to take NOT FOUND vs simply not
+connected.
+Parity might well do, 'switch(hasflag(*%0),0,is not connected,1,is connected,#-1
+NOT FOUND,is not a player,Oops -- Error!)'
+Parity says "The 'Oops -- Error!' part should never happen, but if you make a little
+change to your code and do it wrong, you might suddenly get 'Oops -- Error!' and then
+you'll know you broke something."
+Parity says "So, defaults that will 'never' be triggered are a good thing for debugging."
+Dunross nods.
+Dunross hmms.
+Dunross says "Wow. I have so learned something today. cackle."
+Parity grins.
+Parity says "Okay. Is everyone ready to learn @switch now?"
+Moth says "Oh sure"
+Dunross says "Wait, one more question. :)"
+Parity nods.
+Parity notes that class looks to be running over 2 hours, and it will understand if
+people need to go. "Yes, Dunross?"
+Dunross says "So in your last example with the oops, in the paired if-then,
+#-1 NOT FOUND,is not a player, the bit with the Oops -- is like an 'if' with no
+'then' or was it like a second 'then' with the previous 'is not a player'?"
+Parity uhms.
+Parity says "If you think of switch as a chain of 'if-then-else' statements,"
+Moth says "It's the else part of that"
+Parity says "The default case is the final 'else'"
+Moth says "like the Bigger than two"
+Parity says "
+IF 0 THEN
+NOT CONNECTED ;
+ELSE IF 1 THEN
+CONNECTED ;
+ELSE IF #-1 NOT FOUND THEN
+NOT PLAYER ;
+ELSE
+ERROR
+ENDIF
+"
+Dunross ahs and noddles.
+Dunross says "Okay, right, sorry. if-then-else."
+Dunross says "So you can see each sequence after the first as a series of elses, in a way?"
+Parity nods to Dunross, "Yes. switch() is very much like a chain of if-then-else. It
+is actually possible to make switches where more than one thing matches, but there is
+an implicit else in there.
+Parity says "So only the first match will be 'true'."
+Dunross nods.
+Moth nods
+Parity notes that in conditions '*' matches anything and '?' matches any single character.
+"I don't want to go into that today, but remember it so you'll understand why a '*' or a
+'?' in a condition has unexpected results."
+Dunross nods.
+Parity says "Okee. ;)0"
+Parity says "Now, let's talk about the -other- switch, the command '@switch'."
+Parity says "Try typing in, '@switch 0=0,zero,1,one'"
+Parity says "err."
+Parity says "Don't. :)"
+Moth lafs
+Dunross says "Heh."
+Parity says "Try typing in, '@switch 0=0,say zero,1,say one'"
+Dunross says "zero"
+Parity says "And then, '@switch 1=0,say zero,1,say one'"
+Moth says "zero"
+Dunross says "one"
+Moth says "one"
+Parity says "Try typing in, '@switch something=0,say zero,1,say one,say unexpected value'"
+Dunross says "unexpected value"
+Moth says "unexpected value"
+Dunross reads those statements again.
+Dunross nods.
+Parity nods, "You'll notice that, except for being a command, @switch behaves very much
+like switch(). It's a series of if-then-elses, but instead of 'evaluating' to 'say zero'
+it 'executes' the command 'say zero'.
+Moth ahhhhs
+Dunross says "That's important."
+Dunross says "The distinction, that is."
+Parity nods!
+Parity says "Very."
+Dunross says "So, which is better? Does one take up more mush-brain than the other?"
+Parity says "You should use switch() instead of @switch when you can."
+Dunross nods.
+Parity says "switch() is better, for two reasons; it's more efficient, and it lets you
+reuse more code."
+Parity says "Let's re-implement our connected command with @switch."
+Dunross nods.
+Moth nods
+Parity says "&newswitch-cmd myobj=$newswitch *:@switch hasflag(*%0,connected)=0,@pemit
+%#=Not connected,1,@pemit %#=Connected,#-1 NOT FOUND,@pemit %#=Not a player,@pemit
+%#=Error."
+Dunross says "Ack don't tell me yet! ;)"
+Parity will give you an exercise soon, it promises. ;)
+Parity says "Hopefully what I typed is something like what you were doing? Is it clear
+to everyone?"
+Moth nods
+Moth needs syntax, trust me;p
+Dunross nods, is still doing it, "Yes, I had started '@switch 0=0,is not connected'
+instead..?
+Dunross says "But you still have to use hasflag()."
+Parity says "Well, yes. :)"
+Parity says "hasflag is the function that tells you if someone is connected."
+Parity says "'@switch 0=0,is not connected' will -always- come back with 'is not
+connected'"
+Parity says "Because '0' always evaluates to '0'."
+Moth says "Like I did earlier with putting Scaramouche in the command?"
+Parity says "Worse, you won't see anything, because it will try to executed 'is not
+connected' as a command, and your -object- will see 'Huh?' ... but the person
+invoking the command will see nothing."
+Moth says "Oh..."
+Parity says "So, in the @switch case we need an @pemit on -every- branch."
+Dunross blahs, tries to get it on the gondola.
+Parity says "In reality, we would never code this like this."
+Dunross says "Yeah, I like switch() better for that example."
+Parity says "You use @switch when you want to do very different things in each branch."
+Parity is just trying to keep it simple and familiar.
+Moth nods
+Parity says "And, while I'm at it, to demonstrate why and when switch() is
+preferable to @switch."
+Moth can see why switch() is preferred
+Moth says "Much less typing for starters"
+Dunross says "Clearer relationships between the if-then-else."
+Moth nods
+Dunross nods, gets it to work.
+Parity nods, "But you can do things in @switch that you simply cannot do in switch()."
+Dunross says "Really?"
+Parity nods.
+Parity says "Type, 'help commands' ..."
+Parity says "Err."
+Parity says "try, 'help command list' rather. :)"
+Help available for MUSH Commands:
+
+drop enter examine get give goto
+help inventory kill leave LOGOUT look
+move news OUTPUTPREFIX OUTPUTSUFFIX page pose
+PUEBLOCLIENT QUIT read say score SESSION
+take throw use version whisper WHO
+" : ; & # \\
+
+@@ @chown @clone @create @decompile @destroy
+@dig @doing @dolist @drain @edit @emit
+@entrances @eval @femit @find @force @fpose
+@fsay @halt @last @link @list @listmotd
+@lock @mvattr @name @notify @oemit @open
+@parent @password @pemit @program @ps @quitprog
+@quota @robot @search @set @stats @sweep
+@switch @teleport @trigger @unlink @unlock @verb
+@wait @wipe
+
+{ 'help commands2' for more }
+Parity says "You can put -any- command into a switch."
+Dunross says "And you can't in switch()"
+Parity nods, "Switch only evaluates to a string... now, by putting functions into those
+strings, we can do a lot...
+but not everything.
+Parity says "Let's work on an example."
+Dunross will trust you. :)
+Dunross nods.
+Moth oooohs
+Dunross says "ooh?"
+Parity says "First we want a command 'play/*' that recognizes 'play/get' and 'play/drop'"
+Parity says "Instead of doing -two- commands, we're going to do one."
+Dunross nods.
+Parity says "&play-cmd myobj=$play/*:@switch <...>"
+Dunross says "This is so we don' thave to do separate attribute lines like with the
+channel exercise?"
+Parity asks you to fill in the <...> with a simple '@pemit #384=The flag is <...>'
+Parity says "Err."
+Parity asks you to fill in the <...> with a simple '@pemit %#=The flag is <...>' type
+thing.
+Parity nods, "One attribute will do everything. :)"
+Moth okies
+Parity says "At the same time that we're learning @switch, you can see that this is
+the other way to implement +command/flag type things."
+
+Prospero:
+PLAY-CMD:$play/*:@switch @pemit %#=The flag is <...>
+Parity says "Moth, don't literally put <...> in, but rather, make a switch that does
+'@Pemit %#=The flag is drop' when %0 is 'drop', and 'The flag is get' when %0 is get,
+and 'The flag is unrecognized' when the flag is anything else."
+Moth says "oops..."
+Moth believes I'm confused now
+Moth says "So the switch bits...we're supposed to do as in the previous example...yes?"
+Parity nods. ;)
+Parity says "I think so."
+Parity says "Your @switch should look a lot like the @switch we were playing with before."
+Moth says "Okay"
+gondola(#1161V$)
+PLAY-CMD:$play/*:@switch red= @pemit%#=The flag is red.,@switch blue=@pemit %#=The flag
+is blue.,Error
+Dunross hmms.
+Moth says "We were using hasflag then...what are we using now?"
+Parity says "Dunross, you're missing a space between 'pemit' and '%', and you have an
+'=' instead of a ',' after red..."
+Parity says "We're using '%0'"
+Dunross nods.
+Parity says "We start with, '@switch %0=drop,@pemit %#=The flag is drop'"
+Moth says "Oh okay"
+Parity says "And then have another case for 'get' and a default case for 'unrecognized'."
+gondola(#1161V$)
+PLAY-CMD:$play/*:@switch %0=red, @pemit %#=The flag is red.,@switch %0=blue, @pemit
+%#=The flag is blue.,Error
+Parity says "Dunross, the syntax for @switch is, '@switch <test value>=<case 1>,
+<action 1>,<case 2>,<action 2>,<default action>'"
+Moth says "Is that more like it? Close?"
+Parity says "so, you only need to have '@switch' appear once in your command."
+Prospero(#1160V$)
+PLAY-CMD:$play/*:@switch %0=drop,@pemit %#=The flag is 'drop',%0=get,@pemit
+%#=The flag is 'get',The flag is unrecognized
+Dunross ohs.
+Dunross works on it.
+Parity says "Almost, Moth. The 'Is <case> equal to <test value>' is implied by the
+switch syntax, so the '%0=' doesn't belong before 'get'."
+Moth says "Oh okay"
+Parity says "Just the value that you're testing for goes in the 'test' slots."
+gondola(#1161V$)
+PLAY-CMD:$play/*:@switch %0=red, @pemit %#=The flag is red.,blue,@pemit %#=The flag
+is blue.,@pemit %#=Sorry, outta those.
+Moth okies, the %0= is part of the @switch syntax... you set the condition and then
+you add in however many variables you want? It could go on ad infinitum?
+Database checkpoint in progress - stand by...
+Database checkpoint complete.
+Parity ahhhs.
+Moth says "Am I close anyway?"
+Parity says "Dunross, because the comma is significant to switch, if you're going to
+include a comma in your commands, you need to mark it as special somehow. The easiest
+way to do this is to put curly braces {} around your action sequence."
+Dunross figured it out. ;)
+Parity nods.
+Dunross says "About 3 seconds ago. ;)"
+gondola(#1161V$)
+PLAY-CMD:$play/*:@switch %0=red, @pemit %#=The flag is red.,blue,@pemit %#=The flag is
+blue.,@pemit %#=What color was that?
+Parity okays. :)
+Prospero(#1160V$)
+PLAY-CMD:$play/*:@switch %0=drop,@pemit %#=The flag is 'drop',get,@pemit %#=The flag
+is 'get',The flag is unrecognized
+Dunross chuckles.
+Parity looks at prospero.
+Moth tsks... you're much more clever than I am
+Moth notes prospero is getting spammy;)
+Moth offers Prospero a raisin.
+Parity says "Moth, You forgot the '@pemit' on the default case."
+Moth is lost then;p
+Moth looks at it again
+Parity says "Instead of 'The flag is unrecognized' after the last comma, you need to
+say, '@pemit %#=The flag is unrecognized.'"
+Parity says "The way you have it now, the MUSH will try to execute as a command, 'The
+flag is unrecognized.' and your object will see a 'Huh?' but you won't see anything."
+
+(Post-lecture note: This next one is right:)
+gondola:
+PLAY-CMD:$play/*:@switch %0=red, @pemit %#=The flag is red.,blue,@pemit %#=The flag is
+blue.,@pemit %#=What color was that?
+
+Parity nods to Dunross, "Good!"
+Dunross says "Ah, dankles. :)"
+Moth says "Okay...how about now?"
+Prospero(#1160V$)
+PLAY-CMD:$play/*:@switch %0=indigo,@pemit %#=The cat is 'indigo',mauve,@pemit %#=The
+cat is 'mauve',@pemit %#=What cat?
+Parity nods, "Good. :)"
+Moth changes it to ferret
+Moth offers Prospero a raisin.
+Parity says "OKay, now, everyone '@create Ball' and 'give <myobj>=Ball'"
+Dunross says "Oh, well, of course, I didn't do the get/drop commands. :P"
+Dunross chuckles.
+Moth changed mine;p
+Parity says "You'll have to change it. ;)"
+Dunross laughs.
+Parity says "The next step in our exercise, is, instead of having an @pemit for the
+'drop' and 'get' cases, put in the commands, 'drop ball' and 'get ball'"
+Parity ehs.
+Parity says "Oh, yes, you'll have to '@set <myobj>=inherit' to make that work for the
+'get' case."
+Moth okies
+Parity isn't quite sure why. "Normally 'get' is not a privileged command, but MUSH has
+a -huge- amount of options, which means all kinds of behaviour can change from one mush
+to another even when they're the same version."
+Moth says "So, the drop ball, get ball bits would go in the @switch command...like...
+@switch %0=drop ball?"
+Parity says "The part following the = on an @switch command is a series of 'pairs'
+separated by commas. @switch %0=<test-value>,<commands>,<test-value>,<commands>,etc."
+Moth nods
+Parity says "If there's a last 'unpaired' element, that's the 'default' set of
+<commands>."
+Parity says "So, you want something more like, @switch %0=drop,drop ball"
+
+(Post-lecture note: Dunross renames 'Gondola' to 'Bix')
+Bix(#1161IV$)
+PLAY-CMD:$play/*:@switch %0=get, @pemit %#=The flag is get.,drop,@pemit %#=The flag
+is drop.,@pemit %#=What did I do?
+PAINT-CMD:$paint/*:@switch %0=red, @pemit %#=The flag is red.,blue,@pemit %#=The flag
+is blue.,@pemit %#=What color was that?
+
+Moth says "And then the @pemit could be: The ferret drops the ball"
+Parity says "there's no @pemit yet. :)"
+Parity says "We'll do that next. :)"
+Moth hmms
+Parity says "Right now, we're replacing the '@pemit' command with a 'drop' or a
+'get' command."
+Moth thinks I'm lost again then. I thought we were just redoing that &play bits
+by changing stuff
+Parity nods.
+Parity says "Change '@pemit %#=The ferret drops the ball' or whatever to 'drop
+ball'. '@pemit' and 'drop' are both commands, so where one can go, the other can go."
+Bix dropped Ball.
+Moth says "So it would be... blahblahblah @switch %0=drop,drop ball,@pemit
+%#=whatever,get,get ball,@pemit %#=whatever...?"
+Ball has left.
+Parity shakes his head.
+Bix dropped Ball.
+Parity says "No @pemit at all."
+Moth says "Then I'm lost"
+Dunross says "The action for play/get is now 'get ball'. No pemit at all.
+just <case>,<action>."
+Parity says "@switch %0=drop,drop ball is good... when we see 'drop' we do
+the action 'drop ball'"
+Parity says "But now, after the next comma, we get another test value."
+Moth just blinks
+Parity says "We don't want to test for '@pemit %#=whatever' we want to test for 'get'."
+Ball has left.
+Bix dropped Ball.
+Moth says "Okay..."
+Bix(#1161IV$)
+PLAY-AGAIN-CMD:$play again/*:@switch %0=get,get ball,drop,drop ball,@pemit
+%#=What was I supposed to do?
+Parity nods to Dunross, "That's it. ;)
+Parity says "Moth, exa Bix/play-again-cmd"
+Dunross says "Oh good. Cause I'm having to make stuff up again. :P"
+Parity tries to explain more clearly.
+Moth has it
+Moth was just trying to do too much at once
+Parity says "Remember in 'switch()' we had 'switch(<test value>,<case1>,<return1>,
+<case2>,<return2>)' ?"
+Dunross nods.
+Parity says "In @switch, we have, '@switch <test value>=<case1>,<action1>,<case2>,
+<action2>'"
+Moth nods
+Parity says "We have an '=' to set the first argument off from the others, and we
+have 'actions' instead of 'return values', but otherwise the two are very similar."
+Parity says "Make sense?"
+Prospero(#1160V$)
+PLAY-AGAIN-CMD:$play again/*:@switch %0=drop,drop ball,get,get ball,@pemit
+%#=Come again?
+Moth says "So...how is it activated?"
+Parity says "Look at the pattern."
+Parity says "What would match '$play again/*' ?"
+Moth typed 'play again' 'drop ball' and got a huh?
+Moth says "That was my guess"
+Dunross says "Right, but don't forget your two options. /get or /drop"
+Parity says "'/' doesn't mean anything special."
+Ball has left.
+Prospero dropped Ball.
+Dunross says "Hmm."
+Parity says "To match '$play again/*:' We need to -literally- type the
+non-special characters... 'play again/'. Only the '*' is special."
+Ball has left.
+Moth nods
+Dunross says "Are we using the same ball?"
+Parity says "Make sense now?"
+Prospero dropped Ball.
+Ball has left.
+Parity says "Oh, dear."
+Moth lafs
+Parity says "Yes. ;)"
+Bix dropped Ball.
+Dunross nods. :P
+Ball has left.
+Parity should've had you name your toys differently.
+Dunross says "Um. I set my ball inherit. ;P"
+Moth says "Woo! Let's play hoops!"
+Dunross nods, can rename that.
+Parity chuckles, "You don't need your ball to be inherit, only your command-object."
+Moth adds /dribbles ball;p
+Dunross ahs. ;)
+Parity says "OKay, one last thing."
+Dunross says "Alright, who has my ball? :P"
+Moth set mine inherit
+Moth lafs... the ferret has them both!
+Moth chuckles
+Moth offers Prospero a raisin.
+Moth says "Okay...last thing"
+Prospero dropped Ball.
+Prospero dropped Ball.
+Ball has left.
+Ball has left.
+Moth says "Okay;p"
+Parity says "Suppose you want to do what Moth tried to do before, and have -both-
+the command 'drop ball' -and- the command '@emit The ferret drops the ball.'
+happen when the command 'play/drop' is entered?"
+Dunross nods.
+Moth says "That's where I got hung up"
+Parity says "In the place of -a- command in an @switch, we can put a -series- of
+commands. To do this, we put curly braces around the commands, and separate the
+commands with ';'."
+Moth ohs
+Dunross nods, has seen this.
+Moth nods, has too
+Parity says "So, instead of 'drop ball' we have 'drop ball ; @emit The ferret
+drops the ball.'"
+Parity says "Oops."
+Moth hasn't set it, but has seen it
+Parity says "So, instead of 'drop ball' we have '{ drop ball ; @emit The ferret
+drops the ball. }'"
+(Post-lecture note: Yes, in theory you can separate your commands with ';' and
+-not- put them inside curly braces {}, but in most cases this won't work right.
+The curly braces {} will add readability, so always use them, it'll make life easier.)
+Parity invites you to modify your commands.
+Parity says "Put an @emit, or an @pemit, or both, in with 'drop' and 'get'."
+Dunross nods.
+Dunross says "I think I screwed mine up when I renamed the ball."
+Dunross tries to fix it.
+Bix(#1161IV$)
+PLAY-AGAIN-CMD:$play again/*:@switch %0=get,(get soccerball;@emit Bix grabs
+the soccerball.),drop,(drop soccerball; @emit Bix drops the soccerball.),@pemit
+%#=What was I supposed to do?
+Parity says "Dunross, you need curly braces {} not parentheses ()."
+Parity hopes you're not on a european keyboard.
+Moth hmmms...
+Parity says "Some older european keyboards didn't have angular brackets
+<> and curly braces {}..."
+Parity says "MUSH is -not- friendly to such keyboards."
+Bix grabs the soccerball.
+Bix drops the soccerball.
+
+Prospero(#1160V$)
+PLAY-CMD:$play/*:@switch %0={ drop ball ; @emit The ferret drops the ball and
+waits for raisins.},{ get ball ; @emit The ferret gets the ball. Clever Prospero!},
+{ tackle ball ; @emit The ferret tackles the ball. That's a personal foul, mister.},
+@pemit %#=What ball?
+Parity says "Moth, you've got your commands layed out nicely, but you lost the values
+to test for."
+Parity says "@switch <input>=<test>,<actions>,<test>,<actions>,<default actions>"
+Bix(#1161IV$)
+PLAY-AGAIN-CMD:$play again/*:@switch %0=get,{get soccerball;@emit Bix grabs the
+soccerball.;@pemit Bix got it!},drop,{drop soccerball; @emit Bix drops the soccerball.;
+@pemit Bix lost it.},@pemit %#=What was I supposed to do?
+Parity nods to Dunross, "Good!"
+Parity says "Err."
+Moth looks at Dunross' again;p
+Parity says "Except you probably want your @pemit to @pemit %#= ;)"
+Dunross noddles, was fixing that. :)
+Bix grabs the soccerball.
+Dunross says "Yay."
+Bix drops the soccerball.
+Parity says "RIght now those @pemits are going into the void. Right now your object
+is seeing a complaint that there is no such object, as, for example, 'Bix lost it.'"
+Bix:
+PLAY-AGAIN-CMD:$play again/*:@switch %0=get,{get soccerball;@emit Bix grabs the
+soccerball.;@pemit %#= Bix got it!},drop,{drop soccerball; @emit Bix drops the
+soccerball.;@pemit %#= Bix lost it.},{@pemit %#=What was I supposed to do? @emit
+Someone's confused about what to do with this ball.}
+Dunross hmms.
+Dunross says "I got the pemits now..."
+Parity nods, "That's fixed correctly."
+(Post-lecture note: Except I don't notice the missing ';' in the default case for
+a couple more poses... )
+Dunross ahs.
+Dunross says "And you have to do emits before pemits?"
+Parity was still speaking while you were fixing. ;)
+Parity says "No."
+Dunross nods.
+Dunross says "A ;."
+Parity says "You can mix the commands up in any order. The ';' separates them,
+and they occur in the order written."
+Dunross nods.
+Parity says "This is one of those things that doesn't work when typed in the
+way it works in code."
+PLAY-AGAIN-CMD:$play again/*:@switch %0=get,{get soccerball;@emit Bix grabs
+the soccerball.;@pemit %#= Bix got it!},drop,{drop soccerball; @emit Bix drops
+the soccerball.;@pemit %#= Bix lost it.},{@pemit %#=What was I supposed to do?;
+@emit Someone's confused about what to do with this ball.}
+Parity ahs, "Yes, that was an important ';' to put in. ;)
+Dunross snickers.
+Dunross says "Moth is too quiet. :P"
+Prospero(#1160V$)
+PLAY-CMD:$play/*:@switch %0=drop,{ drop ball ; @emit The ferret drops the ball
+and waits for raisins.},get,{ get ball ; @emit The ferret gets the ball. Clever
+Prospero!},tackle,{ tackle ball ; @emit The ferret tackles the ball. That's
+a personal foul, mister.},@pemit %#=What ball? How about more raisins...
+Moth is working;p
+Parity nods, and turns to study prospero.
+Prospero dropped Ball.
+The ferret drops the ball and waits for raisins.
+Ball has left.
+The ferret gets the ball. Clever Prospero!
+Parity thinks that looks right.
+Prospero dropped Ball.
+The ferret drops the ball and waits for raisins.
+The ferret tackles the ball. That's a personal foul, mister.
+Dunross says "I am already going to have to hurt this ferret."
+Ball has left.
+The ferret gets the ball. Clever Prospero!
+Parity chuckles. "I wouldn't... ferret's have sharp claws and teeth... :)"
+Moth nods, sees what I did and gets it
+Parity says "Okay! That looks like we're there. Any questions or clarifications needed?"
+Moth says "Nope! Thanks for running the class over;)"
+Moth is slow;)
+Dunross says "Can we just review real quick? We're talking: commands, switch,
+@switch, and hasflag. :)"
+Parity nods.
+Dunross says "Yes, thanks for everything! You were so patient, seriously."
+Moth says "Summary syntax would be nice, actually:)"
+Parity says "An attribute is set with, '&<attribute-name> <object-name>=<value>"
+Parity says "A value like, '$<something>:<something>' is a command."
+Parity says "'&my-cmd myobj=$mine:@pemit %#=It's all mine!' will create a command
+'mine' on 'myobj' that will pemit 'It's all mine!' to the invoker."
+Parity says "If you use '*' in the command format, any string will match the '*',
+and you can get what the invoker typed with '%0' for the first *, %1 for the
+second *, and so on, up to '%9' for the tenth *."
+Parity says "'&my-cmd myobj=$mine *:@pemit #384=%0 is all mine!' will pemit,
+for example, 'The ferret is all mine!' if you type 'mine ferret'"
+Parity says "'&my-cmd myobj=$mine *:@pemit %#=%0 is all mine!' will pemit,
+for example, 'The ferret is all mine!' if you type 'mine ferret'"
+Parity says "switch() is a function; functions replace themselves with text
+according to certain rules. switch() has special 'if-then-else' rules for
+what it is replaced with."
+Parity says "switch(1,1,one,0,zero,unexpected value) is replaced with 'one'."
+Parity says "Functions are evaluated from the inside out, so you can put a
+function inside of a function."
+Parity says "switch(hasflag(me,connected),1,one,0,zero,unexpected value) is
+replaced with 'one' if you're connected, 'zero' if you're not, and 'unexpected
+value' if you're on a MUSH that doesn't know about the special word 'me' and
+tries to find an object named 'me'."
+Moth chuckles
+Parity says "switch(hasflag(#1,connected),1,one,0,zero,unexpected value) is replaced
+with 'one' if 'God' is connected, 'zero' if 'God' is not connected, and 'unexpected
+value' only if something is really weird and #1 is not a player."
+Parity says "@switch is like switch(), except that instead of replacing itself with
+a value, it executes a set of commands."
+Parity says "'@switch 1=1,say one,0,say zero,say unexpected value' makes the
+executing object (You if you type in directly, the command-object if you put
+it in a command) do the command 'say one'."
+Parity says "'@switch hasflag(#1,connected)=0,@pemit %#=God is not connected,
+1,@pemit %#=God is not connected,@pemit %#=What? God is not a player?' will
+@pemit a different thing depending on whether 'hasflag()' (a function, which
+should replace itself with some text) replaces itself with '1' '0' or some
+error message."
+Parity says "When writing an @switch, you can use %0 from a command argument
+as your 'first argument/test argument' value."
+Parity says "And you should put your commands inside of curly braces {}."
+Dunross says "You type too fast, Parity. And I type fast. :P"
+Parity says "'&switch-cmd myobj=$myswitch *:@switch %0=hi,@pemit #384=Well,
+hi there!,bye,@pemit %#=Good-bye, then!,@pemit %#=What?' will create a command
+that pemits 'Well, hi there!' if you do 'myswitch hi', 'Good-bye, then!' if you
+do 'myswitch bye', and 'What?' if you do anything else. The curly braces mark
+off your commands, so you can have commas that are not treated special as part
+of the @switch, you can put a whole string of commands seperated by ';' inside
+instead of one @pemit, etc."
+Parity says "And, finally, you can get help with 'help command list' 'help
+function list' 'help switch()' 'help @switch' and others. ;)"
+Moth has to note for the record that you've been great, horrendously patient,
+extremely courteous and folks need to take advantage of these classes... When
+can we do this again?
+Parity says "help hasflag() for instance. :)"
+Parity expects to hold another class in two weeks.
+Moth says "Woo!"
+Moth will be there...
+Dunross says "Most excellent."
+Parity says "That seems like a good amount of time between classes. :)"
+Parity says "Any more questions?"
+Moth nods, allows brain cells to rejuvenate, hopefully
+Parity grins.
+Dunross says "Moth is right, Parity. I've been in environments for 10 years and that
+was the most patient coder-lesson experience I've ever had."
+Moth says "And if you can teach -me- to code, you can teach -anyone-... ;)"
+Dunross says "Yeah. Moths are slow. ;)"
+Parity has an ulterior motive.. if it can teach people to code, the will be more
+code-wizards and it will be less overworked... :)
+Moth chuckles
+Dunross laughs, "No joke. That's how you do it."
+Dunross says "Thanks a million. :)"
+Moth says "Well, I will try.."
+Parity says "No problem. :)"
+Moth says "Thanks a mill..."
+Parity has a question for all you now. :)
+Prospero dropped Ball.
+Houston, we have lift-off. The ferret launches the ball across the room.
+Dunross says "Oh, God. Is that what you made today?"
+Moth says "Oh sure"
+Dunross says "Oh, certainment."
+Parity says "Do you have any idea what you'd like to see addressed in the
+next session?"
+Moth is so new to coding, I wouldn't be able to tell you...
+Moth says "I mean, I guess that's evident;p"
+Parity grins.
+Ball has left.
+The ferret gets the ball. Clever Prospero!
+Dunross says "Well, I like trying to understand the functions. I mean, we are
+pretty functional...both Moth and I have built and done things, but again, it's
+not efficient or taking advantage of things like switch()."
+Parity says "Well, I expect it to be phrased as 'how to do X' not 'how to use the
+such-n-such command' ;)"
+Moth nods...
+Moth needs to figure out how to build.... water... laf
+Dunross says "I'd like to see stuff on how to set up a Master Room. laf. ;)
+Functions on objects, globals, etc."
+Moth says "Weather"
+Dunross says "Oi. Weather."
+Parity mmmmmms.
+Moth says "We've got to figure that out tho..."
+Dunross says "I like the exercise method you did Parity, adding each time."
+Dunross says "And that means I can keep my object with the bits on it to review."
+Moth nods
+Parity says "Everything I've taught you can be applied to master room objects.
+Perhaps we'll try to cover user-functions and other neat tricks next time."
+Moth says "Hands on is critical"
+Moth nods, cool
+Prospero dribbles it up the middle like Julius Erving!
+Parity nods, and agrees that hands on is critical.
+Dunross nods, has figured out a master room in the backyard of his own place,
+but that doesn't really mean much, save it manages to work.
+Parity says "Okay, so you like cumulative exercises. What was the thing you
+-least- liked in this lecture?"
+Dunross says "Least?"
+Parity nods.
+Moth says "The fact that I was slow... ;)"
+Parity can't improve if it doesn't know what it does wrong.
+Parity says "And I don't believe I was perfect. :)"
+Moth says "I think it was pretty straight-forward..."
+Dunross says "Nothing really. I liked working on just a set of related commands.
+I liked the exercises. I liked the steps you took and were patient. I thought it
+was all well done. When it got slow, it was due to 1. us needing a few minutes
+to sort it out, 2. you mistyped something, which happens, no big deal."
+Moth says "Maybe give a couple of practical uses for the code bits..."
+Moth says "Like...you can use this to do blah"
+Parity nods thoughtfully.
+Moth says "That's where I have trouble sometimes... figuring out what I'd do with it"
+Dunross says "True, maybe then continue work on a project? Like you may have our small
+items to practice syntax on, but then we're simultanously working on a larger project
+and adding to it each week?"
+Parity says "Yes... I think I did that with the 'mywho' from the first lecture, but
+not so much in this lecture."
+Dunross says "So I could keep Bix, but I also know that I'm trying to work on
+Weather stuff at my own place and so maybe relating the two might assist?"
+Parity will need to think of a project that uses the techniques. ;o
+Moth nods
+Moth thinks that having at least one practical application for a section of code
+learned would be a great way to tie it all together
+Moth says "That'd really be my only suggestion. I think the rest is great..."
+Dunross nods. "Well, yer making your ferret, yes? You know how to do the basic
+bits to code an animal."
+Moth says "Right..."
+Parity nods. "Well... truthfully... @switch isn't practical except in the largest
+most complex applications, but when you need it, you need it. ;o"
+Dunross says "Feed, pet, play."
+Moth says "Right... is just saying some of the switch stuff might relate well to
+other things I wouldn't think to use it for... b/c of my lack of experience"
+Moth says "That's all..."
+Parity often does, for example, '@switch hasflag(%#,wizard)=1,one set of actions,0,
+another set of actions'
+Dunrossnods on switch. "Actually, I have something that might be improved by @switch
+my own place, but still, I'm glad we know it...the travelling metaphor, Moth."
+Moth doesn't know how it might apply, if at all, to different things, like weather...
+or the transportation code on Myriad. That's all.
+Dunross nods at Parity, "Exactly."
+Parity says "But only when I need a command named the same thing to behave very differently."
+Moth nods
+Dunross nods, "Yeah, our transport is more a string of emits and then a teleport."
+Dunross says "Switch might be overkill. ;)"
+Moth nods
+Dunross says "But you get the idea. :)"
+Moth says "Anyhoo...that'd be my suggestion..."
+Parity says "Usually you can stick a 'switch(hasflag(%#,wizard), ... ' into the
+text to add extra info for staff."
+Parity will work on it. ;)
+Dunross says "Thanks again, Parity. ;)"
+Moth says "Otherwise, it's great as it is... I think you're doing a fabulous job..."
+Moth says "Thanks muchly..."
+Dunross says "How does the log stuff work? Does Sio put it up?"
+Parity says "Thank you!"
+Parity nods.
+Dunross cools.
+Parity says "The logs will be posted at http://members.fortunecity.com/ogr/"
+Parity says "Under 'resources'"
+Moth nods, cool
+Dunross grabs Bix and runs. :)
+Prospero dropped Ball.
+Houston, we have lift-off. The ferret launches the ball across the room.
+Dunross says "Till next time then. :)"
+Moth grins
+Parity says "Class dismissed! :)"
+Dunross salutes. :)
+Parity waves.
+Ball has left.
+The ferret gets the ball. Clever Prospero!
+Dunross laughs.
+Dunross goes home.
+Dunross has left.

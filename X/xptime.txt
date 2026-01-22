@@ -1,0 +1,8 @@
+@create xptime=10
+&QUALIFIED xptime=[cand(hastype(%0,player),gt(conn(%0),-1),ic(%0),lt(idle(%0),sub(secs(),v(lastcheck))))]
+&ELIGIBLE xptime=[cand(u(qualified,%0),lmath(or,iter(setdiff(lcon(loc(%0)),%0),u(qualified,##))))]
+&LOOP xptime=@wait me/[add(60,rand(300))]={@wait me={ &lastcheck me=[secs()]; @tr me/LOOP };@dol/notify [lwho()]={&activetime ##=[add(get(##/activetime),setr(0,if(u(eligible,##),lmath(sub,[secs()] [v(lastcheck)] [idle(##)]),0)))];&_xp-total ##=[add(get(##/_xp-total),fdiv(%q0,v(secs_to_xp)))];&_xp ##=[add(get(##/_xp),fdiv(%q0,v(secs_to_xp)))]}}
+&SECS_TO_XP xptime=86400
+@Startup xptime=@drain me; &lastcheck me=[secs()]; @tr me/loop
+@set xptime=INHERIT
+@set xptime=SAFE

@@ -1,0 +1,39 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @@ This is a global object with a few useful commands. Meant for WoD games, but, could probably be used anywhere.\
+@@\
+@@ +bg/approve meant to be used with the SGP background code (1.0 was missing an approval option, so, I wrote my own\'a0:)).\
+@@\
+@@ +nuke/test looks for people who haven't connected in at least a month, and lists them for @nuking (by a wiz).\
+@@ It doesn't actually do the nuking, just lists people who "ought" to be. It won't list people in a specially designated\
+@@ "Freezer" room (#244 on this object), or with the NPC attribute. It also doesn't list staff.\
+@@ \
+@@ +freezer stores a character in a "freezer" (special room), to be brought back later. \
+@@ Good for NPC's and people on vacation. It's connected to the +nuke code (people in the Freezer aren't in the nuke\
+@@ list).\'a0:). Update #244 to whatever room you want to be the Freezer room.\
+@@\
+@@ +taxi summons you a taxi object that will take you to your location, drop you off there, and then dest itself. Someone has to\
+@@ walk the grid and set the appropriate taxi_ok rooms in the STREETLIST and TRAVELLIST attributes.\
+\
+\
+@create Random Global Storage <RGS>\
+&CREDITS Random Global Storage <RGS>=This Generic Code object was assembled by Gwen Morse (http://www.gwen-morse.com/wiki/index.php/MUSHcode). +taxi code from the DG Free Code Objects, and revised and updated by Gwen Morse. +freezer and +bg code completely written by Gwen Morse.\
+&DO_APPROVE Random Global Storage <RGS>=$+bg/approve *:@switch isstaff(%#)=0,\{@pemit\'a0%#=Huh?%b%b\\(Type "help" for help.\\)\},1,\{@switch [strmatch(lattr(*%0/background_*),background_*)]=0,\{@pemit\'a0%#=CODE: Sorry, but [name(*%0)] does not have a background set to approve.\}, \{&bkapprove *%0=Approved: [time()] by [name(%#)] (%#).;@dolist [lattr(*%0/background_*)]=\{@lock *%0/##\}; @pemit\'a0%#=CODE: Background approved for [name(*%0)].; @lock\'a0%#/bkapprove; @pemit *%0=CODE: Your background has been approved by [name(%#)].\}\}\
+&DO_BGCHECK Random Global Storage <RGS>=$+bg/check *:@switch isstaff(%#)=0,\{@pemit\'a0%#=Huh? \\(Type "help" for help.\\)\},1,\{@switch [hasattrval(%#,bkapprove)]= 0,\{@pemit\'a0%#=CODE: [name(*%0)]'s Background not approved.\},1,\{@pemit\'a0%#=CODE: [name(*%0)] [get(*%0/bkapprove)]\}\
+&DO_FREEZER Random Global Storage <RGS>=$+freezer *:[setq(0,num(*%0))];@swi/first 0=isstaff(%#),\{@pemit\'a0%#=Huh? (Type "help" for help.)\},isdbref(%q0),\{@pemit\'a0%#=CODE: '[secure(%0)]' does not seem to be the name of a player.\},not(match(loc(%q0),#244)),\{@pemit\'a0%#=CODE: [name(%q0)] is already in the Freezer.\},\{&freezer_loc\'a0%q0 = [loc(%q0)]; @lock\'a0%q0/freezer_loc; @tel\'a0%q0=#244; &freezer_home\'a0%q0 = [home(%q0)]; @lock\'a0%q0/freezer_home; @link\'a0%q0=#244; @pemit\'a0%#=CODE: You sent [name(%q0)] to the Freezer.; @pemit\'a0%q0=CODE:\'a0%N  has sent you to the Freezer.\}\
+&DO_NUKETEST Random Global Storage <RGS>=$+nuke/test:@switch/first 0=hasflag(%#,wizard),\{@pemit\'a0%#=Huh?  (Type "help" for help.)\},\{@pemit\'a0%#=CODE: Auto-nuker test run...;[setq(0,convtime(time()))];@dolist search(all,flag,P)=\{[setq(1,convtime(get(##/last)))];@switch/first 1=orflags(##,Wro),\{@@\},strmatch(loc(##),#244),\{@@\},strmatch(get(##/NPC),yes),\{@@\},gte(sub(%q0,%q1),2678400),\{@pemit\'a0%#=Ready for Nuking: [name(##)] <##>!\},\{@@\}\}\
+&DO_TAXILIST Random Global Storage <RGS>=$+taxi:@pemit\'a0%#=You can travel to the following destinations: (Use +taxi <#> to go.)%r[iter(lnum(1,words(u(travellist),|)),%r##[space(3)][rest(extract(u(travellist),##,1,|))])]\
+&DO_TAXISTREET Random Global Storage <RGS>=$+taxi/street:@switch 0=isstaff(%#),\{@pemit\'a0%#=Huh?  (Type "help" for help.)\},not(match(get(me/streetlist),loc(%#))),\{@pemit\'a0%#=CODE: This location has already been added to the +taxi street list. Please try a new room.\},\{@pemit\'a0%#=CODE: You add this location to the +taxi street list.; &streetlist me=[get(me/streetlist)]\'a0%l; &travellist me=[get(me/travellist)]|%l [name(%l)]\}\
+&DO_TAXISUMMON Random Global Storage <RGS>=$+taxi *:@swi/first 0=and(gt(%0,0),lte(%0,words(u(travellist),|))),\{@pemit\'a0%#=CODE: That's not a valid destination.\},strmatch(u(streetlist),*%l*),\{@pemit\'a0%#=CODE: You can only call a taxi when you're on a street corner.\},\{@create [setq(0,rand(20))]Taxi\'a0%q0;&taxi-%q0 me=[setq(1,con(me))]%q1;@remit\'a0%l=[name(%#)] whistles for a taxi, and one arrives promptly.;@set\'a0%q1=enter_ok;@tel\'a0%q1=%l;@set\'a0%q1=!halted;@desc\'a0%q1=\{This is a New York City taxi. It's about what you'd expect. Dirty, cramped and smelly, with a thick glass partition between you and the cabbie.\};@set\'a0%q1=opaque;@remit\'a0%l=Type <enter taxi> to get in.;@wait 17=\{@remit\'a0%l=The taxi drives off.;@elock\'a0%q1=me;@lock/leave\'a0%q1=me;@tel\'a0%q1=#709;@pemit/contents\'a0%q1=The engine growls as the taxi drives off. The cabbie glances at you in the rearview mirror.\};@wait [add(31,rand(10))]=\{@pemit/contents\'a0%q1=The cab dodges in and out of traffic, nearly halfway to your destination.\};@wait 60=\{@remit [setq(2,first(extract(u(travellist),%0,1,|)))]%q2=A taxi pulls up to the curb.;@pemit/contents\'a0%q1=Your taxi pulls up alongside the curb. The cabbie collects his fare and you leave.;@tel\'a0%q1=%q2;@dol lcon(%q1)=@force\'a0%q1=drop ##;@wait 10=\{@remit\'a0%q2=The taxi speeds off towards its next assignment.;@tel\'a0%q1=#709;@nuke\'a0%q1; @wipe me/taxi-%q0\}\}\}\
+&DO_UNFREEZER Random Global Storage <RGS>=$+unfreezer *:[setq(0,num(*%0))];@swi/first 0=isstaff(%#),\{@pemit\'a0%#=Huh? (Type "help" for help.)\},isdbref(%q0),\{@pemit\'a0%#=CODE: '[secure(%0)]' does not seem to be the name of a player.\},match(loc(%q0),#244),\{@pemit\'a0%#=CODE: Sorry, but [name(%q0)] is not currently in the Freezer.\},\{@link\'a0%q0=[u(%q0/freezer_loc)]; @unlock\'a0%q0/freezer_loc; @wipe\'a0%q0/freezer_loc; @tel\'a0%q0=home; @link\'a0%q0=[u(%q0/freezer_home)];@unlock\'a0%q0/freezer_home;@wipe\'a0%q0/freezer_home; @pemit\'a0%q0=CODE:\'a0%N has released you from the Freezer.; @pemit\'a0%#=CODE: You released [name(%q0)] from the Freezer.; @pemit loc(%q0)=CODE: [name(%q0)] has been released from the Freezer.\}\
+&STREETLIST Random Global Storage <RGS>=#106\
+&TRAVELLIST Random Global Storage <RGS>=#106 Liberty Street - Lower Manhattan\
+@set Random Global Storage <RGS> = INHERIT\
+@set Random Global Storage <RGS> = COMMANDS\
+@set Random Global Storage <RGS> = SAFE\
+}

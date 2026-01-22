@@ -1,0 +1,579 @@
+ Topic: +who How-To
+Author: Kyieren
+Summary: Kyieren walks through the process of creating a basic +who global.
+
+HOW TO MAKE A BASIC +WHO GLOBAL
+
+
+<101> Kyieren says, "Alright, what we're going to be doing is making a +who
+global."
+
+<101> Tyran says, "Ok."
+<101> Tyran says, "Do I need to make a special Room?"
+
+<101> Kyieren says, "Since this is a global, we'll want to put our +who code
+on an object, and place the object in #2, so that people can use it."
+<101> Kyieren says, "Since we don't have access to #2, the master room, on
+M*U*S*H, we'll just make our own little objects for our own use."
+
+<101> Tyran says, "I may have access to room #2"
+
+<101> Kyieren says, "Okay, had to do some filtering for the log I'm making."
+<101> Kyieren says, "Yes, on your MUSH, but not here."
+
+<101> Tyran says, "ok I am there."
+
+<101> Kyieren says, "Okay, let's get started. First, we want to create an
+Object. @create +Who Global"
+
+<101> Tyran says, "Ok."
+
+<101> Kyieren says, "Let's unset the NO_COMMAND flag, so we can use commands
+on the object. @set +Who Global=!NO_COMMAND"
+<101> Kyieren says, "See 'help NO_COMMAND' for help on the NO_COMMAND flag."
+
+<101> Tyran says, "k"
+
+<101> Kyieren says, "Okay, let's first sit down and examine what we want our
++who global to look like. What fields do we want? Well, in +who on a lot of
+places, you usually get the Player's Name, Location, Online Time, and Idle
+Time."
+<101> Kyieren says, "That sound cool for now?"
+
+<101> Tyran says, "I want a Players Name, Online Time and Idle"
+
+<101> Kyieren says, "That's fine."
+
+<101> Tyran says, "K"
+
+<101> Kyieren says, "Okay, so what we're going to do is get a list of
+currently connected players, and for each player, we will list the person's
+name, online time, and idle time."
+<101> Kyieren says, "The way we do that is through a function called iter()."
+
+<101> Tyran says, "K."
+
+<101> Kyieren says, "Short for, iterate."
+<101> Kyieren says, "So the syntax for the iter() function is: iter(list,what
+you want to do for wach item in the list)"
+<101> Kyieren says, "wach=each"
+<101> Kyieren says, "Take a look at 'help iter()'"
+<101> Kyieren says, "You see that we can call each item in the list using ##."
+<101> Kyieren says, "Now, let's think about the list we're going to use."
+
+<101> Tyran says, "Let me read this."
+
+<101> Kyieren says, "We need a list of currently connected players, excluding
+wizards/royalty set DARK."
+<101> Kyieren says, "Okay, let me know when you're done and understand iter()
+fully."
+
+<101> Tyran says, "Ok, i'll brb, gotta get off for a sec."
+
+<101> Kyieren says, "Okay, we'll pause."
+
+<101> Tyran has disconnected.
+
+<101> Kyieren takes a break to run downstairs for a soda. BRB.
+
+<101> David says, "If we pause for five minutes though, the VCR will
+automatically stop to avoid damaging the tape."
+
+<101> Carbon-Based Landus says, "That's why it does it?"
+
+<101> Kyieren says, "That's true. We can always hit record again though."
+
+<101> David nods.
+<101> David says, "Because, when it is paused, it has the tape in 'play'
+position, over the heads."
+
+<101> Kyieren taptaps foot. Where is he?
+
+<101> Tyran has connected.
+<101> Tyran says, "Ok"
+
+<101> Kyieren says, "All stable now?"
+
+<101> Tyran says, "Yep"
+
+<101> Kyieren says, "Okay then. Back to the list. iter() needs a list, and for
++who, we use the list of currently connected players."
+
+<101> Tyran says, "K."
+
+<101> Kyieren says, "PennMUSH has that list for us, it's called lwho(). See
+'help lwho()'."
+
+<101> Tyran says, "K."
+
+<101> Kyieren says, "mwho() also works, it's basically a synonym."
+
+<101> Tyran says, "k."
+
+<101> Kyieren says, "So let's start our code, basic algorithm."
+<101> Kyieren says, "Actually, no."
+<101> Kyieren says, "Let's start with the header."
+<101> Kyieren says, "The header doesn't need to be anything fancy, just some
+little frilly things to make the +who pretty."
+<101> Kyieren says, "Let's set a &HEADER attribute on our global object."
+<101> Kyieren says, "
+
+&header global=[repeat(=,78)]%r[mudname()]%r[repeat(=,78)]%r
+
+"
+<101> Kyieren says, "&header: we're storing this information in the HEADER
+attribute."
+
+<101> Tyran says, "Is that exactly what I type?"
+
+<101> Kyieren says, "Yes"
+<101> Kyieren says, "global is the abbreviated name of our object."
+<101> Kyieren says, "The repeat(blah,number) function just prints blah number
+times. So this will print '=' 78 times."
+
+<101> Tyran says, "Ok, that is done."
+
+<101> Kyieren says, "All next to each other"
+<101> Kyieren says, "See 'help repeat()' for more on that."
+<101> Kyieren says, "The mudname() function prints out the name of your MUSH
+as defined in mush.cnf, I believe."
+<101> Kyieren says, "See 'help mudname()"
+<101> Kyieren says, "Again the repeat() function"
+
+<101> Tyran says, "How do i set mudname?"
+
+<101> Kyieren says, "That's in mush.cnf in your penn directory, I think."
+
+<101> Tyran says, "k."
+
+<101> Kyieren says, "And at the end, a %r. %r means new line. Like hitting
+'Return' in a word processor, or \n for those of you familiar with C."
+<101> Kyieren says, "So we'll get something like this:
+
+==============================================================================
+M*U*S*H
+==============================================================================
+"
+
+<101> Tyran says, "K."
+
+<101> Kyieren says, "Now, let's move on to the fields."
+<101> Kyieren says, "We're going to put those in the +who attribute along with
+the command."
+<101> Kyieren says, "To print this +who to a specific person, we use @pemit"
+<101> Kyieren says, "see help @pemit"
+<101> Kyieren says, "@pemit, without the silent switch, will print whatever
+it's given to the person specified, and will also print a confirmation message
+to the object's owner."
+<101> Kyieren says, "To avoid spam for the owner, we'll add the /silent
+switch."
+<101> Kyieren says, "Usage of @pemit is like this: @pemit <person>=<message"
+<101> Kyieren says, "<message> will be seen only by <person>"
+<101> Kyieren says, "Since we're using the /silent switch, it will be
+@pemit/silent <person>=<message>"
+<101> Kyieren says, "In our case, <person> is the person typing +who"
+<101> Kyieren says, "<message> is the +who information"
+<101> Kyieren says, "Go ahead, test out @pemit. First do: @pemit *Ky=test"
+
+You pemit "test" to Kyieren.
+test
+
+<101> Kyieren says, "See?"
+
+<101> Tyran nods
+
+<101> Kyieren says, "Now the reason you had to use a * in front of my name is
+because you a) don't own or control me, and b) I'm not in the same room as
+you."
+<101> Kyieren says, "Let's try with the silent switch. @pemit/silent *ky=test"
+
+test
+
+<101> Kyieren says, "Very good."
+<101> Kyieren says, "See the difference? With /silent, you don't get that
+confirmation message. As you can see, had I asked you to send a longer
+message, it would have been very spammy for you."
+<101> Kyieren says, "So, we all clear on @pemit?"
+
+<101> Tyran nods
+
+<101> Kyieren says, "Alright then. Let's talk about something related."
+<101> Kyieren says, "Since we don't know the exact name of the person who will
+be typing +who, we'll need to have some kind of substitution for <person> that
+will work for anyone who types the command."
+<101> Kyieren says, "That subsititution is: %#."
+<101> Kyieren says, "%# returns the dbref (see help dbref for more) of the
+ENACTOR, that is, the person who types the command."
+<101> Kyieren says, "With me so far? So what we'll want to do is @pemit/silent
+%#=<who information goes here>"
+
+<101> Tyran says, "K"
+
+<101> Kyieren says, "There are many more substitutions, see 'help
+substitutions' for more."
+<101> Kyieren says, "So, we're going to set a WHO attribute on our global
+object."
+
+<101> Tyran says, "So type @pemit/silent %#=Online"
+
+<101> Kyieren says, "Well, no, +who is going to consist of much more than
+that."
+
+<101> Tyran says, "Ok."
+
+<101> Kyieren says, "It's going to give each connected player's name, online
+time, and idle time."
+<101> Kyieren says, "So let's do it."
+
+<101> Tyran says, "k."
+
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=<header goes here><field names>%r<player
+name [spaces] online time [spaces] idle time>%r<footer goes here>
+
+"
+<101> Kyieren says, "That's not working code yet."
+<101> Kyieren says, "Just a general algorithm."
+<101> Kyieren says, "The footer will be like our header, except for it's the
+bottom."
+<101> Kyieren says, "Let's set a footer now."
+<101> Kyieren says, "&footer global=[repeat(=,78)]"
+<101> Kyieren says, "Just a line of = signs."
+
+<101> Tyran says, "so don't copy the above yet?"
+<101> Tyran says, "What do I type at the header?"
+
+<101> Kyieren says, "That's just a general algorithm for our +who code. You
+can copy it, but it won't work."
+
+<101> Tyran says, "K."
+<101> Tyran says, "Are we gonna do mine, instead of the algoritm?"
+
+<101> Kyieren says, "We already set a header attribute. When the person types
+'who', we're going to print the header, print the field names, print the who
+information, then print the footer."
+
+<101> Tyran says, "K."
+
+<101> Kyieren says, "Yes, but I'm not going to just code it to let you
+cut/paste, I'm going to go through it while we code it. We'll modify the
+algorithm to be the real code."
+
+<101> Tyran smiles "ok"
+
+<101> Kyieren says, "Okay, note how I don't have a %r beterrn the header and
+field names. That's because we have a %r at the end of our header already."
+<101> Kyieren says, "By field names, I mean, Player Name, Online Time, Idle
+Time"
+<101> Kyieren says, "beterrn=between"
+<101> Kyieren says, "So let's modify our code with what we know so far."
+<101> Kyieren says, "We're going to call the information in the HEADER and
+FOOTER attributes with the v() function."
+<101> Kyieren says, "see help v()"
+<101> Kyieren says, "v(<attribute name>) returns whatever is stored in the
+<attribute name> attribute"
+<101> Kyieren says, "So to get our header, we'll use v(header)"
+<101> Kyieren says, "To get the footer, v(footer)"
+<101> Kyieren says, "See?"
+
+<101> Tyran nods
+
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[v(header)]<field names>%r<player name
+[spaces] online time [spaces] idle time>%r[v(footer)]
+
+"
+<101> Kyieren says, "Make sense so far?"
+
+<101> Tyran Nods "Getting more like english" :)
+
+<101> Kyieren says, "Alrighty, we want our +who to be in nice columns, yes?"
+
+<101> Tyran nods
+
+<101> Kyieren says, "We don't want scattered information!"
+<101> Kyieren says, "So let's use the ljust() function to put our field names
+in nice columns"
+<101> Kyieren says, "See help ljust"
+<101> Kyieren says, "In the example, [ljust(foo,6)] will take 6 spaces, and
+put the word 'foo' in the leftmost 3 of the 6 spaces/"
+<101> Kyieren says, "ljust is left justify."
+<101> Kyieren says, "So that leaves 3 spaces"
+<101> Kyieren says, "We'll use that to make columns"
+<101> Kyieren says, "Most screens are about 78 lines"
+<101> Kyieren says, "We have 3 fields, player name, online time, idle time"
+<101> Kyieren says, "So why not give each field the same number of spaces?
+78/3=26."
+
+<101> David questions that math.
+
+<101> Kyieren says, "Er, yeah, 78 divided by 3 is 26."
+<101> Kyieren says, "So we're going to [ljust(Player Name,26)][ljust(Online
+Time,26)]Idle Time"
+
+<101> Trispis says, "How come you don't ljust Idle Time?"
+
+<101> Kyieren says, "We don't need to put ljust() around Idle Time since the
+last 26 spaces go to it anyway."
+
+<101> Trispis says, "Oh."
+
+<101> Kyieren says, "So it will look like this."
+
+<101> Kyieren says, "
+
+Player Name Online Time Idle Time
+"
+<101> Kyieren says, "See how Idle Time just comes in at the end? We don't
+really need an ljust() around it. We could put one though..."
+
+<101> Tyran says, "K"
+
+<101> Kyieren says, "
+
+Player Name Online Time Idle Time
+"
+<101> Kyieren says, "And it would look like that"
+<101> Kyieren says, "Which is also fine."
+<101> Kyieren says, "With me?"
+<101> Kyieren says, "Let's modify our algorithm"
+
+<101> Tyran says, "How do I set my footer?"
+<101> Tyran says, "Footer is set :)"
+
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[v(header)][ljust(Player
+Name,26)][ljust(Online Time,26)]Idle Time%r<player name [spaces] online time
+[spaces] idle time>%r[v(footer)]
+
+"
+
+<101> Tyran says, "ok, copied and pasted."
+
+<101> Kyieren says, "Let's fill in the who information. Remember I told you
+we're going to do this using iter()?"
+
+<101> Tyran says, "Yep."
+
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[v(header)][ljust(Player
+Name,26)][ljust(Online Time,26)]Idle Time%r[iter(lwho(),what we want to do
+with each entry)]%r[v(footer)]
+
+"
+<101> Kyieren says, "lwho() returns a list of dbrefs of the currently
+connected players."
+<101> Kyieren says, "Type :think lwho()"
+<101> Kyieren says, "That's the dbref of each player connected."
+<101> Kyieren says, "In a space-separated list."
+
+<101> Tyran says, "Ok whatsm what we want to do with each entry"
+
+<101> Kyieren says, "We want to first get the player's name."
+<101> Kyieren says, "We use the name() function."
+<101> Kyieren says, "help name()"
+<101> Kyieren says, "For example, my dbref is #3799."
+<101> Kyieren says, "think name(#3799)"
+<101> Kyieren says, "Okay?"
+
+<101> Tyran nods
+
+<101> Kyieren says, "Except, since we're using iter(), remember I told you, we
+call each element in our list using ##"
+<101> Kyieren says, "So it will be iter(lwho(),name(##) blah blah blah)"
+<101> Kyieren says, "But remember, we want our stuff in columns"
+<101> Kyieren says, "So we'll put ljust() around the name(##)"
+<101> Kyieren says, "[ljust(name(##),26)]"
+<101> Kyieren says, "Don't forget the 26, because we want to allocate 26
+spaces to the name field"
+<101> Kyieren says, "So let's do an example of this."
+<101> Kyieren says, "think [iter(lwho(),name(##))]"
+<101> Kyieren says, "See how that prints the name of every connected player?"
+
+<101> Tyran nods
+
+<101> Kyieren says, "That's how our who is going to work, and ljust() will
+help us put it into columns"
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[v(header)][ljust(Player
+Name,26)][ljust(Online Time,26)]Idle
+Time%r[iter(lwho(),[ljust(name(##),26)]what we want to do with each
+entry)]%r[v(footer)]
+
+"
+<101> Kyieren says, "We still have to get online time"
+<101> Kyieren says, "The function for that is conn()"
+<101> Kyieren says, "think conn(*ky)"
+<101> Kyieren says, "See you get a number?"
+<101> Kyieren says, "That's the total number of seconds I've been connected."
+
+<101> Tyran nods
+
+<101> Kyieren says, "But for who, we need more than just number of seconds"
+<101> Kyieren says, "We need it in a form we can understand without having to
+divide by 60"
+<101> Kyieren says, "Introducing the timestring() function.
+Timestring(number) converts number seconds into a format we understand."
+<101> Kyieren says, "For instance, think timestring(conn(*ky))"
+<101> Kyieren says, "See there? Nice, huh. That's the kind of stuff we want in
+our who."
+
+<101> Tyran nods
+
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[v(header)][ljust(Player
+Name,26)][ljust(Online Time,26)]Idle Time%r[iter(lwho(),[ljust(name(##),26)]
+[ljust(timestring(conn(##)),26)]what we want to do with each
+entry)]%r[v(footer)]
+
+"
+<101> Kyieren says, "You with me so far?"
+
+<101> Tyran says, "Yes."
+
+<101> Kyieren says, "Let's move on to idle time."
+<101> Kyieren says, "The function to get someone's idle time is idle()."
+<101> Kyieren says, "So, Tallin is very idle."
+<101> Kyieren says, "think idle(*tallin)"
+<101> Kyieren says, "Ugh, there's that seconds format again"
+<101> Kyieren says, "Let's put it into nice form with the timestring()
+function"
+<101> Kyieren says, "think timestring(idle(*tallin))"
+<101> Kyieren says, "WHOA MAMA!"
+<101> Kyieren says, "He's really idlin!"
+<101> Tyran says, "Yep 2h"
+<101> Kyieren says, "Since that's our last field, we can just toss that in"
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[v(header)][ljust(Player Name,26)]
+[ljust(Online Time,26)]Idle Time%r[iter(lwho(),[ljust(name(##),26)]
+[ljust(timestring(conn(##)),26)][timestring(idle(##))])]%r[v(footer)]
+
+"
+<101> Kyieren says, "We're done?"
+<101> Kyieren says, "No!"
+
+<101> Tyran says, "What else?"
+
+<101> Kyieren says, "Try executing that by typing 'who' and see what you get."
+
+<101> Tyran says, "no colums."
+
+<101> Kyieren says, "No, the columns are there"
+<101> Kyieren says, "It's just not printed one line after the other"
+
+<101> Tyran says, "ok."
+
+<101> Kyieren says, "Each players' info needs to be on a separate line"
+<101> Kyieren says, "Aha, we have %r for that"
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[v(header)][ljust(Player Name,26)]
+[ljust(Online Time,26)]Idle Time%r[iter(lwho(),[ljust(name(##),26)]
+[ljust(timestring(conn(##)),26)][timestring(idle(##))]%r)]%r[v(footer)]
+
+"
+<101> Kyieren says, "See how I slipped a %r in there right before I closed the
+iter()?"
+<101> Kyieren says, "That will make all the info go to the next line"
+<101> Kyieren says, "Try typing who again"
+
+<101> Tyran says, "I get this at the begining
+[repeat(=,78)]%r[mudname()]%r[repeat(=,78)]%r"
+
+<101> Kyieren says, "Yeesh, you're right."
+<101> Kyieren says, "So let's evaluate that, change [v(header)] to
+[u(me/header)]"
+<101> Kyieren says, "u(object/attribute) evaluates what's in <attribute> on
+your object"
+<101> Kyieren says, "help u()"
+
+<101> Tyran says, "And then at the bottom there is another one."
+
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[u(me/header)][ljust(Player Name,26)]
+[ljust(Online Time,26)]Idle Time%r[iter(lwho(),[ljust(name(##),26)]
+[ljust(timestring(conn(##)),26)][timestring(idle(##))]%r)]%r[u(me/footer)]
+
+"
+<101> Kyieren says, "Okay, type who"
+<101> Kyieren says, "Looks okay...except look at Webster. His online time is
+kinda long, and his idle time is kinda long too."
+<101> Kyieren says, "So let's trim that"
+<101> Kyieren says, "The elements(space-separated list,number of elements you
+want) function will help"
+<101> Kyieren says, "So we'll use elements(timestring(conn(*Webster)),1 2) to
+get the first two elements of Webster's online time"
+<101> Kyieren says, "think elements(timestring(conn(*Webster)),1 2)"
+<101> Kyieren says, "11 days, 9 hours"
+<101> Kyieren says, "Since he's been on for so long, we don't really care
+about the number of minutes or seconds"
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[u(me/header)][ljust(Player
+Name,26)][ljust(Online Time,26)]Idle
+Time%r[iter(lwho(),[ljust(name(##),26)][ljust(elements(timestring(conn(##)),1
+2),26)][timestring(idle(##))]%r)]%r[u(me/footer)]
+
+"
+<101> Kyieren says, "When someone's idle, you don't really need the number of
+seconds he/she's been idle"
+<101> Kyieren says, "So usually, the first element of the idle time will do"
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[u(me/header)][ljust(Player Name,26)]
+[ljust(Online Time,26)]Idle Time%r[iter(lwho(),[ljust(name(##),26)]
+[ljust(elements(timestring(conn(##)),1 2),26)]
+[elements(timestring(idle(##)),1)]%r)]%r[u(me/footer)]
+
+"
+<101> Kyieren says, "But we still have that funny looking space after the
+first entry"
+<101> Kyieren says, "Easily corrected"
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[u(me/header)][ljust(Player Name,26)]
+[ljust(Online Time,26)]Idle Time%r[iter(lwho(),%r[ljust(name(##),26)]
+[ljust(elements(timestring(conn(##)),1 2),26)]
+[elements(timestring(idle(##)),1)])]%r[u(me/footer)]
+
+"
+<101> Kyieren says, "See, we moved the %r from the end of each entry to the
+beginning of each entry."
+<101> Kyieren says, "And there it is."
+<101> Kyieren says, "Because we're on the channel"
+<101> Kyieren says, "Oh, one more thing, we forgot a )] at the end of the
+iter()"
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[u(me/header)][ljust(Player Name,26)]
+[ljust(Online Time,26)]Idle Time%r[iter(lwho(),%r[ljust(name(##),26)]
+[ljust(elements(timestring(conn(##)),1 2),26)]
+[elements(timestring(idle(##)),1])])]%r[u(me/footer)]
+
+"
+<101> Kyieren says, "
+
+&who global=$who:@pemit/silent %#=[u(me/header)][ljust(Player Name,26)]
+[ljust(Online Time,26)]Idle Time[iter(lwho(),%r[ljust(name(##),26)]
+[ljust(elements(timestring(conn(##)),1 2),26)]
+[elements(timestring(idle(##)),1)])])]%r[u(me/footer)]
+
+"
+<101> Kyieren says, "Just take out the %r after the field names."
+<101> Kyieren says, "And that should do ya."
+<101> Kyieren says, "I'm done."
+<101> Kyieren says, "Sorry it took me so long, this should have been done in
+under an hour, but stuff happens :P"
+
+
+NOTE: YOU CAN EXPAND ON THE CONCEPTS IN THIS LECTURE TO MAKE ALTERNATE +WHO
+GLOBALS AS WELL AS +WHERE OR +IDLE GLOBALS. SOME HELP FILES TO SEE WOULD BE
+'HELP LOC()', 'HELP HASFLAG()', AND 'HELP SWITCH()'. 

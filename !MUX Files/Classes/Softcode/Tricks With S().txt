@@ -1,0 +1,105 @@
+ Topic: Tricks with s().
+Author: Trispis
+Summary: By request, Trispis gives an off-the-cuff example of how to use
+the s() function.
+
+IMPORTANT NOTE: This brief discussion illustrates the use of the s()
+function. It can be very useful in situations where you are in control of
+your code -- including all input data. However, it can also be very
+dangerous when user input is involved. Please use caution with what you
+learn from this conversation.
+
+<101> Cheetah says, "Have there been any lectures lately, or are there any
+going to be held? AFAIK there haven't been any while I've been MUSHing
+about here.."
+
+<101> Trispis says, "To my knowledge, there hasn't been a lecture in
+several months. Furthermore, I don't know of any that have been planned for
+the near future."
+<101> Trispis says, "Is there some specific topic you'd like to see
+lectured?"
+
+<101> Cheetah says, "Hmm, maybe a 'neat tricks of the trade' one.."
+<101> Cheetah says, "I'm doing a fair job at MUSHcoding right now, but I
+think there's plenty of room for improvement.."
+
+<101> Viila is also keen to see new lectures :)
+
+<101> Cheetah says, "For example, seeing Raev's @program code inspired me
+to try some new stuff I'd never had figured out otherwise. I think a
+lecture is excellent for conveying such things in larger portions :)"
+<101> Cheetah says, "Plus a lecture is a nicer way to learn than
+documentation :)"
+
+<101> Trispis says, "Perhaps something like this?"
+
+[s(ansi\([if(orflags(%0,Wr),h)][switch(type(%0),EXIT,g\,[name(%0)] -->
+[name(loc(%0))],PLAYER,b\,[name(%0)],THING,r\,[name(%0)],y\,GARBAGE)]\))]
+
+<101> Trispis loves s().
+<101> Trispis says, "As long as the code is secure (i.e., no user input),
+it's a fantabulous tool."
+
+<101> Cheetah tries figuring that out by just looking.
+
+<101> Trispis gives a simpler version not requiring s()...
+
+<101> Cheetah oohs..
+
+<101> Trispis says, "Here's a non-s() version of somthing similar."
+
+[ansi( [if(orflags(%0,Wr),h)] [switch(type(%0),EXIT,g,PLAYER,b,THING,r,y)]
+, [name(%0)] )]
+
+<101> Cheetah says, "Heh, neat.. I definately never would've thought of
+that.. (First one)"
+
+<101> Trispis says, "Anyway... if you need to change *both sides* of the
+comma in ansi(), you need to s() it... with lots of escaped commas and
+such..."
+<101> Trispis says, "Or, have two complete switches, one on each side."
+
+<101> Viila hmms... Sorry if this is a stupid question, but what does that
+do?
+
+<101> Cheetah sees what it does, but wonders what it's part of.
+
+<101> Trispis says, "It's part of nothing, Cheetah... just off the top of
+my head."
+<101> Trispis says, "Anyway, here's the explanation for Viila..."
+
+<101> Trispis says, "Let's pretend you're making a @conformat (custom list
+of contents for a room)..."
+<101> Trispis says, "You want the following ansi effects..."
+<101> Trispis says, "1) all wizard items hilited (regardless of type)"
+<101> Trispis says, "all exits in green (i.e., green for 'go')..."
+<101> Trispis says, "all players in blue (just cuz I like that color)"
+<101> Trispis says, "all things in red"
+<101> Trispis says, "and any garbage (nuked #dbrefs that got left lying
+around in your code) in yellow (to caution you to find and fix that)."
+<101> Trispis says, "Now... that's the simple version... not needing s()...
+you just put the switches for colors before the comma in ansi(), and the
+name(%0) after the comma."
+
+<101> Viila says, "Ah..."
+<101> Viila says, "Yes, it makes perfect sense now :)"
+
+<101> Trispis says, "But... what if you wanted to display the name
+differently based on the type, as well? For example: if the object is an
+EXIT, you want to display both the name of the exit *and* the name of the
+exit's DESTINATION."
+<101> Trispis says, "Then, you either a) have a switch both before the
+comma (for the ansi codes) and after the comma (for the type-based name
+display), or b) put the details in a single switch... escaping the
+commas needed for the ansi() function --
+
+example: switch(type(%0),EXIT,g\,[name(%0)] --> [name(loc(%0))],etc...)
+
+-- and escaping the ansi() function's parens -- ansi\(blahblahblah\) --
+and wrapping the whole thing in s()."
+
+<101> Cheetah never saw the use of s(), up until now..
+
+IMPORTANT NOTE: The s() function can be very dangerous in code which
+allows user input. Please use caution with what you learn from this
+conversation. 

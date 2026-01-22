@@ -1,0 +1,41 @@
+#153 - Actor Database
+
+@create Taken Actor Object
+@create Actor Database
+
+Help File:
+
+------------------------------------------------------------------------------
++actors
+
+     SYNTAX: +actors
+             +actors <name>
+             +actor/clear
+
+  These are the commands that are used to see the list of actors and actresses
+  that the players have selected to represent their characters. The first
+  command is used to see the list of actors and the players they represent.
+  The second command is used to search the taken actors list to see if they
+  have been claimed and, if so, by who. The final command removes your chosen
+  actor from the list.
+------------------------------------------------------------------------------
+
+==== Code Starts Here ====
+
+@Startup Taken Actor Object=@function actor=[num(me)],FN_GET_ACTOR
+&v-info Taken Actor Object=VA: Actor Database Dbref
+@va Taken Actor Object=#153
+&C.LIST Taken Actor Object=$+actors*:@switch [gte(attrcnt(v(va)),3)]=1,{think switch(%0,/*,,%b*,,pemit(%#,[setq(1,switch(%0,,1,%0))][setq(2,[add(div(words(lattr(v(va)/actor_*)),25),1)])][center(<%b[ansi(h,Taken Actors List \(Page %q1 of %q2))]%b>,78,-)]%r[iter(extract(sortby(fn_sort_actors,lattr(v(va)/actor_*)),add(1,mul(sub(%q1,1),25)),25),%r[setq(0,before(xget(v(va),##),|))]%b[ljust([switch(hasflag(%q0,npc),0,%q0,ansi(hx,%q0))]%b,30,.)]%b[ljust(after(xget(v(va),##),|),30)])][switch(lt(%q1,%q2),1,%r%rSee [ansi(h,+actors[inc(%q1)])] for more pages.)]%r%r[repeat(-,78)]))},{@pemit %#=[center(<%b[ansi(h,Taken Actors List)]%b>,78,-)]%r%r[center(None Set Yet,78)]%r%r[repeat(-,78)]}
+&C.SET Taken Actor Object=$+actor *:@switch [t(u(fn_find_actors,%0))]=0,{&actor_%# [v(va)]=[name(%#)]|[capstr_all(%0)];@pemit %#=[ansi(hc,Actor:)] You set your actor to [capstr_all(%0)].},{@pemit %#=[ansi(hr,Error:)] That actor is already taken.}
+&C.CLEAR Taken Actor Object=$+actor/clear:@switch [hasflag(%#,approved)]=0,{@switch [hasattr(v(va),actor_%#)]=1,{&actor_%# [v(va)];@pemit %#=[ansi(hc,Actor:)] You clear your set actor.},{@pemit %#=[ansi(hr,Error:)] You do not have an actor set.}},{@pemit %#=[ansi(hr,Error:)] You can not change your actor after being approved. If you'd like to change your actor, talk to a member of the staff.}
+&C.SEARCH Taken Actor Object=$+actors *:@pemit %#=[center(<%b[ansi(h,Actor Search: [capstr_all(%0)])]%b>,78,-)]%r[space(2)][iter(sortby(fn_sort_actors,u(fn_find_actors,%0)),%r[ljust(before(xget(v(va),##),|),30%,.)][after(xget(v(va),##),|)])]%r%r[repeat(-,78)]
+&FN_SORT_ACTORS Taken Actor Object=comp(before(xget(v(va),%0),|),before(xget(v(va),%1),|))
+&FN_FIND_ACTORS Taken Actor Object=squish(iter(lattr(v(va)/actor_*),switch(strmatch(after(xget(v(va),##),|),*%0*),1,##)))
+&FN_FIND_PLAYERS Taken Actor Object=squish(iter(lattr(v(va)/actor_*),switch(and(strmatch(before(xget(v(va),##),|),*%0*),strmatch(after(xget(v(va),##),|),xget(pmatch(%0),actor))),1,##)))
+&FN_GET_ACTOR Taken Actor Object=localize([setq(0,u(FN_FIND_PLAYERS,%0))][switch(0,t(%q0),,after(xget(v(va),%q0),|))])
+@set Taken Actor Object=INHERIT
+@set Taken Actor Object=SAFE
+
+@set Actor Database=SAFE
+@link Actor Database=Taken Actor Object
+@tel Actor Database=Taken Actor Object

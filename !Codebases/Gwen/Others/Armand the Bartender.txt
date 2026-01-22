@@ -1,0 +1,28 @@
+@create Armand=10
+&ORDER Armand=$order *:@oemit %n=%n orders a %0 from [name(me)].;@pemit %n=You order a %0.;@wait 5=@emit [name(me)] nods his head solemnly and goes about fixing the drink.;@wait 10=@emit [name(me)] hands %n a %0 and walks to a different patron.
+@Adesc Armand=@pemit %#=To order from Armand, simply 'order <whatever>'%rTo request a certain song 'request <song> by <artist>'
+@Sex Armand=male
+&CDSTATS Armand=PLAYING
+&REPORT Armand=$reporting:@emit Armand's face twists into a mockery of a smile, and he slinks away from the bar, letting %N take over.;&on_duty me=1;&duty me=%N
+&ON_DUTY Armand=0
+&OFFDUTY Armand=$off duty::nods quietly and walks towards the bar, taking over for %n. "Good evening," he mutters in a quiet, pouty voice.;&on_duty me=0
+&REQUEST Armand=$request * by *:@swi [get(me/song_on)]=0,{&song_on me=1;@pemit %n=You go over to Armand and request him to play %0, by %1.;@oemit %n=%n heads over to Armand and whispers something.;@wait 4=:nods and pops in a Disc.;@wait 7=@emit [v(pref[rand(5)])] %1's "%0" [v(last[rand(4)])];@wait 15=ambi;@wait 40=@emit %1's "%0" continues to play over the sound system.;@wait 80=@emit %1's "%0" continues to play over the speakers.;@wait 120=@emit %1's "%0" continues to echo throughout the club.;@wait 120=ambi;@wait 150=@emit "%0" finally comes to an end.;@wait 150=&song_on me=0},1,{@pemit %n=Armand glances to you and says softly, "I suggest you wait for the current song to end.."}
+@lock Armand/REQUEST
+&PREF0 Armand=Suddenly the speakers spring to life as
+&PREF1 Armand=The sound system blares as
+&PREF2 Armand=The crowd cheers as
+&PREF3 Armand=A few people head out to the dance floor as
+&PREF4 Armand=The lighting plays across the crowd as
+&LAST0 Armand=begins playing
+&LAST1 Armand=can be heard throughout the club.
+&LAST2 Armand=echoes throughout the club.
+&LAST3 Armand=blares to life on the sound system.
+&RANDOMZ Armand=$ambi:@emit [u(emit[rand(10)])]
+&DUTY Armand=FallenAngelBLDR
+&DESC1 Armand=A quiet, young man in his early twenties. His short hair is a raven-black and slicked back on his head. His eyes are a deep brown and belie a deep person. He is dressed simply in all black, his only jewelry is a silver cross on a chain around his neck. As you look him over he flashes a pouty smile, with his full, black-painted lips, then goes back to cleaning glasses.%r
+@Desc Armand=[get_eval(me/desc1)]
+&SONG_ON Armand=0
+@set Armand=INHERIT
+@set Armand=MONITOR
+@set Armand=ENTER_OK
+@set Armand=SAFE

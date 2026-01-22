@@ -1,0 +1,240 @@
+ CLASS: MUSHCoding 201
+PART: 4
+DATE: 01/04/2002 TIME: 6 PM
+INSTRUCTOR: Luigi
+DESCRIPTION: The first class of MUSHCoding 201 PART 4 ever held. Most of
+it has been left in its original state, though some parts of the log were
+edited to remove spam or clarify points. A '*' has been placed in front of
+the speaker's name.
+
+----------------------------------------------------------------------------
+
+* Luigi says, "There are a few important topics we are going to discuss today."
+Faizah nods.
+* Luigi says, "The first topic is Locks."
+* Luigi says, "Locks have many uses, but one of the most basic is who can GET an object."
+* Luigi says, "Locks can also control who can page/@Pemit you, who can speak in a room, who can go through an exit, and much more."
+* Luigi says, "The very basic lock, known by almost all builders, has the following syntax: @Lock <target>=<the lock>"
+* Luigi says, "For example: @Lock east=*Luigi"
+Faizah nods.
+* Luigi says, "We used the '*' global reference character, as discussed in a previous class, and told the MUSH that the exit 'east' could only be passed by the player Luigi."
+* Luigi says, "If you had an object you wanted to lock to yourself, so nobody else could pick it up with GET, you could type: @Lock My Object=me"
+* Luigi says, "Simple stuff, really, but I am covering it incase somebody doesn't already know."
+* Luigi says, "Now, locks can become far more complex once the "Lock Language" is introduced."
+* Luigi says, "Locks have their own set of operators (the technical term used in other programming languages)."
+* Luigi says, "For instance, if I wanted both myself and Jimbo to be able to pick up My Object: @lock My Object=me|*Jimbo"
+* Luigi says, "I used the | operator, which means 'or'. In english, lock 'My Object' to either me or Jimbo."
+* Luigi says, "There is also an 'and' operator, &."
+Faizah nods.
+* Luigi says, "If you'll recall the unsetting of flags (@set <target>=!flag), we used the 'not' operator. This operator works in locks as well."
+* Luigi says, "So if I lock My Object to: !*Jimbo"
+* Luigi says, "Everyone but "Jimbo" can pick it up."
+* Luigi says, "There is a '=' operator as well."
+* Luigi says, "This is placed before the target and means 'That object and ONLY that object'. Though this isn't usually a concern, if you type "@Lock <exit>=me" you or anyone carrying you can enter that exit. By typing "@Lock <exit>==me" you prevent this loophole from occuring. Naturally, if you never let anyone pick you up (by @locking yourself) you don't have to worry about this, which is why I don't usually use the '='. It's a good habit to have, though."
+Faizah has partially disconnected.
+Faizah says, "Last I saw was: Luigi says, "There is a '=' operator as well.""
+* Luigi says, "This is placed before the target and means 'That object and ONLY that object'. Though this isn't usually a concern, if you type "@Lock <exit>=me" you or anyone carrying you can enter that exit. By typing "@Lock <exit>==me" you prevent this loophole from occuring. Naturally, if you never let anyone pick you up (by @locking yourself) you don't have to worry about this, which is why I don't usually use the '='. It's a good habit to have, though."
+Faizah nods.
+* Luigi says, "Typing HELP @LOCK and reading those help files will give you a far more complete listing of the options available. There are more operators as well, including + and $."
+* Luigi says, "If something tries to do something with a basic lock (such as go through and exit, or get an object) and fails the lock, the @FAIL, @OFAIL, and @AFAIL's are run. If they succeed, the @SUCC, @OSUCC, and @ASUCC are run."
+* Luigi says, "There are also a plethora of non-basic locks. These are set with @LOCK/<type> <target>=<lock>"
+Faizah nods.
+* Luigi says, "There may or may not be a fail message associated with non-basic locks. Not all of these locks have a corrisponding message. For instance, @lock/command, which decides who can use commands on an object, has no fail message. However, @lock/use (which decides who can use the 'use' command on an object) uses the @usefail, @ousefail, and @ausefail messages. What these messages are called may vary from MU* server to server, see the help files."
+* Luigi says, "Help LOCK TYPES shows the various lock types, and on 8Bit at least, shows the corrisponding fail attributes."
+* Luigi says, "It may be 'HELP LOCKTYPES' on some servers, I'm not sure."
+* Luigi says, "Now, there are a few functions which can be used dealing with locks."
+* Luigi says, "The first being ELOCK()."
+* Luigi says, "ELOCK() is used to evaluate a lock, and find out if something would pass it. It returns a 1 if yes, and a 0 if no. The format is ELOCK(<target>,<victim>) (for a basic lock check) or ELOCK(<target>/<type>,<victim>) (for a non-basic lock type check)."
+* Luigi types --> say elock(*Luigi,*Faizah)
+* Luigi says, "0"
+* Luigi types --> say elock(*Luigi,*Luigi)
+* Luigi says, "1"
+* Luigi says, "Faizah couldn't pick me up if she tried, but I pass my own lock so I could (if picking up one's self was allowed)."
+Faizah nods.
+* Luigi says, "Another related function is LOCK(). This returns the actual lock set on a person."
+* Luigi types --> say lock(*Luigi/command)
+* Luigi says, "=#1000"
+* Luigi says, "I may have originally typed "@Lock/command me==me", but the MUSH evaluates it down into a DBREF."
+* Luigi says, "Another note, you can only use LOCK() and ELOCK() on objects you control or can examine."
+Faizah nods.
+* Luigi says, "Now I would like to discuss an advanced Lock topic. Evaluation Locks."
+* Luigi says, "These are very powerful. What they do is allow you to lock something to an attribute on the object. It may be best to show you an example.."
+* Luigi types --> @lock/page me=canpage/1
+Locked.
+* Luigi types --> &canpage me=1
+* Luigi says, "The format for an Evaluation Lock is: <attribute>/<value>"
+* Luigi says, "It will evaluate that attribute, and if it returns <value> then the lock will be considered passed. If not, it will fail."
+* Luigi says, "So if I did the following.."
+* Luigi types --> &canpage me=rand(10)
+* Luigi says, "Every time someone tried to page you it would check rand(10) and see if it returned '1'. It would roughly do so 1 out of 10 times, so 1 of 10 pages would get to you. A strange example perhaps.."
+* Luigi says, "The CANPAGE attribute, or whatever attribute you set as the <attribute> in such a lock, is evaluated like it would be as a function. Therefore, it cannot contain multiple commands (via commands stacked with semi-colons)."
+* Luigi says, "Let's say I had a list of DBREFs in my 'nopage' attribute of the people I didn't want paging me."
+* Luigi types --> @lock/page me=canpage/0
+Locked.
+* Luigi types --> &canpage me=match(v(nopage),%#)
+* Luigi says, "My lock/page will only evaluate to true if the person who paged me doesn't have the same DBREF as is listed in my NOPAGE attribute. If 'canpage' evaluates to 0 I will receive the page."
+* Luigi says, "Now, we cannot use Commands inside of an Evaluation Lock, just as we can't use Commands inside of User-Defined Functions, but that doesn't mean we can pull a few tricks using only Functions.."
+* Luigi says, "A while ago somebody on one of the MUSH/MUX development teams (probably PennMUSH) decided it would be nice if you could do certain commands via functions."
+* Luigi says, "For instance, @Pemit is nice, but you can't do it inside of a function. Pemit() was invented."
+* Luigi says, "There's also such functions as OPEN() (for @OPEN), DIG(), CREATE(), and a handful more."
+* Luigi says, "The idea caught on, and now most every major MUSH server offers some sort of support for "Side-Effect Functions" as they are claled, though they are sometimes turned off on certain MU*s. Not everyone likes them, and you can sometimes do some strange things with them."
+* Luigi says, "However, they are here to stay."
+Faizah nods.
+* Luigi says, "For example, in a Vendor it's much safer to use CREATE() and place that inside of a SETQ() to grab the DBREF of the newly created object, rather than to rely on object names and hope there aren't two of them nearby."
+* Luigi says, "There are certain situations where Side-Effect Functions can be very useful. Speed reasons make them the functions of choice when making CharGens for Role Playing MUSHes."
+* Luigi says, "For instance.. If I have a command:"
+* Luigi types --> &add <object>=$add *:@swi/first gte(v(blah),50)=1,{@pem/s %#=Please do not go above 50.},&blah me=inc(v(blah))
+* Luigi types --> &add <object>=$add:@swi/first gte(v(blah),50)=1,{@pem/s %#=Please do not go above 50.},&blah me=inc(v(blah))
+* Luigi says, "And somebody types this command 60 times REALLY REALLY FAST, there is a good chance they will be able to get the BLAH attribute above 50 due to the way the MUSH handles the Queue."
+* Luigi says, "It's a common problem. What if somebody in their chargen types a command too many times too fast?"
+Faizah says, "Hmm."
+* Luigi says, "Side-Effect Functions in PennMUSH and TinyMUX are one way to solve this. I plan to show another in MUSHCoding 301, but for now.."
+* Luigi says, "I could rewrite the above command using Side-Effect Functions like so.."
+* Luigi types --> &add <object>=$add:think switch(gte(v(blah),50),1,pemit(%#,Please do not go above 50.),set(me,blah:[inc(v(blah))]))
+* Luigi says, "All of the code would be run in one command, rather than split up over several via semi-colons. This means the MUSH will process it all immediately."
+* Luigi says, "It's best to use the Non-Side-Effect Function method whenever possible."
+Faizah says, "ah"
+* Luigi says, "Use Side-Effect Functions when you have to, but most of the time don't."
+* Luigi says, "Side-Effect Functions on PennMUSH include:"
+* Luigi says, "LOCK() and PARENT() also have optional arguments, which allow you to set a new lock, or set a new parent."
+* Luigi says, "There may be more *EMIT() functions I've forgotten about, as well as others. SET(), WIPE(), ATRLOCK(), LINK(), REMIT().."
+Faizah nods.
+* Luigi says, "Again, just because you can do something via a function doesn't mean you generally should. Only in advanced situations."
+Faizah nods again.
+* Luigi says, "Any questions?"
+Faizah says, "Nope, I'm good."
+* Luigi says, "Very well, the Final Project."
+* Luigi says, "FINAL PROJECT: Intermediate Interactive Object (25)"
+* Luigi says, "Object which demostrate ability to use an attribute lock, use at"
+* Luigi says, "least 1 side-effect function, 2 or more user-defined functions,"
+* Luigi says, "iteration (iter() or @dolist), and a local register. Object"
+* Luigi says, "should be designed for use as a parent, with a child object used as"
+* Luigi says, "the demonstration object in class."
+* Luigi says, "Suggestions:"
+* Luigi says, "* A Toy which does something, like explode, or play ansi music, on"
+* Luigi says, "command, for 30 seconds."
+* Luigi says, "* A security camera, which uses iter() or @dolist to display the"
+* Luigi says, "recent arrivals to a room, and allows visitors to leave a message."
+* Luigi says, "A user-defined function could be called to set() the message passed"
+* Luigi says, "to it."
+* Luigi says, "* A 4 by 4 (or more) slide puzzle:"
+* Luigi says, "1234"
+* Luigi says, "5678"
+* Luigi says, "9ABC"
+* Luigi says, "DEF"
+* Luigi says, "Where the letters start scrambled, and your job is to slide them around"
+* Luigi says, "until they are in a certain order."
+* Luigi says, "There are a few important topics we are going to discuss today."
+Faizah nods.
+* Luigi says, "The first topic is Locks."* Luigi says, "Locks have many uses, but one of the most basic is who can GET an object."
+* Luigi says, "Locks can also control who can page/@Pemit you, who can speak in a room, who can go through an exit, and much more."
+* Luigi says, "The very basic lock, known by almost all builders, has the following syntax: @Lock <target>=<the lock>"
+* Luigi says, "For example: @Lock east=*Luigi"
+Faizah nods.
+* Luigi says, "We used the '*' global reference character, as discussed in a previous class, and told the MUSH that the exit 'east' could only be passed by the player Luigi."
+* Luigi says, "If you had an object you wanted to lock to yourself, so nobody else could pick it up with GET, you could type: @Lock My Object=me"
+* Luigi says, "Simple stuff, really, but I am covering it incase somebody doesn't already know."
+* Luigi says, "Now, locks can become far more complex once the "Lock Language" is introduced."
+* Luigi says, "Locks have their own set of operators (the technical term used in other programming languages)."
+* Luigi says, "For instance, if I wanted both myself and Jimbo to be able to pick up My Object: @lock My Object=me|*Jimbo"
+* Luigi says, "I used the | operator, which means 'or'. In english, lock 'My Object' to either me or Jimbo."
+* Luigi says, "There is also an 'and' operator, &."
+Faizah nods.
+* Luigi says, "If you'll recall the unsetting of flags (@set <target>=!flag), we used the 'not' operator. This operator works in locks as well."
+* Luigi says, "So if I lock My Object to: !*Jimbo"
+* Luigi says, "Everyone but "Jimbo" can pick it up."
+* Luigi says, "There is a '=' operator as well."
+* Luigi says, "This is placed before the target and means 'That object and ONLY that object'. Though this isn't usually a concern, if you type "@Lock <exit>=me" you or anyone carrying you can enter that exit. By typing "@Lock <exit>==me" you prevent this loophole from occuring. Naturally, if you never let anyone pick you up (by @locking yourself) you don't have to worry about this, which is why I don't usually use the '='. It's a good habit to have, though."
+Faizah has partially disconnected.
+Faizah says, "Last I saw was: Luigi says, "There is a '=' operator as well.""
+* Luigi says, "This is placed before the target and means 'That object and ONLY that object'. Though this isn't usually a concern, if you type "@Lock <exit>=me" you or anyone carrying you can enter that exit. By typing "@Lock <exit>==me" you prevent this loophole from occuring. Naturally, if you never let anyone pick you up (by @locking yourself) you don't have to worry about this, which is why I don't usually use the '='. It's a good habit to have, though."
+Faizah nods.
+* Luigi says, "Typing HELP @LOCK and reading those help files will give you a far more complete listing of the options available. There are more operators as well, including + and $."
+* Luigi says, "If something tries to do something with a basic lock (such as go through and exit, or get an object) and fails the lock, the @FAIL, @OFAIL, and @AFAIL's are run. If they succeed, the @SUCC, @OSUCC, and @ASUCC are run."
+* Luigi says, "There are also a plethora of non-basic locks. These are set with @LOCK/<type> <target>=<lock>"
+Faizah nods.
+* Luigi says, "There may or may not be a fail message associated with non-basic locks. Not all of these locks have a corrisponding message. For instance, @lock/command, which decides who can use commands on an object, has no fail message. However, @lock/use (which decides who can use the 'use' command on an object) uses the @usefail, @ousefail, and @ausefail messages. What these messages are called may vary from MU* server to server, see the help files."
+* Luigi says, "Help LOCK TYPES shows the various lock types, and on 8Bit at least, shows the corrisponding fail attributes."
+* Luigi says, "It may be 'HELP LOCKTYPES' on some servers, I'm not sure."
+* Luigi says, "Now, there are a few functions which can be used dealing with locks."
+* Luigi says, "The first being ELOCK()."
+* Luigi says, "ELOCK() is used to evaluate a lock, and find out if something would pass it. It returns a 1 if yes, and a 0 if no. The format is ELOCK(<target>,<victim>) (for a basic lock check) or ELOCK(<target>/<type>,<victim>) (for a non-basic lock type check)."
+* Luigi types --> say elock(*Luigi,*Faizah)
+* Luigi says, "0"
+* Luigi types --> say elock(*Luigi,*Luigi)
+* Luigi says, "1"
+* Luigi says, "Faizah couldn't pick me up if she tried, but I pass my own lock so I could (if picking up one's self was allowed)."
+Faizah nods.
+* Luigi says, "Another related function is LOCK(). This returns the actual lock set on a person."
+* Luigi types --> say lock(*Luigi/command)
+* Luigi says, "=#1000"
+* Luigi says, "I may have originally typed "@Lock/command me==me", but the MUSH evaluates it down into a DBREF."
+* Luigi says, "Another note, you can only use LOCK() and ELOCK() on objects you control or can examine."
+Faizah nods.
+* Luigi says, "Now I would like to discuss an advanced Lock topic. Evaluation Locks."
+* Luigi says, "These are very powerful. What they do is allow you to lock something to an attribute on the object. It may be best to show you an example.."
+* Luigi types --> @lock/page me=canpage/1
+Locked.
+* Luigi types --> &canpage me=1
+* Luigi says, "The format for an Evaluation Lock is: <attribute>/<value>"
+* Luigi says, "It will evaluate that attribute, and if it returns <value> then the lock will be considered passed. If not, it will fail."
+* Luigi says, "So if I did the following.."
+* Luigi types --> &canpage me=rand(10)
+* Luigi says, "Every time someone tried to page you it would check rand(10) and see if it returned '1'. It would roughly do so 1 out of 10 times, so 1 of 10 pages would get to you. A strange example perhaps.."
+* Luigi says, "The CANPAGE attribute, or whatever attribute you set as the <attribute> in such a lock, is evaluated like it would be as a function. Therefore, it cannot contain multiple commands (via commands stacked with semi-colons)."
+* Luigi says, "Let's say I had a list of DBREFs in my 'nopage' attribute of the people I didn't want paging me."
+* Luigi types --> @lock/page me=canpage/0
+Locked.
+* Luigi types --> &canpage me=match(v(nopage),%#)
+* Luigi says, "My lock/page will only evaluate to true if the person who paged me doesn't have the same DBREF as is listed in my NOPAGE attribute. If 'canpage' evaluates to 0 I will receive the page."
+* Luigi says, "Now, we cannot use Commands inside of an Evaluation Lock, just as we can't use Commands inside of User-Defined Functions, but that doesn't mean we can pull a few tricks using only Functions.."
+* Luigi says, "A while ago somebody on one of the MUSH/MUX development teams (probably PennMUSH) decided it would be nice if you could do certain commands via functions."
+* Luigi says, "For instance, @Pemit is nice, but you can't do it inside of a function. Pemit() was invented."
+* Luigi says, "There's also such functions as OPEN() (for @OPEN), DIG(), CREATE(), and a handful more."
+* Luigi says, "The idea caught on, and now most every major MUSH server offers some sort of support for "Side-Effect Functions" as they are claled, though they are sometimes turned off on certain MU*s. Not everyone likes them, and you can sometimes do some strange things with them."
+* Luigi says, "However, they are here to stay."
+Faizah nods.
+* Luigi says, "For example, in a Vendor it's much safer to use CREATE() and place that inside of a SETQ() to grab the DBREF of the newly created object, rather than to rely on object names and hope there aren't two of them nearby."
+* Luigi says, "There are certain situations where Side-Effect Functions can be very useful. Speed reasons make them the functions of choice when making CharGens for Role Playing MUSHes."
+* Luigi says, "For instance.. If I have a command:"
+* Luigi types --> &add <object>=$add *:@swi/first gte(v(blah),50)=1,{@pem/s %#=Please do not go above 50.},&blah me=inc(v(blah))
+* Luigi types --> &add <object>=$add:@swi/first gte(v(blah),50)=1,{@pem/s %#=Please do not go above 50.},&blah me=inc(v(blah))
+* Luigi says, "And somebody types this command 60 times REALLY REALLY FAST, there is a good chance they will be able to get the BLAH attribute above 50 due to the way the MUSH handles the Queue."
+* Luigi says, "It's a common problem. What if somebody in their chargen types a command too many times too fast?"
+Faizah says, "Hmm."
+* Luigi says, "Side-Effect Functions in PennMUSH and TinyMUX are one way to solve this. I plan to show another in MUSHCoding 301, but for now.."
+* Luigi says, "I could rewrite the above command using Side-Effect Functions like so.."
+* Luigi types --> &add <object>=$add:think switch(gte(v(blah),50),1,pemit(%#,Please do not go above 50.),set(me,blah:[inc(v(blah))]))
+* Luigi says, "All of the code would be run in one command, rather than split up over several via semi-colons. This means the MUSH will process it all immediately."
+* Luigi says, "It's best to use the Non-Side-Effect Function method whenever possible."
+Faizah says, "ah"
+* Luigi says, "Use Side-Effect Functions when you have to, but most of the time don't."
+* Luigi says, "Side-Effect Functions on PennMUSH include:"
+* Luigi says, "LOCK() and PARENT() also have optional arguments, which allow you to set a new lock, or set a new parent."
+* Luigi says, "There may be more *EMIT() functions I've forgotten about, as well as others. SET(), WIPE(), ATRLOCK(), LINK(), REMIT().."
+Faizah nods.
+* Luigi says, "Again, just because you can do something via a function doesn't mean you generally should. Only in advanced situations."
+Faizah nods again.
+* Luigi says, "Any questions?"
+Faizah says, "Nope, I'm good."
+* Luigi says, "Very well, the Final Project."
+* Luigi says, "FINAL PROJECT: Intermediate Interactive Object (25)"
+* Luigi says, "Object which demostrate ability to use an attribute lock, use at"
+* Luigi says, "least 1 side-effect function, 2 or more user-defined functions,"
+* Luigi says, "iteration (iter() or @dolist), and a local register. Object"
+* Luigi says, "should be designed for use as a parent, with a child object used as"
+* Luigi says, "the demonstration object in class."
+* Luigi says, "Suggestions:"
+* Luigi says, "* A Toy which does something, like explode, or play ansi music, on"
+* Luigi says, "command, for 30 seconds."
+* Luigi says, "* A security camera, which uses iter() or @dolist to display the"
+* Luigi says, "recent arrivals to a room, and allows visitors to leave a message."
+* Luigi says, "A user-defined function could be called to set() the message passed"
+* Luigi says, "to it."
+* Luigi says, "* A 4 by 4 (or more) slide puzzle:"
+* Luigi says, "1234"
+* Luigi says, "5678"
+* Luigi says, "9ABC"
+* Luigi says, "DEF"
+* Luigi says, "Where the letters start scrambled, and your job is to slide them around"
+* Luigi says, "until they are in a certain order."

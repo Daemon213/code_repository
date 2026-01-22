@@ -1,0 +1,4 @@
+@create Toss Dice Object
+&c.toss Toss Dice Object=$+toss dice:@remit [loc(%#)]=[ansi(hc,Game:)] [moniker(%#)] tosses their dice out the window and gets a new set of [pickrand(u(style-list),|)] [pickrand(u(color-list),|)] dice.
+&style-list #3703=shiny|sparkly|clear|marbled|matte|glossy|glittery
+&color-list #3703=red|red, green swirled|blue|black|black and gold|clear|pink|purple|green|yellow|orange|fire engine red|silver|gray|maroon|gold|bronze|cyan|white|galaxy print|black and white|silver and red|silver and blue|silver and black|clear and red|leopard print|space gray|light blue|sky blue|cobalt blue|sky blue|raven black|light pink|neon pink|24 karat gold|sterling silver|chrome

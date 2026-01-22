@@ -1,0 +1,78 @@
+ Topic: Rules of the Code
+Author: Trispis
+Summary: This is the command and function lecture. How commands and functions
+work together ... and how they don't. (Plus a few other rules of coding.)
+
+<Softcode> @Doh! Trispis says, "There is a recurring problem with people
+getting all excited when they learn how cool functions are... and suddenly
+forgetting that functions are enhancements to commands, not vice versa."
+<Softcode> @Doh! Trispis says, "So, when you write code for a $command, your
+basic syntax MUST be as follows..."
+<Softcode> @Doh! Trispis says, "$<text>:<a MUSH command>"
+<Softcode> @Doh! Trispis says, "where <a MUSH command> is either an @command,
+or some other command that can be directly typed into the MUSH without
+returning 'Huh?' (such as 'think' or 'follow' or 'go' or whatever)."
+<Softcode> @Doh! Trispis says, "You cannot begin the <a MUSH command> portion
+with a function, such as [pemit(..."
+<Softcode> @Doh! Trispis says, "An example of correct syntax:
+
+$foo:@pemit %#=You foo'd.
+
+<Softcode> @Doh! Trispis says, "An example of incorrect syntax:
+
+$foo:[pemit(%#, you foo'd.)]
+
+<Softcode> @Doh! Trispis says, "Functions, can be added to commands, however,
+as in the following example..."
+<Softcode> @Doh! Trispis says, "another example of correct syntax:
+
+$sexy:@emit %N says, "I am a [get(me/sex)]."
+
+<Softcode> @Doh! Trispis says, "When people start learning about switch() and
+ufun(), they often want to put commands *inside* of these functions. This is
+bad and will break your code."
+<Softcode> @Doh! Trispis says, "Another example of incorrect syntax --
+
+$sex *:think [switch(%0,male,@pemit %#=you set your sex to %0,female,@pemit
+%#=you set your sex to %0,@pemit %#=you are androgenous)]
+
+<Softcode> @Doh! Trispis says, "The key here is: commands do not work inside
+functions."
+<Softcode> @Doh! Trispis says, "Learn this and it will save you a great deal
+of embarrassment and will save experienced coders a great deal of grief."
+
+<Softcode> @Doh! Trispis says, "Did I miss anything?"
+<Softcode> And lo, Javelin says, "Nice job, Tris."
+
+<Softcode> Ronan says, "What is unreccomended about using something like
+'$foo:[pemit()]' or '$foo:[switch()]'?"
+<Softcode> And lo, Javelin says, "$foo: [pemit(blah,blah)]. It evaluates the
+pemit, which succeeds, but returns a null string, which is not a valid
+command. The current parser is forgiving of this situation, and ignores the
+null command."
+<Softcode> And lo, Javelin says, "However, this behavior is not to be relied
+on."
+
+======
+
+With the exception of %-substitutions (%va, %#, %q0, %s, etc.) everything is
+either a function or a command and can be easily described as follows:
+
+Functions look like this: foo() or [bar()]
+
+All other things are commands: @pemit, think, &attrib obj=baz, go, +finger,
+etc.
+
+======
+
+Some rules:
+
+Commands need separated by semicolons, if run in succession.
+@pemit %#=You poofed.;@oemit %#=%N poofed.
+
+Functions do not need semicolons when run in succession.
+@oemit %#=Look at [name(%#)][pemit(%#,People are looking at you.)].
+
+Although you cannot put commands inside of functions, you can put functions
+inside of other functions.
+@pemit %#=You are a [switch(get(%#/sex),m*,boy,f*,girl,thing)]. 

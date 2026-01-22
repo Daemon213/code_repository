@@ -1,0 +1,35 @@
+------------------------------------------------------------------------------
+Events Manager Commands
+
+ +event/view                    - Displays all of the active events.
+ +event/view <Name>             - Displays the detailed info of an event.
+ +event/create <Name>=<Type>,<Date>,<Location>
+                                - Creates an event with the designated info.
+ +event/detail <Name>=<Info>    - Adds details to the designated event.
+ +event/location <Name>=<Info>  - Changes the location of an event.
+ +event/date <Name>=<Info>      - Changes the date of an event.
+ +event/type <Name>=<Info>      - Changes the type of an event.
+ +event/finish <Name>           - Completes an event and marks it for deletion.
+ 
+Please note that only wizards have the ability to manage this list.
+------------------------------------------------------------------------------
+
+@create Events Object=10
+&CMD_CREATE Events Object=$+event/create *:@switch [orflags(%#,wW?)][not([match(iter(lcon(me),[name(##)],%b,|),%0 ,|)])]=11,{@create %0;@pemit %#=event '%0' created. No details have been added\; please see your local help files for commands to add details.;@dolist [u(notify_list)]=@pemit ##=EVENT MANAGER: New event '%0' added by %N.;&date_modified %0=[secs()]},10,{@pemit %#=An event of that name already exists. Try another name.},0*,{@pemit %#=Only staff and faction heads have access to this command. Talk to your local staffer or faction head if you want to run an event.}
+&CMD_VIEW Events Object=$+event/view:@pemit %#=[setq(0,revwords(iter(sortby(locationsort,lcon(me)),##)))][textline([mudname()] EVENT MANAGER - All Upcoming Scenes)]%ch%b[ljust(Scene Name,22)][ljust(Type,19)][ljust(Date/Time %(EST%),20)][ljust(Location,17)][iline()][iter(%q0,[ljust(strtrunc([name(##)],21),22)][ljust(strtrunc([get(##/type)],18),19)][ljust(strtrunc([get(##/date)],19),20)][ljust(strtrunc(get(##/location),16),17)],,%r)][textline([switch([words(lcon(me))],1,1 scene planned.,[words(lcon(me))] scenes planned.)]%xn %(+event/view <name> for more info.%))]
+&CMD_VIEW_ARG Events Object=$+event/view *:@switch [not([match(iter(lcon(me),name(##)),%0)])]=1,{@pemit %#=An event of that name does not exist. %(Hint: If the name contains multiple words, try using just one of them.%)},0,{@pemit %#=[textline([mudname()] event Manager - Detail on scene '[name(%0)]')][ljust(%xhEvent Name:%xn,17)][name(%0)]%r[ljust(%xhevent Type:%xn,17)][get(%0/type)]%r[ljust(%xhDate/Time %(EST%):%xn,17)][get(%0/date)]%r[ljust(%xhCreated On:%xn,17)][convsecs(convtime([get(%0/created)]))]%r[ljust(%xhLast Modified:%xn,17)][convsecs(get(%0/date_modified))]%r[ljust(%xhLocation:%xn,17)][get(%0/location)]%r%r%xhevent Details:%xn%r[get_eval(%0/details)][line()]}
+&CMD_DETAILS Events Object=$+event/detail *=*:@switch [orflags(%#,wW?)][t([match(iter(lcon(me),name(##)),%0)])]=11,{&details %0=[get_eval(%0/details)]%r\(%N - [time()]\)%b%1;@pemit %#=Details added to event '[name(%0)]'.;@dolist [u(notify_list)]=@pemit ##=EVENT MANAGER: Details added to event '[name(%0)]' by %N.;&date_modified %0=[secs()]},10,{@pemit %#=An event of that name does not exist.},0*,{@pemit %#=Only staff and faction heads have access to this command. Talk to your local staffer or faction head if you need to make changes to this event.}
+&CMD_FINISH Events Object=$+event/finish *:@switch [orflags(%#,wW?)][t([match(iter(lcon(me),name(##)),%0)])]=11,{@wait 1=@destroy %0;@pemit %#=event '[name(%0)]' marked as finished. It will be deleted shortly.},10,{@pemit %#=An event of that name does not exist.},0*,{Only staff and faction heads have access to this command. Talk to your local staffer or faction head if you want to mark this event as finished.}
+&CMD_TYPE Events Object=$+event/type *=*:@switch [orflags(%#,wW?)][t([match(iter(lcon(me),name(##)),%0)])]=11,{&type %0=%1;@pemit %#=event '[name(%0)]' set to type '%1'.;@dolist [u(notify_list)]=@pemit ##=EVENT MANAGER: Event '[name(%0)]' set to type '%1' by %N.;&date_modified %0=[secs()]},10,{@pemit %#=An event of that name does not exist.},0*,{@pemit %#=Only staff and faction heads have access to this command. Talk to your local staffer or faction head if you need to make changes to this event.}
+&FN_IDLE Events Object=[singletime(%0)]
+&LOCATIONSORT Events Object=[comp(name(%1),name(%0))]
+&CMD_LOCATION Events Object=$+event/location *=*:@switch [orflags(%#,wW?)][t([match(iter(lcon(me),name(##)),%0)])]=11,{&location %0=%1;@pemit %#=Location of event '[name(%0)]' changed to '%1'.;@dolist [u(notify_list)]=@pemit ##=EVENT MANAGER: Location of event '[name(%0)]' changed to '%1' by %N.;&date_modified %0=[secs()]},10,{@pemit %#=A event of that name does not exist.},0*,{@pemit %#=Only staff and faction heads have access to this command. Talk to your local staffer or faction head if you need to make changes to this event.}
+&CMD_TIME Events Object=$+event/date *=*:@switch [orflags(%#,wW?)][t([match(iter(lcon(me),name(##)),%0)])]=11,{&date %0=%1;@pemit %#=Time of event '[name(%0)]' changed to '%1'.;@dolist [u(notify_list)]=@pemit ##=EVENT MANAGER: Time of event '[name(%0)]' changed to '%1' by %N.;&date_modified %0=[secs()]},10,{@pemit %#=An event of that name does not exist.},0*,{@pemit %#=Only staff and faction heads have access to this command. Talk to your local staffer or faction head if you need to make changes to this event.}
+&NOTIFY_LIST Events Object=[trim(squish(iter(lwho(),switch(hasattr(##,eventnotify),0,##,))))]
+&CMD_CREATE_QUICK Events Object=$+event/create/q *=*,*,*:@switch [orflags(%#,wW?)][not([match(iter(lcon(me),[name(##)],%b,|),%0 ,|)])]=11,{@create %0;&type %0=%1;&date %0=%2;&location %0=%3;@pemit %#=event '%0' of type '%1' created, with date of '%2', and location of '%3'.;@dolist [u(notify_list)]=@pemit ##=EVENT MANAGER: New event '%0' added by %N.;&date_modified %0=[secs()]},10,{@pemit %#=An event of that name already exists.},0*,{@pemit %#=Only staff and faction heads have access to this command. Talk to your local staffer or faction head if you need to make changes to this event.}
+@Aconnect Events Object=@switch [lor(iter(iter(lcon(me),get(itext(0)/date_modified)),gte(itext(0),last(get(%#/conninfo)))))]=1,{@pemit %#=EVENT MANAGER: +event/view has been modified since your last connect. Use %ch%cw+event/view%cn to see what has changed.}
+@set Events Object=SAFE
+
+&FN_LINE #5=%r<-[repeat(-=-,25)]>%r
+&FN_ILINE #5=%r%b[repeat(-,78)]%b%r
+&FN_TEXTLINE #5=%r<[center(> %0 <,76,-=-)]>%r

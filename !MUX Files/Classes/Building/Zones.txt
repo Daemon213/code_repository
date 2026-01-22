@@ -1,0 +1,443 @@
+ Topic: Zones
+Author: Trispis
+Summary: Group projects often require multiple players to be able to work
+on the same object(s). Use of zones provides a way.
+
+Trispis begins logging.
+Trispis begins the lecture.
+Trispis says, "I've chosen this particular location for this lecture because
+it provides the sort of environment in which zoning is more natural."
+Trispis says, "as opposed to a 'lecture hall' or 'classroom'."
+Trispis says, "Let's begin by taking a sample scenario..."
+
+Dropped.
+
+Trispis says, "Okay... There's my object."
+Trispis says, "Now... If I wanted to be able to share control of that object
+with the rest of you (I mean total control, not just 'using commands' on it...
+I mean adding adding commands, adding attributes, changing details of
+description, etc.)... How would I do that?"
+
+David says, "Um, @lock/zone?"
+
+Trispis says, "Without zones, the only way to do that is to @chown it to each
+of you for the time you want to mess with it."
+Trispis says, "Close, David."
+
+Dropped.
+
+Xira says, "put it in a zone (object or room) which is specified to each
+user.. or something."
+
+Trispis says, "Okay... there's another object, my zmo."
+
+Nhoj adds to Xira, "Or player."
+
+Trispis says, "ZMO stands for Zone Master Object (I'll not rant too much about
+the inconsistent usage of the terms 'thing' and 'object'. For the purpose of
+this lecture, assume they mean the same thing.)"
+Trispis says, "All types of Zones work basically the same way (I'll spell out
+the details of differences a bit later), so I'll use this ZMO as a generic
+example."
+Trispis says, "Everyone here: Please try to put an attribute (named your name)
+on 'Sample-Object' (not on the zmo, please). For example:
+
+&david sample-object=Foobar
+"
+
+David says, "Didn't work."
+
+Trispis says, "You'll all get the dreaded 'Permission denied.' message, I'd
+imagine."
+
+Nhoj nods.
+
+Xira nods
+
+Trispis says, "Okay... Now... I'm going to zone that object to the zmo
+
+@chzone Sample-Object=Sample-ZMO
+
+... then add you all to the @lock/zone of the zmo with...
+
+@lock/zone Sample-ZMO==me|=David|=Xira|=Akiko|=Nhoj
+"
+
+ZMOs must be zone-locked before you @chzone!
+
+Locked.
+
+Warning: @chzoning admin-owned object!
+
+Zone changed.
+
+Trispis says, "Okay... when I tried to do that (in the order I said), it said
+the zmo must be @lock/zone-ed first. so, I had to reverse the order ... I
+locked first, then chzoned."
+Trispis says, "Now try adding an attribute to Sample-Object named your name
+(as before)."
+
+Akiko says, "Perm D'd."
+
+Xira says, "am I doing something wrong, i keep getting permission denied"
+
+Trispis says, "Really?"
+
+Nhoj does too.
+
+David says, "Me too."
+
+Trispis says, "One sec."
+
+Sample-ZMO(#2780n)
+Type: Thing Flags: NO_COMMAND
+Owner: Trispis Zone: *NOTHING* Ducats: 1
+Parent: *NOTHING*
+Zone Lock: =Trispis(#1623PIOerACMc)|=David(#1907POweACc)|=Xira(#2362PwenACc)|
+=Akiko(#1804PXenACc)|=Nhoj(#1906PeACc)
+Basic Lock: =Trispis(#1623PIOerACMc)
+Powers:
+Warnings checked: none
+Created: Sat Jul 25 15:09:04 1998
+Last Modification: Sat Jul 25 15:09:04 1998
+Home: Meeting Room(#1098R)
+Location: Meeting Room(#1098R)
+Sample-Object(#2779n)
+Type: Thing Flags: NO_COMMAND
+Owner: Trispis Zone: Sample-ZMO(#2780n) Ducats: 1
+Parent: *NOTHING*
+Basic Lock: =Trispis(#1623PIOerACMc)
+Powers:
+Warnings checked: none
+Created: Sat Jul 25 15:05:41 1998
+Last Modification: Sat Jul 25 15:05:41 1998
+Home: Meeting Room(#1098R)
+Location: Meeting Room(#1098R)
+
+Trispis brings in a test character.
+
+GAME: Joshua has connected.
+ZONE: Joshua has connected. (Foyer)
+Joshua has arrived.
+
+Xira says, "test char."
+
+Xira leans back in his chair.
+
+Given.
+
+Given.
+
+Joshua found the problem
+
+Joshua drops Sample-Object.
+
+Joshua drops Sample-ZMO.
+
+Trispis says, "the problem was my blasted royalty flag."
+Trispis says, "Try now, folks. sorry for the confusion."
+Trispis says, "Try to set an attribute on the sample-object."
+
+David says, "It worked! Yay!"
+
+Akiko says, "Set"
+
+Xira does a jig
+
+Trispis says, "man, how embarrassing."
+
+Nhoj cheers!
+
+Xira says, "what happened?"
+
+Trispis says, "I should have remembered that admin-owned restriction."
+Trispis says, "Um... You can't play with stuff I own, no matter what... just
+because I'm an admin."
+
+Nhoj nods.
+
+Trispis says, "So, I chowned it all to Joshua. (:"
+
+Xira says, "hehe"
+
+David says, "Ah, why don't you tell us about all the restrictions now, then?"
+
+Joshua has disconnected.
+
+Trispis says, "Well... I'll get to the restrictions in a minute. Let me finish
+the purpose of zones and the various types."
+Trispis says, "As you can all now see, the benefit of a zone is that it allows
+multiple players to control objects."
+Trispis says, "that is... It allows 'group projects'."
+Trispis says, "We can all work on this object together, at the same time,
+without having to chown it back and forth among us."
+Trispis says, "Here's an example of a beneficial use of Zones..."
+Trispis says, "Let's say you have several characters (alts) on a game."
+Trispis says, "And... one day you hear a report of something being broken on
+an object owned by one of your alts, but you don't want to give away your
+identity by logging that character in immediately to fix the problem... but
+you still wanna fix it."
+Trispis says, "You can create zones to achieve the desired end."
+Trispis says, "Put all of character A's stuff on a zone and lock that zmo to
+all of your alts."
+Trispis says, "Likewise for every other character."
+Trispis says, "Then, no matter what character is logged in, you have control
+of all of their stuffs at once. (:"
+Trispis says, "Now..."
+Trispis says, "there are 3 types of zones."
+Trispis says, "One (which we just used) is the ZMO (or, probably more
+tecnically correct, ZMT)... that is, a zone which is controlled by an Object
+(or THING)."
+Trispis says, "Another, is the ZMR Zone. A zone controlled by a ROOM."
+
+Xira says, "next zmp?"
+
+Trispis says, "And the third is the ZMP Zone, which is controlled by a
+PLAYER."
+Trispis says, "Each of these has features unique to itself."
+Trispis says, "The ZMO Zone (Object/THING-controlled) can have any type of
+object zoned to it except a PLAYER."
+Trispis says, "Thus, THINGS, ROOMS, and EXITS can all be zoned to a ZMO (or
+ZMT)."
+Trispis says, "The ZMR Zone is restricted to just objects of type ROOM."
+Trispis says, "That is, you can only zone ROOMs to a ZMR."
+Trispis says, "Exits and Things cannot be zoned to a ZMR."
+Trispis says, "What, you might ask, is the good of a ZMR, then... if it can't
+have the other types zoned to it?"
+Trispis says, "Well.. the ZMR has the benifit of behaving very similar to the
+MUSH's Master Room, in that: All objects dropped in the ZMR become global to
+that zone (any room zoned to the ZMR), and thus any $commands on those objects
+are 'zone global commands'."
+
+David says, "Cool."
+
+Trispis says, "The ZMO has a similar feature, though. Any $commands on the ZMO
+are global to that zone, as well."
+Trispis says, "What about the ZMP? What benefits does it offer?"
+Trispis says, "The ZMP offers a benefit that can't be had from either of the
+other two..."
+
+Nhoj says, "You can have players on the ZMP?"
+
+Trispis says, "In addition to being able to zone all non-PLAYER type objects,
+PLAYERS who are on the zonelock of the ZMP can also @chown things directly to
+the ZMP, thus immediately adding them to the zone for others to work on."
+Trispis says, "No... you can't have PLAYERS on the ZMP."
+Trispis says, "Which brings me to restrictions."
+
+Xira says, "so you can make somone take ownership of an object right?"
+
+Trispis says, "Ermm... Xira: You can... but only the ZMP. You can only make
+the ZMP take ownership."
+
+Xira says, "K"
+
+Trispis says, "Some restrictions of zones are as follows..."
+Trispis says, "An admin owned object cannot be controlled by anyone,
+regardless of the zmo control."
+
+Nhoj says, "What if the ZMO is set ROYALTY or WIZARD?"
+
+Akiko says, "We noticed. :)"
+
+Nhoj says, "Or the ZMP, etc?"
+
+Trispis says, "The INHERIT flag will change permissions and privileges on
+zoned objects, just like it does on non-zoned objects."
+Trispis says, "Well.. I /think/ I could have retained ownership of the ZMO in
+this instance, but it was simpler to just put it all into mortal situation.
+Since that was the intention of Zones in the beginning anyway."
+Trispis says, "If you have a ROYALTY or WIZARD player to experiment with, I
+suggest doing experiments on your own with some test objects and test
+characters. If you intend to have a ROY or WIZ player involved in a Zone,
+you'd better be far more familiar with zones than this lecture will cover."
+
+Akiko grins.
+
+Nhoj nods.
+
+Trispis says, "Um... Just for your information (to see the versatility of
+zones), the 101 Schoolhouse is made up of /all three/ types of zones."
+Trispis says, "Everything in the schoolhouse is owned by 101ZMP."
+Trispis says, "Which doesn't require any @chzone-ing (ownership by the ZMP
+creates the zone)."
+Trispis says, "All rooms are zoned to 101ZMR, where we keep our own set of
+zone globals."
+Trispis says, "All things and exits are zoned to the 101ZMO (thing).... so
+that they can also be maintained by the folks on the zone."
+Trispis says, "the purpose of using all three is this:..."
+Trispis says, "It allows us to give limited access to certain things on the
+zone to players who want to work on limited portions."
+Trispis says, "If someone wants to tinker with an exitlock, we can put them on
+the zonelock of the zmo and allow them the access they need without giving
+them access to rooms ..."
+Trispis says, "And vice-versa for access to rooms and not exits."
+Trispis says, "Being on the ZMP's zonelock is like being a wizard in this
+zone... it will even allow you to put yourself on zonelocks of
+ZoneMaster<whatever>'s owned by the ZMP."
+Trispis says, "final note on restrictions."
+Trispis says, "Zone privilege does not allow you to @nuke objects owned by
+other players on the zone."
+Trispis says, "If you don't own it, you can't nuke it."
+David says, "What if the ZMP owns it?"
+Trispis says, "You can change lots of flags, add/remove/edit attributes...
+just as if you did own it, but you can't nuke it."
+Trispis says, "Nuking requires that you own it."
+Trispis says, "If the ZMP owns it, you can't nuke it."
+Trispis says, "I'm pretty much through with my illustration/lecture on zones."
+Trispis says, "Any questions?"
+
+Xira waves extatically! "Grinna!"
+Xira says, "yes trispis."
+Xira says, "look at my attribute I put on the Sample object."
+
+Trispis will take questions for about 25 min.
+
+NHOJ [#1906]: Cows can moo.
+AKIKO [#1804]: hah!
+XIRA [#2362]: $Xira:@emit=Oh my god look over there!
+DAVID [#1907]: Anything you can do, I can do better...anything I can do better
+then you...
+TEST [#1623]: test
+
+Trispis says, "Okay."
+
+Xira says, "what is wrong with it?"
+
+THING: Sample-Object-#2779-n
+Owner: Joshua-#375-PenA
+Zone: Sample-ZMO-#2780-Vn
+
+Trispis says, "Look at the flags on the sample-obj"
+
+Xira says, "okay, I can set flags right?"
+
+David says, "Can you put an zone thing on itself, thus letting anyone on the
+lock add people?"
+
+Trispis says, "Do: @set sample-object=!no_command"
+Trispis says, "Try it, Xira."
+
+Xira says, "I did."
+
+NHOJ [#1906]: Cows can moo.
+AKIKO [#1804]: hah!
+XIRA [#2362]: $Xira:@emit=Oh my god look over there!
+DAVID [#1907]: Anything you can do, I can do better...anything I can do better
+then you...
+TEST [#1623]: test
+
+Trispis says, "Yes, David."
+Trispis says, "I've seen it done, but normally don't do it."
+Trispis says, "Xira: there's no equal sign (=) used in @emit"
+
+FugueEdit > &XIRA #2779=$Xira:@emit=Oh my god look over there!
+
+Sample-Object/XIRA - Set.
+
+Trispis fixes.
+
+Oh my god look over there!
+
+Trispis grins.
+
+Akiko says, "commands /on/ a ZMO are global to all rooms in the zone?"
+
+Trispis may have to leave unexpectedly.
+
+David test some security...
+
+Trispis says, "Akiko: Yes... they're global to all rooms @chzoned to that
+zmo."
+
+Akiko says, "But not objects inside?"
+
+Trispis says, "Um... Test it and see (more advanced than this lecture was
+intended)."
+
+Akiko says, "Can you chain ZMOs?"
+
+Trispis says, "Yes."
+Trispis says, "You can zone a zmo to another zmo."
+
+David says, "Hmmm...it worked..."
+
+Trispis says, "the ZMO is not special. It's just a focal point for objects
+zoned to it."
+Trispis says, "It's where the server looks for permissions."
+Trispis says, "Note: Any given object can only be @chzone-ed to /one/ ZMO at a
+time. The only time an object can belong to more than one zone is when a
+ZMPlayer is involved. i.e., an object can be owned by a zmp and chzoned to
+some other ZMObject (thing or room)."
+Trispis has about 5-10 min left, then must leave.
+
+David says, "Trispis, do you see what I'm trying to do?"
+
+Trispis says, "Before I go, I want to apologize again for forgetting about the
+ROYALTY issue. That was a silly mistake (one I've made a hundred times and
+never learned from)."
+Trispis looks, David.
+
+DAVID [#1907]: $david:@set/adescribe me=!no_command
+
+Oh my god look over there!
+
+Xira says, "thanks"
+
+Trispis says, "Yes, I see. And I think that should work... if the object has
+an &adescribe attribute."
+Trispis says, "but..."
+Trispis says, "The correct syntax is...
+
+$david:@set me/adescribe=!no_command"
+
+Trispis says, "Um... unless the adescribe attribute is protected by the server
+in some way (similar to the @describe attribute, which cannot be set
+!no_command or !visual."
+Trispis says, "er... correction."
+Trispis says, "@describe cannot be set 'no_command' or '!visual'"
+Trispis says, "Wait."
+Trispis says, "maybe i had it right the first time."
+
+Akiko grins.
+
+Grinna giggles.
+
+Trispis is obsessed with his pending appointment.
+Trispis thinks.
+
+David has to go real quick...but I'll read the log...and will this work in to
+add people?
+
+Xira scratches his head "I am lost"
+
+Trispis says, "Yes, I think it will, David."
+
+Trispis says, "If the ZMO is zoned to itself, you should be able to add people
+to the zonelock."
+
+Xira says, "and did you get my messed up psyco-babble @mail?"
+
+Akiko says, "Well, that was invigorating."
+
+Trispis didn't get any mail.
+
+Sample-Object(#2779)
+Type: Thing Flags:
+Owner: Joshua Zone: Sample-ZMO(#2780Vn) Ducats: 1
+Parent: *NOTHING*
+Powers:
+Warnings checked: none
+Created: Sat Jul 25 15:05:41 1998
+Last Modification: Sat Jul 25 16:16:39 1998
+NHOJ [#1906]: Cows can moo.
+AKIKO [#1804]: hah!
+XIRA [#1623]: $Xira:@emit Oh my god look over there!
+DAVID [#1907]: $david:@set me/adescribe=!no_command
+TEST [#1623]: test
+Home: Meeting Room(#1098R)
+Location: Meeting Room(#1098R)
+
+Trispis says, "Anyway... I'm closing the log and gonna split for a while.
+going swimming with a friend for an hour or so."
+Trispis waves. Thanks for attending. 

@@ -1,0 +1,20 @@
+#207 - Map Database
+#208 - Directory Database
+
+@create Cartography Object=10
+@create Map Database=10
+@create Directory Database=10
+
+@VA Cartography Object=#207
+@VB Cartography Object=#208
+&C.MAP-LIST Cartography Object=$+map/list:@pemit %#=[center(<%b[ansi(h,Maps List)]%b>,78,-)]%r%r[columns(edit(u(v(va)/map-list),-,%b),27,|,2)]%r[repeat(-,78)]%r[center(Type '[ansi(h,+map <name>)]' to display a specific map.,78)]%r[repeat(-,78)]
+&C.MAP Cartography Object=$+map:@fo %#=+map/list
+&C.MAP-SHOW Cartography Object=$+map *:@pemit %#=[center(<%b[ansi(h,Map: [capstr_all(%0)])]%b>,78,-)]%r%r[u(v(va)/map_[edit(%0,%b,-)])]%r%r[repeat(-,78)]
+&C.MAP-ADD Cartography Object=$+map/add *=*:@switch [hasattr(v(va),map_[edit(%0,%b,-)])]=0,{&map-list [v(va)]=[u(v(va)/map-list)]|[lcstr(%0)];&map_[edit(%0,%b,-)] [v(va)]=%1;@pemit %#=[ansi(hc,Game:)] You have added the map of [capstr_all(%0)]:%r%r[u(v(va)/map_[edit(%0,%b,-)])]%r},{@pemit %#=[ansi(hr,Error:)] There is already a map with that name. Choose another name.}
+&C.MAP-REMOVE Cartography Object=1
+&C.DIR-LIST Cartography Object=$+dir*/list:@pemit %#=[center(<%b[ansi(h,Directory List)]%b>,78,-)]%r%r[space(2)][capstr_all(edit(columns(u(v(vb)/dir-list),35,|,2),-,%b))]%r[repeat(-,78)]%r[center(Type '[ansi(h,+directory <name>)]' to display a specific directory.,78)]%r[repeat(-,78)]
+&C.DIR-SHOW Cartography Object=$+dir* *:@pemit %#=[center(<%b[ansi(h,Directory: [capstr_all(%1)])]%b>,78,-)]%r%r[u(v(vb)/dir_[edit(%1,%b,-)])]%r%r[repeat(-,78)]
+&C.DIR-ADD Cartography Object=1
+&C.DIR-REMOVE Cartography Object=1
+@set Cartography Object=INHERIT
+@set Cartography Object=SAFE

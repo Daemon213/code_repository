@@ -1,0 +1,828 @@
+ ©2003 ziggystar@OGR. You may copy and redistribute this document provided that it remains complete, with credits intact, and is used only for non-profit purposes.
+*****
+
+ziggystar's Code Class
+June 1, 2003
+
+Attendees:
+Anguirel|Anomaly|Ashen-Shugar|Guest1|Lady
+Rosalynne|Moth|nails|Pyromancer|Shashini|Tsh|Zero|ziggystar
+
+nails stops picking his nose.
+
+Moth hehs, funny
+
+ziggystar says "Weirdness."
+
+ziggystar says "Why is it called Panaflex?"
+
+Anomaly says "Brand name of film camera."
+
+Shashini peers at it curiously.
+
+ziggystar says "Of this one or is it a real brand?"
+
+Anomaly says "A real brand. :) Most TV shows are shot on Panaflex cameras."
+
+Moth will give folks just a few more minutes, then we'll go on...
+
+Anomaly waves out. "Good luck, ziggystar, with your class." :)
+
+ziggystar says "Yes, thanks a lot!"
+
+Anomaly has left.
+
+ziggystar dropped peter.
+
+peter enters the class room.
+
+peter has left.
+
+peter says "Is there anybody out there?"
+
+Anguirel enters the class room.
+
+Anguirel has left.
+
+Anguirel has arrived.
+
+Anguirel has left.
+
+Anguirel has arrived.
+
+From within the class room object, peter says "Is there anybody out there?"
+
+ziggystar says "Cool."
+
+From within the class room object, peter has left.
+
+Anguirel says "Does this mean that he wants up to enter the classroom"
+
+peter has left.
+
+ziggystar says "What?"
+
+Pyromancer enters the room through the double doors, which swing closed behind him.
+
+Pyromancer has arrived.
+
+Tsh enters the room through the double doors, which swing closed behind her.
+
+Tsh has arrived.
+
+Pyromancer says "Evenin' all."
+
+Anguirel says "Hello"
+
+ziggystar says "Hello!"
+
+Moth waves to one and all
+
+Moth says "Alright, let's get this rolling"
+
+Lady Rosalynne has arrived.
+
+ziggystar says "I think we should wait for lady"
+
+ziggystar says "There she is."
+
+Lady Rosalynne says "Thanks... @tele'ing easier. :)"
+
+ziggystar says "Ok. I think we can start now."
+
+Anguirel says "Hello"
+
+ziggystar says "Yes. Hello's good."
+
+ziggystar says "I'm ziggystar and I will hold this lecture this evening."
+
+Moth says "Welcome, everybody! Thanks for coming to today's event, being led by ziggystar. I'll be logging the event today. So if you have any questions about that, please page me. Ziggystar, the show's all yours now..."
+
+ziggystar says "Or afternoon. Whatever."
+
+ziggystar says "Does everyone know about the prerequisites listed in the announcement?"
+
+Lady Rosalynne says "Pretty much..."
+
+ziggystar says "It's enactor, locking"
+
+Anguirel nods.
+
+Shashini nods.
+
+ziggystar says "Attributes and dbrefs."
+
+ziggystar says "Then it's fine."
+
+ziggystar says "Today we will learn how to use functions."
+
+ziggystar says "And lists."
+
+ziggystar says "I think we should start with functions."
+
+ziggystar says "Anyone here who doesn't know what a function is?"
+
+ziggystar says "Especially one in MUSHcode."
+
+ziggystar says "Not?"
+
+ziggystar says "Well, ok."
+
+ziggystar says "There are normal functions and side-effect functions."
+
+ziggystar says "Normal functions may take an argument and return something."
+
+ziggystar says "You should ask if you do not understand what I'm saying."
+
+ziggystar says "I assume everyone understands if nobody says something."
+
+Anguirel says "Everything seems clear so far."
+
+Shashini nodders.
+
+ziggystar says "An example of a function would be add(5,3)"
+
+ziggystar says "Which should return 8."
+
+Guest1 enters the room through the double doors, which swing closed behind it.
+
+Guest1 has arrived.
+
+ziggystar says "side-effect functions usually don't return something."
+
+ziggystar says "The have a side-effect which means, they change something."
+
+ziggystar says "An example would be pemit(nails, Keep on idling.)"
+
+ziggystar says "This function would have the side effect, that a message is send to nails."
+
+ziggystar says "Instead of the usual returning of an result."
+
+Lady Rosalynne hmmms.
+
+ziggystar says "Yes?"
+
+ziggystar says "help pemit()"
+
+Lady Rosalynne thinks of switch then... ?
+
+ziggystar says "Switch isn't a side-effect function."
+
+Lady Rosalynne says "It's normal?"
+
+ziggystar says "It simply returns something."
+
+ziggystar says "Yep."
+
+ziggystar says "switch(1,1,Do,0,Don't)"
+
+Lady Rosalynne was trying to define them and categorize them... was thinking that.. thankis.
+
+ziggystar says "would simply return Do. And nothing else will happen."
+
+ziggystar says "Ok. Well, it's not that important to know such things."
+
+ziggystar says "Now we have the functions."
+
+Ashen-Shugar enters the room through the double doors, which swing closed behind him.
+
+Ashen-Shugar has arrived.
+
+ziggystar says "But how tu use them?"
+
+ziggystar says "Basically everything in MUSHcode is text."
+
+ziggystar says "Shashini just mentioned, that there are functions which are both."
+
+ziggystar says "But I think such a function would be a side-effect function."
+
+ziggystar says "Since it has a side effect."
+
+ziggystar says "Of course a side-effect function can return something. Though they usually don't do this."
+
+ziggystar says "Ok. Continueing on how to use functions."
+
+ziggystar says "MUSHcode is merely text."
+
+ziggystar says "And the MUSH checks whether text contains any functions. And if it finds some tries to execute them."
+
+ziggystar says "This is called evaluation."
+
+ziggystar says "There are also commands."
+
+ziggystar says "They are a bit different."
+
+ziggystar says "Who doesn't know what a command is?"
+
+ziggystar says "Ok."
+
+zero enters the room through the double doors, which swing closed behind him.
+
+zero has arrived.
+
+ziggystar says "Basically a command stands on its own, while a function is embedded inside text."
+
+ziggystar says "Functions can also be embedded in no text, which means they stand on their own."
+
+ziggystar says "Now how to put a function into some text."
+
+ziggystar says "In order to do this you use the square brackets."
+
+ziggystar says "Like think Currently it's Fri Jul 25 12:38:04 2003."
+
+ziggystar says "This would let you think the text after think."
+
+ziggystar says "And the function time() inside the brackets will get executet. It will evaluate into the current time."
+
+ziggystar says "Maybe you should try it if you haven't done it yet."
+
+Anguirel has to go. "Much luck with the class."
+
+Anguirel dissapears with a flash and a poof.
+
+Anguirel has left.
+
+ziggystar says "Ok. I assume you have done this."
+
+Shashini apologizes, but needs to go as well.
+
+Shashini goes west, through the double doors, exiting the lecture room.
+
+Shashini has left.
+
+ziggystar says "If a function stands on it's own, the brackets can be omitted most of the time."
+
+ziggystar says "Try think time()"
+
+ziggystar says "This will work, too."
+
+ziggystar says "But think It's time()"
+
+ziggystar says "won't work because the MUSH can't find the function inside text if there are no brackets around it."
+
+ziggystar says "Ok."
+
+ziggystar says "So much theory about functions."
+
+ziggystar says "Now I'll tell you a bit about what lists are and then we can look at an example."
+
+ziggystar says "Anyone here who doesn't know what lists in MUSHcode are?"
+
+ziggystar says "Nobody?"
+
+ziggystar says "So I can omit this?"
+
+ziggystar says "I take this as a Yes."
+
+zero nods
+
+ziggystar says "Then we should look at an example object using functions and lists."
+
+ziggystar says "Ah."
+
+ziggystar says "Maybe I should tell you something about locking, too."
+
+ziggystar says "I assume everyone knows basic locking?"
+
+ziggystar says "Like @lock exit=me"
+
+ziggystar says "So only you can pass the exit."
+
+Guest1 knows very basic locking. Would like to know a bit more though :)
+
+ziggystar says "Here the key for the lock is an object. me"
+
+ziggystar nods.
+
+ziggystar says "Type help @lock types"
+
+ziggystar says "Oops."
+
+ziggystar says "I meant help @lock keys"
+
+ziggystar says "You'll get a list of all available types of keys."
+
+ziggystar says "We will use the most flexible one. The Attribute key."
+
+ziggystar says "The Attribute key let's you specify an attribute which will get evaluated (all functions in itwill get executed). Then it compares the result to a given text."
+
+ziggystar says "And if the result of the evaluation matches the text you can pass the lock."
+
+ziggystar says "Maybe we should have an easy example first."
+
+ziggystar dropped Simple Attribute Lock.
+
+ziggystar says "Ok."
+
+ziggystar says "If you look at the object you can see a simple setup of an attribute lock. It's an emulation of the normal object key."
+
+ziggystar says "It compares the enactor to the dbref #3713"
+
+ziggystar says "Because the attribute lock will evaluate to the enactor dbref. And then it compares this to a stored value."
+
+ziggystar says "So only the player with the dbref #3713 can pick it up."
+
+ziggystar says "I hope it works..."
+
+ziggystar says "Doesn't. :P"
+
+ziggystar says "However, you see the idea?"
+
+Pyromancer says "LOCK/#3713 should work, I think?"
+
+ziggystar says "Huh?"
+
+ziggystar says "How?"
+
+ziggystar says "We'll jsut go on to the other example, I think."
+
+ziggystar says "It seems that most of what I'm saying is already known."
+
+Simple Attribute Lock has left.
+
+ziggystar says "For that, we'll have to enter the class room object."
+
+ziggystar enters the class room.
+
+ziggystar has left.
+
+From within the class room object, ziggystar has arrived.
+
+ziggystar says "Please follow me into the class room."
+
+ziggystar has left.
+
+ziggystar waves.
+
+ziggystar enters the class room.
+
+ziggystar has left.
+
+From within the class room object, ziggystar has arrived.
+
+Moth has arrived.
+
+Lady Rosalynne has arrived.
+
+zero has arrived.
+
+Tsh has arrived.
+
+Pyromancer has arrived.
+
+ziggystar says "I'll go on."
+
+Guest1 has arrived.
+
+ziggystar says "What we want to do is remember people, who are allowed to pass this exit named exit."
+
+ziggystar says "In order to be allowed to use it one have to read a sign."
+
+ziggystar says "If you look at the sign..."
+
+ziggystar says "Now you know what it's about."
+
+ziggystar says "We have two user defined commands on this object."
+
+ziggystar says "Anyone who doesn't know what user defined commands are?"
+
+ziggystar says "Ok."
+
+ziggystar says "We want to keep a list of all people who are allowed to pass the lock."
+
+ziggystar says "The list is on the sign."
+
+ziggystar says "If you examine it you can see the attribute d.read"
+
+ziggystar says "We store the dbrefs of the players here."
+
+ziggystar says "Remember to store dbrefs and not names, since names can change during time."
+
+ziggystar says "It's always a good idea to identify players with their dbref and not their name."
+
+ziggystar says "Now we have the first command which adds the enactor to the list."
+
+ziggystar says "It's stored inside the attribute usmd.acknowledge."
+
+ziggystar says "Everyone should have a look at it."
+
+Lady Rosalynne asks User defined attrs? Isnt sure on commands though/?
+
+ziggystar says "It simple adds the enactor dbref to the list in d.read and pemits a notice."
+
+ziggystar says "Did I say attributes?"
+
+ziggystar says "Sorry. I meant the $ commands."
+
+Lady Rosalynne ahs, you said cmds and I wa a bit behind... I'm ok then.
+
+ziggystar says "Anyone who doesn't understand why this user command adds the dnbref to the list?"
+
+ziggystar says "setunion(set, new item) simply returns a list with new item added to set."
+
+nails has arrived.
+
+ziggystar says "So everyone can understand why the function does what it does??"
+
+Lady Rosalynne nodnods.
+
+ziggystar says "Has anyone learned anything new, yet?"
+
+ziggystar sighs.
+
+ziggystar says "I assume you understand the disacknowledge function, too?"
+
+Lady Rosalynne nodnods. :)
+
+zero says "yeah, this bit is interesting, do go on"
+
+ziggystar says "Ok. Now we have the list with the allowed players."
+
+ziggystar says "Of course we could use something like the @asee attribute in order to add players, who only read the sign."
+
+ziggystar says "So you don't have to type in an acknowledge command."
+
+ziggystar says "That's clear?"
+
+Pyromancer says "@asee?"
+
+nails says "@adesc?"
+
+ziggystar ponders the problem.
+
+ziggystar says "Yes, thanks."
+
+Pyromancer says "Oh, gotcha."
+
+ziggystar says "It's @adesc."
+
+ziggystar says "Now what do do with the list?"
+
+ziggystar says "There's an exit here."
+
+ziggystar says "(named exit."
+
+ziggystar says "It's locked via a attribute key."
+
+ziggystar says "You should have a look at it."
+
+ziggystar says "If someone attemps to use the exit, the f.lock attribute will get evaluated. It will return 0 if the enactor is on the list."
+
+ziggystar says "Then it will compare it to the stored value 0 and let the enactor pass if it meets this criterion."
+
+ziggystar says "Notice the Key: F.LOCK/0 part in the description of the exit."
+
+ziggystar says "The thing you get when you type ex exit."
+
+ziggystar says "It means Pass the lock if attribute f.lock evaluates into 0."
+
+ziggystar says "This is clear?"
+
+Lady Rosalynne nodnods.
+
+ziggystar says "Well, ok. This was the main part of the lecture. I have some advanced topics."
+
+ziggystar says "Any questions, so far?"
+
+ziggystar says "Ok. No question."
+
+zero :-|
+
+ziggystar says "Our next topic will be excaping of special characters inside strings."
+
+ziggystar says "escaping."
+
+ziggystar says "Everyone knows what a delimiter is?"
+
+zero nods
+
+ziggystar says "Or: Who doesn't know?"
+
+Guest1 raises a hand.
+
+ziggystar says "Ok."
+
+ziggystar says "Lists are basically a string."
+
+Lady Rosalynne thinks so but really hasnt used them much... a long time ago maybe.
+
+ziggystar says "A string are simply some characters."
+
+ziggystar says "A line of text is a string.."
+
+ziggystar says "Now lists have entries seperated by a special character."
+
+ziggystar says "Usually this is the blank."
+
+Lady Rosalynne aks if you could slow down a bit please... so she can keep up.
+
+ziggystar nods.
+
+ziggystar says "I tried to explain the expression string."
+
+ziggystar says "Everyone knows what a string is?"
+
+ziggystar says "It's a sequence of characters. Every attribute is a string."
+
+ziggystar says "The description of an object is a string."
+
+ziggystar says "This sentence would be a list of 10 entries."
+
+ziggystar says "Each one seperated by a blank."
+
+ziggystar says "The first element of that list would be the word (or string) 'This'."
+
+ziggystar says "Maybe try first(I can't count)"
+
+ziggystar says "Maybe try think first(I can't count)"
+
+ziggystar says "It will return I"
+
+ziggystar says "The first element of the list 'I can't count'."
+
+ziggystar says "But only if you use the blank as a separator."
+
+ziggystar says "But most (if not all) functions concerning lists let you give an alternative separator."
+
+ziggystar says "This special character is called delimiter."
+
+ziggystar says "Try think first(I can't count,n)"
+
+ziggystar says "It will return 'I ca'."
+
+Lady Rosalynne says "Blank is = to a space?"
+
+ziggystar says "Huh?"
+
+ziggystar says "Oh, yes."
+
+ziggystar says "I thought this expression is common in english."
+
+ziggystar isn't speaking english natively.
+
+ziggystar says "Now everyone understands, that you need an special separation character for a list?"
+
+ziggystar says "And by default this is the blank."
+
+ziggystar says "Or space."
+
+Lady Rosalynne was just not following since ... it is ok in a sentence but not in a attr... she thinks.
+
+ziggystar says "No."
+
+ziggystar says "In a normal MUSH list, it's the space, too."
+
+ziggystar says "But this isn't practical in some situations."
+
+ziggystar says "So you can use lists with a differnt separator. But then you have to tell the function which character it shall use as separator (delimiter)."
+
+Lady Rosalynne nods.
+
+ziggystar says "If you look at the help for a list function you'll see the optional argument called deleimiter."
+
+ziggystar says "This is this special character. We've already used it in first(I can't count.,n)"
+
+ziggystar says "The argument n tells first to use the character 'n' as delimiter."
+
+ziggystar says "See help first"
+
+ziggystar says "The first line in it."
+
+ziggystar says "Ok. Now still questions about delimiters?"
+
+ziggystar says "Then I'll continue."
+
+ziggystar says "What we want to code is a simple buletin board."
+
+ziggystar says "You can type 'post <text' and text will be added to the board."
+
+ziggystar says "Nothing more."
+
+ziggystar says "And we want to store the posts in a list."
+
+ziggystar says "Now posts usually consist of many sentences and many words."
+
+ziggystar says "This means also many spaces."
+
+ziggystar says "If we simply add the new text to the attribute, we wouldn't know where the next post starts.-"
+
+ziggystar says "So we should probably use a very rare character as delimiter."
+
+ziggystar says "Like the pipe character '|'."
+
+ziggystar says "We could make a list of posts, seperated by a pipe."
+
+ziggystar says "But what happens if someone puts a pipe into a post?"
+
+ziggystar says "This would mess up the whole list."
+
+ziggystar says "One solution could be to simply delete all pipes in the entered text."
+
+ziggystar says "We could use edit(post,|,)"
+
+ziggystar says "to remove all |s."
+
+ziggystar says "But this is not very nice."
+
+ziggystar says "So what we want to do is remove a character from a string, but still be able to recover the original string."
+
+ziggystar says "This technique is called escaping."
+
+ziggystar says "But how to do it?"
+
+ziggystar says "We could replace each | with a special seuqence of characters."
+
+ziggystar says "But we have to make sure, that this sequence doesn't already exist. Because then we would replace it with a | once we try to recover the original text."
+
+ziggystar says "Any questions so far?"
+
+ziggystar says "Ok."
+
+ziggystar says "I think I'll just tell you how to do it and then explain why it works afterwards."
+
+ziggystar says "We'll design a character which will be a special character."
+
+ziggystar says "We'll call it the escape character."
+
+ziggystar says "Usually you should use a rare character for this purpose."
+
+ziggystar says "The role of this character will be 'Enter extended mode'."
+
+ziggystar says "Say we use ! as escape character."
+
+ziggystar says "Then we could define !p as the | character."
+
+ziggystar says "Each occurance of the ! would mean something else depending on what comes after the !."
+
+ziggystar says "If we want the normal ! we would need to use !!."
+
+ziggystar says "So for now !! means ! and !p means |."
+
+ziggystar says "A single ! is illegal for now."
+
+ziggystar says "If we can transform our text into this form, we'd be able to get rid of the |."
+
+ziggystar says "This is clear?"
+
+ziggystar says "Hmmm."
+
+Guest1 nods.
+
+ziggystar says "Someone still unidle."
+
+ziggystar cheers.
+
+Guest1 laughs :)
+
+Lady Rosalynne isnt sure...
+
+ziggystar says "For now: We have found a form of text which let's us remove one (or even more) characters and still be able to recover the original text." Database checkpoint in progress - stand by... Database checkpoint complete.
+
+ziggystar says "Then just ask."
+
+Lady Rosalynne says "But it's probably me and I'll just wait to ask later, ok?"
+
+ziggystar says "But you seem to be 50."
+
+ziggystar says "But you seem to be 50."
+
+ziggystar says "Asking doesn't hurt anyone."
+
+ziggystar says "And maybe others have the same problems."
+
+ziggystar says "I'll go on. But please ask if something is unclear."
+
+Lady Rosalynne says "I thinks it's just terminology... and I need to get lunch too, is just me I think... please go on and.."
+
+Lady Rosalynne says "I'll hang in here. :)"
+
+ziggystar says "Being able to do this, allows us to store arbitrary text in lists because we can remove a certain character from the text and use it as delimiter."
+
+ziggystar nods.
+
+ziggystar says "But how do we do it?"
+
+ziggystar says "It#s done in two steps."
+
+ziggystar says "First step: Replace each occurance of the escape character with the sequence for the escape character on its own."
+
+ziggystar says "We wanted to be able to write !! for !."
+
+ziggystar says "So we replace each occurance of ! with !!."
+
+ziggystar says "To replace text in a string use the edit() function."
+
+ziggystar says "Everyone knows how edit() works?"
+
+ziggystar says "edit(text,from,to)"
+
+ziggystar says "edit(text,!,!!) would do the job in our case."
+
+Lady Rosalynne nodnods.
+
+ziggystar says "Now we have to escape the | character."
+
+ziggystar says "We'll replace each | with a !p."
+
+ziggystar says "Now there are no more |s inside the text."
+
+ziggystar says "Notice that the text gets longer. Since we have less different characters, we need more to contain the same amount of information."
+
+ziggystar says "In this form, we can store the text in our list, delimited by a |."
+
+ziggystar says "To get back the original text simple reverse the process. First replace !p with | and then replace !! with !."
+
+ziggystar says "Questions?"
+
+ziggystar says "Then we should have a look at an implementation and see if it works."
+
+Guest1 cools :)
+
+ziggystar dropped Bulletin Board.
+
+ziggystar says "Just examine it and try to understand how it works."
+
+ziggystar says "Everyone knows the u() function?"
+
+Lady Rosalynne nods.
+
+ziggystar says "Any questions?"
+
+Lady Rosalynne shakes her head. :)
+
+ziggystar says "Then we're pretty finished here."
+
+ziggystar says "Have you learned anything?"
+
+Lady Rosalynne shakes her head. :)
+
+ziggystar says "Any comments or whatever are deeply appreciated."
+
+ziggystar sighs.
+
+ziggystar says "What did you expect from this class?"
+
+Lady Rosalynne appreciates having the class... :) lots of work, thanks for doing it. :)
+
+ziggystar says "You're welcome."
+
+ziggystar wonders if there are any interesting topics.
+
+ziggystar says "Any questions about something else?"
+
+ziggystar says "In general, I think that people who understand all the things in this class can continue on their own."
+
+Lady Rosalynne hehes.... uhms.
+
+Lady Rosalynne says "Ok..."
+
+ziggystar will stay here for some time. Maybe someone else has a question.
+
+Lady Rosalynne says "On my +finger I need to make it not only seatch for the name of a player that is typed in, but to match me and gives the own player's finger. Use edit() and #6616 or some such? I just havent sat down and done it yet. :)"
+
+ziggystar says "Sorry, I didn't quite understand your question. Especially the part after the comma."
+
+ziggystar says "Ah. You mean +finger me shall work?"
+
+Lady Rosalynne says "If you type +finger ros you would get my finger, the +finger I have coded in... how do you get the code to not only match a player's name or alias, but to match the cahr to 'me' when +finger me is typed in?"
+
+Lady Rosalynne nodnods, sorrys. :)
+
+ziggystar says "How about nonzero(streq(, me), code for me, code for rest)"
+
+ziggystar says "Or switch if you prefer."
+
+ziggystar says "@switch"
+
+Guest1 goes home.
+
+Guest1 has left.
+
+Lady Rosalynne hmmms... *nodnods* I've never seen that, the nonzero one.
+
+ziggystar says "@switch =me,code for me,code for rest"
+
+Pyromancer says "Well, you needn't do two instances of the code. Just have 'code for me' as '#6616' and 'code for rest' as pmatch()."
+
+ziggystar doesn't know if there's another way.
+
+ziggystar says "Especially a way to use the MUSHs name resolution."
+
+Pyromancer says "Er, pmatch(). Put them in setqs, and then have the rest of the code run as usual."
+
+Lady Rosalynne nods and just dabbles really. :) Thanis, I'll see which fits with what I have there already, one of these days. heh
+
+Moth says "Thanks for leading the class, ziggystar, and to those of you who participated. If there are no more questions, I will be closing off the log..."
+
+Pyromancer says "nonzero(streq(,me) styla thang."
+
+Lady Rosalynne just wows at how fast you guys are. heh
+
+Lady Rosalynne has no more questions, atm.
+
+Pyromancer says "Er, without the missing bracket at the end. :>"
+
+Lady Rosalynne chuckles and nodnds.
+
+ziggystar will go idle but be available for questions.
+

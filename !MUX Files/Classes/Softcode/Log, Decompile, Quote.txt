@@ -1,0 +1,548 @@
+ Topic: Log, Decompile, Quote
+Author: Trispis, Matt, Grinna
+Summary: This lecture addresses the moving (porting) of objects from one MUSH to
+another.
+
+5/3/98
+
+Trispis carefully walks up the narrow stairs to the stage.
+Trispis has left.
+Lecturer> Trispis has arrived.
+Lecturer> Trispis says, "Welcome to the first lecture to be presented at our
+new schoolhouse on M*U*S*H."
+
+Lecture Hall(#1070RanJM)
+
+/ /^\/^\/^\ \
+
+|"""""""""""""""""""""""""|~~~~~~~~~~~~~~~|"""""""""""""""""""""""""|
+
+| LECTURER |~~)~~~~~~~~~(~~| TOPIC |
+
+| |~~) (~~| |
+
+| Trispis |~~) ___ (~~| meeping with scoob |
+
+| |~~) Y (~~| |
+
+|_________________________|\___ | ___/|_________________________|
+
+(_ (_ (_ (_ (_ \|==\_____/==|/ _) _) _) _) _)
+
+(_ (_ (_ (_ (* \|___|/ _) _) _) _) _)
+
+(_ (_ (_ (* (_ _) _) _) _) _)
+
+(_ (_ (_ (_ A _) _) _) _)
+
+(_ (_ (_ / \ _) _) _)
+
+(_ (_ / \ _) _)
+
+(_ / \ _)
+
+/ \
+do: +help places
+
+-=- Matt -=- Halatir -=-
+
+Lecturer> Trispis says, "Before I begin, I'd like to briefly say thank you, on
+behalf of the MUSH 101 staff, to Javelin and Matt (and the rest of M*U*S*H)
+for their support in this venture."
+
+Halatir cheers and claps!
+
+Lecturer> Trispis says, "Thanks to you all."
+Lecturer> Trispis says, "One other note of thanks (an a huge one, at that)
+goes out to scoob, our site admin on MUSH 101. Without his help, we'd never be
+where we are today. Thanks, mate. This lecture is dedicated to you (see the
+topic in the description of this room)."
+
+Halatir laughs.
+
+Lecturer> Trispis says, "Thanks, scoob, for all your support over these past
+several months."
+
+You say, "Hurrah."
+
+Lecturer> Trispis says, "Now... on to the lecture..."
+Lecturer> Trispis says, "Today's topic (despite what the sign says) is:
+Transporting Stuff"
+Lecturer> Trispis says, "There are only three things you need to know about
+this procedure...
+
+1. How to log a session.
+2. How to use the @decompile command.
+3. How to quote a file."
+
+Lecturer> Trispis says, "All three of these tasks are fairly straightforward.
+And, when combined, they are very powerful as well."
+Lecturer> Trispis says, "As is typical for my lectures, I'm going to take
+these topics out of sequence, beginning with number 2, @decompile. Later in
+the lecture, I'll be inviting other guest speakers to participate in the
+logging and quoting procedures."
+Lecturer> Trispis says, "For now, though... a brief explanation of
+@decompile."
+Lecturer> Trispis recommends typing: help @decompile
+
+@DECOMPILE
+@decompile[</switch>] <object>[/<attribute-pattern>]
+@decompile/tf <object>/<attrib>
+
+This command produces a list of the commands that you would have to
+enter in order to recreate <object>. Useful for either copying objects
+from one MUSH to another, or for making logs of important objects to
+protect against an accidental @nuke or a crash.
+
+You can either @decompile an entire object, or just certain parts of it.
+To @decompile just a few attributes, for example, you could type:
+
+@decompile <object>/<attribute name>
+
+for each attribute. You can also use wildcards in <attribute name> to
+@decompile a list of similarly-named attributes.
+
+(continued in help @decompile2)
+
+@DECOMPILE2
+@decompile takes five switches: /db, /flags, /attribs, /tf, /player
+
+@decompile/db
+This command makes @decompile use the object's DBREF # instead of its
+name, which is useful for editing code off-MUSH.
+@decompile/flags
+Only the code to @create the object and set its flags is printed.
+@decompile/attribs
+Only the code to set the object's attributes is printed.
+@decompile/player
+The player's name will be printed rather than 'me', which is primarily
+useful for wizards restoring a player from another db.
+
+(continued in help @decompile3)
+
+@DECOMPILE3
+
+@decompile/tf <object>/<attribute>
+
+The /tf switch is useful only for users of the popular "TinyFugue"
+client program (available from ftp.tcp.com in the directory
+/pub/muds/Clients/tinyfugue). If you do have this program, this
+switch is invaluable for editing code online, because it will grab the
+code to set that attribute and put it into your buffer.
+
+To use @dec/tf, first type this command into TinyFugue:
+
+/def -ag -mglob -p100 -t"FugueEdit > *" fe = /grab %-2
+
+(you can also put this into your .tfrc so it will automatically
+be entered every time you start TinyFugue (tf).) This command works
+just like the 'FugueEdit' object originally created by van@TinyTIM.
+
+See also: CLIENTS, ATTRIBUTES, WILDCARDS, MUSHCODE
+
+Lecturer> Trispis says, "To eliminate confusion, we're going to ignore all of
+the fancy switches and deal with just a basic, straightforward @decompile of a
+single object."
+
+You say, "Yay. :)"
+
+Lecturer> Trispis says, "Also (to eliminate even more confusion), we'll deal
+with a simple object. One with very few attributes."
+Lecturer> Trispis says, "I recommend (for those present), using their toolkit
+child (the one parented to my toolkit here). It should be fairly brief in this
+process. Another good example (for those on MUSH 101) would be the Lab Project
+from previous classes."
+Lecturer> Trispis says, "Here's how this works..."
+Lecturer> Trispis says, "This command...
+
+@decompile <object>
+
+... will spam your screen with all of the necessary commands required to
+rebuild that object exactly as it is at this time."
+
+@create Di's Tooklit
+@link Di's Tooklit = #1149
+@parent Di's Tooklit=#1618
+@lock/Use Di's Tooklit=#1149
+@lock/Basic Di's Tooklit=#1149
+@set Di's Tooklit = INHERIT
+@VN Di's Tooklit=#128 #1623
+@VL Di's Tooklit=#128 #1623
+
+Lecturer> Trispis says, "Now, you may ask, 'What good does this do me?'"
+Lecturer> Trispis says, "This is where logging and quoting come into play."
+Lecturer> Trispis says, "Logging is a way of 'recording' everything that is
+sent to your screen... onto disk (hard disk, floppy disk, zip disk, casette
+tape drive (for you C64 users), etc)"
+
+Halatir wonders how many C64 users are present. q-)
+
+Grinna shrugs.
+
+Lecturer> Trispis says, "Quoting, is a way of taking that recorded (logged)
+information (a file, normally a text file) and entering it all back into your
+screen with a single command (or a few brief mouse clicks in some clients)."
+Lecturer> Trispis says, "Now, why am I discussing @decompile first?"
+Lecturer> Trispis says, "Because it is the /only/ thing about this lecture
+that is standard for all PennMUSH users."
+Lecturer> Trispis says, "Logging and quoting procedures can vary from client
+to client."
+
+You say, "Oh. :)"
+
+Lecturer> Trispis says, "However..."
+Lecturer> Trispis says, "The order I listed them at the beginning (Log,
+@decompile, quote) is the order these things are actually performed."
+Lecturer> Trispis says, "that is..."
+Lecturer> Trispis says, "You begin logging..."
+Lecturer> Trispis says, "You give the command: @decompile <object> ..."
+Lecturer> Trispis says, "(then, when it's done, you stop logging)"
+Lecturer> Trispis says, "Then, you quote the logged file back into the MUSH
+where you're moving it to."
+Lecturer> Trispis says, "A few notes about this procedure before we address
+the subtle differences in logging/quoting procedures for various clients..."
+Lecturer> Trispis says, "first note..."
+Lecturer> Trispis says, "@decompile will record the #dbrefs written into the
+database and into softcoded attributes /exactly/ as they are for this object."
+Lecturer> Trispis says, "Example: The toolkit child will record #1618 as its
+parent and will record a command
+
+@parent toolkit=#1618
+
+which is the parent object here on M*U*S*H."
+Lecturer> Trispis says, "The point here is: you may need to edit the log for
+specific #dbref entries contained in some of the commands (parents, home,
+ufun()'s, etc.)"
+Lecturer> Trispis says, "... before you quote it back in."
+Lecturer> Trispis says, "Note number two..."
+Lecturer> Trispis shuffles his papers, looking for his notes.
+
+Grinna giggles.
+
+Lecturer> Trispis repeats himself as he finds his notes, "Note number two..."
+Lecturer> Trispis says, "it is advisable to take a few precautions before
+beginning a log/decompile session."
+Lecturer> Trispis says, "These precautions include the following...
+
+Find a quiet/private location to do this.
+Remove yourself from (or gag) all chat channels
+(In extreme cases) @set yourself HAVEN
+
+These precautions will help assure you a clean, interruption-free log."
+
+Octavian has arrived.
+
+Grinna waves and bids you have a seat. :)
+
+Lecturer> Trispis says, "Now, on to logging (and eventually, quoting)..."
+Lecturer> Trispis says, "Logging, as I stated earlier, is a way of recording
+all of the information sent to your screen from the MUSH ... in this case, the
+@decompile information of an object (i.e., all of the commands required to
+rebuild it exactly as it is)."
+Lecturer> Trispis says, "When logging, you'll need to remember two very
+important things..."
+Lecturer> Trispis says, "One: You will need to give your logfile a name (just
+like any other file from a word processor or whatever, it needs a name)."
+Lecturer> Trispis says, "Two: You will need to save the file in a location
+where you will be able to find it (i.e., don't accept MS Windows default
+unless you're sure that's where you'll go looking for it later). Be specific
+about these things."
+Lecturer> Trispis says, "Oh, yeah... and three (sorry, there were three
+things): Logging (in almost every circumstance) creates a standard *.txt file
+(e.g., thislog.txt).... or at least it saves it in a that format (although the
+extension may not be .txt). ... That is, the file itself is a standard ascii
+text file (regardless of the filename and extension)."
+Lecturer> Trispis says, "Okay. That brings us to the specifics of /how to
+log/."
+Lecturer> Trispis says, "In some cases, logging is done by 'menu clicks' or
+'hot buttons' (SimpleMU, for instance, has both of these options). In other
+cases, it is done via typed commands with specific syntax (TinyFugue, for
+example, uses this method)."
+Lecturer> Trispis says, "I have invited a couple guest speakers to speak about
+these two particular clients (SimpleMU, and TinyFugue), because they seem to
+be representative of these general /styles/ of usage (in fact, SimpleMU even
+allows the typed command version, which is nearly identical to that of
+TinyFugue)."
+
+You say, "You go first Matt. :)"
+
+Matt says, "Gee, thanks ;)"
+
+You say, "You're welcome. :)"
+
+Lecturer> Trispis says, "So, without further delay, let me introduce Grinna
+... who will be speaking on the SimpleMU logging process."
+
+You say, "Oh shoot. :)"
+
+Matt keels over laughing.
+
+You stand and leave the West Front Row.
+
+You climb the stage. Your feel your heart bouncing in your chest.
+
+Lecturer> Grinna comes walking up to you.
+
+<Audience> Halatir claps!
+
+Lecturer> Grinna says, "Okay.."
+Lecturer> Grinna says, "For SimpleMU.. As Trispis pointed out there are 3 ways
+of starting a log."
+Lecturer> Grinna says, "One way.. (the easiest) is to use the Log Icon at the
+top of the SimpleMU screen."
+Lecturer> Grinna says, "Another is to pull down the Connection Menu and Click
+on Start Logging"
+Lecturer> Grinna says, "Or Use the Keys Ctrl+L"
+Lecturer> Grinna says, "You may also type /log in the 'send' window."
+Lecturer> Grinna says, "Any of these will result in SimpleMU popping up a
+screen where you may choose 1. Where you want to save your log and 2. What you
+want to call said Log."
+Lecturer> Grinna says, "After which you will get questioned... as to whether
+or not you want to use word wrap."
+Lecturer> Grinna says, "And then if you want to log back to the buffer (very
+helpful if you started logging a bit late)."
+Lecturer> Grinna says, "In either of the last two cases you simply click the
+Yes or No buttons."
+Lecturer> Grinna says, "THen you will get a line that says Logging has
+started."
+Lecturer> Grinna says, "To stop logging You may either click the 'Log' Icon
+again, or pull down the Connection Menu to Stop Logging, or type ctrl+L."
+Lecturer> Grinna says, "And just for the record.. I prefer to log to disc.
+That way I never have to go looking thru the computer files for it."
+Grinna sits back down now. :)
+
+Lecturer> Trispis says, "Thank you, Grinna. (:"
+
+You feel a great relief as the lecture ends.
+
+You take a seat in the West Front Row.
+
+Grinna wipes the sweat from her brow.
+
+Lecturer> Trispis says, "Please give Grinna a big round of applause."
+
+Matt claps!
+
+Lecturer> Trispis claps!
+
+Grinna blushes furiously.
+
+Halatir claps again! :)
+
+Lecturer> Trispis says, "Now, Matt will give us the instructions for the same
+process in the TinyFugue client."
+
+Matt carefully walks up the narrow stairs to the stage.
+Lecturer> Matt has arrived.
+
+Grinna applauds. :)
+
+Halatir too. :)
+
+Lecturer> Matt says, "Logging in TinyFugue is controlled entirely through one
+command (typed as normal): /log (the full and gory details are available via
+/help log)."
+Lecturer> Matt says, "Typing /log with no arguments will tell you if you are
+currently logging or not. And if you use TF in 'visual' mode (with a separate
+area for typing in - this is the default in newer versions), you will see
+'(Log)' on the righthand side of your screen, while logging."
+Lecturer> Matt says, "You can enable logging with '/log on', but, will want to
+seriously consider one or two of the options. For instance '/log -w' allows
+you to log a specific world (put the world name right after the -w, for
+instance -wmush if you named this world 'mush'), or the current world, if no
+name is given."
+Lecturer> Matt says, "Issuing /log -g will log *all* your worlds to the same
+file."
+Lecturer> Matt says, "Finally (and most usefully!) you can control the name of
+the file to which TF logs, by simply putting a filename at the end of the
+command, for instance: /log -wmush mush.log. The default filename is
+'tiny.log'."
+Lecturer> Matt says, "A point worth adding, with reference to filenames for
+logs - TF should happily tolerate any path you want to add, if you make it
+part of the filename, for instance: /log -wmush ~/logs/sunday.log (note the
+UNIX path format; I've not used the TF port for Windows95, but would expect it
+to behave in a similar fashion)."
+Lecturer> Matt says, "To stop logging you simply need to enter: /log off."
+
+Lecturer> Trispis says, "Thank you, Matt. (:"
+Lecturer> Trispis says, "Let's give Matt a big round of applause. (:"
+
+Matt comes down from the stage and stumbles over the microphone's flex in the
+process.
+
+Grinna claps loudly. :)
+
+Matt giggles.
+
+Lecturer> Trispis says, "Okay. That covers logging and decompiling. Before
+going on to quoting, I'd like to review what we've covered so far."
+
+Halatir ouches, but claps anyway. :)
+
+Lecturer> Trispis says, "The process (as stated before) is...
+
+Start logging
+@decompile <object>
+stop logging
+
+^^ we've covered all of this ^^
+
+then, quote the log back in to the new MUSH. (haven't covered this, yet)."
+Lecturer> Trispis says, "Grinna asked me to address quoting in SimpleMU, so I
+will... very briefly (as I've only used it once, but found it to be very
+feature-full and useful)."
+
+Raven emerges from the South.
+Raven has arrived.
+
+Grinna waves. :)
+
+Raven waves.
+
+Halatir waves too. :)
+
+You say, "Have a seat, Raven."
+
+Raven takes a seat in the West Front Row.
+Raven joins you.
+
+Halatir stands and leaves the West Second Row.
+Halatir takes a seat in the West Front Row.
+Halatir joins you.
+
+In your row, Grinna giggles at Hal. :)
+
+Halatir is filling up the places. q-)
+
+Lecturer> Trispis says, "Quoting in SimpleMU (not sure of all the other
+optional methods) can be done by selecting the Connections pulldown menu, then
+selecting 'Upload Text'."
+Lecturer> Trispis says, "This will bring up a window which allows you to
+select the file you wish to uplaod (i.e., the one you logged before)."
+Lecturer> Trispis says, "It also allows you to select a few other options on
+how it performs the upload (quote)."
+Lecturer> Trispis says, "I won't go into the details on all of these, however
+I will mention one noteworthy feature..."
+Lecturer> Trispis says, "SimpleMU allows you to specify a 'delay' time between
+each line it sends to the game."
+Lecturer> Trispis says, "for small files (like the Lab Project), this can be
+ignored."
+Lecturer> Trispis says, "Larger files, however (like the figlet I ported for
+our entrance description), can cause a tremendous amount of lag on your
+connection. Thus, this 'delay' time can keep your connection from becoming
+overly lagged."
+Lecturer> Trispis says, "If all you want to do is to be able to chat or do a
+bit of mild RP while you upload, a delay time of 1 second should be
+sufficient. (If you're some kind of psycho-coder-rper-admin-helper-type and
+you're terribly active, you might want to specify a delay of 2 or 3 seconds.
+Note: the more delay, the longer it will take to upload the file.)"
+Lecturer> Trispis says, "Once you've specified a file to upload (and any other
+options you want to add, like the delay time), you just click 'okay' ... and
+away she goes (in the bottom of the screen, it will tell you you're uploading
+until it is finished)."
+
+You say, "Question?"
+
+Lecturer> Trispis says, "Yes, Grinna?"
+
+You say, "When you are quoting back say.. a bunch of rooms and exits... do you
+just let it run? Or do you have to hit the enter key at any time?"
+
+Lecturer> Trispis says, "Well. Quoting in rooms should be done on a
+room-by-room basis. I don't know if the PennMUSH @decompile command will
+record the commands necessary for you to move about for the rebuilding
+process. I suggest @decompiling each room to a separate file... and if they're
+not very complex, it's almost easier to examine/copy/paste. (In fact, I
+recommend this for almost everything: a separate file for each thing)."
+
+You say, "Ah.. okay."
+
+Lecturer> Trispis will research this question (which was a very good question,
+btw) and add any insight to the log.
+Lecturer> Trispis says, "Matt will now give us the lowdown on quoting with
+TinyFugue."
+
+Matt carefully walks up the narrow stairs to the stage.
+
+You say, "Yay. :)"
+
+Raven chuckles.
+
+Lecturer> Matt says, "As with /log, you can get to the help on /quote via
+/help quote, but, even more so than for /log, it's really very convoluted. The
+command itself is quite simple, but has one quirk which might catch you out.
+
+/quote file <--- this won't actually work
+
+the required syntax is
+
+/quote 'file <--- note the single quote mark
+
+Lecturer> Matt says, "However, there are (as before) some very useful switches
+which can be added to the command. Firstly, -w which behaves the same as /log
+-w, allowing you to limit your upload to a single specified world (eg: /quote
+-wmush 'file), or to the current world."
+Lecturer> Matt says, "TF also allows you to specify a delay between uploading
+lines, just as SimpleMU does. Trispis has already explained the primary
+benefits of this, and all which really needs to be added is the format. Adding
+"-X" where X is a number (eg: /quote -2 'file) will put a pause of X sections
+between lines."
+Lecturer> Matt says, "Not terribly useful for combination with @decompile, but
+handy to know, is that TF can also add a 'prefix' to each line sent, allowing
+you to 'funnel' input through other commands, for instance:
+
+/quote -wmush -1 say 'file
+
+would put "say " before each line with a one second delay between each,
+allowing you to 'speak' from a preprepared textfile."
+Lecturer> Matt says, "The file argument for /quote should work quite happily
+with paths such as "/quote -wmush '~/logs/file.log", in the same manner as
+/log does."
+Lecturer> Matt says, "TF shouldn't object if you omit arguments (eg: /quote -2
+'file), but may get a little rowdy if you put them in the wrong
+order (eg: /quote -2 -wmush 'file). Keep them in the order:
+
+world, delay, filename.
+
+Lecturer> Trispis moves the flex out of the way.
+
+Lecturer> Matt departs, carefully this time.
+Matt comes down the few steps from the stage.
+Matt has arrived.
+
+Lecturer> Trispis says, "Okay. One more summary..."
+Lecturer> Trispis says, "The process for moving an object from one MUSH to
+another (usually only useful for larger things with lots of attributes... and
+yes, you can @decompile your characater (PLAYER) for taking fancy @otports
+@oxtports @omoves and the like) is as follows:
+
+start logging (using your favorite client's log features)
+@decompile <object>
+stop logging
+go to the new MUSH and quote (upload) the log
+
+It's all very simple, once you get the hang of it. And is invaluable for
+larger items (My toolkit is four objects with about 50 attributes per object.
+I'd be miserable without these procedures)."
+Lecturer> Trispis says, "Any questions before I dismiss?"
+
+Grinna thinks she's got it. :) Quotes are cool. :)
+
+Lecturer> Trispis says, "Okay... Since there don't seem to be any questions,
+let's give one more big round of applause to Grinna and Matt for their
+participation in this lecture. Thanks, you two. (:"
+Lecturer> Trispis claps.
+
+Halatir claps loudly!
+
+Raven applauds!
+
+Grinna blushes again. :)
+
+Halatir says, "And for Trispis!"
+
+Lecturer> Trispis says, "I'll get this log edited and uploaded ASAP."
+
+Grinna applauds Trispis. :) :)
+
+Lecturer> Trispis bows politely. 

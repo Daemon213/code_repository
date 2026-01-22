@@ -1,0 +1,167 @@
+/*
+================================================================================
+== Were Points Spent Correctly? ================================================
+
+This is our generic checker, returning boolean 1/0 (true/false) if the category adds up correctly.
+
+It does NOT check that points were spent correctly, only if they were spent!  For instance, it won't check if 2-point Goblin Contracts were spent.
+
+
+--------------------------------------------------------------------------------
+-- Pts Valid?: Attributes ------------------------------------------------------
+
+Check for: 3/4/5 points
+0: dbref of sheet
+1: possible late additions/subtractions (for 'free point' checks)
+a: attributes
+
+*/
+
+&f.pts-valid?.attributes [v( d.cg )]=
+	strcat( 
+		setq( a, sort( u( f.allocated.attributes, %0, %1 ), n, / )), 
+		cand( 
+			eq( first( %qa, / ), 3 ), 
+			eq( elements( %qa, 2, / ), 4 ), 
+			eq( last( %qa, / ), 5 )
+		)
+	)
+
+/* -- test --
+
+think u( v( d.cg )/f.pts-valid?.attributes, %# )
+
+
+--------------------------------------------------------------------------------
+-- Pts Valid?: Skills ----------------------------------------------------------
+
+Check for: 4/7/11 points
+0: dbref of sheet
+1: possible late additions/subtractions (for 'free point' checks)
+s: skills
+
+*/
+
+&f.pts-valid?.skills [v( d.cg )]=
+	strcat( 
+		setq( s, sort( u( f.allocated.skills, %0, %1 ), n, / )), 
+		and(
+			eq( first( %qs, / ), 4 ), 
+			eq( elements( %qs, 2, / ), 7 ), 
+			eq( last( %qs, / ), 11 )
+		)
+	)
+
+/* -- test --
+
+think u( v( d.cg )/f.pts-valid?.skills, %# )
+
+
+--------------------------------------------------------------------------------
+-- Pts Valid?: Specialties -----------------------------------------------------
+
+Check for specialties in a list of yes/no: 
+<standard>`<template>`<specialty>`<sub-specialty>
+<standard> need to be 3, otherwise check based on tempalte
+
+0: dbref of sheet
+s: specialties
+t: template
+
+&f.pts-valid?.specialties.<template> (if exists):
+	input: <template>`<specialty>`<sub-specialty>
+	output: 1 1 1 (a stream of 1 or 0 responses if it's valid)
+
+*/
+
+&f.pts-valid?.specialties [v( d.cg )]=
+	strcat(
+		setq( s, u( f.allocated.specialties, %0 )), 
+		setq( t, u( %0/_bio.template )), 
+		land( 
+			[eq( words( first( %qs, ` )), 3 )] 
+			[udefault( f.pts-valid?.specialties.%qt, 1, rest( %qs, ` ))] 
+		)
+	)
+
+/* -- test --
+
+think u( v( d.cg )/f.pts-valid?.specialties, %# )
+think u( v( d.cg )/f.pts-valid?.specialties, v( _special.sheet_location ))
+
+
+--------------------------------------------------------------------------------
+-- Pts Valid?: Merits ----------------------------------------------------------
+
+Okay, here's the thing with Merits. The core GMC rules expansion (p150) says:
+
+	These rules supplement the character creation rules and replace the 
+	experience point rules in the World of Darkness Rulebook.
+
+Merits are not given any chargen-level changes, yet so far all Supernatural
+templates are given 10 merit dots. WoD 2.0 gives the base chargen 7 merit dots.
+
+However, it would be poor form to not give mortals the same number of merits 
+that supernaturals here, so we are DE-FACTO HOUSE RULING that everyone starts 
+with 10 merit dots, not 7.
+
+Thanks to Demon's Stigmatics, we also have to subtract '.<template>' values.
+
+>> Note to Self: We already subtract these in 'f.allocated.merits' <<
+
+--
+
+0: dbref of sheet
+
+*/
+
+&f.pts-valid?.merits [v( d.cg )]=
+	eq( 
+		ladd( u( f.allocated.merits, %0 ), / ), 
+		10 
+	)
+
+/* -- test --
+
+think u( v( d.cg )/f.pts-valid?.merits, %# )
+
+
+
+--------------------------------------------------------------------------------
+-- Pts Valid?: Integrity -------------------------------------------------------
+
+Point validity check for all game lines' Integrity trait at chargen.
+It should be whatever the 'default' is in the system. 
+
+i.e., don't let players change it.
+
+--
+
+t: template
+i: integrity trait, matching trait with both 'integrity' and '<template>' tags
+
+*/
+
+&f.pts-valid?.integrity [v( d.cg )]=
+	strcat( 
+		setq( t, u( %0/_bio.template )), 
+		udefault( 
+			f.pts-valid?.integrity.%qt, 
+			u( f.pts-valid?.integrity.human, %0 ), 
+			%0 
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Pts Valid?: Integrity, Human ------------------------------------------------
+*/
+
+&f.pts-valid?.integrity.human [v( d.cg )]=
+	eq( 
+		u( f.allocated.integrity.human, %0 ), 
+		udefault( u( d.dd )/default.advantage.integrity, 7 ) 
+	)
+
+

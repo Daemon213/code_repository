@@ -1,0 +1,621 @@
+ CLASS: MUSHCoding 101
+PART: 3
+DATE: 11/19/2002 TIME: 6 PM
+INSTRUCTOR: Luigi
+WHERE: 8BitMUSH
+DESCRIPTION: The first class of MUSHCoding 101 PART 3 ever held. Most of
+it has been left in its original state, though some parts of the log were
+edited to remove spam or correct a speaker's typo. A '*' has been placed in
+front of the speaker's name.
+
+----------------------------------------------------------------------------
+
+Luigi's Classroom
+..is a pit. @Dolists and iter()'s float about, encapsulating each other, and
+surrounding and being surrounded by a plethora of other functions and @commands.
+It's a mess. Some of the code here is scribbled on walls and notebook paper, while
+even more of it is written on the windows with crayons or scratched into the floors.
+Madness. You wonder how you'll ever learn how to code now.
+Contents:
+Faizah's Plant H/W to Luigi
+Planted Seed
+Rhayden
+Xeiran
+Mapping Droid
+Faizah
+Note
+Blackboard
+Obvious exits:
+<O>ut
+Phil_Laco fire spitball at Faizah's forehead.
+Phil_Laco has left.
+Xeiran says, "I sure wish I could have made my frame one..."
+Xeiran says, "Um, Luigi, how do you make animations?"
+* Luigi says,, "Alright, is everyone ready to begin?"
+Faizah says, "Hang on. Want to show all 3 stages of my plant."
+drop h/w
+Dropped.
+l h/w
+Faizah's Plant H/W to Luigi(#6173V)
+You see a small plant, growing out of a clay pot. It looks about 99 centimeters
+tall.
+
+
+±±
+± ±
+±
+±±±±±±±±
+±±±±±±
+±±±±±±
+±±±±±±
+
+
+You may like to water it to make it grow.
+Phil_Laco has arrived.
+Xeiran waters the redwood. It grows to be gigantic!
+Faizah says, "This is the small one."
+Xeiran digs back up the tree seed.
+Faizah waters the plant, and it grows a little.
+l h/w
+Faizah's Plant H/W to Luigi(#6173V)
+The plant is precisely 1 meter tall. It looks to be a small tree of some kind.
+
+±±
+± ±±
+± ±±±
+±± ±
+±
+±±±±±±
+±±±±
+±±±±
+±±±±
+
+You may like to water it to make it grow.
+Faizah says, "The 1-meter one."
+Faizah waters the plant, and it grows a little.
+Xeiran says, "This is what it shows when you dig up the redwood :) "You grab a shovel
+and dig at the redwood's base, finally crouching down, and coming up triumphantly with
+the seed, grinning at no one in particular. Meanwhile, the redwood topples over and
+smashes some old lady in a wheelchair. Oops.""
+Faizah says, "The adult one"
+Phil_Laco has left.
+Faizah says, "That's my tree thing. Heh."
+* Luigi says,, "Good job."
+Xeiran says, "Heheh"
+Faizah says, "Not much, but I like the descs."
+Rhayden's plant had pictures
+Xeiran says, "I think mine would have gotten a pretty good rating, if my picture hadn't
+screwed up"
+* Luigi says,, "I'll grade them later. Can we begin?"
+Xeiran says, "Yes, let's go"
+Faizah says, "I'm ready"
+Rhayden says, "Time to learn"
+* Luigi says,, "The first week we discussed Commands and Functions. Such as @create,
+add(), and so forth. We also talked about $-commands, or user-defined commands, the
+format being &<attribute> <object>=$<command>:<what to do when this command is typed>."
+* Luigi says,, "The second week we discussed @Wipe, @Destroy, and most importantly,
+@Switch."
+* Luigi says,, "We also discussed @Listen and @Ahear."
+* Luigi says,, "For review, @Switch uses the following format:"
+Faizah grins. Heh. @listen and @ahear was fun.
+* Luigi says,, "@Switch <what to switch on>=<if this>,<then this>"
+Xeiran says, "Don't forget, <else this>"
+* Luigi says,, "You may have as many <if this>,<then this>'s as you wish, and may end
+with a {} which is what happens if none of the others match. See the logs of last
+week's for more detail on this."
+* Luigi says,, "@Listen is simply a wildcard, such as: * says, "*""
+* Luigi says,, "Whenever the object 'hears' something that matches this, it runs the
+@Ahear."
+Rhayden nods.
+* Luigi says,, "We set a @Switch on the ahead, that did something different depending
+on if they said 'hi' or 'bye', if you'll remember."
+* Luigi says,, "Let's continue our discussion on @Listen."
+* Luigi says,, "There may be cases where @Ahear isn't what you want to use. There is
+also an @Amhear and a @Aahear."
+* Luigi says,, "@Ahear is triggered when @Listen matches on something NOT owned by the
+thing the @Listen is on."
+Rhayden says, "Isn't that @amhear?"
+* Luigi says,, "Let's say we have an object listening for "hi". If the object itself
+said "hi", it wouldn't trigger it."
+* Luigi says,, "@Amhear, on the other hand, triggers ONLY what the object says. So
+unless the object itself said "hi", it wouldn't trigger it."
+* Luigi says,, "Lastly, @Aahear triggers from everything."
+* Luigi says,, "@Ahear is the most commonly used."
+* Luigi says,, "Create a new object. Parrot."
+* Luigi says,, "@Listen Parrot=*"
+Kronus has arrived.
+Kronus sneaks in quitely and sits down...
+* Luigi types --> @ahear parrot=say Bawk! %0;@ahear me
+Faizah names hers FizP'rot. Just cause. Heh.
+* Luigi says,, "Then drop your parrot, and say something. You will have to re-set the
+@ahear each time you want it to do it once, as every time it matches something it does
+"@ahear me" which erases the @ahear."
+RhayParrot has arrived.
+Rhayden drops RhayParrot.
+RhayParrot says, "Bwak! Dropped."
+RhayParrot says, "Bwak! Luigi's Classroom"
+RhayParrot says, "Bwak! ..is a pit. @Dolists and iter()'s float about, encapsulating
+each other, and surrounding and being surrounded by a plethora of other functions and
+@commands. It's a mess. Some of the code here is scribbled on walls and notebook paper,
+while even more of it is written on the windows with crayons or scratched into the
+floors. Madness. You wonder how you'll ever learn how to code now."
+RhayParrot says, "Bwak! Contents:"
+RhayParrot says, "Bwak! Kronus"
+RhayParrot says, "Bwak! Faizah's Plant H/W to Luigi(#6173V)"
+RhayParrot says, "Bwak! Tree Seed(#6541VScSoToTa)"
+RhayParrot says, "Bwak! Rhayden(#12460PIOQeACM)"
+RhayParrot says, "Bwak! Xeiran"
+RhayParrot says, "Bwak! Mapping Droid"
+RhayParrot says, "Bwak! Luigi"
+RhayParrot says, "Bwak! Faizah"
+RhayParrot says, "Bwak! Note"
+RhayParrot says, "Bwak! Blackboard"
+RhayParrot says, "Bwak! Obvious exits:"
+RhayParrot says, "Bwak! <O>ut "
+* Luigi says,, "Hello."
+FizP'rot has arrived.
+Faizah drops FizP'rot.
+FizP'rot says, "Bawk! Dropped."
+FizP'rot says, "Bawk! Luigi's Classroom"
+FizP'rot says, "Bawk! ..is a pit. @Dolists and iter()'s float about, encapsulating each
+other, and surrounding and being surrounded by a plethora of other functions and
+@commands. It's a mess. Some of the code here is scribbled on walls and notebook paper,
+while even more of it is written on the windows with crayons or scratched into the
+floors. Madness. You wonder how you'll ever learn how to code now."
+FizP'rot says, "Bawk! Contents:"
+FizP'rot says, "Bawk! RhayParrot"
+FizP'rot says, "Bawk! Kronus"
+FizP'rot says, "Bawk! Faizah's Plant H/W to Luigi(#6173V)"
+FizP'rot says, "Bawk! Tree Seed(#6541VScSoToTa)"
+FizP'rot says, "Bawk! Rhayden"
+FizP'rot says, "Bawk! Xeiran"
+FizP'rot says, "Bawk! Mapping Droid"
+FizP'rot says, "Bawk! Luigi"
+FizP'rot says, "Bawk! Faizah(#12696PIQeAC)"
+FizP'rot says, "Bawk! Note"
+FizP'rot says, "Bawk! Blackboard"
+FizP'rot says, "Bawk! Obvious exits:"
+FizP'rot says, "Bawk! <O>ut "
+* Luigi says,, "Re set the @ahear on the parrots, and try saying something."
+FizP'rot says, "Bawk! Luigi says, "Re set the @ahear on the parrots, and try saying
+something.""
+Faizah says, "Hello"
+Xeiran drops Pollyanna.
+Xeiran says, "Hey"
+FizP'rot says, "Bawk! Xeiran says, "Hey""
+Faizah says, "Hello"
+* Luigi says,, "The only reason I put "@ahear me" in there is so it wouldn't keep
+triggering off all of the other parrots, thus spamming us senseless."
+* Luigi says,, "Do you understand?"
+RhayParrot says, "Bwak! Luigi says, "Do you understand?""
+* Luigi grins.
+Xeiran says, "What I did was @set Pollyanna to halt before I dropped her, then set
+!halt"
+Faizah grins.
+Xeiran says, "Understand, I do"
+RhayParrot says, "Bwak! Xeiran says, "Understand, I do""
+* Luigi says,, "Yes, you can @halt things and then type '@set <object>=!halt'. Haven't
+talked about this yet, but it exists."
+RhayParrot says, "Bwak! Luigi says, "Yes, you can @halt things and then type '@set
+<object>=!halt'. Haven't talked about this yet, but it exists.""
+Xeiran says, "Yeah, shutup ya little featherball"
+* Luigi says,, "Alright, please pick up your objects. Any questions about @Ahear,
+@Amhear, and @Aahear before we move on?"
+Xeiran takes Pollyanna.
+FizP'rot has left.
+Faizah takes FizP'rot.
+Xeiran raises a hand.
+* Luigi says,, "Yes, Xeiran?"
+RhayParrot has left.
+Rhayden takes RhayParrot.
+Xeiran says, "If a robot hears itself and responds, does it keep saying the same thing?"
+* Luigi says,, "A robot?"
+Xeiran says, "Er"
+Xeiran says, "Object"
+Xeiran says, "If an object hears itself, does it keep responding or what"
+Rhayden says, "Depends if your @aahear/@amhear sends itself into an infinite loop"
+* Luigi says,, "It depends on if it is hearing itself say what matches to its @listen."
+Rhayden says, "Hear "this". Say "this"."
+* Luigi says,, "@listen <object>=*corn* and @amhear <object>=say corn, would loop."
+Xeiran says, "Aha, okay. Echo-chamber style. >:)"
+* Luigi says,, "Next, we move back into @Switch."
+* Luigi says,, "A very important command we covered last class, I want to cover another
+couple of features it has."
+Faizah takes Faizah's Plant H/W to Luigi.
+Faizah gave you Faizah's Plant H/W to Luigi.
+* Luigi says,, "As you should recall, @Switch can use wildcards."
+Rhayden nods.
+Faizah nodnods.
+* Luigi types --> @Switch corn=*orn,{say Had "orn" in it!}
+* Luigi says,, "Had "orn" in it!"
+* Luigi types --> @Switch lorn=*orn,{say Had "orn" in it!}
+* Luigi says,, "Had "orn" in it!"
+* Luigi says,, "@Switch can also do something cool when the thing being switch on is a
+number."
+* Luigi says,, "Behold:"
+* Luigi types --> @Switch 3=>3,{say Greater than three!},<3,{say Less than
+three!},3,{say Three exactly!}
+* Luigi says,, "Three exactly!"
+teach @Switch 2=>3,{say Greater than three!},<3,{say Less than three!},3,{say Three
+exactly!}
+* Luigi types --> @Switch 2=>3,{say Greater than three!},<3,{say Less than
+three!},3,{say Three exactly!}
+* Luigi says,, "Less than three!"
+teach @Switch 4=>3,{say Greater than three!},<3,{say Less than three!},3,{say Three
+exactly!}
+* Luigi types --> @Switch 4=>3,{say Greater than three!},<3,{say Less than
+three!},3,{say Three exactly!}
+* Luigi says,, "Greater than three!"
+Kronus says, "Oh sweet..."
+* Luigi says,, "The greater than and less than symbol can be used when dealing with
+integers."
+Rhayden nods. "Very useful."
+Xeiran says, "Right."
+* Luigi says,, "Another very useful feature of @Switch.."
+* Luigi types --> @Switch 1=<3,{say Less than three!},{say #$}
+* Luigi says,, "Less than three!"
+* Luigi types --> @Switch 4=<3,{say Less than three!},{say #$}
+* Luigi says,, "4"
+* Luigi says,, "Behold #$."
+* Luigi says,, "#$ might look funky, but let me explain."
+Faizah says, "Oooh. That's new to me. *listens*"
+* Luigi says,, "#$, when used inside of a @Switch or Switch(), is replaced with
+whatever was switched on."
+Rhayden says, "Sweet!"
+* Luigi types --> @Switch BLAH BLARG BLAH BLAH=*,{say You tried to switch on #$.}
+* Luigi says,, "You tried to switch on BLAH BLARG BLAH BLAH."
+Kronus says, "Ahhhh thats useful..."
+* Luigi says,, "You wildcards and the greater than and the #$ can be combined to
+create powerful @Switch statements."
+* Luigi types --> @Switch [rand(50000)]=*5*,{say The number had a 5 in
+it!},<40000,{say The number was less than 40000.},{say The number was #$.}
+* Luigi says,, "The number had a 5 in it!"
+* Luigi says,, "The number was less than 40000."
+* Luigi ponders for a second.
+Kronus grins
+* Luigi types --> @Switch [rand(50000)]=*5*,{say The number had a 5 in
+it!},<40000,{say The number was less than 40000.},*,{say The number was #$.}
+* Luigi says,, "The number was less than 40000."
+* Luigi says,, "The number was 34321."
+Rhayden says, "@switch/first"
+Kronus says, "What did you do?"
+* Luigi says,, "Alright, it appears the default isn't always run if it matches
+something else first in the @Switch. So use a *."
+* Luigi types --> @Switch test=hi,{say Nyah},{say Test}
+* Luigi says,, "Test"
+* Luigi types --> @Switch test=test,{say Nyah},{say Test}
+* Luigi says,, "Nyah"
+* Luigi types --> @Switch test=test,{say Nyah},*,{say Test}
+* Luigi says,, "Nyah"
+* Luigi says,, "Test"
+Faizah says, "The number was less than 40000."
+Faizah says, "The number was 3473."
+* Luigi says,, "So if you ALWAYS want the default to run (in a @Switch, not a
+@Switch/first), use a *."
+Rhayden nods.
+Faizah nods.
+Rhayden says, "That's why my defaults only happen if nothing else happens."
+Rhayden says, "Which is why I rarely use @swi/first"
+* Luigi says,, "However, @Switch/First is what I usually use."
+Faizah says, "The number was 648476."
+Faizah says, "The number was less than 40000."
+Faizah says, "The number was 27997."
+Xeiran says, "Because the default is anything"
+* Luigi says,, "Because, if you'll recall, it only matches the first thing it can
+match, instead of all."
+* Luigi says,, "Anyone confused?"
+Rhayden nods.
+Rhayden says, "Er, no. I'm good."
+Faizah is fine.
+Xeiran says, "I'm not."
+* Luigi says,, "Good :)"
+Kronus nods...
+Xeiran says, "But Pollyanna's confused."
+Kronus says, "Oh I'll get it... just give it time to sink in... . keep going..."
+* Luigi says,, "The greater than and less than can be used for easy number checking.
+Do this with your parrot:"
+* Luigi types --> &enter_number parrot=$enter number *:@swi/first val(%0)=<1,{say
+Please enter a number between 1 and 100.},>100,{say Please enter a number between 1 and
+100.},{say Thank you! Your number was #$.}
+* Luigi says,, "Place that on your parrot, drop it, and type: enter number <a number>"
+RhayParrot has arrived.
+Rhayden drops RhayParrot.
+Kronus drops Dragon.
+enter number 50
+I can't see that here.
+Rhayden says, "No worky"
+* Luigi says,, "Oh, my mistake. "Enter" is a command."
+* Luigi types --> &enter_number parrot=$enternumber *:@swi/first val(%0)=<1,{say Please
+enter a number between 1 and 100.},>100,{say Please enter a number between 1 and
+100.},{say Thank you! Your number was #$.}
+Kronus nods
+Fizzeth P'rot has arrived.
+Faizah drops Fizzeth P'rot.
+* Luigi says,, "Needs to be one word, or it gets confused with the game command ENTER."
+Fizzeth P'rot says, "Please enter a number between 1 and 100."
+RhayParrot says, "Please enter a number between 1 and 100."
+* Luigi types --> enternumber 50
+Fizzeth P'rot says, "Thank you! Your number was 50."
+* Luigi types --> enternumber dfhfdg
+Fizzeth P'rot says, "Please enter a number between 1 and 100."
+Dragon says, "Please enter a number between 1 and 100."
+Fizzeth P'rot says, "Please enter a number between 1 and 100."
+Dragon says, "Please enter a number between 1 and 100."
+Fizzeth P'rot says, "Please enter a number between 1 and 100."
+Dragon says, "Please enter a number between 1 and 100."
+RhayParrot says, "Please enter a number between 1 and 100."
+Fizzeth P'rot says, "Thank you! Your number was 50."
+Dragon says, "Thank you! Your number was 50."
+RhayParrot says, "Thank you! Your number was 50."
+Fizzeth P'rot says, "Thank you! Your number was 8."
+Dragon says, "Thank you! Your number was 8."
+Fizzeth P'rot says, "Thank you! Your number was 4."
+Dragon says, "Thank you! Your number was 4."
+Fizzeth P'rot says, "Thank you! Your number was 8."
+Dragon says, "Thank you! Your number was 8."
+Pollyanna has arrived.
+Xeiran drops Pollyanna.
+* Luigi says,, "So greater than and less than when used like this could great a Guess
+The Number game, of sorts."
+* Luigi says,, "Please pick up your pets once you are finished testing."
+Kronus takes Dragon.
+Fizzeth P'rot has left.
+Faizah takes Fizzeth P'rot.
+RhayParrot has left.
+Rhayden takes RhayParrot.
+Rhayden is reminded of SpamBot. :)
+* Luigi heh.
+Pollyanna says, "Thank you! Your number was 5."
+* Luigi says,, "Last, there is a function form of @Switch. Switch()."
+Pollyanna says, "Please enter a number between 1 and 100."
+Pollyanna says, "Thank you! Your number was 48."
+* Luigi says,, "It acts pretty much the same, only you cannot put @Commands inside of
+it (or any function)."
+Pollyanna says, "Thank you! Your number was 2."
+Xeiran says, "Wait a second, what's val()?"
+* Luigi says,, "It also defaults to "switch first"."
+Kronus says, "Not even get()?"
+Rhayden types --> help val()
+* Luigi says,, "Oh yes, VAL() takes an argument, and turns it into an Integer."
+* Luigi types --> say val(5)
+* Luigi says,, "5"
+* Luigi types --> say val(5gdfgfd)
+* Luigi says,, "5"
+* Luigi types --> say val(fhfdg)
+* Luigi says,, "0"
+Rhayden types --> say val(4.555)
+Rhayden says, "4"
+* Luigi says,, "I did that to make sure @Switch was dealing with integers."
+* Luigi says,, "Now, a little work with Switch()."
+Kronus says, "You mean you can't use get() in side the switch()"
+* Luigi says,, "You can. Get() is a function.,"
+Fizzeth P'rot has arrived.
+Faizah drops Fizzeth P'rot.
+Fizzeth P'rot says, "Ding Ding Ding! Your number was 37! You have won: An old sock!"
+* Luigi says,, "I'll show some examples of what you can and can't do."
+* Luigi types --> say switch(5,<3,Less than 3,Number was 3 or more. Number was #$.)
+* Luigi says,, "Number was 3 or more. Number was 5."
+* Luigi says,, "Much like @Switch, #$ and > and < work."
+Fizzeth P'rot has left.
+Faizah takes Fizzeth P'rot.
+* Luigi types --> say switch(5,5,say Say is a command this will not work)
+* Luigi says,, "say Say is a command this will not work"
+* Luigi types --> say switch(5,5,@emit Hi)
+* Luigi says,, "@emit Hi"
+Kronus says, "Oh... ok"
+* Luigi says,, "Switch() isn't used as often as @Switch. But you may find uses
+sometimes."
+Rhayden says, "If you want to switch on something inside another function?"
+* Luigi says,, "Right."
+* Luigi says,, "Any questions?"
+Rhayden says, "Nein."
+Kronus says, "I think I'll get it"
+Faizah says, "Can't recall. Can you @fo object=switch(3,3,@emit three!,<3,say lower
+than three,>3,pose thinks of a number higher than three.)"
+* Luigi says,, "Yes, you can."
+* Luigi says,, "Let us now discuss strmatch(). Strmatch takes two arguments, like so:
+strmatch(<arg 1>,<arg 2>)"
+* Luigi says,, "Basically, what it does is return a 1 if <arg 1> matches <arg 2>, or a
+0 if not."
+* Luigi says,, "It also allows for wild cards in <arg 2>. Example:"
+* Luigi types --> @Switch strmatch(corndogs,*corn*)=1,{say Had corn in it!},{say Didn't
+have corn in it.}
+* Luigi says,, "Had corn in it!"
+* Luigi types --> say strmatch(corndogs,*corn*)
+* Luigi says,, "1"
+* Luigi types --> say strmatch(buffalo wings,*corn*)
+* Luigi says,, "0"
+Xeiran raises his hand/.
+* Luigi says,, "Yes, Xei?"
+Xeiran says, "You could use it for a password."
+Rhayden nod
+* Luigi says,, "There is also a similar function, match(), which returns which word in
+a list of words matched, or 0 if not."
+* Luigi types --> say match(corn dogs,corn)
+* Luigi says,, "1"
+* Luigi types --> say match(corn dogs,dogs)
+* Luigi says,, "2"
+* Luigi types --> say match(corn dogs,dog*)
+* Luigi says,, "2"
+* Luigi types --> say match(corn dogs,corn*dogs)
+* Luigi says,, "0"
+Faizah types --> say match(corn dogs,*o*)
+Faizah says, "1"
+Xeiran says, "0"
+* Luigi says,, "Each word is seperated by a space and you can only match one word with
+match()."
+* Luigi says,, "Let us see an example of how this can be useful:"
+* Luigi types --> @Switch match(green red yellow,red)=0,{say Not a valid color!},1,{say
+You picked [ansi(g,Green)]!},2,{say You picked [ansi(r,Red)]!},3,{say You picked
+[ansi(y,Yellow)]!}
+* Luigi says,, "You picked Red!"
+* Luigi types --> @Switch match(green red yellow,green)=0,{say Not a valid
+color!},1,{say You picked [ansi(g,Green)]!},2,{say You picked [ansi(r,Red)]!},3,{say
+You picked [ansi(y,Yellow)]!}
+* Luigi says,, "You picked Green!"
+* Luigi types --> @Switch match(green red yellow,yellow)=0,{say Not a valid
+color!},1,{say You picked [ansi(g,Green)]!},2,{say You picked [ansi(r,Red)]!},3,{say
+You picked [ansi(y,Yellow)]!}
+* Luigi says,, "You picked Yellow!"
+* Luigi types --> @Switch match(green red yellow,FDHGDHF)=0,{say Not a valid
+color!},1,{say You picked [ansi(g,Green)]!},2,{say You picked [ansi(r,Red)]!},3,{say
+You picked [ansi(y,Yellow)]!}
+* Luigi says,, "Not a valid color!"
+* Luigi says,, "Ignore my first example. I made a typo."
+Faizah says, "Ahhhh"
+Faizah is glad I'm logging.. afk. Continue.
+Xeiran says, "I think I get it"
+* Luigi says,, "Now, match() may not seem incredibally useful right now. If not, don't
+worry. In MUSHCoding 201 we will deal with it more in a more in depth manner."
+* Luigi says,, "I want to discuss two more functions, and how they can be used
+together."
+Xeiran says, "Whatever is matched to the list of words returns the order of the word
+matched?"
+* Luigi says,, "Yes.."
+* Luigi says,, "You all may recall rand(), which allows you to generate a random
+number."
+Xeiran nods.
+* Luigi says,, "Now I want to show you how to generate a random word."
+* Luigi says,, "Using first(), and shuffle()."
+Xeiran says, "Fun fun"
+* Luigi types --> say first(shuffle(A B C D E F))
+* Luigi says,, "D"
+* Luigi types --> say first(shuffle(A B C D E F))
+* Luigi says,, "E"
+* Luigi types --> say first(shuffle(A B C D E F))
+* Luigi says,, "E"
+Faizah says, "Back. Oooh."
+* Luigi types --> say first(shuffle(A B C D E F))
+* Luigi says,, "F"
+* Luigi types --> say first(shuffle(A B C D E F))
+* Luigi says,, "B"
+* Luigi says,, "Shuffle takes a list of words, and shuffles them up."
+Rhayden says, "Good ole first(shuffle())"
+* Luigi types --> say shuffle(a b c d e f g h i j k l m n o p q r s t u v w x y z)
+* Luigi says,, "r d w f p x c o q i m t n l b v a h y u k z j s e g"
+* Luigi types --> say shuffle(a b c d e f g h i j k l m n o p q r s t u v w x y z)
+* Luigi says,, "g b n q o u r j k l f c m t y w p s v h z x i a d e"
+* Luigi types --> say shuffle(how are you)
+* Luigi says,, "you how are"
+* Luigi types --> say shuffle(how are you)
+* Luigi says,, "are you how"
+* Luigi says,, "First() returns the first word in a list."
+teach say first(YO YO MA)
+* Luigi types --> say first(YO YO MA)
+* Luigi says,, "YO"
+* Luigi types --> say first(I am Luigi)
+* Luigi says,, "I"
+* Luigi says,, "Combined, you can get a random word."
+Xeiran says, "You could make a more coherent word by putting a list of consanants, and
+then vowels... you'd have a speakable word (maybe)"
+* Luigi says,, "There are also some fun, similar functions."
+* Luigi types --> say scramble(abcdefg)
+* Luigi says,, "cdegabf"
+* Luigi types --> say scramble(abcdefg)
+* Luigi says,, "cfgdbae"
+* Luigi types --> say scramble(abcdefg)
+* Luigi says,, "cgbdaef"
+* Luigi types --> say last(YO YO MA)
+* Luigi says,, "MA"
+* Luigi types --> say reverse(YO YO MA)
+* Luigi says,, "AM OY OY"
+Xeiran says, "v"
+* Luigi says,, "See the help files for LIST FUNCTIONS and STRING FUNCTIONS for a list
+of them."
+Xeiran says, "f"
+Xeiran says, "e"
+Xeiran says, "g"
+Xeiran says, "k"
+Faizah nods.
+Xeiran says, "Hmm, strange random word"
+* Luigi types --> @Switch first(shuffle(corn dogs))=corn,{say #$!},dog*,{say #$!}
+* Luigi says,, "corn!"
+* Luigi types --> @Switch first(shuffle(corn dogs))=corn,{say #$!},dog*,{say #$!}
+* Luigi says,, "corn!"
+* Luigi types --> @Switch first(shuffle(corn dogs))=corn,{say #$!},dog*,{say #$!}
+* Luigi says,, "dogs!"
+Xeiran says, "z"
+Xeiran says, "e"
+Xeiran says, "b"
+Xeiran says, "q"
+Xeiran says, "d"
+Xeiran says, "e"
+Xeiran says, "q"
+Xeiran says, "o"
+Xeiran says, "x"
+Xeiran says, "n"
+Xeiran says, "o"
+Xeiran says, "c"
+Xeiran says, "i"
+Xeiran says, "h"
+Xeiran says, "Sorry for the spam, I'll carry on with that sort of fun at my house."
+Rhayden heh
+* Luigi says,, "Alright. I want to thank you all for coming to my classes. I will be
+handing out the final project, which will be the last critera for you passing this
+class. Your GPA will be recorded in a global, and you will be able to take MUSHCoding
+201 which I plan to begin in a week, or two."
+Rhayden says, "yay!"
+Faizah says, "Cool"
+* Luigi says,, "I have decided to skip the final exam this term. There may be one in
+MUSHCoding 201 though."
+Xeiran says, "Why don't we make one up using all of our capabilities?"
+Rhayden says, "Ding"
+* Luigi says,, "Here is the project requirements:"
+* Luigi says,, "Create an object which demonstrates your ability to Say, @Listen,
+@Switch, and Ansi()."
+Suggestions:
+* Answering Machine (records visitors to a room, greets them as they
+arrive, allows them to leave messages only visible to the owner.)
+* Dog or other pet (does tricks command. Use @Listen with a @Switch
+in it, and not ^-patterns.)
+* Luigi says,, "You can basically do anything, and may substitute Say with @Pemit or
+@Emit."
+Faizah says, "Cool"
+Fizzeth P'rot has arrived.
+Faizah drops Fizzeth P'rot.
+Fizzeth P'rot says, "Ding Ding Ding! Your number was 75! You have won: An old sock!"
+* Luigi says,, "You may turn this in before next Tuesday. My email is
+eightbitmush@Hotmail.com. If you are interested in joining MUSHCoding 201 (which I will
+be teaching) please contact me or watch the bboards."
+Rhayden says, "Oh!"
+Rhayden forgot to pay for today.
+Fizzeth P'rot has left.
+Faizah takes Fizzeth P'rot.
+Kronus gives you 1 Coin.
+Kronus says, "Luigi... can I turn in tonights homework tomarrow please?"
+* Luigi says,, "Okay."
+Kronus says, "Thanks... I have been busy with RL homework... and haven't had the
+time..."
+Rhayden says, "Thanks for class Luigi!"
+Faizah says, "Looking forward to 201"
+* Luigi says,, "Thank you Fai, Rjay, and Kronus, for showing up to each class. And
+Xeiran for catching up on time."
+Xeiran says, "As am I"
+Rhayden says, "Sign me up for 201."
+Xeiran says, "Me too, I won't miss a class unless I need to"
+* Luigi says,, "If you've paid, and turn in your final homework, I will consider you
+enrolled. We will have something like a +GPA."
+Kronus says, "Yeah sorry I was late tonight... stupid work..."
+Rhayden nods.
+Kronus says, "I was begging my boss to let me off... but he wouldn't let me... LOL"
+* Luigi says,, "Also, MUSHCoding 201 should be fun. We are going to cover some fun
+stuff. I am thinking if switching it to Wednesday. Would this work for everyone?"
+Kronus says, "Errrr not for me... I have RL class till 9:00 there..."
+Xeiran says, "Not for me either"
+Faizah says, "Just so long as you don't change the time, any day is fine"
+* Luigi says,, "Well, I'll talk to all of you before we start the class, and try to
+pick a time that will work for everyone."
+Faizah says, "Or, later is fine"
+Xeiran says, "Keep that"
+Xeiran says, "It's a fun little thingamabob"
+Faizah says, "6pm = 11:30am here"
+"No time has been picked yet. We'll talk about it later. I should go. *waves*
+* Luigi says,, "No time has been picked yet. We'll talk about it later. I should go.
+*waves*"
+Kronus waves
+Xeiran says, "Hey, by the way; anyone wanna buy a calculator? It costs 5 coins, but
+it'll be @chowned to you"
+Faizah says, "I'm rarely coherent before 11am"
+* Luigi says,, "Make sure homework is in by next Tuesday!"
+Kronus says, "Thanks for the clas..."
+Xeiran waves to Luigi.

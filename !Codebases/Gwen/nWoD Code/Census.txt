@@ -1,0 +1,34 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @@ Credits: Chime@WORA. Link: http://wora.netlosers.com/index.php?topic=3302.msg182458#msg182458\
+\
+@@ -------------------------------------------------------------------\
+@@ Here are the commands and functions for the census itself.\
+\
+&CMD.CENSUS.GROUP #130=$^\\+census(+[-a-z]+)$:think setq(b, +census); think setq(a, trim(squish(translate(lcstr(%1), 0)))); think setq(a, if(strlen(%qa),\'a0%qa, template)); @assert member(v(data.census.group),\'a0%qa)=@pemit\'a0%#=msg(h,\'a0%qb, cat(ansi(hr,\'a0%qa) is not an accepted census group. Please use one of:,itemize(v(data.census.group),\'a0%b, or).)); think setq(p, search(eplayer=cand(hasattr(##, _approved), hasattr(##, _%qa), not(strmatch(parent(loc(##)), #1040)), not(hasflag(##, frozen)), not(isstaff(##))))); think setq(t, sort(edit(setunion(iter(%qp, edit(udefault(census.filter.%qa, get(%i0/_%qa), get(%i0/_%qa)), |, ,\'a0%b, _),\'a0%b, |), , |, |, i), _,\'a0%b),\'a0?, |, |)); think setq(l, add(last(sort(iter(%qt, strlen(%i0), |,\'a0%b), n)), 5, strlen(words(%qp)))); think setq(l, widthcol(ncol(%ql, words(%qt, |)))); @pemit\'a0%#=wheader(Approved Character Census -\'a0%qa); think setq(o, iter(%qt, ljust(%i0%b,\'a0%ql, rjust(strcat(%b, ladd(iter(%qp, strmatch(edit(udefault(census.filter.%qa, get(%i0/_%qa), get(%i0/_%qa)), |, , _,\'a0%b),\'a0%i1)))),\'a0%ql, repeat(ansi(hx, .),\'a0%ql))), |, |)); @pemit\'a0%#=vtable(%qo, 0, |, ansi(r, |)); @pemit\'a0%#=wfooter(cat(words(%qp), plural(words(%qp), character, characters)%,, words(%qt, |), u(fn_guess_plural, words(%qt, |),\'a0%qa)))\
+@set #130/cmd.census.group=regexp\
+@set #130/cmd.census.group=case\
+\
+&fn_guess_plural #130=switch(1, eq(%0, 1),\'a0%1, strmatch(%1, motley), motleys, strmatch(%1, *ey), strtrunc(%1, sub(strlen(%1), 2))ies, strmatch(%1, *y), strtrunc(%1, sub(strlen(%1), 1))ies, strmatch(%1, *s),\'a0%1es,\'a0%1s)\
+&census.filter.species #130=first(%0,\'a0:)\
+\
+&census.filter.xp #130=mul(div(extract(%0, 2, 1), 25), 25)\
+\
+&data.census.group #130=clan auspice path lineage seeming breed threshold covenant tribe order refinement court accord profession archetype pack cabal throng motley band cell krewe bloodline lodge legacy entitlement conspiracy compact blood-potency primal-urge gnosis azoth wyrd feral-heart psyche humanity harmony wisdom clarity morality synergy aspect kith species freehold tier vice virtue template xp\
+\
+@@ -------------------------------------------------------------------\
+@@ Here are the global functions; you'll want to put them on whatever\
+@@ your global function object is and make sure they get added without\
+@@ the f_; none of these need privileges.\
+\
+&f_transpose #978=iter(lnum(0, dec(%1)), iter(lnum(0, dec(mul(%0,\'a0%1)), ,\'a0%1), add(1,\'a0%i0,\'a0%i1)))\
+&f_widthcol #978=if(lt(%0, 2), width(%#), div(sub(width(%#), dec(%0)),\'a0%0))\
+&f_slackcol #978=strcat(setq(s, sub(width(%#), mul(widthcol(%0),\'a0%0))), sub(div(mul(%qs,\'a0%1), dec(%0)), div(mul(%qs, dec(%1)), dec(%0))))\
+&f_ncol #978=strcat(setq(c,\'a0%1), setq(x, max(1, min(%qc, div(width(%#), 2), div(inc(width(%#)), inc(%0))))), setq(y, div(add(%qc, dec(%qx)),\'a0%qx)), setq(x, div(add(%qc, dec(%qy)),\'a0%qy)),\'a0%qx)\
+&F_VTABLE #978=strcat(setq(d, if(strlen(%2),\'a0%2,\'a0%b)), setq(c, words(%0,\'a0%qd)), setq(x, max(1, min(%qc, if(%1,\'a0%1,\'a0%qc), div(width(%#), 2), div(inc(width(%#)), last(sort(iter(%0, inc(strlen(%i0)),\'a0%qd,\'a0%b))))))), setq(y, div(add(%qc, dec(%qx)),\'a0%qx)), setq(x, div(add(%qc, dec(%qy)),\'a0%qy)), setq(w, widthcol(%qx)), setq(p, if(strlen(%4),\'a0%4,\'a0%b)), setq(s, if(strlen(%3),\'a0%3,\'a0%b)), if(%qc, iter(transpose(%qx,\'a0%qy), strcat(ljust(index(%0,\'a0%qd,\'a0%i0, 1),\'a0%qw,\'a0%qp), switch(1, t(mod(inum(0),\'a0%qx)), rjust(%qs, slackcol(%qx, inc(mod(inum(0),\'a0%qx)))), lt(inum(0),\'a0%qc),\'a0%r)),\'a0%b, @@)))\
+}

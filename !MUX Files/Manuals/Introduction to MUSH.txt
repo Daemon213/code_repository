@@ -1,0 +1,147 @@
+ Topic: Introduction to MUSH
+Author: Noltar
+Summary: Noltar (@ M*U*S*H, Korongil, et al) has graciously contributed
+this very succinct overview of what MUSH is. If you're looking for the
+'about' file, this is it.
+
+Section I: Introduction to MUSH
+
+Many people would ask 'What is a MUSH?' when approached on this topic, so we
+will start there. MUSH stands for Multi-User Shared Hallucination, and is
+derived from the MUD family of online games. They are text based programs
+which allow multiple people to simultaneously interact within an artificial
+environment. This article will be focused on roleplaying MUSHes using the
+PennMUSH codebase, though the TinyMUSH and TinyMUX codebases bear enough
+resemblance for the knowledge contained herein to be loosely applied to them
+as well. In general these MUSHes focus more on character roleplaying, though
+building and coding are also important parts of a MUSH. Each of these topics
+will be discussed in their own section, though roleplaying is the focus of
+this article and will receive the greater attention.
+
+Often the settings in which MUSHes are set include a vast amount of detail,
+recreating entire worlds from literature, movies, or the creators'
+imaginations. Many MUSHes select a literary work to base their theme upon,
+with Tolkien's Middle Earth, Star Wars, Star Trek, and Dragonlance being a few
+examples. Several other MUSH Administrators (commonly referred to as Wizards)
+choose to create their own worlds for their players to roleplay in. Not all
+MUSHes, however, restrict themselves to a specified theme, and offer character
+interaction in a free form environment which has its details chosen by the
+players, allowing them to select the situation and setting that best suits
+their mood and roleplaying (often referred to as RP).
+
+
+Section II: Roleplaying
+
+The art of roleplaying is the lifeblood of numerous MUSHes on the Internet.
+Large numbers of people connect to roleplay on MUSHes of various themes every
+day. Many MUSHes have a range of 20 to 100 people connected simultaneously,
+the majority of which are looking for RP. As this is such an important part of
+the MUSH experience, we will detail what RP is and common definitions of how
+to 'properly' roleplay a MUSH character.
+
+Roleplaying on a MUSH is similar to what an actor or actress does. The player
+attempts to assume the mentality of their character, and portray their actions
+within the situations which arise in the RP session. Skilled RPers are capable
+of capturing the essence of their alter-egos and their environment to such a
+degree that logs of the roleplaying read like a well written novel. While
+playing the role of their chosen character, the player uses only the knowledge
+they believe their character would possess about a given situation, ignoring
+Out Of Character (OOC) chatter and information. Any action taken by the RPer's
+character is considered In Character (IC), and is reacted to as such by the
+other characters taking part in the roleplaying scenario. It is considered bad
+form to mix OOC and IC matters while RPing. Many MUSHes provide a means of
+communicating in an OOC manner even while IC, with any information transmitted
+by such ways being totally ignored by the player's character. Often the most
+trying experience for a new MUSHer is learning to distinguish OOC and IC, as
+well as separating the 'Player' from the 'Character'.
+
+There is much debate about what 'proper' RP truly is, with no definite answer
+apparent in most cases. However, there are many factors which are agreed upon
+as being required for quality roleplaying. The first has already been
+discussed, the separation of IC and OOC. If a player cannot keep OOC matters
+out of their character's IC actions they are often regarded as poor RPers and
+may eventually be shunned if they do not learn to distinguish between the two.
+The second mark of quality RP is detail. If a player's poses, the actions
+their character takes within the roleplaying session, involve vivid detail
+that make visualization and understanding of both the setting and the
+character's actions easily possible, then they are generally considered
+quality poses. One point of debate is pose length. It is held by some
+'authorities' on RP that lengthy, detailed, and well written poses are the
+pinnacle of excellent roleplaying. However, others argue that writing short,
+concise poses which convey the same meaning as a more lengthy pose is the best
+indication of a high quality RPer. It has been the experience of the author,
+that there are situations where lengthy detail rich poses are the best choice,
+while in others smaller yet still descriptive poses are wise. The final point
+that must be made about RP is an important one: Never pose the actions of
+another character. Do not include a character's reaction to the actions your
+character performs. Doing so will lead to arguments and on most RP oriented
+MUSHes disciplinary action.
+
+
+Section III: Building
+
+One of the more useful skills for a MUSH player to possess, after skill at
+roleplaying, is Building. Each MUSH requires a large amount of building before
+it even opens to the public for RP. The rooms and objects which make up the
+world of the MUSH must all be created by its Administrators before they can
+welcome players onto it for roleplaying. However, a large number of MUSHes
+continue to grow even after opening, expanding the world which they offer.
+Building is accomplished by using a set of commands which enable a player to
+create rooms, exits, and objects as well as add descriptions and other details
+to them. On some MUSHes any player may build while on others it is restricted
+to those with the Building Power, the decision is made by the Wizards which
+create the MUSH. Another possible limitation on player building are quotas,
+where each player is allowed to own only a specified number of rooms, objects,
+and exits. Building can often be beyond the interest or capabilities of many
+MUSHers, and should generally be approached by new players only after they are
+familiar with the commands and procedures of the MUSH on which they play.
+Though not directly tied to MUSHcode it can be used to its fullest by
+combining the two skills.
+
+
+Section IV: MUSHCoding
+
+The majority of players on a MUSH have no interest in MUSHcode, and as such it
+will only be briefly discussed within this article. The MUSH environment makes
+it possible for players to use commands and functions of the embedded
+programming 'language' known as MUSHcode or softcode. The complexity allowed
+by these tools nearly match that of the hardcode, the actual source code
+written in C or C++ depending on the codebase, when employed by a
+knowledgeable and skilled MUSHcoder. Many MUSH Wizards choose to use softcode
+to write the global commands which are unique to their MUSH, or which are not
+included within the hardcode of the codebase. Normal players may also take
+advantage of MUSHcode and create personal commands that make various tasks on
+the MUSH easier for them. Those interested in learning more about MUSHcode may
+read Amberyl's MUSH Manual which is available on Internet, read the Help files
+pertaining to commands and functions on a MUSH, or to find a skilled MUSHcoder
+willing to teach them. The author is planning a future article in which
+learning to use MUSHcode will be focused upon, with the initial steps of
+coding will be outlined as well as including various hints and tips for coding
+successfully.
+
+
+Section V: Conclusion
+
+MUSHing can be an entertaining and rewarding pastime, allowing players to
+express their creativity and literary skills while also enjoying the company
+of other players in recreating a world or setting which they both have an
+interest. Roleplaying, building, and coding are important parts of a
+successful MUSH. The most important keys to quality RP are detail and
+distinction between IC and OOC matters. Building is used to make the world of
+the MUSH take on a virtual existence, while coding enables players to have
+access to useful commands which make interaction more enjoyable and easy.
+
+
+About the Author:
+
+Noltar (Ervin Hearn III), is the Theme and Code Wizard of KorongilMUSH, as
+well as the creator of the original fantasy world in which it is set. He has
+been MUSHing for just over two and a half years and been coding/building for
+most of that. He has held several Administrative positions on MUSHes, MUXen,
+and MUDs during his short time as a MU* player and enjoys good RP and
+MUSHcoding.
+
+He can be emailed at: noltar@korongil.org
+
+He may also be found working on code or RPing as Noltar on his MUSH,
+Korongil, located at: mush.korongil.org Port 6250 

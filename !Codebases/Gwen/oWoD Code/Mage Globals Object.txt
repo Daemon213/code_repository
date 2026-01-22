@@ -1,0 +1,60 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @@ This is the fourth version of my WoD Mage node code. It includes new and \
+@@ revised commands that are also useful for mages, so, now, it's a generic \
+@@ "mage code" object.\
+@@ It still needs more commands added, including the option to harvest Tass \
+@@ and feed familiars. This object assumes you use Didi-style chargen.\
+@@ I coded it to include the Quintessence/Paradox wheel limitations, as per \
+@@ 1st/2nd editon rules.\
+@@ My original node code was a node object that was placed in a specific room,\
+@@ with wiz powers. This revision assumes that you don't want individual node\
+@@ toys scattered around the game. Instead, it's global commands that check\
+@@ the mage's location to see if it includes node-based attributes.\
+@@ It's suggested that staff hide those attributes from general player use.\
+@@\
+@@ Make sure to set the "&node here=1" attribute on any room you'd like to be a\
+@@ node, as well as the "&quintleft here=<numeric value>" where <numberic value>\
+@@ is how much quintessence you want in the location. \
+@@ You'll also need code to automatically refresh the node every set amount of\
+@@ time, I *am* working on that.\
+@@\
+@@ edit member(u(%#/BGNDS),9) so that 9 is whatever 'number' the Avatar \
+@@ background is in your stats code.\
+@@\
+@@ edit member(u(%#/powers),43) so that 43 is whatever 'number' the Prime power \
+@@ is in your stats code.\
+@@\
+@@ Requires the 'rollz' function posted elsewhere on my site.\
+@@\
+@@ Commands:\
+@@ +heartblood - like the Prime 1 rote. Burn 1 health level for quintessence.\
+@@ +heartblood <number> - burn <number> health levels for quintessence.\
+@@ +givequint <name>=<value> - Allows a mage with Prime 3 to give another mage Quintessence.\
+@@ +recharge - (first node command) Avatar recharge (not Magick, Perception + Meditation roll), see book description under Avatar. Requires a RL time lag.\
+@@ +rush - (second node command). Like the Prime 1 rote. Gain quintessence at a node.\
+@@ +tass - this is just holder code till I get a working +tass command.\
+@@\
+@@ This particular version was written on PennMUSH, so, there may be some slight\
+@@ functionality differences to port it to MUX/TinyMUSH.\
+@@\
+@@ If you don't want to place the node commands (+heartblood, +recharge, +rush) in the\
+@@ Master Room, you can place them on a wiz-powered object in the room where you want the node\
+@@ to be, as long as you set the proper attributes in that room.\
+\
+@create mage global object <MGO>=10\
+&DO_GIVEQUINT mage global object <MGO>=$+givequint *=*:[setq(1,abs(%1))];@switch/first 0 = [or(gte(u(#141/GCPOW,%#,43),3),strmatch(get(%#/race),*familiar*))],\{@pemit\'a0%# = Huh? \\(Type "help" for help.\\)\},[nearby(%#,num(*%0))],\{@pemit\'a0%# = CODE: You must be in the same room in order to give Quintessence to\'a0%q4.\},[isnum(%1)],\{@pemit\'a0%# = CODE: You did not provide a proper numeric value for the points of Quintessence you would like to give to [capstr(%0)]. Please try again.\},[gte(get(%#/QUINT),%q1)],\{@pemit\'a0%# = CODE: You do not have enough Quintessence to give\'a0%q1 point(s) to\'a0%q4. \},[not(and(strmatch(get(num(*%q4)/race),*mage*),gt(add(get(num(*%q4)/QUINT),%q1),sub(20,get(num(*%q4)/DOX)))))],\{@pemit\'a0%# = CODE: You may only perform this rote when\'a0%q4's Quintessence to DOX ratio is low enough to accept\'a0%q1 point(s) of Quintessence.\},\{[setq(0,roll(get(%#/arete),switch(strmatch(get(%#/focis),*<NR> Prime*),1,6,7)))][setq(1,abs(secure(%1)))][setq(2,add(div(sub(%q1,1),5),1))][setq(4,name(num(secure(*%0)))))]; @switch/first\'a0%q0 = <0, \{@pemit\'a0%# = CODE: You have botched your attempt to give\'a0%q4 Quintessence. You will now take 1 point of DOX.; &DOX\'a0%# = [add(get(%#/DOX),1)]; &LASTDOX\'a0%# = [secs()]\},0,\{@Pemit\'a0%# = CODE: You have failed your attempt to give\'a0%q4 Quintessence.\},>0,\{@switch gte(%q0,%q2) = 0,\{[setq(3,mul(%q0,5))]; @pemit\'a0%# = CODE: You have partially succeeded in your effect. You give\'a0%q4\'a0%q3 point(s) of Quintessence.; &quint [num(*%q4)] = [add(get(num(*%q4)/QUINT),%q3)]; &quint\'a0%# = [sub(get(%#/QUINT),%q3)];\},\{@pemit\'a0%# = CODE: You have succeeded in your effect. You give\'a0%q4\'a0%q1 point(s) of Quintessence.; &quint [num(*%q4)]= [add(get(num(*%q4)/QUINT),%q1)]; &quint\'a0%# = [sub(get(%#/QUINT),%q1)];\}\}\}\
+&DO_HEARTBLOOD mage global object <MGO>=$+heartblood:@switch member(u(%#/powers),43)=0,\{@pemit\'a0%# = Huh? \\(Type "help" for help.\\)\},\{@switch/first 1 = [gt(add(get(%#/QUINT),1),sub(20,get(%#/DOX)))],\{@pemit\'a0%# = CODE: You may only perform this rote when your Quintessence to Paradox ratio is low enough to accept another point of Quintessence. You may not perform this rote till you lose Paradox or spend Quintessence.\},[gte(u(#141/grwnds,%#),6)],\{@pemit\'a0%#=CODE: You may only perform this rote when you at at the "Crippled" health level, or better. You may not perform this rote until your health improves.\},\{[setq(1,rollz(get(%#/arete),switch(strmatch(get(%#/focis),*<NR> Prime*),1,3,4)))]; @switch\'a0%q1 = <0,\{@pemit\'a0%# = You botched your Heart's Blood roll. You will now take 1 point of Paradox.; &DOX\'a0%# = [add(get(%#/DOX),1)]; &lastdox\'a0%#=[secs()]\},0,\{@Pemit\'a0%#=You have failed your Heart's Blood roll.\},\{@pemit\'a0%#=You have succeeded in your Heart's Blood rote. You gain 1 point of Quintessence by sacrificing 1 health level.; &quint\'a0%# = [add(get(%#/QUINT),1)]; &lwnds\'a0%# = [switch(hasattr(%#,lwnds),0,1,add(u(%#/lwnds),1))]; &LASTHBWND\'a0%# = [secs()]; &LASTWND\'a0%#=[secs()]\}\}\}\
+&DO_HEARTBLOOD2 mage global object <MGO>=$+heartblood *:[setq(0,abs(secure(%0)))];@switch member(u(%#/powers),43)=0,\{@pemit\'a0%# = Huh? \\(Type "help" for help.\\)\},\{@switch/first 1 = [gt(add(get(%#/QUINT),%q0),sub(20,get(%#/DOX)))],\{@pemit\'a0%# = CODE: You may only perform this rote when your Quintessence to Paradox ratio is low enough to accept\'a0%q0 additional point(s) of Quintessence. You may not perform this rote till you lose Paradox or spend Quintessence.\},[gte(add(%q0,u(#141/grwnds,%#)),7)],\{@pemit\'a0%#=CODE: You may only perform this rote when the number of health levels you will sacrifice will leave you at "Incapacitated" or better. You may not perform this rote until your health improves.\},\{[setq(1,rollz(get(%#/arete),switch(strmatch(get(%#/focis),*<NR> Prime*),1,3,4)))]; @switch\'a0%q1 = <0,\{@pemit\'a0%# = You botched your Heart's Blood roll. You will now take 1 point of Paradox.; &DOX\'a0%# = [add(get(%#/DOX),1)]; &lastdox\'a0%#=[secs()]\},0,\{@Pemit\'a0%#=You have failed your Heart's Blood roll.\},\{@pemit\'a0%#=You have succeeded in your Heart's Blood rote. You gain 1 point of Quintessence by sacrificing 1 health level.; &quint\'a0%# = [add(get(%#/QUINT),1)]; &lwnds\'a0%# = [switch(hasattr(%#,lwnds),0,%q0,add(u(%#/lwnds),%q0))]; &LASTHBWND\'a0%# = [secs()]; &LASTWND\'a0%#=[secs()]\}\}\}\
+&DO_RECHARGE mage global object <MGO>=$+recharge:@swi [isnum(extract(get(%#/BGNDVALS),member(get(%#/BGNDS),9),1))][hasattr(%l,Node)][comp([get(%l/quintleft)],0)][gte(sub(20,add(get(%#/QUINT),get(%#/DOX))),1)][not(hasattr(%l,quint_%#))]=0*,\{@pemit\'a0%#=Huh? \\(Type "help" for help.\\)\},10*,\{@pemit\'a0%#=CODE: Sorry this place isn't a Node%, you can't do that here.\},110*,\{@pemit\'a0%#=CODE: No Quintessence left in the Node.\},1110*,\{@pemit\'a0%#=CODE: You cannot store more Quintessence in your Pattern by collecting an Avatar Recharge at this time.\},11110,\{@pemit\'a0%#=CODE: You're already harvesting Quintessence! Wait till it's done!\},11111,\{&Quint_%#\'a0%l=1;@pemit\'a0%#=CODE: You begin to collect the Quintessence in an Avatar Recharge. Please remain in this room!;[setq(1,extract(u(%#/BGNDVALS),member(u(%#/BGNDS),9),1))][setq(2,sub(20,add(get(%#/QUINT),get(%#/DOX))))][setq(3,get(%l/quintleft))][setq(4,min(%q1,%q2,%q3))] [setq(5,rollz(add(extract(u(%#/ABILVALS),member(u(%#/ABILS),30),1),extract(get(%#/ATTR),7,1)),7)))]; @wait 400=@switch/first [r(5)][hasattr(%l,Node)]=*0,\{@pemit\'a0%#=CODE: You left the Node area before you finished collecting Quintessence in an Avatar Recharge!\},<0*,\{@pemit\'a0%# = CODE: You botch in your attempt to connect to the Node and collect Quintessence in an Avatar Recharge.; &DOX\'a0%#=[add(1,get(%#/DOX))]; @wipe\'a0%l/Quint_%#\},01,\{@pemit\'a0%# = CODE: You fail in your attempt to connect to the Node and collect Quintessence in an Avatar Recharge.; @wipe\'a0%l/Quint_%#\},\{@pemit\'a0%# = CODE: You succeed in attempting to connect to the Node, and collect\'a0%q4 point(s) of Quintessence in an Avatar Recharge.; &QUINT\'a0%# = [add(get(%#/QUINT),%q4)]; &quintleft\'a0%l = [sub(get(%l/QUINTLEFT),%q4)]; @wipe\'a0%l/Quint_%#\}\
+&DO_RUSH mage global object <MGO>=$+rush:@swi [strmatch(u(%#/powers),*43*)][hasattr(%l,Node)][comp([get(%l/quintleft)],0)][gte(sub(20,add(get(%#/QUINT),get(%#/DOX))),1)]=0*,\{@pemit\'a0%#=Huh? \\(Type "help" for help.\\)\},10*,\{@pemit\'a0%#=CODE: Sorry this place isn't a Node%, you can't do that here.\},110*,\{@pemit\'a0%#=CODE: No Quintessence left in the Node.\},1110,\{@pemit\'a0%#=CODE: You cannot store more Quintessence in your Pattern by collecting a Rush at this time.\},1111,\{[setq(1,rollz(get(%#/Arete),switch(strmatch(get(%#/focis),*<NR> Prime*),1,3,4)))][setq(2,sub(20,add(get(%#/QUINT),get(%#/DOX))))][setq(3,get(%l/quintleft))][setq(4,min(%q1,%q2,%q3))];@switch/first\'a0%q1=<0,\{@pemit\'a0%# = CODE: You botch in your attempt to connect to the Node and collect Quintessence in a Rush.; &DOX\'a0%#=[add(1,get(%#/DOX))]\},0,\{@pemit\'a0%# = CODE: You fail in your attempt to connect to the Node and collect Quintessence in a Rush.\},\{@pemit\'a0%# = CODE: You succeed in attempting to connect to the Node, and collect\'a0%q4 point(s) of Quintessence in a Rush.; &QUINT\'a0%# = [add(get(%#/QUINT),%q4)]; &quintleft\'a0%l = [sub(get(%l/QUINTLEFT),%q4)]\}\
+&DO_TASS mage global object <MGO>=$+tass:@pemit\'a0%#=CODE: At this time, it is required for you to get Staff assistance in order to harvest Tass from this node.\
+@set mage global object <MGO>=WIZARD\
+@set mage global object <MGO>=SAFE\
+@set mage global object <MGO>=!NO_COMMAND\
+}

@@ -1,0 +1,501 @@
+ OGR - Wednesday, October 25, 2000, 6:01 PM
+©2000 Moses@OGR. You may copy and redistribute this document provided
+that it remains complete, with credits intact, and is used only for
+non-profit purposes.
+------------------------------------------
+
+Moses says "Okay, I am logging this for posting to the OGR webpage, so if you want yourself
+edited out, say so."
+Moses says "Alright, last time, eons ago, we worked on developing the +wear/list command.
+We're going to leave that one, as it is, for now."
+Aleriel has no probs with her words being posted
+Moses says "My goal with this class is the wholesale construction of lots of code, with the
+emphasis being on the building of the commands and ufuns, with the debugging, streamlining,
+etc, to come at the next(and probably final) class."
+Aleriel grins. "That sounds fun"
+Moses says "Since that is the way projects like this, a chargen, a faction system, and others
+work. You figure out what you want to do(last class), you give it your best shot(this class),
+and then you make it ready for public consumption(next class)"
+Moses says "This afternoon, I decided to put some stuff together to demonstrate more than one
+way to go about doing this. There's essentially two 'styles' of coding that can be used to do
+what we're trying to do. One style is dependent on ufuns and side-effect functions, and the
+other does everything with system commands."
+Moses says "And since we're designing one command with multiple switches, as we decided last
+class, it basically comes down to the usage of either switch() or @switch to decide which
+way to point our code to go."
+Moses says "now we hit the disclaimer part of this class. Each and every coder has their
+'style' that they like. Some people are even recognizable by the style in which they code.
+So, the code presented here, on the armoire is code done 'my' way. That does not mean that
+it is dogmatically the best way, etc, but it's the way I did it."
+Moses shoves that politically-correct statement over to the corner and goes on.
+Aleriel grins
+Moses says "For instance, you and I approached just the basic display of the +wear/list command
+quite differently at the last class, so this should be fun."
+Moses says "Okay, we decided that our command was going to take the structure of +wear *=*
+at the last class, at Parity's suggestion."
+Moses whoops.
+Moses says "+wear/* *=*"
+Moses says "That was it."
+Aleriel says "which * is what?"
+Moses grins.
+Moses is about to get to that.
+Aleriel nodnods
+Moses says "We decided the options we wanted for our +wear were to be able to add, delete,
+clear, and preview, based on two categories of descriptions. base and clothes."
+Moses says "However, given those command parameters, one of them quite clearly is going to
+give us problems with +wear/* *=*."
+Moses says "Two, actually, but one violates this protocol."
+Moses says "+wear/delete base=<name> is obviously okay."
+Moses says "+wear/preview clothes=<name> is also okay."
+Moses says "So, you look at the other two."
+Moses says "+wear/clear clothes......?"
+Aleriel hmms. "What's +wear/clear suppose to do in the first place?"
+Moses says "If you have <section A> and <section B> in your desc. +wear/clear <a/b> would
+'clear' that section from your desc, but not delete the description from your list."
+Aleriel ahs
+Moses nods. Just takes it out of the visible desc.
+Aleriel thinks +wear/clear clother=blah would work.. as long as you remember which part of
+your @desc is called what
+Moses nods. But why should you have to remember which is which? That makes it harder on the
+user.
+Aleriel says "True"
+Moses says "As coders, designing global systems, you have to make the assumption that your
+user is stupid."
+Moses says "I don't mean that to be rude."
+Moses says "But, it's the basic assumption that you have to make."
+Moses says "In this case, stupid means, they aren't going to know everything you know about
+the inner workings of the code, and also are not prone to copious note-taking or eidetic
+memories."
+Moses says "Now, there's a simple solution to the problem of command structure, but of
+course, the easier we make it for the user, the harder we make it for ourselves to code."
+Moses says "The ultimate designer's Catch-22"
+Moses says "What I did was to reduce the command to +wear/* *."
+Moses says "The second * will still catch all the text if someone does +wear/delete
+clothes=blueshirt"
+Moses says "Or, it will catch +wear/clear base"
+Aleriel ponders. "Either that, or two separate commands can be coded for +wear/add and
++wear/clear"
+Moses nods. You could do that.
+Moses says "Which is a viable solution."
+Moses almost did that for the case of +wear/new, but I decided that the lesson needed to
+be shown of how to do everything in one command.
+Aleriel nods
+Moses says "So, if the command structure is reduced to +wear/* *, then the next step is
+obviously testing for an = sign."
+Moses says "And the easiest way to do that is....?"
+It's Audience Participation Time!
+Aleriel says "match() or strmatch()?"
+[Post-Class Note: imho means: In my honest opinion]
+Moses nods. those would both work. There's an, imho, easier solution.
+Moses says "Use the words() function."
+Aleriel nods
+Moses says "While the user is guaranteed to, at one point or another, give you bad data, you
+can make a gentle assumption that if they are using either new, delete, or preview, they
+are going to specify *=* as the next part of the command."
+Moses says "So, as long as you have at least 2 'words', separated by an =, you can be
+assured that they're not using 'clear'."
+Aleriel says "they could use '=' in the desc name too"
+Moses says "It's likely that they may have = in the desc name, but then it would return more
+than 2 words. And if you're testing gt(words(%1,=),1), it is still not a problem."
+Aleriel nods
+Moses says "As long as there's more than 1 'word' separated by '=', it's not clear."
+Moses says "I can liken this to Forensics, which may be a bad analogy, but it's something I
+know, so I can make it. :)"
+Aleriel grins
+Moses says "In Forensics, with DNA testing, and tire-track matching, etc..they don't match
+one vehicle to another, what the process of testing actually does is /excludes/ all other
+vehicles, or people. They can say that they can exclude 6 billion other people from a DNA
+testing, isolating this one person."
+Moses says "They can't prove that it is /exactly/ that one person, but they can rule out,
+or exclude all the others."
+Moses says "So, similarly, in this case, we're not proving that they are doing new, delete,
+preview. We're excluding the case of 'clear'."
+Aleriel nodnods. "Nice analogy :)"
+Moses smiles. Thank you.
+Moses says "So, we've decided that our first test for the code has to be how many 'words'
+separated by '=' we have."
+Moses says "Now, can you think of another test that we need to do in our first switch?"
+Aleriel hmms. "if the switch is one of delete, preview, clear, etc.?"
+Moses expected you to guess that. And I'll also say that was somewhat of a trick question.
+The truth is, at this point, once we've isolated clear in our options, we can branch off
+into separate functions at this point.
+Moses says "So, for example: ex *armoire/cmd-wear1"
+Moses says "And yes, it's visual."
+
+Armoire
+CMD-WEAR1:$+wear1/* *:@pemit
+%#=[switch(gt(words(%1,=),1),1,[setq(0,first(%1,=))][setq(1,rest(%1,=))][u(fn-notclear,%0,
+%q0,%q1)],[u(fn-clear,%1)],Boing. Code Error. Please report it to [name(owner(me))].)]
+
+Moses says "What I did there was to separate my ufun's, based on the exclusion that I've made
+with the equals sign."
+Aleriel nods. "What if +wear/add was used, though?"
+Moses grins. Well, if you notice, I pass %0 as a parameter to fn-not clear
+Moses says "Whereas it's not passed to fn-clear."
+Moses says "Do the two setq()'s make sense?"
+Aleriel says "Yep. I'd just include the functions inside the u(), though, since %q0 and %q1
+are used only once there"
+Moses nods. True. I could have done it that way. This is indicative of 'my' coding style. I
+always try to set my variables before I use them. It's a holdover from doing things like
+Visual Basic and Pascal.
+Moses says "Okay, for an example of 'another' way to do this command, and an example of
+command-reliant coding style, ex armoire/cmd-wear2"
+
+Armoire
+CMD-WEAR2:$+wear2/* *:@switch
+gt(words(%1,=),1)=1,{@switch %0[setq(0,first(%1,=))][setq(1,rest(%1,=))]=new-*,{@tr
+me/do-new=%#,[after(%0,-)],%q0,%q1},del*,{@tr me/do-delete=%#,%q0,%q1},put*,{@tr
+me/do-wear=%#,%q0,%q1},{@pemit %#=I'm sorry. That isn't a valid command.}},0,{@switch
+%0=clear,{@tr me/do-clear=%#,%1},{@pemit %#=I'm sorry. That isn't a valid command.}},{@pemit
+%#=Boing. Code Error. Please report it to [name(owner(me))].}
+
+Aleriel nods
+Moses says "For this one, I didn't condense all the non-clear options into one branch, and
+clear into another."
+Moses says "Just to be different."
+Aleriel hrms. "So, +wear/add gets ruled out?"
+Hercules enters the room through the double doors, which swing closed behind him.
+Hercules has arrived.
+Hercules says "Sorry for coming in late. Is it alright if I just observe?"
+Moses says "Well, In this case, I named it +wear/new"
+Moses nods to Hercules, greeting him.
+Moses says "Sure. You've missed some, but that's okay."
+Aleriel ohs. "Ok"
+Moses says "If you want to see the code we were just looking at, ex armoire/cmd-wear1 and
+armoire/cmd-wear2"
+Aleriel waves to Hercules
+Hercules will catch up with those wonderful logs once they're posted.:)
+Moses grins. :)
+Moses says "Aleriel, I named it new because I was wanting to diffrentiate between putting it
+into your desc(conceivably seen as 'adding' it) and making an entirely new description."
+Aleriel nods. "Makes sense"
+Moses whews, and goes on. :)
+Aleriel grins
+Moses says "Since clear is just one case, we'll look at it first. ex armoire/fn-clear"
+
+Armoire
+FN-CLEAR:[switch(u(fn-typeok,%0),0,[v(msg-bad-type)] to clear.,[set(me,current-%0:)]Your
+[lcstr(%0)] has been cleared.)]
+
+Moses says "And in order to understand that, you should look at fn-typeok and msg-bad-type"
+
+Armoire
+FN-TYPEOK:[member(base clothes,lcstr(%0))]
+MSG-BAD-TYPE:I'm sorry. You must specify either base or clothes
+
+Aleriel nods
+Moses says "Okay, this is a coding practice of re-using code. While there are some assumptions
+I can make about user input, I still have to test for errors. Typoes happen, even to the best
+of us. *ahem*. ;)"
+Moses says "For each of the options, the user is required to specify whether they are
+referencing a base or clothes section of their desc."
+Moses says "So, we need to make sure that they are /only/ referencing either base or clothes.
+Else, they might get a number of things listed as 'set' or 'deleted', when in truth, the code
+just took what it gave them, and went with it."
+Moses says "This prevents them from accidentally adding a clohtes-my~best~desc~ever attribute
+to their object, and then never being able to put it on, because the word 'clothes' was
+misspelled."
+Moses says "So, fn-typeok checks to see if the type they are referencing is either base or
+clothes. And member() returns a 0 if the test data is not in the specified list, so we can
+test for 0 with a switch in order to rule out errors."
+Moses says "And since I knew I was going to have to make this test for everything, I chose
+to put it in a ufun."
+Moses says "Another option would have been to test for it after or with our initial test
+with the '='."
+Moses says "But, I didn't think it was necessary."
+Moses says "Oh, that reminds me of something."
+Moses says "We are currently sitting on a TinyMUSH generation 2.2. That means that some
+of the code here is deprecated compared to the code we may be using on our PennMUSH 1.7.3
+or TinyMUSH 3.0 Mushes that we normally code on."
+Moses says "We know that member() is going to, in this case, return either 0 1 or 2 as a
+value."
+Moses says "We could, on a more current mush, set our switch to test for the >0 case."
+Moses says "As in switch(u(fn-typeok,%0),>0,blahblah,Boing. Error.)"
+Moses says "I tried to do that here, and it didn't work."
+Moses says "So, I did it the other way."
+Moses says "That was your lesson on differing ages of codebases."
+Moses says "And, so that I can be pedantic, I'll explain that the msg-bad-type is a
+default message that I can show for each type of command saying that they need to specify
+base or clothes <to clear, to delete, to preview, etc.>"
+Aleriel often codes a small functions for 'smart' matches.. ex whee/fn_wise_match
+Moses says "Example?"
+Aleriel says "it returns either 0 or 1"
+Aleriel dropped Whee.
+
+Aleriel's Whee
+FN_WISE_MATCH:[not(not(match(%0,%1,%2)))]
+
+Aleriel says "ex #1354/fn_wise_match"
+Moses nods.
+Moses says "Okay. That's a way to do it. I have a personal preference against 'negative'
+coding. I usually test /for/ a value, rather than it's 'not' value."
+Moses says "Again, personal preferences."
+Aleriel nods
+Moses says "There are some cases where you have to use not. hasflag() and orflags() being
+good examples."
+
+[Post-class Note: I said these as examples on the spur of the moment, but upon reflection,
+these don't even prove true. It's just as easy to test for hasflag(%#,Wizard) = 0 as it is
+to test for not(hasflag(%#,Wizard)) = 1. A good example of when to use not(), imho, is this:
+You want to lock something against someone with a specific name. So you can do:
+
+@lock exit=isname/1
+&isname exit=[not(match(Name,%N))]
+
+This code would always return 0 or 1, since match() returns the first occurrence of the test
+data in the string. So, either it's their name or it's not, 0 or 1. If it is their name, the
+not() reverses the value, and they would be prevented from using the exit.
+
+However, you can do @lock exit=isname/0 and not use the not() function. However, standard
+practice is to lock to a value of 1.
+
+Personal preference. Whatever works best for you, and still works.]
+
+Moses says "Okay, back to fn-clear. Once we've cleared that we're using the right kind of
+type, we 'clear' the attribute pointing to which description we were using, and return a
+message stating that we did such."
+Moses notes that there is one school of coding thought out there that thinks no output is
+good output. If you don't get something back, it must have worked. I don't agree with this,
+because succeeding silently and failing silently wind up having the same effect.
+Moses says "As an example of doing this with commands rather than side-effect functions, you
+can check out armoire/do-clear"
+
+Armoire
+DO-CLEAR:@switch u(fn-typeok,%1)=0,{@pemit %0=[v(msg-bad-type)] to clear.},{&current-%1
+me=;@pemit %0=Your '%1' has been cleared.}
+
+Moses supposes you'd love for me to explain why I chose to name the attribute 'current-base'
+and 'current-clothes'
+Moses says "Go on, ask me. :)"
+Moses says "Since you asked, I named them that way to make them stand out from the
+attributes named base-blah and clothes-blah."
+Aleriel says "Makes sense"
+Moses nods. We'll get to the paradigm of displaying the desc in a bit.
+Moses says "Okay, the other side of the coin was fn-notclear"
+
+Armoire
+FN-NOTCLEAR:[switch(lcstr(%0),new*,[u(fn-new,[after(%0,-)],%1,%2)],del*,[u(fn-del,%1,%2)],
+put*,[u(fn-puton,%1,%2)],prev*,[u(fn-preview,%1,%2)],I'm sorry. That isn't a valid command.)]
+
+Moses says "This is the big 'parser' function that delegates the work to the smaller
+functions for each type of job."
+Moses says "And, as the default at the end of the switch, I made the code robust enough
+to take the option that someone types in a bum command."
+Moses is just dying for you to jump in and say something. :)
+Aleriel says "Umm.. :)"
+Moses says "WOuld you have done it differently, for instance? If so, why? Let's talk."
+Moses is all for interactivity.
+Aleriel grins
+Hercules missed the class on setq and such, so will need to bone up on that first, and then
+go through the log for this class, but so far, this is all actually making sense, for which
+I thank you.
+Aleriel shakes her head, "No, I don't think I'd do anything differently.. your approach
+makes sense"
+Moses woo's. :)
+Moses grins at Hercules.
+Moses says "Herc, for a short definition: setq() sets a variable that exists only so long as
+the specific command is running. And as setq() it doesn't insert itself into the output, it
+just puts it into memory. setr() will do the same thing, /and/ insert itself into the output."
+Moses says "If you would like to examine the functions fn-del and fn-preview, you'll notice a
+lot of similarities between them."
+
+Armoire
+FN-DEL:[switch(u(fn-typeok,%0),0,[v(msg-bad-type)]%bto
+delete.,[switch(setr(0,lattr(me/%0-[u(fn-space2tilde,%1)])),,[u(msg-no-attr,%0,%1)],
+[wipe(me/%q0)]Your '%0' named '%1' has been deleted.)])]
+FN-PREVIEW:[switch(u(fn-typeok,%0),0,[v(msg-bad-type)] to
+preview.,[switch(lattr(me/%0-[setr(0,u(fn-space2tilde,%1))]),,[u(msg-no-attr,%0,%1)],Your '%0'
+named '%1' appears as:%R[v(%0-%q1)])])]
+
+Aleriel nods
+Moses says "Herc, you'll see in these examples, that I used setr(), because I wanted to
+'save' the value, and I wanted it to show up at that point in the code."
+Moses says "msg-no-attr just says: I don't see a %0 named %1."
+Moses says "Once again, I tested for an ok type, checked for 0, threw an error msg out, and
+went on with the code."
+Moses says "Now, I knew there was another error I had to test for."
+Moses says "What if the user was trying to delete or preview an attribute that didn't exist?"
+Moses says "So, what I did here was one of two standard ways to do it."
+Moses says "In this case, I used the lattr() function, to see if I could list the attribute
+that the user was looking to interact with."
+Moses says "If I couldn't, signified by empty response, I threw another error, telling them:
+I can't find that %0 named %1."
+Moses says "Which in this case would be: I can't find a base named bubba's jeans."
+Moses ahems. Hypothethically speaking, of course.
+Aleriel says "why not do a hasattr()?"
+Hercules nods.
+Moses points to Aleriel and makes dingding noises.
+Moses says "As a contrary example: ex armoire/do-delete"
+Aleriel nods..
+Moses says "On that one, I used hasattr() to test to see if the attribute existed. If it
+didn't, signified by a 0, I threw the error message."
+Aleriel says "so, why not use it in those two ufuns?"
+Moses says "Two reasons."
+Moses says "One, I'm trying to display many different ways to achieve the same effect."
+Moses says "Two, I wanted to display, as a coding practice, that testing for nothing is as
+valid as testing for something. Which is not the same as the negative coding I talked
+about before. In numerous coding instances, the absence of something is as significant as
+the presence of it."
+Aleriel nods
+Moses says "Okay, so last but not least, we have the option of adding a new description."
+Moses is going to make the assumption that the code presented in fn-del and fn-preview is
+pretty straightforward?
+Aleriel says "looks ok to me"
+Moses notes there is a do-preview as well, demonstrating that from the command-reliant point
+of view, rather than using ufuns and function calls.
+Moses says "Whoops."
+Moses says "There's supposed to be. :)"
+Moses says "Note to Class Log: Moses is a bonehead that forgot to code a do-preview."
+Aleriel makes a lame joke. "Ooh, a Minbari!" ;)
+Moses almost gets that.
+Aleriel says "Note to Class Log: Minbari are a race from Babylon 5.. they don't have hair,
+but have a bone crest around their heads."
+Moses ahhs. Okay. :)
+Moses never got started on B5, though has been told by numerous that he should have.
+Aleriel says "yes, you should've"
+Moses says "However, in this case, my exclusion of preview from the command-reliant section
+is a perfect thing for the next class.(Note for Herc: Tonight is just code-building. Next
+class is bug-chasing, streamlining, and documenting)"
+Moses says "Okay, so that brings us to the case of adding a new description."
+Moses says "With that basic command structure of +wear/* *, what do we do if we want to add
+a new base description?"
+Aleriel ponders. "I suppose we'd have something like '+wear/add type/name=desc'?"
+Moses nods. That was the first option that I thought about.
+Aleriel says "then I guess we'll have to separate type and name, check whether the type is
+valid, whether the name already exists, and, if all checks are passed, set the attribute?"
+Moses nods. Bingo.
+Moses says "Which is what I did, except I chose to do it +wear/new-base <name>=<text>"
+Moses says "The reason I did this was to keep the left hand side of the command, specifically
+%0 being the 'router' and the right side being the raw data."
+Aleriel nods
+Moses says "Now, If +wear/new type/name=text was in place, that would still be true, but
+it's a matter of organization, or put more bluntly, it's less confusing for me to keep track
+of."
+Moses says "In my head, in my 'concept' for the structure of this code, %0 tells me which
+ufun to call. Whether it's a new-base or a new-clothes, I'm still calling fn-new, but...I
+can pass the important part of %0 in, as well."
+Aleriel nods. "Your way would probably be easier, yes, cause otherwise we'd have to check
+all data for /, even with other switches"
+Moses nods. Right. that was what I was just typing, actually. :)
+Aleriel grins and bows :)
+Moses says "So, if you look at armoire/fn-notclear again, you'll see that in the call to
+fn-new, I pass after(%0,-), %1, and %2"
+Aleriel nods
+Moses says "In this case, I extracted the relevant part of the %0 before I called the
+function. Just for variety."
+Moses says "Before, I did the setq() to set a piece of %1, before it got passed, and
+Aleriel suggested just doing the extraction in the function call."
+Moses says "here, I did that, just to show the other way."
+Aleriel hrms. "What if there is no '-' in the switch, though?"
+Aleriel says "I mean, what if the user made a typo or mistake or whatever?""
+Moses grins. ex armoire/fn-new
+
+Armoire
+FN-NEW:[switch(u(fn-typeok,%0),0,[v(msg-bad-type)]%bfor a new description
+element.,{[set(me,%0-[u(fn-space2tilde,%1)]:%2)]Your new %0 description, named '%1' is set
+as:%R[s(%2)]})]
+
+Moses says "The part after the - is going to be either base or clothes."
+Moses says "So, if they typo that, fn-typeok is going to catch it."
+Aleriel notices that 'after(blah,-)' doesn't return anything at all. Not even an error
+Moses says "Right. It won't, until fn-typeok."
+Moses says "The user is supposed to type in: +wear/new-base or +wear/new-clothes"
+Moses says "We are taking after(%0,-), which should ideally return either base or clothes."
+Moses says "Whatever value the after() returns is %0 in fn-new. And the first thing fn-new
+does is test %0 against fn-typeok."
+Moses says "So, there is the error catching for that."
+Aleriel hrms. "Oh. I see now. I'm having a bit of a blonde moment here.. Nevermind me :)"
+Moses grins. NP.
+Moses says "It's good for the log that I explained that."
+Aleriel says "Clarification for the log: My hair is actually brown. :P"
+Moses laughs!
+Moses ahems.
+Moses says "Okay, for the next part of fn-new, what I did was use the set() side-effect
+function to set the attribute on the object, since we knew that it was either base or
+clothes. I used the space2tilde function to accomodate for multiple word titles for
+descriptions."
+Moses says "And, I returned a message telling the user that their description had been
+set, and showed them what the evaluated version of it looked like, using the s() function."
+Moses says "On tiny3.0 or Penn1.7.2 and above, I would have used eval() instead of s()."
+Aleriel says "Question: is there any difference between s() and eval()?"
+Moses says "However, this is Tiny2.2, and I had to use s(). Does the same thing."
+Moses shakes his head. Not really. No.
+Aleriel says "Ok"
+Hercules used to be blonde, but nature was good, and made his hair turn darker over the years.
+Moses says "About three letters you have to type? :)"
+Aleriel grins.
+Aleriel will be riiiiiiight back. Tea's needed.
+Moses grins at Hercules. Mine is dark brown, and receding. I just keep telling myself it's
+a sign of virility. :)
+Moses nodnods to Aleriel. We're almost done anyways.
+Moses says "Okay, the last thing I wanted to talk about tonight, and should fill up the
+twenty minutes until class is over, is /how/ do we display the descriptions we're setting?"
+Moses says "Again, there are two 'classic' methods of doing this. One method is to manually
+@desc the character each time a change in the +wear elements is made."
+Moses says "There is another way to do this, and it's one I prefer."
+Aleriel returns.
+Moses says "We designed this code to work with the attributes being stored on the object,
+rather than the character."
+Moses says "It's easier for the object to read the attributes off of itself than for the
+character to read them off of the object."
+Aleriel says "you want to @parent the character to the object so that the desc is inherited?"
+Moses shakes. :)
+Aleriel says "Okay.. you could also put a permanent @desc on the character that would just
+read attributes from the object"
+Moses says "What I intend to do is have the player's @desc be reset once, pointing with a
+u() call to a static attribute on the object that reads what the current settings for base
+and clothes are."
+Moses jinxes Aleriel.
+Moses says "That's /exactly/ what I want to do. ex armoire/player-desc"
+
+Armoire
+PLAYER-DESC:[u(base-[u(current-base)])]%b[u(clothes-[u(current-clothes)])]
+
+Aleriel nodnods
+Moses says "And, at the next class, we will code a +wear/setup * command that will look at
+the object number for our +wear object, and @desc the character with [u(obj/player-desc)]"
+Moses says "It will also save their previous desc, just in case."
+Aleriel hrms. "Should we create a new object for each player, or this code isn't intended to
+be used by several people?"
+Moses says "Okay, here is where I admit that I patterned this one small part after a
+globally-designed system."
+Moses says "However, it is the most efficient way to use the attributes that are stored on
+a separate object, rather than the character."
+Moses says "imho."
+Moses says "Ideally, there would be a global code object, and each person would have their
++wear object for storage only."
+Aleriel nods
+Moses says "It would have the player-desc and current-base, current-clothes attributes on it,
+but all of the code would be global."
+Moses says "Another way to implement this is to just have a parent'able code object. Doesn't
+have to be global code. If you parent a dummy object to the code object, you'd have the
+same effect."
+Aleriel says "in that case, we'll need to set the local object's dbref on the player, and
+modify all ufuns to work with it.."
+Moses nods. Yes, we would.
+Moses says "here is where I say: http://mushkode.steelemountain.com/penn/wear.txt"
+Aleriel nods
+Moses says "What that is is a global +wear system I did for a PennMUSH that uses precisely
+this system. There is the argument that it is an inefficient use of Master Room resources to
+have code that does that many lookups on a player and a player's object, but I think that is
+dependent on the size of the mush and the stability of the server."
+Aleriel says "well, imho, the global descer commands aren't used /that/ much at the same time,
+so it should be ok"
+Moses says "This system is being used on three mushes(where coincidentally I codewiz, go
+figure), and there have been no problems."
+Moses nods. Precisely.
+Moses says "The +wear is used maybe once a day by a character, whereas your globals object,
+with your +finger, +where, etc...that one is pummeled with usage."
+Hercules is going to excuse himself and head to bed. It's been a long day. Thank-you very
+much, Moses. I really do appreciate these classes and the time you all take for giving them.
+Moses smiles and nods. "It's my pleasure."
+Moses says "Make sure to read the log to catch the first half hour of the class, Herc."
+Aleriel waves to Herc, "G'Night"
+Hercules says "Will do. Good night to all of you."
+Moses says "G'night."
+Moses says "Any final questions, Aleriel?"
+Moses says "Note for Class Log: I am going to leave the Armoire in this room so that any
+can come and look at it that would like to."
+Aleriel thinks. "Nope, not really"
+Moses nods and closes the log then.
+

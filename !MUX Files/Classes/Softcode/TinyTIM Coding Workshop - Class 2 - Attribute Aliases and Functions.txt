@@ -1,0 +1,1856 @@
+ Thursday Nights, 1 Yes, it's time again for a TIM Coding Workshop, this time part of the "MasterTrack" series (you know coding and want to really nail it down) on Attribute Aliases and Functions. Come on in, just sit in the back if you want, or dive in with the fun. Tonight's Lecturer: Sketch. Beginner courses will continue to be held on Thursday evenings.
+
+-------------------------------------------------------------------------------
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Reo has arrived.
+
+Reo says "Anyway."
+
+Reo says "JE suis bien."
+
+Arki has arrived.
+
+Arki has left.
+
+Br'fin carefully scoops up Arki and puts her on his shoulder, where she trills softly.
+
+Br'fin takes out Arki.
+
+Br'fin says "mmmf, need to dust off my puppet controller"
+
+Coal has arrived.
+
+Coal waves.
+
+Br'fin says "Heya Coal."
+
+Gondwana has arrived.
+
+Reo dropped Gondwana.
+
+Sydney says "Do y'all have lizards?"
+
+Reo says "I do."
+
+From Br'fin's shoulder, Inkwell cheeps
+
+Reo grabs Gondwana.
+
+Sydney says "Nice name."
+
+cylver, wearing a lizard moustace, says, "Got Lizards?"
+
+Br'fin says "I've a couple, an an archaeopteryx and probably a few other puppets about somewhere, not lizards though."
+
+Br'fin scritches Arki who churrs brightly.
+
+From Reo's shoulder, Gondwana trills happily.
+
+Kahlua has arrived.
+
+Coal waves to Kahlua.
+
+Kahlua says "Woohoo"
+
+Br'fin says "Hey Kahlua"
+
+Kahlua says "Hewwo Coal, Br'fin"
+
+Coal saved you a seat.
+
+Kahlua says "Why, thanks! Please remove that landmine, and I'll be all set"
+
+Sketch shouts "Mooooooo."
+
+Coal puts down some tacks instead.
+
+Reo secretly puts a tack on Sketch's chair.
+
+Squeaky says "Mu"
+
+Storm has arrived.
+
+Coal monobrains with Reo. Kinda.
+
+Coal says "Hi Storm."
+
+Natalie has arrived.
+
+Storm says "Hiya Coal."
+
+Kahlua says "You're so kind, all of you."
+
+Coal says "Hey Natalie."
+
+Natalie waves around.
+
+Sketch shouts "The TinyTIM Coding Workshop series continues today with the premiere of the MasterBuilder Fast Track, focusing on Attribute Aliases and Functions. Hey ho, you must go."
+
+Reo says "monobrain, divictim."
+
+Sketch shouts "To get there, go 18, N, N, ABE from the Nexus."
+
+Patrick has arrived.
+
+Sketch shouts "The beginner's coding workshop continues on Thursday."
+
+Coal says "Or take the bus. Oh wait. The bus is here."
+
+Sketch has arrived.
+
+Kahlua points at Coal and does the Nelson Laugh, "Ha-Ha!"
+
+Reo says "I took mine here! It came and got me."
+
+Patrick sits in the very back of the room, in the corner
+
+Br'fin says "No, the buses haven't been wired up yet as far as I know :)"
+
+Coal waves to Patrick.
+
+Natalie sits with Patrick.
+
+Coal says "They're not built to do that, anyhow. There's more elegant solutions to that problem."
+
+Reo took the caveman way of @FORCE.
+
+Patrick waves to Coal
+
+Natalie is eager to learn the more elegant solution.
+
+Natalie thinks Coal sounds very professorial.
+
+cylver says "Action lists, I believe."
+
+Kylene tries to shove all her MUSE coding out of her head so it doesn't interfere.
+
+Br'fin says "It's a dirty job, but someone has to do it, NAtalie"
+
+Marcia emerges from a vat of chocolate.
+
+Marcia has arrived.
+
+Br'fin says "Muse was fairly close last I knew. :)"
+
+Reo's double-decker bus of fluffiness heads into the Bus Garage.
+
+Reo's double-decker bus of fluffiness has left.
+
+Elsinore's Trojan Alligator heads into the Bus Garage.
+
+Elsinore's Trojan Alligator has left.
+
+JoeyLemur's PCIBus heads into the Bus Garage.
+
+JoeyLemur's PCIBus has left.
+
+Sydney's jitney heads into the Bus Garage.
+
+Sydney's jitney has left.
+
+Rad's Big Sled heads into the Bus Garage.
+
+Rad's Big Sled has left.
+
+Hogwart's Express for Alexa heads into the Bus Garage.
+
+Hogwart's Express for Alexa has left.
+
+Territan's Micro-Bus heads into the Bus Garage.
+
+Territan's Micro-Bus has left.
+
+Jenn's Party Bus to Hell heads into the Bus Garage.
+
+Jenn's Party Bus to Hell has left.
+
+The Sam Heap of Rusted Bus heads into the Bus Garage.
+
+The Sam Heap of Rusted Bus has left.
+
+Kahlua's Moving Roadblock heads into the Bus Garage.
+
+Kahlua's Moving Roadblock has left.
+
+Coal's Bus Of DOOM! heads into the Bus Garage.
+
+Coal's Bus Of DOOM! has left.
+
+Malady's Rocket heads into the Bus Garage.
+
+Malady's Rocket has left.
+
+The TinyTIM Short Bus heads into the Bus Garage.
+
+The TinyTIM Short Bus has left.
+
+lupDuj / Farward's Shuttlecraft heads into the Bus Garage.
+
+lupDuj / Farward's Shuttlecraft has left.
+
+Dilettante's Horse of Burden heads into the Bus Garage.
+
+Coolman's Red ShuttleBus heads into the Bus Garage.
+
+Coolman's Red ShuttleBus has left.
+
+RedEVIL's Dislocated Subway Car heads into the Bus Garage.
+
+Storm hugs Marcia hi.
+
+Reo says "Ahhhhh."
+
+Sketch says "Now, THAT's cleaner."
+
+Natalie yays.
+
+The_Tick goes home.
+
+Jenn has arrived.
+
+Jenn has left.
+
+Kahlua picks up Jenn.
+
+Kahlua takes out Jenn.
+
+Kahlua tickles Jenn wildly. Hiya Hon...
+
+Coal hugs Marcia.
+
+Reo spreads out across 5 chairs.
+
+Kahlua dropped Jenn.
+
+Sketch shouts "Last chance!"
+
+Br'fin hees
+
+cylver says "Who's getting the log?"
+
+Sketch says "Page me if you're just observing and not intending to get involved in the thing."
+
+Kahlua says "I am, among others"
+
+You say "I am."
+
+Natalie is.
+
+Sydney raises her hand.
+
+Marcia hugs Storm and Coal. She's auditing/TA'ing/kibitzing.
+
+Reo says "Torin is my logging guy, so there will be no confusing me-input."
+
+Kahlua says "Cool, Reo. You gonna pass me a nice file again?"
+
+Coal is logging, but may decide not to release it if there are too many pages/whispers/etc.
+
+Reo says "Yeah. Whethet I'll have figured out a nice easy way to bold teach by then, i dunno."
+
+Kahlua says "I'll take it without to start with"
+
+Reo smiles. Okay.
+
+Coal says "Wow. This should be some coding lecture. Sketch just stripped to his boxers!"
+
+Natalie woowoos!
+
+Kahlua covers his eyes
+
+Patrick whistles!
+
+Natalie takes out the camera.
+
+Kahlua rips off his shirt and gets ready to do IronCode Battle
+
+Demon.Hunter has arrived.
+
+Br'fin waits for the Japanese bandana
+
+Reo slams Kahlua into a turnstile.
+
+Farward has arrived.
+
+Patrick says "Iron Code!"
+
+Kahlua says "Iron Code ATRRIBUTE ALIAS Battle!"
+
+Br'fin says "It's more like the Iron Man triathalon, for geeks"
+
+Coal says "Iron Chef."
+
+Kahlua nodz at Coal
+
+cylver says "I didn't know he was wrinkly."
+
+Sketch says "OK!"
+
+Br'fin says "Today we shall see who can code the best object involving yogurt"
+
+Reo says "Calamari!"
+
+Patrick makes the secret ingredient tripe
+
+Farward takes a seat in the back.
+
+Sketch says "For many years, TIM's coding environment was derided as not having the most helpful or programmer-orienting coding environment. We let this slide because we focused on our personality and our writing, which made up for the inability to code in, say, a lathe or a sextant."
+
+Sketch says "This changed one weekend in 1994 when R'nice added attribute aliases and functions."
+
+Sketch says "They came at the same time, and they're related."
+
+Sketch says "But first, let's make sure we all understand attributes."
+
+Sketch says "Attributes, as many of you have dealt with are things like DESC, SUCC, SCENT, etc."
+
+Sketch says "But there's also 26 attributes from VA to VZ and 26 from XA to XZ that are around simply to store data or be used for coding."
+
+Sketch says "Normally, one would set them by saying @VZ ME = Kahlua's Phone number is 617-269-8696 or @VA me=say Hello!"
+
+Sketch says "They could be used for a lot of things, this way."
+
+Kahlua says "Oh nooooooo!"
+
+Reo calls Kahlua up collect.
+
+Coal laughs.
+
+Patrick PRANK CALL
+
+Kahlua takes his phone off the hook
+
+Storm grins and programs Kahlua's number into her head
+
+Coal points out that that's not Kahlua's actual phone number.
+
+Sketch says "However, once you get to a good dozen attributes or more, it becomes VERY tiring to call them by VA VZ XF, etc."
+
+Kahlua says "Oh, don't try to hide it. I can take it. :)"
+
+Coal says "That's his phone sex hotline."
+
+Kahlua says "Direct to my BED, babee"
+
+Sketch says "Attribute Aliases let you set an "Alias" for your V and X attributes."
+
+Reo says "Direct to the ninja would be sexier."
+
+Sketch says "Side Reading: HELP V ATTRIBUTES"
+
+Jamal has arrived.
+
+Storm has connected.
+
+Squeaky thinks. o O (Big help file!)
+
+Sketch says "So, let's say that you have some stuff in your vx attribute and you know it holds your storage data."
+
+Sketch says "Well, you can always say GET(ME/VX) and that will tell you what your VX attribute is."
+
+Sketch says "However, how much easier is it to type @ALIAS ME/VX = STORAGE."
+
+Sketch says "Then, you just say GET(ME/STORAGE), and get the same data, and know it's storage data."
+
+Sketch says "Or... and this is even cooler..."
+
+Sketch says "You can type SAY STORAGE() and get that same data."
+
+Sketch says "So, how many people have I lost so far? Whisper to me."
+
+Kahlua says "Question."
+
+Br'fin says "This is a really really good way to help you remember what your code does too."
+
+Sketch says "Go for."
+
+Kahlua says "it assume that, when you "say Storage()", it assume it's YOUR storage?"
+
+Br'fin says "Especially since I don't know otherwise how to comment my TIM code :)"
+
+Sketch says "Yes."
+
+Kahlua says "Thanks"
+
+Sydney says "Can you get the STORAGE attrib of something else with SAY STORAGE(), or do you have to say GET(THINGY/STORAGE)?"
+
+Storm has partially disconnected.
+
+Sketch says "The short answer is no, but that's not exactly true."
+
+Sydney says "Beyond the scope of this session, then?"
+
+Sketch says "There's no way for the TIM code to know you want to also look through the attributes of THINGY without you telling it."
+
+cylver says "Help @functions."
+
+Sketch says "No, the whole point of the MasterCoder session is to lay it on in some general areas and really pump mine and others' brains for things you were unsure about."
+
+Sketch says "@Functions is, in fact, the long answer. I'll get to it shortly."
+
+Br'fin says "Also note that you can use GET2(Thingy, STORAGE) as well."
+
+Sketch says "Many of you already know about attribute aliases, because you probably set your CHICKEN function."
+
+Coal says "Except doesn't GET2() evaluate what's in STORAGE?"
+
+Sketch says "or Chicken Attribute, depending on how you call it."
+
+Reo says "Or cliques, or title, or pronounce..."
+
+Sketch says "Get2 actually evaluates it. The other way around."
+
+Sketch says "Wait, got lost there. GET2 evaluates, GET does not."
+
+Br'fin says "Does GET2 evaluate its arguments or what it returns?"
+
+Coal says "Ooo. Good question."
+
+Sketch says "Now, many of you might have known that the clock somehow gets your chicken/fullname/title from you. Well, the way it does it is by looking for PLAYER/CHICKEN()."
+
+Sketch says "I believe it evaluates its arguments, then gets it."
+
+Natalie feels violated.
+
+Sketch says "You would have to evaluate what it gets back to evaluate it further."
+
+Br'fin says "And neither GET nor GET2 evaluates what it returns."
+
+Sketch says "So, let's see how the functions work."
+
+Patrick goes home.
+
+Patrick hops into Flounder's car and zooms off to the Food King.
+
+Patrick has left.
+
+Sketch says "OK, type LOOK, and you'll see the Object of Love and Function."
+
+Sketch says "#42988."
+
+Sketch says "Let's take a look at this sucker."
+
+The Object of Love and Function(#42988XxI)
+
+Owner: TIM's Mother Key: The Object of Love and Function(#69XxI) Money: 0
+
+Alias: piece
+
+Functions: #68
+
+VA (wrand): edit(pick(v(0),1),_,spaces(1))
+
+VB (LISTING): switch(words(v(0)),1,cat(v(0),.),cat(textlist(v(0)),.)
+
+VC (REVWORDS): dolist(genlist(0,words(v(0))),[extract(v(0),sub(words(v(0)),##),1)])
+
+VD (REVLETTERS): edit(dolist(genlist(1,strlen(v(0))),[mid(v(0),sub(strlen(v(0)),##),1)]),spaces(1),)
+
+VE (LFLAGS): 68LFLAGS(v(0),,,,,v(#))
+
+VF (ith): switch(mid(v(0),sub(strlen(v(0)),2),2),11,cat(v(0),th),12,cat(v(0),th),13,cat(v(0),th),switch(mid(v(0),sub(strlen(v(0)),1),1),1,cat(v(0),st),2,cat(v(0),nd),3,cat(v(0),rd),cat(v(0),th)))
+
+VG (CENTER): [spaces(sub(40,div(strlen(v(0)),2)))][v(0)]
+
+VH (AFTER): [switch(instr(V(0),V(1)),-1,,mid(V(0),add(1,instr(V(0),V(1))),sub(sub(strlen(v(0)),1),instr(V(0),V(1)))))]
+
+VI (BEFORE): [switch(instr(v(0),v(1)),-1,V(0),mid(v(0),0,instr(v(0),v(1))))]
+
+VJ (LISTING2): switch(words(v(0)),1,v(0),2,concat(first(v(0)),and,final(v(0))),concat(extract(dolist(v(0),edit(##,+,{,})),1,sub(words(v(0)),1)),and,final(v(0)))
+
+VM (CAT): [s(v(0))][s(v(1))][s(v(2))][s(v(3))][s(v(4))][s(v(5))][s(v(6))][s(v(7))][s(v(8))][s(v(9))]
+
+VN (ISPLAYER): switch(type(v(0)),player,1,0)
+
+VP (TOC): cat(s(v(0)),repeat(switch(v(2),,.,mid(v(2),0,1)),sub(switch(v(3),,79,v(3)),add(strlen(v(0)),strlen(v(1))))),s(v(1)))
+
+VQ (MCOUNT): div(sub(strlen(v(0)),strlen(edit(v(0),v(1),))),strlen(v(1)))
+
+VR (CPAREN): PARENTHESIS: [sub(strlen(v(0)),strlen(edit(v(0),{(},)))] Left, [sub(strlen(v(0)),strlen(edit(v(0),{)},)))] Right. BRACKETS: [sub(strlen(v(0)),strlen(edit(v(0),{[},)))] Left, [sub(strlen(v(0)),strlen(edit(v(0),{]},)))] Right.
+
+VS (FINAL): revletters(first(revletters(v(0))))
+
+VT (LPLAYERS): dolist(numwho(),[switch(loc(##),loc(v(#)),##,)])
+
+VU (NUMWHO): dolist(who(),[num(*##)])
+
+VV (RJUST): switch(gt(strlen(v(0)),v(1)),1,mid(v(0),0,v(1)),cat(spaces(sub(v(1),strlen(v(0)))),v(0)))
+
+VW (old_bad_addup): switch(eq(v(1),add(words(v(0)),1)),1,v(2),addup(v(0),add(v(1),1),add(v(2),extract(v(0),v(1),1)))
+
+VX (SECURE): eval(edit(v(0),;,,[,,],,))
+
+VY (UAPPEND): switch(match(v(0),v(1)),0,concat(v(0),v(1)),v(0))
+
+VZ (WEDIT): switch(v(1),0,#-1 INVALID WORD #,1,switch(words(v(0)),0,v(2),1,v(2),concat(v(2),extract(v(0),2,words(v(0))))),switch(gt(v(1),words(v(0))),1,#-1 INVALID WORD #,concat(extract(v(0),1,sub(words(v(0)),sub(words(v(0)),sub(v(1),1)))),v(2),concat(extract(v(0),add(v(1),1),words(v(0)))))
+
+Home: Limbo(#0RSDlLHA)
+
+cylver says "I thought love and function was #69..."
+
+Kahlua says "THAT made my head hurt"
+
+Storm lauhgs.
+
+Reo says "It's a clone of it."
+
+Squeaky says "It says nothing special :/"
+
+Kylene says "Ooooh..."
+
+Kahlua says "I think it's a Copy"
+
+Coal says "Just don't examine #200, then, Kahlua."
+
+Storm says "That's a bunch of symbols and letters that just spammed me!"
+
+Sketch says "It's actually a dumbed down copy."
+
+Br'fin snickers
+
+Kahlua says "Done that too. :)"
+
+Br'fin says "This is where we make people's heads explode, our apologies :)"
+
+Sketch says "Let's start with something simple in it. WRAND."
+
+Kahlua says "Hey, we volunteered for this"
+
+Sketch says "EXAMINE OBJECT OF LOVE/WRAND"
+
+Sketch says "How many people here use the PICK function?"
+
+Kahlua says "I do."
+
+Coal has.
+
+Br'fin raises his hand.
+
+Sydney raises her hand.
+
+Reo says "I never have."
+
+Kylene has seen it but doesn't understand it.
+
+Sketch says "Type PICK(A B C D E F G) if you haven't/"
+
+Storm never has either.
+
+Reo says "Huh?"
+
+Sketch says "Sorry, put a SAY in front of it."
+
+Kylene says "pick(a b c d e f g)"
+
+cylver says "Try think."
+
+Kahlua says "a "
+
+Coal says "a say, not a ""
+
+Reo says "say PICK(a b c d e f g)"
+
+Reo laughs.
+
+Kylene tries again...
+
+Daron has arrived.
+
+Natalie says "c "
+
+Reo says "g "
+
+Kahlua says "Hey Daron"
+
+Storm says "a"
+
+Demon.Hunter says "pick(a b c d e f g)"
+
+Sketch says "And then type it again."
+
+Kahlua says "f "
+
+Kylene says "d "
+
+Kahlua says "d "
+
+Kahlua says "g "
+
+Kahlua says "d "
+
+Kahlua says "4 "
+
+Squeaky says "e "
+
+Kahlua says "Oops."
+
+Sketch says "STOP KAHLUA."
+
+Demon.Hunter says "d "
+
+Reo says "4?!"
+
+Squeaky says "a "
+
+Demon.Hunter says "c "
+
+Br'fin says "think pick(a, 5)"
+
+Sketch says "You have the concept."
+
+Coal sits on Kahlua.
+
+Sketch says "OK, so you see that the PICK function, when giving a list, returns an item from that list."
+
+Sketch says "That's great."
+
+Sketch says "However, I found in a VERY short time that I wanted to pick multi-word things."
+
+Sketch says "I was SCREWED!"
+
+Kylene thinks about how long it took her to master @switchFunction (RAND) expects exactly 1 argument(s). She sighs.
+
+Sketch says "I wanted things like pick(To be or not to be that is the question) and it would just choose words."
+
+Coal blinks.
+
+Kylene didn't mean to say that. Sorry.
+
+Sketch says "So, I invented WRAND."
+
+Sketch says "So let's look at that function."
+
+Sketch says "This is the place to learn, Kylene. R'nice often does in 1 line what i do in 20."
+
+Sketch says "So, WRAND in this case is a USER DEFINED FUNCTION."
+
+Sketch says "What it does is take input and put it through a group of functions."
+
+Sketch says "In this case, the edit, the pick, and the spaces functions."
+
+Sketch says "The EDIT function is demonstrated like this: SAY EDIT(A B C D E,D,DUMBO)"
+
+Reo says "a b c dumbo e"
+
+Coal says "A B C DUMBO E"
+
+Sketch says "See? It yanked any occasion of D and made it DUMBO, out of the first argument, A B C D E."
+
+Squeaky says "a b c dumbee e"
+
+Sketch says "And Spaces, well... SAY SPACES(10)"
+
+Reo says " "
+
+Squeaky says "spaces 10"
+
+Squeaky says " "
+
+Sketch says "The SPACES(x) function returns x number of spaces."
+
+Reo says "Is that how the pictorial clock description works?"
+
+Sketch says "So, let's look at the WRAND again. edit(pick(v(0),1),_,spaces(1))"
+
+Sketch says "In a way, yes, reo."
+
+Sketch says "Although it's a little more involved."
+
+Sketch says "What the WRAND function says, in english is "EDIT the result of PICKing an item from v(0) by replacing any occasion of the character _ with a space."
+
+Natalie ahas!
+
+Sketch says "In other words, now you could say WRAND(This_is_an_item Here_is_one_too I_like_traffic_lights) and you would end up with one of those three itms, with the _ replaced with spaces."
+
+Reo says "Super cool."
+
+Coal says "Here is one too "
+
+Reo says "Why does it have that extra space on the end?"
+
+Br'fin says "Mmm, many functions that parse lists/words do that Reo,"
+
+Sketch says "That's an artifact of functions."
+
+cylver says "Pick does that, I believe."
+
+Squeaky says "wrand(How_terrible._I'll_file_your_complaint_right_here.)"
+
+Kylene says "So these functions can be used anywhere, not just when you're in the room with this object?"
+
+Br'fin says "It's not an artifact of functions in general, just a lot of built in text processing functions."
+
+Squeaky says "Nope"
+
+cylver says "use the skim function on it, and it won't bother you."
+
+Sketch says "OK, now, let's go over that RIGHT NOW, Squeaky."
+
+Squeaky says "Ok"
+
+Sketch says "TIM had no way to know you meant the WRAND function. It's on an object, somewhere. It's not in the TIM code itself."
+
+Sketch says "You see what I mean?"
+
+Squeaky says "Oh &lr;blushing&gr;"
+
+Coal says "skim(wrand(this_is_a_test this_is_also_a_test test_test test)) is the same as test test"
+
+Coal ooopses. Sorry.
+
+Sketch says "Now, there's a way to tell TIM that if it can't find the function you're calling, it should look on some objects to find it on those instead."
+
+Sketch says "This command is called @FUNCTIONS."
+
+Jenn has left.
+
+Sketch says "What you do is set your FUNCTIONS attribute, and this will be the list that TIM searches."
+
+Reo raises his hand.
+
+Sketch says "If you don't already have a FUNCTIONS attribute, type this: @FUNCTIONS ME = #69 #68 #67."
+
+Sketch says "Yes, Reo."
+
+Sketch says "After doing that, squeaky, try typing a WRAND() function again."
+
+Squeaky says "How terrible. I'll file your complaint right here. "
+
+Squeaky says "Yay!"
+
+Reo says "If these functions are there, is there a way we can default our objects to be created with #69 #68 and #67 as @fuctions automatically?"
+
+Sketch says "See? It said "What the hell is Squeaky talking about. WRAND. Never heard of it. Squeaky doesn't have a WRAND either. I'll check #69, then. Ah, there it is."
+
+Sketch says "There's no way to do it other than to set them manually."
+
+Kahlua says "Question:"
+
+Kahlua says "Do cloned objects pick up their function settings from the parents?"
+
+Coal says "How do we know about functions on objects, like #68, where there's no help and no way to view the attributes of the object?"
+
+Storm has connected.
+
+Sketch says "I suppose you could hack a $ command on yourself to @create the object you give it and then automatically force the @FUNCTIONS to be added."
+
+Sketch says "HELP 69 tells you."
+
+Coal says "HELP 69 tells me about things on object 68?"
+
+Sketch says "Yes."
+
+Coal says "Wow. How counterintuitive."
+
+Kahlua says "Hee"
+
+Br'fin says "Cloning an object picks up all aliases and attributes."
+
+Sketch says "#68 and #67 were created because #69 is all full up."
+
+Natalie yays. There's help on $ commands, too.
+
+Natalie adds this to her Reading List.
+
+Br'fin says "Creating a new object you'd need to set new @functions on. Some of the parenting stuff I do uses @cloned objects that call master function objects"
+
+Sketch says "Some attribute functions on 68 and 67 are missing because I didn't document them yet."
+
+Kahlua says "Thank you Br'fin"
+
+Coal ooos. By having #67 you can use pirate()! By evening we gotta be on the Mother Sea if we hope to have the golden eggs!
+
+Jamal goes home.
+
+Jamal has left.
+
+Reo says "Guzzle the deck and yank my parrot! "
+
+Sketch says "In fact, let's just get sick off to the side to say that if you want to really be bad ass and do parenting, you could take a commonly called piece of code, on an attribute, ALIAS that attribute... like, say, DELETEDATA, and then set the FUNCTIONS on your child objects to that "parent" object, and say @FO ME = DELETEDATA(), and TIM will find the attribute with that code."
+
+Sketch says "But we call that badass."
+
+Reo says "What the... :)"
+
+Sketch sees Reo found PIRATE().
+
+Kahlua says "Ah! I get that."
+
+Sketch says "The PIRATE() function is located somewhere on #68 #69 or #67 and therefore can be called like a function at any time once you set your FUNCTIONS."
+
+Squeaky says "pirate"
+
+Squeaky says "Yo ho!"
+
+Coal hrms. "Could you set the @functions on a parent object, and then set your @functions to it?"
+
+Sketch says "Forgot the parenthesis, Squeaky."
+
+Squeaky says "Uh Huh :)"
+
+Sketch says "I believe so."
+
+Reo says "And recursively use the functions on the parent object's @functions, Coal?"
+
+Sketch hands out a few other weird functions on those. CRYFORHELP() and AYNRAND().
+
+Reo says "Weeeeargh! I gotta 'nother fool on line 68. Any @SET experts around?"
+
+Squeaky says "Christopher! Get on the phone! We've got a customer who wouldn't know @TELEPORT to save his country!"
+
+Sydney laughs. "I love those wacky things."
+
+Squeaky says "In a system of full capitalism, there should be a complete separation of state and economics, in the same way and for the same reasons as state and church."
+
+Sketch says "Both those functions were created for planes I've done on TIM, but I have them around to share."
+
+Coal got a list of objects with interesting functions on them from someone ages ago (might have been Territan). Not sure if all of those are still functioning function objects, but anyone who wants the long list can page me. If they can make sense of that last sentence, that is.
+
+Sketch says "Now, in the world of constructing your OWN functions, note the use of V(0) in these functions."
+
+Coal notes it's rather spammy.
+
+Natalie says "Is there a list of function objects and/or functions?"
+
+Sketch says "That v(0) means "The first argument)."
+
+Natalie says "Generally available, I mean."
+
+Br'fin says "Yes, if your @functions points to #515 and #515's functions point to yet another object, I think you can call those functions too."
+
+Sketch says "If you say NATALIE(a b c), then the function NATALIE would have V(0) be "a b c""
+
+Storm goes home.
+
+Storm has left.
+
+Sketch says "If you say NATALIE(a,b,c), then the function NATALIE would have v(0) be a, v(1) be b, and v(2) be c."
+
+Coal says "That's how piglatin() works, right? atalienay siay otnay aay unctionfay roay aay umourtay! "
+
+Kahlua says "Capitalization is important?"
+
+Sketch says "No."
+
+Sketch says "That's just my writing style."
+
+Kahlua says "Oh, I see the difference. The commas. Sorry"
+
+Sketch says "Only one function on TIM is capable of recognizing case of letters."
+
+Sketch says "That function, of course, is grep()."
+
+Sketch says "I am NOT GOING TO GO INTO THAT FUNCTION TONIGHT."
+
+Daron says "and with NATALIE(a b c,d) then v(0) would be "a b c" and v(1) would be "d" ?"
+
+Coal greps Sketch. Woowoo.
+
+Sketch says "Yes, Daron."
+
+Daron nods.
+
+Sketch greps Coal for "underwear".
+
+Natalie says "Sheesh. Can't you wait 'til after class, Coal?"
+
+Sketch got at least one match.
+
+Daron says "Is there an argc equivalent?"
+
+Kahlua says "NO MATCH"
+
+Coal grins.
+
+Sketch says "A what?"
+
+Daron says "well, v is like argv in c, is there an argc equivalent? A count of how many v's you've been passed?"
+
+Sketch says "No."
+
+Sketch says "That's actually a cool idea to bring to R'nice."
+
+Coal says "There's a limit to the number of arguments, though, right? 0-9?"
+
+Reo says "What the hell is Daron saying?"
+
+Daron says "Ok, and the parser will give an error if you pass 2 things and try to access v(3) right?"
+
+Sketch has to go test now.
+
+Daron says "test?"
+
+Coal says "I think it gives you a zero/null value, Daron. It does in TinyMUSH."
+
+Daron says "Is the class over?"
+
+Kylene wasn't told there'd be a test!
+
+cylver says "Reo: It's C stuff. Don't worry about it."
+
+Natalie hopes it's open-help.
+
+Sketch says "No, in fact, it can be V(0) through V(39)!"
+
+Br'fin says "What other questions do folks have?"
+
+Coal says "Really?"
+
+Sketch must have thrown something at R'nice some time.
+
+Kahlua says "That's a lotta arguments."
+
+Sketch says "Class isn't over."
+
+Coal says "Why to 39?"
+
+Reo sues Daron for taking his vauable classroom hours up. :)
+
+Daron says "Ah, good."
+
+Sketch is going to attack one or two more functions for you to grok.
+
+Daron's that keener at the front.
+
+cylver says "Because 40 is a nice round number."
+
+Natalie says "It rained for 40 days and nights, so it follows that.."
+
+Natalie ducks.
+
+Br'fin quacks()?
+
+Sketch says "Let's go after one I love. UAPPEND."
+
+Sketch says "EXAMINE #69/UAPPEND."
+
+Sketch says "The MATCH function returns a 1 if the two arguments match, and a 0 if they don't."
+
+Sketch says "For example, SAY MATCH(Bob Saget,Bob Saget)"
+
+Sketch says "Or SAY MATCH(Marcia,Sketch)"
+
+Squeaky says "0"
+
+Reo says "0"
+
+Natalie says "0"
+
+Squeaky says "0"
+
+Reo says "0"
+
+Natalie says "1"
+
+Reo says "I got a 0 on the Bob Sagets..."
+
+Squeaky says "0"
+
+Reo says "0"
+
+Squeaky says "I get 'o' on Marcia, Sketch"
+
+Natalie says "0"
+
+Sketch says "Oops."
+
+Sketch says "It checks the NUMBERs."
+
+Sketch sometimes gets these mixed up. Even me!
+
+Kahlua says "How does it work, then?"
+
+Squeaky says "0"
+
+Sketch says "The CONCAT function, given two arguments, returns those arguments with a space between tem."
+
+Squeaky says "1"
+
+Sketch says "The MATCH function, given two numbers, returns a 1 if those numbers are the same, and a 0 if they aren't.,"
+
+Kahlua says "Oh. OK. Just numbers."
+
+Reo says "1"
+
+Sketch says "In fact, we're going to OPTIMIZE UAPPEND tonight."
+
+Sketch says "Because since UAPPEND was first written, a new function made an appearance."
+
+Sketch says "But first, let's just break it apart."
+
+cylver says "If() comes to mind."
+
+Sketch says "There you go."
+
+Sketch says "Egad, I'm so off."
+
+Coal says "eq() also comes to mind."
+
+Sketch is confusing MATCH with EQ.
+
+Sketch &lr;---- Dunce.
+
+Sketch says "Let's try again."
+
+Daron says "match returns the index of v(1) in v(0)"
+
+Sketch says "The MATCH function, given a string, and a word, tells you if the word is in String."
+
+Sketch says "If there is no such match, it returns a 0."
+
+Sketch says "So, let's look at switch(match(v(0),v(1)),0,concat(v(0),v(a)),v(0))."
+
+Coal says "So UAPPEND compares a word to a list of words and if the word is not there, it tacks it on the end of the list?"
+
+Reo says "aha."
+
+Sketch says "Yes."
+
+Daron nods.
+
+Kahlua says "Uh, Sketch?"
+
+Sydney lightbulbs!
+
+Sketch typed v(a) by mistake.
+
+Coal says "And if it is there, it just returns the list."
+
+Kahlua says "Match appears to return the POSITION in the string of the word that matches"
+
+Reo says "My granny wears really torn panties "
+
+Sydney sees an application for UAPPEND.
+
+Sketch says "Yes, I just said that, Kahlua."
+
+Daron says "and 0 if nothing, Kahlua."
+
+Reo says "My granny panties wears really torn"
+
+Reo says "Neat."
+
+Sketch says "How are we doing with people?"
+
+Kahlua says "I didn't see where you said that. Sorry."
+
+Kylene would like to see an example or two.
+
+Sydney nods.
+
+Coal says "So SWITCH() could easily be replaced with IF() since we're looking for a zero/not zero response here, right?"
+
+Sketch says "Right."
+
+Sketch says "You could theoretically make UAPPEND to be IF(match(v(0),v(1)),v(0),concat(v(0),v(1)) and it would work the same."
+
+Sketch says "This would gain you a few characters."
+
+Popsnuh has arrived.
+
+Biff the Wonder Parrot has arrived.
+
+Biff the Wonder Parrot perches happily on Kahlua's shoulder.
+
+Biff the Wonder Parrot whips out a handful of chicken-fried mealworms and munches them down.
+
+Sketch says "The UAPPEND command, in that case, would say IF you can find the NEW WORD (v(1)) in the OLD GROUP OF WORDS (v(0)), return just the OLD GROUP OF WORDS. Otherwise, return the OLD GROUP OF WORDS COMBINED (concat) with the NEW WORD."
+
+Sketch wants to whip the lectures into summaries at some point, anyway.
+
+Daron volunteers?
+
+Sketch says "Does this explanation make sense to anyone? Whisper or page if not."
+
+Coal whips Daron.
+
+Sydney gets it astonishingly clearly now.
+
+Daron laughs between ouches.
+
+Sydney's brain makes a loud "click" sound.
+
+Kylene says "I see how it works... I'm still trying to figure out why it works, but I'll get that later."
+
+Daron says "Uhoh, Sydney's loaded."
+
+Kahlua squirts some oil into Sydney's ears
+
+Reo says "uappend(All around the mulberry, bush) results:"
+
+Reo says "All around the mulberry bush "
+
+Reo says "But uappend(All around the bush mulberry, bush) results:"
+
+Reo says "All around the bush mulberry"
+
+Sydney has a thing which keeps track of folks who speak French on TIM. This would be a great thing to use with that.
+
+Squeaky says "All around the bush raspberry"
+
+Kylene speaks French, Sydney, for the record. :)
+
+Sketch says "The UAPPEND function would enable you to just keep adding folks without worrying about doubles. This is actually how that box I drop in the Nexus that people add ideas to works."
+
+Daron understands more than he thinks.
+
+Popsnuh says "OK. How do you stop uappend from maxing out one of the Va, Vb functions, then?"
+
+Sketch says "You don't."
+
+Sketch says "You have to keep an eye on it, like I do. Attributes max out at around 10k."
+
+Coal says "How large can they get without maxing out?"
+
+Popsnuh says "Well, when the box gets flooded, it must blow away what's being stored there due to size limits, no?"
+
+Coal says "Ah. Never mind."
+
+Sketch says "No, it just stops adding them."
+
+Sydney says "Hopefully a list of names wouldn't max out. Not a list of French-speakers, anyhow."
+
+Sketch then copies off the attribute, and then clears the original.
+
+Daron understands more than he SPEAKS, he meant.
+
+Sketch says "OK, let's now go after my all time favorite for this sort of work, the one that makes people shrink in fear."
+
+Sketch says "The ITH function."
+
+Daron says "Sketch when you clear out the original and then start a new one, to you change the use of uappend to concat() the two?"
+
+Sketch says "First, let's hit you up with it so you get slammed by code, so that way you're even more impressed with you learn it."
+
+cylver says "Couldn't you use a combination of @trigger, @wait and words() to warn you if it was getting close to being full?"
+
+Squeaky says "#69/ITH943)"
+
+Squeaky says "Argh"
+
+Squeaky says "43rd"
+
+Sketch says "No, Daron, I don't. I actually go through them and select the best ones."
+
+Sketch says "OK, here's ITH:"
+
+Sketch says "switch(mid(v(0),sub(strlen(v(0)),2),2),11,cat(v(0),th),12,cat(v(0),th),13,cat(v(0),th),switch(mid(v(0),sub(strlen(v(0)),1),1),1,cat(v(0),st),2,cat(v(0),nd),3,cat(v(0),rd),cat(v(0),th)))"
+
+Sketch says "Now, let's dissect this little bastard."
+
+Coal gets out the carving knives.
+
+Sketch says "First of all, CAT is actually a user defined function. By coyote."
+
+Kahlua hands Coal the pins
+
+Sketch says "Given two arguments, it returns them combined with NO spaces, unlike CONCAT."
+
+Sketch says "This becomes important when you realize what ith does."
+
+Sketch says "Ith puts the right letters at the end of a number, like 1st, 2nd, 2034th, etc."
+
+Sketch says "First of all, I needed to figure out the formula for that."
+
+cylver groks.
+
+Sketch says "The numbers 1, 2, 3 and special cases."
+
+Sketch says "1 gets st, 2 gets nd, and 3 gets rd. Everything else gets th."
+
+Sketch says "EXCEPT, of course, for anything ending in 11, 12, and 13, which all end in th."
+
+Reo says "all numbers that end in them, right?"
+
+Sketch says "So you CAN'T just say "Everything ending in 1 is a "st"."
+
+Reo says "Oh. Whoops."
+
+cylver says "Nope. 11,12, and 13 don't."
+
+Reo nods.
+
+Sketch says "Or, you get 11st."
+
+Kahlua says "12rd"
+
+Kahlua says "13nd"
+
+Reo says "Backwards, but yes Kahlua."
+
+Kahlua says "hee hee"
+
+Kahlua says "I like them that way"
+
+Sketch says "Or you get something like 23413rd. But in face you WOULD get 2341st."
+
+Coal says "Eleventeenth."
+
+Popsnuh says "Sevenst."
+
+Kahlua says "Fourteenrd"
+
+Sketch says "So, let's then figure out the formua."
+
+Sketch says "Formula."
+
+Marcia dives head first into a vat of chocolate.
+
+Marcia has left.
+
+Sketch says "If the last number is 1, 2, or 3, put st, nd, or rd at the end. UNLESS it ends in 11, 12, or 13. Then put st."
+
+Coal says "If it ends in 11, 12 or 13, give it a th. If it ends in a 1, 2, or 3 (but not 11, 12, or 13), give it st, nd or rd. Otherwise, give it th."
+
+Sketch says "th."
+
+Coal is an echo of Sketch.
+
+Sketch moos.
+
+Coolman has arrived.
+
+Sketch is making more mistakes tonight. Geez. Must be the boxers.
+
+Popsnuh says "!!"
+
+Sketch is wearing the error boxers.
+
+Br'fin giggles
+
+Coal makes a mental note to wash Sketch's boxers.
+
+Sketch says "MUST REMOVE ERROR."
+
+Coal says "Hot water this time!"
+
+Coal says "Extra soap!"
+
+Sketch says "Anyway. So let's see how that massive-ass function holds up."
+
+Kylene says "Aieee!"
+
+Reo says "Get the sysadmin out there."
+
+Sketch says "switch(mid(v(0),sub(strlen(v(0)),2),2),11,cat(v(0),th),12,cat(v(0),th),13,cat(v(0),th),switch(mid(v(0),sub(strlen(v(0)),1),1),1,cat(v(0),st),2,cat(v(0),nd),3,cat(v(0),rd),cat(v(0),th)))"
+
+Sketch says "Let's review the functions it uses."
+
+Coolman sits down, and ponders what is going on.
+
+Sketch says "SWITCH makes a choice based on what the argument is. For example, SAY SWITCH(1,1,ONE,2,TWO,3,THREE,FOUR)"
+
+cylver says "MID takes letters from a string, strlen returns the length of a string."
+
+Sketch says "Which returns "ONE", because the first argument matched 1, and it returned the string afterwards."
+
+Reo says "Hey, you can also use ith to talk like a midievalan."
+
+Reo says "fudgeth"
+
+Sydney baps Reo.
+
+Sketch says "Everyone here understand SWITCH?"
+
+Kahlua says "Not a but"
+
+Kahlua says "Bit"
+
+Br'fin does
+
+Kahlua says "Seriously"
+
+Squeaky says "A tad."
+
+Kylene says "I thought I did, but that looks a bit different."
+
+Kahlua says "I have no idea why that returned ONE"
+
+Sketch says "SWITCH is one of those functions that's very important, so let's go over it."
+
+Br'fin thinks fondly of switches he has known before.
+
+Coolman does not, but walked in late.
+
+Sketch says "Let's Try it with examples."
+
+Sketch says "Let's lay it out this way: SWITCH(STRING,MATCH1,RESULT1,MATCH2,RESULT2,MATCH3,RESULT3)"
+
+Sketch says "If STRING matches MATCH1, return RESULT1."
+
+Kylene says "Got it."
+
+Sketch says "This is important, even if it matches MATCH2 or MATCH3, it just returns the FIRST time it matched, MATCH1."
+
+cylver says "It's an elegant way of doing nested IFs."
+
+Kahlua says "Ah! I get it!"
+
+Sketch says "Actually IFs were a way of doing simple SWITCHes."
+
+Reo says "So optimally the STRING would be somthing different every time, in order to check multiple things against the same list."
+
+Daron says "nested ifs'll get a different response, cylver."
+
+Sketch says "IF came long after SWITCH."
+
+Daron says "nested ifs could have multiple matches that'd work. switch can't."
+
+Sketch says "Right, Reo."
+
+Daron says "which is why switch was used in uappend."
+
+Coal says "Or, Reo, you could have something that narrows down a choice. X might match both MATCH1 and MATCH2, but Y only matches MATCH2."
+
+Coolman says "Too confusing for me, I'll catch the log later. Bye for now everyone!"
+
+Farward says "Nested ifs would not do that, Daron. A series of un-nested ones would, though."
+
+Daron says "They would, Farward."
+
+Sketch says "Are we all better on SWITCH()? Remember, there's a command, @SWITCH, which is VERY similar in nature."
+
+Reo doesn't get what you mean, Coal.
+
+Natalie gets it!
+
+Reo says "I get it."
+
+Natalie says "/world trippy"
+
+Coolman has left.
+
+Natalie says "Ack."
+
+Coal will page you, Reo.
+
+Sketch gets Natalie's hint!
+
+Kahlua says "Heh. Now we see who's paying attention."
+
+Sydney says "Wait a minute. There's @switch and switch()?"
+
+Sydney boggles.
+
+Sketch says "Sure."
+
+Sydney says "Why?"
+
+Natalie laughs!
+
+Natalie says "It was no hint. Honest!"
+
+cylver says "@switch will do commands."
+
+Sketch says "Because Functions and Switches do different things."
+
+Sketch says "Functions are for manipulating strings."
+
+Sketch says "The @SWITCH command is for doing a command."
+
+Sketch says "Example:"
+
+Natalie IS paying attention, btw. She learns better in paragraphs.
+
+Sketch says "A good Sketch example, actually."
+
+Sketch says "@LISTEN ME = * has arrived."
+
+Sydney has used @switch like that.
+
+Sydney says "On my greeter."
+
+Sydney says "It greets me differently than anyone else."
+
+Sketch says "@AHEAR ME = @SWITCH GET2(V(0),sex)=*F*,say Hello. You look kind of cute today!,@boot "
+
+R'nice shouts "Ok. 5000 pennies to the first person who can page me the lyrics to the Powerpuff Girls theme song"
+
+Kahlua laughs
+
+Coal says "A neat thing to do is have the MATCH1, MATCH2, MATCH3 be functions to be evaluated. Have 0 (or 1) be the string so that the first 0 (or 1) result determines what RESULT you get."
+
+Sketch says "That gets into how TIM evaluates functions, far beyond today."
+
+Sketch says "But yes, that does work."
+
+Sketch says "Back to ITH!"
+
+Sketch says "switch(mid(v(0),sub(strlen(v(0)),2),2),11,cat(v(0),th),12,cat(v(0),th),13,cat(v(0),th),switch(mid(v(0),sub(strlen(v(0)),1),1),1,cat(v(0),st),2,cat(v(0),nd),3,cat(v(0),rd),cat(v(0),th)))"
+
+Sketch says "STRLEN, as said, returns the LENGTH of a string. SAY STRLEN(BOB IS MY BEST FRIEND)"
+
+R'nice shouts "Thanks to Reo and Kahlua, who definitely know their Powerpuff Girls!"
+
+Kahlua hi5's Reo
+
+Reo hi-5's Kahlua.
+
+Squeaky says "21"
+
+Sketch says "Notice it counted spaces and letters."
+
+Br'fin has connected.
+
+Reo says "20"
+
+Farward tries to figure out whether putting "cat(v(0)," in front of the whole thing instead of inside each switch would work.
+
+Sketch says "You can save yourselves a LOT of pain by noticing that the functions that say CAT(v(0),th) mean, simply, "Add th to the end of the number v(0)"."
+
+Sketch says "And for this, we need..... THE PRETTY PRINTER."
+
+Br'fin says "The pretty printer? :)"
+
+Coal fears pretty printers.
+
+Daron says "yeah, epson colourjet... :)"
+
+Pretty Printer has arrived.
+
+Popsnuh says "color, you dolt."
+
+Coal cowers in terror.
+
+Br'fin scritches the pretty printer
+
+Sketch says "OK, no one talk.. Here it comes."
+
+Sketch is just doing some quick repairs...
+
+Biff the Wonder Parrot walks over to Coal and absent-mindedly starts sharpening his claws on her leg.
+
+Biff the Wonder Parrot goes home.
+
+Biff the Wonder Parrot has left.
+
+Pretty Printer has arrived.
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer says "Runaway recursion!!!"
+
+Pretty Printer goes home.
+
+Pretty Printer has left.
+
+Popsnuh says "aaaaaaa!"
+
+Coal says "Oops?"
+
+Sketch says "All hail."
+
+Reo's eyes fill with wonder. Ooh, so pretty. . . .
+
+Br'fin hails.
+
+Kahlua says "YAY."
+
+Sketch killed Pretty Printer!
+
+Natalie says "That was the test page."
+
+Daron says "That can be edit'd out. :)"
+
+Coal cheers!
+
+Kahlua says "Aww, but it's so pretty"
+
+Sketch says "I swear this is worth the effort."
+
+Pretty Printer goes home.
+
+Pretty Printer has left.
+
+Pretty Printer has arrived.
+
+R'nice arrives in a flash of wizardly brilliance!
+
+R'nice has arrived.
+
+R'nice says "Wha'd I miss?"
+
+Popsnuh hands R'nice a lollipop for his tooth.
+
+Kahlua says "You missed Pretty printer going nuts."
+
+R'nice says "Thanks, Snuh"
+
+Farward says "A bunch of runaway recursion!!!"
+
+Sketch says "Some basic ideas behind attributes and functions and working on some functions."
+
+R'nice says "Fibonacci?"
+
+Coal says "Nothing so pretty."
+
+Sketch loves pretty printer, but pretty printer hasn't been feeling well these days.
+
+Farward says "Oh, and a question about whether there's an argc equivalent for use with V(0), V(1), etc."
+
+Sketch is saddened, but will press on.
+
+Coal has been feeding pretty printer arsenic on the sly. Gotta get rid of the rivals, you know.
+
+Daron nods, "I was wondering if there was an argc for functions, R'nice."
+
+R'nice says "Should I ask what pretty printer is?"
+
+Sketch says "Pretty printed used to split up functions based on switches."
+
+Sketch says "But I'll get that working some other day."
+
+Kahlua says "Coal, if you want the job transcribing nicely formatted functions out to all of us, I'm SURE you can have it"
+
+Sketch says "So, I'll do it by hand."
+
+Sketch says "Let's take ITH:"
+
+Sketch says "switch(mid(v(0),sub(strlen(v(0)),2),2),11,cat(v(0),th),12,cat(v(0),th),13,cat(v(0),th),switch(mid(v(0),sub(strlen(v(0)),1),1),1,cat(v(0),st),2,cat(v(0),nd),3,cat(v(0),rd),cat(v(0),th)))"
+
+Sketch says "And give it english instead."
+
+R'nice nods.
+
+Sketch says "If the(last two letters of the argument) are.... 11, then add "th", 12, add "th", or 13, add "th". OTHERWISE, if the last character is 1, add "st", 2, add "nd", or 3, add "rd". Otherwise, add th."
+
+Sketch says "As farward pointed out, there's ways to compress this code, but this is how ith() functions for the moment."
+
+Sketch says "Note that in SWITCH, the last lone argument says "If nothing matched, then put this.""
+
+Popsnuh says "Oh. Oh. Cool."
+
+Sketch says "So for example, feeding an "x" to SWITCH(v(0),A,BOB,C,JIM,D,AL,FRANK) will return FRANK because FRANK is the last argument, and matches whatever didn't match anything before (A, C, or D)."
+
+Kahlua says "The proverbial SWITCH Booby-prize, as the help file says"
+
+Sketch says "To review, if V(0) were C, it would return JIM, just so you can be sure you're still following."
+
+Coal says "AKA the default."
+
+Daron goes home.
+
+Daron says "froopie!" and boots his jammie self outta here.
+
+Daron has left.
+
+Sketch says "So what you see up there in ITH is basically a few levels of checking against a number. Taken apart, it's pretty straightforward."
+
+Sketch says "You're piecing together smaller functions to make a large, specialized one. Sometimes, a large generalized one, but not usually."
+
+Br'fin has partially disconnected.
+
+Sketch says "One last one, just because I like it. TOC."
+
+Sketch says "EXAMINE #69/TOC."
+
+Reo says "I'll just look at the object in this room if you don't mind :)"
+
+Sketch says "Now, the FIRST thing to do is to make it clear that TOC has SEVERAL arguments it gets fed, and some of them are optional."
+
+Sketch says "That's why you see two switch functions in there."
+
+Sketch says "Additionally, this function has a number of customized functions from elsewhere."
+
+Sketch says "But let's see what it does."
+
+R'nice says "No, there's nothing argc like, I'm afraid. It could probably be added, if there was a demand for it. Right now, you just have to keep processing args until you hit one that's nothing."
+
+Sketch says "Type This: TOC(Bob,Mark)"
+
+Sketch says "SOrry, SAY TOC(Bob,Mark)"
+
+Kahlua says "Oooh!"
+
+Kylene says "bob........................................................................mark"
+
+Squeaky says "Bob........................................................................Mark"
+
+Br'fin says "Or just pass in the number of args you expect and process lists as space seperated things"
+
+Sketch says "So V(0) is the text on the left, V(1) is the text on the right."
+
+Sketch says "Can someone guess what V(2) does in that function?:"
+
+Kahlua says "Puts in the ellipses?"
+
+Farward says "It checks to see if you put in three arguments instead of two?"
+
+Sketch says "But the elipses are in regardless of if there's a third argument."
+
+Coal says "v(2) is ... or some other character instead."
+
+Sketch says "Correct."
+
+Sketch says "The V(2) is checked. If it has something in it, the first character of V(2) is used instead of dots."
+
+Sketch says "Example: SAY (BOB,MARK,-)"
+
+Sketch says "Sorry AGAIN."
+
+Farward just did exactly that.
+
+Sketch says "SAY TOC(BOB,MARK,-)"
+
+R'nice says "or THINK it"
+
+Sketch says "Once you get in Programmer Mode, you're set."
+
+Kahlua says "Oh!"
+
+Farward says "Actually, I'm doing @PEMIT ME= so I don't get the doublequotes."
+
+Coal says "And v(3) is the line length if you don't want the full screen width."
+
+Sketch says "Someone's doing extra credit work."
+
+Kahlua says "teacher's Pet"
+
+Sketch says "Yes, SAY TOC(BOB,MARK,,40) would give you..;.."
+
+Kylene says "Oh how COOL!"
+
+Sketch says "BOB.................................MARK"
+
+Sketch says "Note also how it's only giving the right number of dots."
+
+Coal cheated and read the help for toc.
+
+Sketch says "BOB SUCKS.....................MARK BLOWS"
+
+Kylene can think of all sorts of fun uses for this.
+
+Coal also wrote a similar function for a TinyMUSH 2.x game.
+
+Sketch uses it for directories, etc.
+
+Farward says "Bob Mark"
+
+Sketch says "Who's still awake? :)"
+
+Torin says "Alexander the Great444444444444444444444444444444444444444444444444444444444414"
+
+Farward says "StOlaf Sucks ItReallyBlows"
+
+Squeaky says "Me"
+
+Popsnuh says "Murgh."
+
+Kahlua says "I am"
+
+Kylene is sort of awake.
+
+Torin says "Whoops."
+
+Coal is relatively.
+
+Sketch says "OK."
+
+cylver snores.
+
+R'nice says "Zzzzzz...."
+
+Torin says "BOB------------------------------------------------------------------------MARK"
+
+Farward is awake enough to recognize that it's his bedtime.
+
+Sketch says "So, one question that might come to mind is looking at TOC and going "What's with the S() Function?"
+
+Br'fin says "Mmm, S() .... ;)"
+
+Sketch shudders.
+
+Kahlua pages: Hey. I'll send you the entirety of what I have, and you can cut n' paste the useful parts, 'kay?
+
+cylver read that in help t'other day.
+
+Sketch says "What you're seeing there, my friends, is good old fashioned TinyTIM Coding Voodoo."
+
+Kahlua says "Help s()"
+
+Kahlua says "DUUUUUUUH"
+
+Natalie wakes up, in time for the Voodoo comment. Whee.
+
+Sketch says "What the S function is SUPPOSED to be used for is substituions, like the percent substitions."
+
+Coal takes out her little Sketch doll and removes the pins from the kidneys.
+
+Br'fin says "Or the square brackets"
+
+Kahlua pats Coal on the head.
+
+Sketch says "It forces the TIM Parser to substitute the percent substitutions in immediately, before it generally goes after other aspects of the code."
+
+Sketch says "Programmers who have been here a while now will stick in S() everywhere, to force the parser to deal with THAT first."
+
+Sydney says "What happens if the parser doesn't do v(1) first in TOC?"
+
+Br'fin randomly checks something for where he stuck in the S()
+
+Sketch says "The functions or brackets or characters that force TIM to deal with the functions and code in special order is passed around like little mysterious trinkets among the coders."
+
+Sketch says "THAT is something for another day."
+
+Sketch says "So, very quickly, the TOC function in english:"
+
+Kahlua traded S() for New York
+
+Sketch says "cat(s(v(0)),repeat(switch(v(2),,.,mid(v(2),0,1)),sub(switch(v(3),,79,v(3)),add(strlen(v(0)),strlen(v(1))))),s(v(1)))"
+
+Farward yawns. "G'nite."
+
+From Farward's hand, hi ho waves goodbye.
+
+Farward goes home.
+
+Farward has left.
+
+Sketch says "Combine the following: The First argument, followed by (either 79 or the third argument) (dots or the second argument), followed by the Second argument)."
+
+Sketch says "That's it roughly."
+
+Sketch says "Actually, it adds up the amount of the two first arguments and subtracts that from 79 (or the third argument)."
+
+Sketch says "This function took me an evening to get write."
+
+Sketch says "Right."
+
+Br'fin says "Mmm, I tend to prefer to use s() internalyll when determining some names or attributes, but don't like interpreting user input, ever"
+
+Sketch says "Don't think this stuff just shoots out of some people and you don't have the "knack"."
+
+Sketch says "This is all experimentation and learning."
+
+Popsnuh says "Ok. I don't feel like such a lame ass."
+
+Sketch says "Now, any questions, about ANYTHING."
+
+Popsnuh says "Not yet. I'm trying to digest everything."
+
+R'nice says "Why did Moses hit the rock instead of speaking to it?"
+
+Coal says "What's the meaning of life?"
+
+Kylene says "OK, totally unrelated to what we're discussing..."
+
+Sketch says "Because then we'd be praying to him instead of Jesus, and the whole thing would collapse into shit."
+
+cylver says "How much wood would a woodchuck chuck if a woodchuck could chuck wood?"
+
+Sketch says "Footrubs."
+
+Sketch says "40 pounds."
+
+Popsnuh says "Are those Bugel Boy jeans you're wearing?"
+
+Sketch says "Why, yes."
+
+Coal says "Snuh, he's in boxers."
+
+Popsnuh says "AAAAAA"
+
+Sketch says "It's OK. Now I'm out!"
+
+Coal could send you a picture?
+
+Br'fin eeks, Sketch is now out of his boxers?
+
+Sketch says "Hit me with that question, Kylene!"
+
+Kylene grins.
+
+Reo says "Bugle boy. Because we really, really wanted to call them Bulge Boy."
+
+Kylene says "OK, A while ago I made an object that had a command on it 'play &lr;whatever&gr;' but now it doesn't work anymore... apparently there's a recent command or function or something, 'play', but there's no help for it."
+
+Sketch says "Yes, that was recently added and I didn't document it yet."
+
+Kylene says "OK."
+
+cylver says "Try play curses"
+
+Sketch says "This occasionally happens when we add new commands. It breaks some things."
+
+Kylene sees a better way to program the thing anyway, after tonight. :)
+
+Sketch says "New commands are added very rarely, compared to @commands and functions."
+
+Sketch frolics around foolishly!
+
+cylver says "There's a notice in the MUSHRoom about the play command."
+
+R'nice *added* the play command, and still got bitten by it breaking an object of his :)
+
+Sketch hopes this has been informative, even with the many mistakes.
+
+Br'fin giggles
+
+Popsnuh says "Yes."
+
+Kylene says "It sure has. Thanks a lot."
+
+Sydney says "Thank you, Sketch!"
+
+Sketch says "Some of this code has been years old, so I didn't quite remember it all."
+
+Coal goes home.
+
+Coal has left.
+
+Kylene yawns, gathers up her notes, and wanders off to bed.
+
+Sketch mooos.
+
+Kylene says "Night, all!"
+
+Popsnuh says "Nuight!"
+
+Sketch says "Less crap left around."
+
+Kylene goes home.
+
+Kylene has left.
+
+Sydney goes home.
+
+Sydney has left.
+
+Br'fin says "Random things, it can be quite useful o write code offline. and then put the code all one one line when you're reayd to paste it onto TIM"
+
+Squeaky says "Thanks, Sketch. I'm getting code better, thanks to you"
+
+Reo wipes his ass with the transcript he got tonight.
+
+Sketch is always around to answer any questions, if in the next few days you really get into it.
+
+Reo says "Nice, reliable modem."
+
+Kahlua says "Thanks Sketch."
+
+Sketch bows.
+
+Sketch heads out to the Nexus.
+
+Sketch has left.
+

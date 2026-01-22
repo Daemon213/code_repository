@@ -1,0 +1,20 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @create Help System.......................HS=10\
+@Desc Help System.......................HS=This is the help system for global commands. To add or remove help topics, you must be a wizard. The syntax of the commands are:%r%taddhelp <topic>=<help>%r%tdelhelp <topic>=<help>%rSpaces in the topic are valid. Use addhelp/n to add a help topic without placing the topic in the +help index. (Useful for subjects with multipled pages.) Please note that the topic names are case sensitive when adding or deleting help.%r[center(Created by Valin@NC dlchan@ls.barrhead.ab.ca,80)]\
+&HELP_NOPARMS Help System.......................HS=$+help:@pemit\'a0%#=[center(< [mudname()] Global Help >,76,-)][setq(0,u(Help Storage/topics))][setq(1,ceil(fdiv(words(%q0,|),4)))]%r[switch([strlen(%q0)],0,\{%r[center(No help available.,76)]%r\},\{Type +help <topic> for help on a specific topic.%r%r%b%b[iter(lnum(%q1),columns(extract(%q0,inc(mul(4,##)),4,|),18,|))][repeat(-,76)]\} )]\
+&HELP Help System.......................HS=$+help *:[setq(0,edit(%0,%b,_))];@switch [hasattr(Help Storage,help_%q0)]=1,\{@pemit\'a0%#=[u(help_show,%q0)]\},\{@switch [mid(%q0,0,1)]=+,\{[setq(5,dec(strlen(%q0)))][setq(1,mid(%q0,1,%q5))];@switch [hasattr(Help Storage,help_%q1)]=1,\{@pemit\'a0%#=[u(help_show,%q1)]\},\{@pemit\'a0%#=Topic '[capstr(lcstr(%0))]' not found in +help.\}\},\{@pemit\'a0%#=Topic '[capstr(lcstr(%0))]' not found in +help.\}\}\
+&HELP_ADD Help System.......................HS=$addhelp *=*:[setq(0,[edit(%0,%b,_)])];@switch [u(ISSTAFF)]=0,@pemit\'a0%#=You cannot add to the global help.,1,\{@pemit\'a0%#=Help on '[capstr([lcstr(%0)])]' added to global help.;&topics Help Storage=[switch([hasattr(Help Storage,topics)],0,[rest([setunion([u(Help Storage/topics)],%0,|)],|)] ,1,[setunion([u(Help Storage/topics)],%0,|)])];&help_[%q0] Help Storage=%1\}\
+&HELP_DEL Help System.......................HS=$delhelp *:[setq(0,[edit(%0,%b,_)])];@switch [u(ISSTAFF)]=0,@pemit\'a0%#=You cannot delete global help topics.,1,\{@pemit\'a0%#=[switch([hasattr(Help Storage,help_[%q0])],0,Topic does not exist.,Help on '[capstr([lcstr(%0)])]' deleted.)];&topics Help Storage=[setdiff([u(Help Storage/topics)],%0,|)];&help_[%q0] Help Storage\}\
+&HELP_ADD_NO_TOPIC Help System.......................HS=$addhelp/n *=*:[setq(0,[edit(%0,%b,_)])];@switch [u(ISSTAFF)]=0,@pemit\'a0%#=You cannot add to the global help.,1,\{@pemit\'a0%#=Help on '[capstr([lcstr(%0)])]' added to global help.;&help_[%q0] Help Storage=%1\}\
+&ISSTAFF Help System.......................HS=[orflags(%#,wWZ)]\
+&HELP_SHOW Help System.......................HS=[center(+help for [capstr(lcstr(%0))],76,-)]%r[u(Help Storage/help_%0)]%r[repeat(-,76)]\
+&CREDITS Help System.......................HS=Created by Valin@NC dlchan@ls.barrhead.ab.ca\
+@set Help System.......................HS=SAFE\
+@set Help System.......................HS=STICKY\
+}

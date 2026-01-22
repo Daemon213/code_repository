@@ -1,0 +1,289 @@
+ Topic: @switch and switch()
+Author: Trispis
+Summary: Due to numerous inquiries, Trispis presents a brief summary lecture
+on @switch and switch().
+
+<101> Trispis says, "Okay. I'm ready to begin."
+
+<101> Trispis says, "I'll be running from a hastily written script up through
+the first example. After that, it'll slow down a bit while I type stuff
+manually."
+
+<101> Trispis gives a brief introduction.
+
+<101> Trispis says, "My purpose here is, in a nutshell, to give me a rough
+text to edit, refine, and upload to the 101 webpage about the basic (very
+basic) functionality and syntax of @switch and switch() (with nominal
+references to if() and ifeles() for a few simpler things)."
+
+<101> Trispis says, "The basic function of a SWITCH is to determine what, if
+any, action should be taken in a given circumstance."
+
+<101> Trispis says, "For example, restricting a $command so that it can only
+be used to affect an object of type PLAYER."
+
+<101> Trispis says, "A more complex example would be a $command that can act
+on any type of object, but must do different things depending on which type
+(PLAYER, ROOM, EXIT, THING)."
+
+<101> Trispis says, "Another more complex example would be a $command which
+has options itself without making multiple commands (e.g., +finger/brief,
++finger/detail could be made from $+finger/* *)."
+
+<101> Trispis says, "Before I give any more confusing examples, let's dive in
+and take a look at @switch."
+
+<101> Trispis recommends we begin by typing: help @switch
+
+@SWITCH
+@switch [/<switch>] <string> = <expr1>, <action1> [,<exprN>,
+<actionN>]... [,<default>]
+For those of you familiar with programming, this command acts like
+if/then/else or switch/case. It compares <string> against whatever
+each <expr> evaluates to. If <string> and <expr> match, the action list
+associated with that <expr> is carried out. If no match is found, the
+<default> action list is carried out.
+
+The string "#$" in <action>'s will be expanded to the evaluated result
+of <string> before it is acted on.
+
+@switch/all will carry out the action lists for -all- of the
+expressions that match <string>. This is the default.
+@switch/first will carry out the action list for only the -first-
+expression that matches <string>. This is the same as
+@select, and it is less computationally expensive than
+/all in many cases.
+
+(continued in help @switch2)
+
+
+<101> Trispis says, "One of the problems which migh be confusing people is
+that the syntax for @switch wraps to the second line. So, I'm going to scrunch
+it together onto one line so that it can be seen as a whole. -- To do this
+(and since I'm only worried about the BASIC functionality), I'm going to
+remove the [/switch] portion and some of the excess whitespace."
+
+<101> Trispis says, "Here is the syntax for @switch all on one line
+
+@switch <string> = <expr1>, <action1> [,<exprN>, <actionN>][...] [,<default>]
+
+Much easier to picture when it's not all broken apart like in the help file."
+
+<101> Trispis says, "Now, I'm going to skip the first sentence thereafter (cuz
+I'm assuming part of the misunderstanding is due to the fact that some people
+AREN'T familiar with programming)."
+
+<101> Trispis says, "Beginning with the second sentence, the help file reads:
+It compares <string> against whatever each <expr> evaluates to. If <string>
+and <expr> match, the action list associated with that <expr> is carried out.
+If no match is found, the <default> action list is carried out. [NOTE: The
+<default> is optional. Therefore if no <default> is given and no matches
+occurred, then nothing happens.]"
+
+<101> Trispis pauses to allow time for that to sink in to any actual newbies
+who may be trying to learn this right now.
+
+<101> Trispis adds the next sentence of the help file.
+
+<101> Trispis says, "Right after that, it says: The string "#$" in <action>'s
+will be expanded to the evaluated result of <string> before it is acted on.
+[NOTE: This means that you can use the substitution #$ in your actions, rather
+than retyping <string> in them.]"
+
+<101> Trispis says, "I'll begin with an example that can be typed directly
+into the keyboard for your own experimentation."
+
+<101> Trispis says, "do this...
+
+@switch [words(cwho(101))]=0,think There are no players on the 101
+channel,think There are #$ players on the 101 channel.
+
+and see how it behaves."
+
+<101> Trispis says, "pretend that @switch command was all on one line of
+input."
+
+<101> Trispis says, "That's all I haved pre-written, so it's gonna slow down
+drastically now."
+
+<101> Trispis says, "What that example does is... it checks how many people
+are on the 101 channel ( [words(cwho(101))] ) and then, if that is a zero (0),
+it does the action immediately following the zero. Then (since it's a very
+basic example), if it's anything other than zero (the default) it performs the
+final action."
+
+<101> Trispis says, "This is a very basic switch."
+
+<101> Trispis says, "The next example won't be doable from your keyboard, and
+it assumes you've been through the Code Basics and the More Code Stuff
+lectures."
+
+<101> Trispis says, "This one uses our $wave command from our Lab Project...
+to prevent us from being spoofed by a puppet."
+
+<101> Trispis says, "We can have our waver check for the TYPE of object that
+we're waving to... and make sure it's a PLAYER before executing the wave."
+
+<101> Trispis says, "like this..."
+
+<101> Trispis says, "$wave *:@switch [type(locate(%#,%0,*))]=PLAYER,@remit
+%l=%N waves."
+
+<101> Trispis says, "This command (as all of these examples will do)
+introduces other functions (you really should read the help files on these...
+they're added bonuses to the lecture). Specifically, this command looks for an
+object in the location of the user (locate does that) and checks
+its type. If the type matches PLAYER, the @remit occurs. Since there is no
+default, nothing else happens."
+
+<101> Trispis says, "er... it looks for an object in the location of the user
+WHICH MATCHES THE INPUT %0 (like: wave Trispis)"
+
+<101> Trispis says, "If I had been running a puppet around there named
+Trispis, your waver would not have waved to it."
+
+<101> Trispis says, "That's the basic syntax of @switch."
+
+<101> Trispis says, "Now, to make that example more complex, we can make it do
+something for a PLAYER... and SOMETHING ELSE for a PUPPET... as follows..."
+
+<101> Trispis says, "$wave *:@switch 1=[hastype(%0,PLAYER)],@remit %l=%N waves
+to the real %0.,[hasflag(%0,PUPPET)],@remit %l=%N waves to the immitation %0."
+
+<101> Trispis says, "Notice in this example, I changed the order of things a
+bit (this is to show the versatility of switches). I used a plaintext <string>
+(1) with functions for the <expr1> and <expr2>."
+
+<101> Trispis says, "This command only does 2 possible things. 1) wave to the
+real (PLAYER) object, or 2) wave to the immitation (PUPPET) object."
+
+<101> Trispis says, "Two final things to note about @switch."
+
+<101> Trispis says, "One: It can have as many paired <expr>,<action> sets as
+you wish (well... there may be a limit, but if you reach it you're probably
+trying to do too much with it)."
+
+<101> Trispis says, "And two: the <default> is optional."
+
+<101> Trispis says, "Now, I'm going to change and cover the switch() function,
+which basically works almost identical to the @switch command."
+
+<101> Trispis recommends reading: help switch()
+
+SWITCH()
+switch(<string>, <expr1>, <list1>, [<exprN>, <listN>], ...[<default>])
+
+This function matches <string> against the <expr>essions, returning the
+corresponding <list>. If nothing is matched, the <default> is returned.
+This is similar to @switch/first, but instead of executing the list,
+it simply returns it. Wildcard patterns are allowed. There may be
+a maximum of ten arguments total to the function.
+
+If the string "#$" appears in the <list> to be executed, it will be
+replaced with the evaluated value of <string> before execution.
+
+Example:
+> say switch(test, *a*, foo, *b*, bar, *t*, neat, baz)
+You say, "neat"
+> say switch(ack, *a*, foo, *b*, bar, *t*, neat, baz)
+You say, "foo"
+> say switch(moof, *a*, foo, *b*, bar, *t*, neat, baz)
+You say, "baz"
+> say switch(moof, *a*, foo, *b*, bar, *t*, neat, #$)
+You say, "moof"
+
+
+<101> Trispis says, "Rather than go over all of the examples again using
+switch(), I'm just going to use the final one to illustrate the syntax of
+switch() for doing the same thing..."
+
+<101> Trispis says, "$wave *:@remit %l=[switch(1,[hastype(%0,PLAYER)],%N waves
+to the real %0.,[hasflag(%0,PUPPET)],%N waves to the immitation %0.)]"
+
+<101> Trispis says, "Notice two things: 1) I moved the @remit to the beginning
+(@commands cannot be put INSIDE of functions), and 2) I used the exact same
+switch conditions to get the same result as the previous example."
+
+<101> Trispis says, "If you have a situation where you only have one condition
+to match, you can use if() or ifelse() rather than switch()."
+
+<101> Trispis says, "You should read those help files, too."
+
+<101> Trispis says, "example: @remit %l=if(hastype(%0,PLAYER),%N waves to %0)"
+
+<101> Trispis says, "example2: @remit %l=ifelse(hastype(%0,PLAYER),%N waves to
+%0,%N yawns)"
+
+<101> Trispis says, "This is basically all I intended to cover, so I'll take
+any specific questions now."
+
+<101> Yosh raises his hand? :)
+
+<101> Trispis says, "yes?"
+
+<101> Trispis assumes Yosh is typing a well stated question. (:
+
+<101> Halatir says, "He's going to use T-spam (tm)?"
+
+<101> Yosh says, "Okay..whenever I mix nested switches..and @pemit..I always
+get messed Up..say..@switch [get(me/status)]=on,{@switch
+[get(me/password)]=%0,{@pemit Right password},{@pemit Wrong password}},{@pemit
+The thing is not on..} ...Whenever the password is wrong it @pemits 'Wrong
+password,{@pemit The thing is not on.."
+
+<101> Halatir says, "Yep."
+
+<101> Yosh pants ;)
+
+<101> Trispis says, "That's a trick with @pemit"
+
+<101> Yosh says, "Trick?"
+
+<101> Cball has been wondering how to make a password object similar to that
+also..so will just be perceptive and listen...
+
+<101> Trispis says, "Move some (just the appropriate ones) of your {}'s do
+wrap only the pemit contents like this: @pemit {blah blah blah}"
+
+<101> Yosh says, "Okay.."
+
+<101> Trispis says, "And probably do the same for your inner @switch"
+
+<101> Yosh nods..okay..
+
+<101> Trispis offers a complete rewrite for confirmatioin...
+
+<101> Trispis takes that last one back. Just the @pemit one is accurate.
+
+<101> Yosh says, "Okay"
+
+<101> Yosh says, "Thanks :)"
+
+<101> Trispis says, "here's my rewrite of what you asked about..."
+
+<101> Trispis says, "+1 @switch [get(me/status)]=on,{@switch
+[get(me/password)]=%0,@pemit %#={Right password},@pemit %#={Wrong
+password}},@pemit %#={The thing is not on.}"
+
+<101> Trispis says, "Does that make sense, Yosh?"
+
+<101> Yosh says, "Yeah :)"
+
+<101> Trispis says, "It's a feature of the @pemit command."
+
+<101> Yosh nods..
+
+<101> Trispis says, "If the first character of the <message> is a {, it ends
+the message at the first } it comes to afterwards. ... Otherwise, it pemits
+everything after the equal sign."
+
+<101> Yosh ahs..
+
+<101> Trispis says, "That's a very good question, btw. Second to completely
+misunderstanding the @switch syntax, it's probably the most common problem
+I've seen with @switch (the @pemit sending everything after the equal sign and
+not stopping at the end of the intended message)."
+
+<101> Trispis says, "Any other questions?"
+
+<101> Trispis concludes this mini-lecture and stops logging. 

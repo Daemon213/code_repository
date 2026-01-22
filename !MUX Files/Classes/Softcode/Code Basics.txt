@@ -1,0 +1,1358 @@
+ Topic: Code Basics
+Author: Trispis
+Summary: MUSH 101's first instructional lecture. Recommended for anyone
+who has an interest in learning to code or build.
+
+8/23/97
+
+Trispis begins his lecture...
+
+Trispis says, "Welcome to MUSH 101's first official online class."
+
+Trispis says, "I will be your instructor for this class."
+
+Trispis says, "My name is Trispis."
+
+Trispis says, "You may call me Trispis."
+
+Trispis says, "If you don't have a pencil and a few sheets of paper handy,
+please go get them now. I won't be making you write essays, but I will be
+pointing out some useful commands or help files that are worth keeping handy
+(humor me... get a pencil and paper). I'll wait 2 minutes before continuing,
+for those who wish to go get these supplies."
+
+Trispis clears his throat, then continues, "The title of today's lesson is
+'Code Basics: tools of the trade'.
+
+Trispis says, "We will be learning the basic skills for looking at, writing,
+and modifying code. I suppose the most important thing, though, will be the
+language skills you'll be exposed to here. Coding and discussing code involve
+some terms and abbreviations which are fairly standard on most MU*'s. In
+today's lesson, you'll be exposed to all of the basic terms of the coding
+art."
+
+Trispis says, "By the end of the class, we will have covered the basic
+concepts which comprise the greater part of coding... AND... by the end of the
+class you will have applied many of these concepts in the creation of an
+object (yes, you actually get to make something today). The stuff we do today
+should prepare you to do some code either on your own or with a little
+guidance from an experienced coder (without feeling horribly selfconscious or
+insecure)."
+
+Trispis says, "At times, the class may seem to move very quickly. At other
+times, it might seem to move too slowly. Either way, please follow the
+guidelines for orderliness in the classroom. This will allow everyone the
+opportunity to ask questions and receive answers in an organized fashion."
+
+Trispis says, "Are there any questions before we begin? (please use the +code
+channel when asking questions)"
+
+Trispis says, "If there are no questions, let's get to work. (:"
+
+Trispis says, "First things first. The 'help' files for PennMUSH are cryptic
+and incomprehensible. We will be using them a lot. (evil grin)"
+
+Trispis says, "A great deal of my purpose today is to assist you in
+understanding the way PennMUSH's help files are written. Therefore, each time
+I introduce a new command or subject, if it is listed in 'help', I will use
+that help file as our working model."
+
+Trispis says, "The first two things we need to learn are the commands which
+allow us to look at code."
+
+Trispis says, "They are: 'brief' and 'examine'"
+
+Trispis says, "Because 'brief' is the least powerful of the two, we will look
+at it first."
+
+Trispis says, "Please type (and read): help brief"
+
+Trispis says, "Note two things about this help file."
+
+Trispis says, "First... note the first two words of the file are: brief
+<object>."
+
+Trispis says, "This is the SYNTAX of the 'brief' command. That is to say, it
+is how you type the command when you want to use it (syntax). Almost all of
+PennMUSH's help files give you the syntax first. Look for it. As you gain
+experience, it might be all you need to remind you how a command works. (:"
+
+Trispis says, "Note the way the word <object> is surrounded by <>'s. What this
+means is that you need to provide this information."
+
+Trispis says, "An <object> can be any one of the following things:
+
+the name of an object in your inventory
+the name of an object in your same location
+the name of a player in your same location
+the name, or a valid alias, of an exit
+your name
+me (a valid reference to yourself)
+here (a valid reference to your current location)
+any #dbref (a database reference number)
+"
+
+Trispis says, "When we enter an <object>, we don't include the <>'s."
+
+Trispis says, "Note: I will discuss object TYPES later."
+
+Trispis says, "The second thing this help file refers to is its relationship
+with 'examine'."
+
+Trispis says, "'brief' and 'examine' are partners in crime. ... er... code."
+
+Trispis says, "We will look at 'examine' in a moment. For now, though, let's
+see what sort of information the 'brief' command gives us..."
+
+Trispis says, "Type: brief me"
+
+------ DO THIS ---- ^^^^^^^^
+
+Trispis says, "Woohoo. Look at all that juicy information. (:"
+
+Trispis says, "I'll give you a moment to look at it, then I'll discuss some of
+the key points of interest."
+
+Trispis says, "We'll talk about all of these things eventually, but for now
+please take notice of the following things in this display..."
+
+Trispis says, "At the very top, your name..."
+
+Trispis says, "...followed by some stuff in parentheses (<a number><some
+letters>)."
+
+Trispis says, "The number is /your/ #dbref (database reference number)."
+
+Trispis says, "The letters are your flags (which are also listed in word-form
+on the next line of the display, right underneath). We'll talk about flags
+later."
+
+
+<Code> Erinstar says, "I cant do 'brief me'"
+
+<Code> Trispis hrms.
+
+<Code> Trispis says, "Try: br me"
+
+<Code> Erinstar says, "That worked :)"
+
+<Code> Trispis says, "Good. (:"
+
+Trispis continues...
+
+Trispis says, "Moving downward through the display, we also see these other
+things...
+
+Owner (again, your name should be here) Flags (in word form)
+Zone (should be *NOTHING*) Credits (MUSH "money" for building and creating)
+Locks (if you have locks besides a Basic one, they'll be here, too)
+Powers (you should see: Builder)
+Channels (all channels you're on. you should see at least: Freshmen)
+Warnings checked (some MUSH stuff you'll probably never use)
+Created (the date and time that your character was created)
+Carrying (objects you are carrying - i.e., your 'inventory')
+Home (Where your character is linked into the database. #0 is valid)
+Location (Where you currently are. Here. Classroom 1101)
+"
+
+Trispis says, "Later in the class I'll refer to a few more of these things.
+For now, though, let's move onward to 'examine' (brief's partner)."
+
+Trispis says, "Read: help examine"
+
+EXAMINE
+examine[/<switch>] <object>[/<attribute>]
+
+Displays all available information about <object>. <object> may be an
+object, 'me' or 'here'. You must control the object to examine it. If
+you do not own the object, or it is not visible, you will just see the
+name of the object's owner. May be abbreviated 'ex <object>'. If the
+attribute parameter is given, you will only see that attribute (good
+for looking at code). You can now wild-card match on attributes. For
+example. to see all the attributes that began with a 'v' you could do
+ex <object>/v*
+
+Examine takes three switches, "brief" (equivalent to the "brief" command),
+"debug", which is a wizard-only switch, and "mortal". "debug" examine
+will show the raw values for certain fields in an object. "mortal"
+examine will show an object as if you were a mortal and not the object's
+owner. It's primarily useful to admins.
+
+<Code> Higs says, "I don't have Builder listed under Powers."
+
+<Code> Erinstar says, "me either."
+
+<Code> Trispis says, "Good point. Builder is not required in our current
+configuration. Some MUSHes require it, though."
+
+<Code> Higs says, "Ah."
+
+<Code> Trispis says, "Everyone ready to move on to 'examine'?"
+
+<Code> Higs nods.
+
+<Code> Calico says, "Aye!"
+
+<Code> Trispis says, "Okay... type: help examine"
+
+Trispis says, "First thing to note is its syntax is somewhat cryptic looking."
+
+Trispis says, "Note stuff right after the word 'examine' at the top of the
+screen. Something like this...
+
+examine[/<switch>] <object>[/<attribute>]
+"
+
+Trispis says, "This is the most confusing part of PennMUSH's help system...
+the syntax. Let's walk through examine's syntax a step at a time..."
+
+Trispis says, "First, we have the command itself: examine"
+
+Trispis says, "Nothing particularly difficult here."
+
+Trispis says, "Next we have: [/<switch>]"
+
+Trispis says, "Okay... this is our introduction to 'optional' information in
+command syntax. In PennMUSH's help syntax, the square brackets denote
+'optional' information that the command will accept. (Note right now,
+though... In actual coding, the square brackets serve a different purpose,
+which I will discuss toward the end of the class. For now, though, just note
+that they are used in this manner in the help SYNTAX.)"
+
+Trispis says, "Look at the last paragraph of 'help examine'. It says, 'Examine
+takes three switches...' and explains them a bit. The thing to note here is
+that only /one/ of these switches applies to mortals (you). That switch is:
+/brief ... which, as they explain, is the same as the 'brief' command. So...
+in our study of 'brief' and 'examine', we have the convenience of being able
+to ignore switches for the moment (Whew! Aren't you glad?). We'll apply some
+switches later, but for now, let's proceed with 'examine'."
+
+Trispis says, "I've probably spammed 'help examine' off the screen. And, since
+I've got more to discuss about this file before we use the command, it's
+probably a good idea to get the help file back onscreen. So, again type: help
+examine"
+
+Trispis says, "We're still studying the syntax...
+
+examine[/<switch>] <object>[/<attribute>]
+"
+
+Trispis says, "After the optional [/<switch], we see <object>. We've already
+covered the basics of what is considered valid input for an <object>, so the
+only thing I'll say this time is that the examine command requires an <object>
+(i.e., <object> is /not/ optional)."
+
+Trispis says, "After the (required) <object>, we see another optional
+parameter (a parameter is some defining element of a command... it's no big
+deal, it's just a fancy word)... [/<attribute>]."
+
+Trispis says, "Again, I remind you that square brackets in help syntax
+indicate optional parameters (coders use these fancy fancy words, so get used
+to them)."
+
+Trispis says, "Okay... what about this [/<attribute>] thing... What is it?
+(That's a rhetorical question. I know what it is. (; Heh.)"
+
+Calico giggles.
+
+Trispis says, "Well... I guess the way to learn this stuff is to do it, so
+let's back up a bit and go through this a step at a time until we're back
+where we are (confused? good. it'll make sense in a minute... I just need to
+get your momentum built up)..."
+
+
+Trispis says, "Do: brief me"
+
+
+
+Trispis says, "Now, do: examine/brief me"
+
+
+
+Trispis says, "Note: the above two commands are, as the help files indicated,
+identical."
+
+Trispis says, "Now do: examine me (without the /brief switch)"
+
+
+
+Trispis says, "Yeehaw! Look at the spam. (:"
+
+Trispis says, "Okay... What just happened is... examine showed you /everything
+you can see/ about your character's code."
+
+Trispis says, "This is where the [/<attribute>] switch comes in real handy. (:
+Try this, next... type: examine me/describe"
+
+Trispis says, "Note: This time, the only thing returned was your 'describe'
+attribute."
+
+Trispis says, "Thus, you can examine individual attributes separately by
+specifying a /<attribute>. This is very useful when you have lots of
+attributes on an object."
+
+Trispis says, "Okay... a couple more things, then I'll take some questions
+before moving on to other subjects."
+
+Trispis says, "First... both 'brief' and 'examine' have abbreviations (coders
+are lazy)."
+
+Trispis says, "Although PennMUSH is sufficiently developed to accept just
+about any number of the first few letters of a command, it isn't wise to get
+too lazy. So, I'll recommend the following abbreviations...
+
+for 'brief', use 'br' (example: br me)
+and
+for 'examine', use 'ex' (example: ex me/describe)."
+
+Trispis says, "Okay. The last thing about 'examine', before taking questions,
+is... wildcards. The help file mentioned this, so let's read it again. Type:
+help examine"
+
+Trispis says, "Near the end of the first paragraph, it says 'You can now
+wild-card match on attributes.' and gives you an example."
+
+Trispis says, "There are two valid wildcards in PennMUSH. One is the asterisk
+(*). The other is the question mark (?). The asterisk replaces any combination
+of characters, and the question mark replaces any single character. They may
+be used individually or in combination."
+
+Trispis says, "Examples...."
+
+Trispis says, "ex me/des* (this would look for any attribute names beginning
+with 'des'... like: describe, descent, desk, destination, dessert, etc... and
+list anything and/or everything it finds)"
+
+Trispis says, "ex me/?ouse (this would look for any attribute names that are
+five characters in length and end in 'ouse'... like: house, mouse, louse (but
+not grouse or firehouse)... and list anything and/or everything it finds)"
+
+Trispis says, "ex me/p?s* (this would look for any attribute names that begin
+with 'p', followed by any single character (but /not/ 'nothing'), followed by
+'s', followed by anything (including 'nothing')... like: pos, position, past,
+pass, p1s, p_set, etc... and list anything and/or everything it finds)."
+
+Trispis says, "We'll see the benefit of wildcards a bit later, but for now I
+have simply explained them for your information (FYI)."
+
+Trispis says, "Also, FYI (For Your Information)... if you use both the /brief
+switch and an /<attribute>, you'll only get the attribute (without the /brief
+information). So, the /brief switch is pretty much useless... use the 'brief'
+command if you want that information, and use 'examine' if you want attribute
+information."
+
+Trispis says, "It's time for questions... please use the +code channel."
+
+<Code> Morpheus says, "Understood perfectly well...no questions from me."
+
+<Code> Higs says, "When we ask questions, are we supposed to just blurt them
+out on this channel, or raise our hand and then blurt them out?"
+
+<Code> Trispis says, "Blurting is acceptible on this channel. (:"
+
+<Code> Higs says, "OK. That's my only question."
+
+<Code> Erinstar says, "Why is coding so complicated :)"
+
+
+Higs resists the urge to shoot a spit wad at Erinstar.
+Morpheus cackles.
+
+<Code> Trispis grins. Because they made the 'help files' so complicated. (:
+And... I'm getting ready to simplify it for you in the next portion of the
+lecture. (:
+
+<Code> Trispis says, "If there are no more questions, I'll get back to the
+lecture..."
+
+<Code> Trispis continues the lecture.
+
+Trispis says, "Okay... Believe it or not, we've already mastered one of the
+hardest parts of coding: reading the PennMUSH help syntax."
+
+Trispis says, "Although there are still a few details left to discuss about
+syntax, we are now prepared to read and, for the most part, understand help
+files."
+
+Trispis says, "And since we have achieved this mastery of syntax, let's take
+advantage of it."
+
+Trispis says, "It's time for you to take some notes (dig out that pencil and
+paper)."
+
+Trispis says, "On your paper, I want you to write a few specific help files
+(I'll tell you which ones in a moment) and some notes for each one (which I
+shall also provide). First, though, I want to relate a personal perspective on
+the PennMUSH help system. Keep those pencils and paper ready, but don't write
+anything until and unless I instruct you to do so."
+
+Trispis says, "When I was first learning MUSH code, the most frustrating
+aspect of the process was mastering the online help files."
+
+Trispis says, "It was so frustrating, in fact, that I gave up on trying to
+learn it online... and I printed out hardcopies of each and every individual
+help file. I then arranged them according to the structured online 'help
+menus'. It wasn't until I had done this that I began to understand the way
+they were organized. Up until that point, I was /wasting/ a great deal of time
+hunting for a specific file."
+
+Trispis says, "So, what I would like to do now is to give you the benefit of
+my tedious efforts without forcing you to go through the weeks and weeks of
+work that I did."
+
+Trispis says, "That is, I'm going to tell you... in a way most of you will
+understand... exactly how the online help files are arranged."
+
+Trispis says, "When you think of these files the way I'm about to describe
+them, you'll have a much better feel for how to find the file you're looking
+for."
+
+Trispis says, "If you've been taking notes about this class so far, that's
+great. But, now, I want you to start with a clean sheet of paper for the
+things I'm about to tell you. Later on, you'll be able to refer to this piece
+of paper as a 'quick reference' guide for the online help. (Note: If I start
+some comment with 'Note:', it means 'pay attention and remember'. If I say
+'Write this', it means to write it down on paper.)"
+
+Trispis says, "Note: The PennMUSH help screens were written with the 'Telnet'
+(or TinyFugue) user in mind. The screens have (usually) less than 20 lines of
+text. (A TinyFugue screen usually has 3 lines of input at the bottom, a
+dividing line, and 20 or 21 lines of output at the top. This is because the
+old monochrome monitors had a total of 24 or 25 lines on the screen)."
+
+Trispis says, "Note (continued): So, all of PennMUSH's help files are fairly
+brief. Keep this in mind when I refer to several files together. They can be
+considered a group of some sort, but they are /still/ individual files (of
+under 20 lines)."
+
+Trispis says, "Now, write this at the top of your paper (yes. write this)
+
+My PennMUSH HELP Quick Reference
+
+"
+
+Trispis says, "Now, leave a blank line under that and then write the following
+
+things..."
+
+Trispis says, "(yes, write all of this. I'll give you time.)
+
+COMMAND (or FILE) ... WHAT IS IT? (or WHAT'S IN IT?)
+
+
+
+0---help ... Main Index or Directory (instructions & 1-4 below)
+
+
+
+1---help code ... A Foreword (notes about PennMUSH)
+
+
+2---help topics ... A Subdirectory (a list of files about code concepts)
+
+
+3-+-help commands ... A Subdirectory (WHO, look, etc. & a-d below)
+
+a-help @-ATTRIBUTES ... A list of @commands for setting attributes
+
+b-help @-BUILDING ... A list of @commands used in building
+
+c-help @-GENERAL ... A list of general purpose @commands
+
+d-help @-WIZARD ... A list of Wizard-only @commands
+
+
+4---help entries ... A Master Index (EVERY help topic)
+
+"
+
+<Code> Alan says, "That does explain it very well."
+
+<Code> Calico nods.
+
+<Code> Trispis says, "When you're ready to proceed, please say so on the
+channel and I'll tally everyone up. (:"
+
+<Code> Higs says, "Ready."
+
+<Code> Calico says, "Ready."
+
+<Code> Tark says, "Ready."
+
+<Code> Trispis says, "Is anyone /not/ ready?"
+
+<Code> Morpheus says, "Ready."
+
+<Code> Fragment says, "Ready"
+
+<Code> Fletcher says, "ready"
+
+<Code> Erinstar says, "Ready."
+
+<Code> Trispis continues...
+
+Trispis says, "Now, put this piece of paper aside (but keep it in view). I'll
+be having you add a few things to it later, but for now I want to look at the
+things we already have on it."
+
+Trispis says, "First, let's look at the 'help' screen. Type: help"
+
+HELP
+This is the MUSH online help facility.
+
+Notes on help descriptions:
+[text] - Text enclosed in []'s is optional. The []'s are never typed
+in as part of the command.
+<parameter> - Information parameter for a command. The <>'s are
+never typed in as part of the command.
+Syntax of help command:
+help [<command>]
+
+To get a list of MUSH topics: To get a list of MUSH Commands:
+help topics help commands
+To get information about PennMUSH: To get a list of help entries:
+help code help entries
+
+If there are any errors in the help text, please notify a wizard
+in the game, or send mail to dunemush@mellers1.psych.berkeley.edu
+
+All commands listed in this file might not apply to all mushes running
+this code. This is because some of the commands/effects can be enabled or
+disabled by the site admin of your MUSH. If a command is not available
+AND it is documented, ask your site admin why it isn't enabled.
+You may use the "@config" command to see the MUSH configuration.
+
+Trispis says, "Note that it contains exactly what I summarized. Instructions
+on using help and references to the other four help files (1-4 on your
+paper)."
+
+===========================================================================
+NOTE: PennMUSH's main 'help' screen was revamped shortly after this
+lecture. Thus, the current help screen most likely looks like this:
+
+HELP
+This is the index to the MUSH online help files.
+
+For an explanation of the help system, type: help newbie
+
+For the list of MUSH commands, type: help commands
+For the list of MUSH topics, type: help topics
+For an alphabetical list of all help entries: help entries
+For information about PennMUSH: help code
+
+For a list of flags: help flag list
+For a list of functions: help function list
+For a list of attributes: help attribute list
+To see the configuration of this MUSH: @config
+
+On many MUSHes, list local commands with: +help
+
+If there are any errors in the help text, please notify a wizard
+in the game, or send mail to dunemush@pennmush.org.
+
+NOTE: Net changes include the addition of the 'help newbie' section,
+which explains some of the syntax and usage of the help system, and the
+help sections on flags, functions, attributes, the @config command, and
+reference to +help. The remainder of this lecture, however, still applies
+to the overall PennMUSH help system.
+===========================================================================
+
+Trispis says, "Note also that it uses the same 'syntax' we've learned from
+'brief' and 'examine' (example: help <topic>)."
+
+Trispis says, "Next, let's look at 'help code'. Type: help code"
+
+Trispis says, "Note that it, too, contains exactly what I summarized. (I have
+read the MUSH Manual that they refer to. It is very useful. In fact, I
+strongly recommend that everyone go and get it after completing this class.)"
+
+Trispis says, "Now, before we go any further... I'm going to jump out of
+sequence... BUT (LISTEN UP, GANG) ... We're not going to look at /all/ of the
+'help entries'... this set of files is about 20 or 30 screens long! We don't
+have time for that... We will only look at the /first/ screen of this
+sequence... just so you'll see how it's laid out. Type: help entries (at the
+bottom of the screen it will say 'For more, see Entries-2'. DO NOT DO THIS!!!
+I will NOT wait for those who get behind because they have spammed themselves
+with the rest of those help files!!!). So, please just follow instructions and
+type: help entries"
+
+ENTRIES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+" & +
+1.50dune1 1.50dune2 1.50p10
+1.50p11 1.50p12 1.50p13
+1.50p14 1.50p6 1.50p7
+1.50p8 1.50p9 1.6.0p0
+: ; @-attributes
+@-building @-general @-wizard
+@@ @aahear @aclone
+@aconnect @adeath @adescribe
+@adestroy @adisconnect @adrop
+@aefail @aenter @afailure
+@ahear @aleave @alias
+@allhalt @allquota @amhear
+@amove @apayment @asuccess
+@atport @atrchown @atrlock
+@ause @away @boot
+@cemit @channel @channel2
+@channel3 @channel4 @charges
+@chat @chown @chownall
+
+For more, see hlp Entries-2
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+Trispis says, "The 'help entries' sequence lists EVERY help entry in the
+PennMUSH help database. Very boring reading."
+
+Trispis says, "Okay... The only remaining main help topic (from 1-4 on your
+paper) is 'help commands'."
+
+Trispis says, "Type: help commands"
+
+Trispis says, "Note once again that this file contains exactly what I
+summarized."
+
+COMMANDS
+Help is available for the following MUSH Commands:
+
+ahelp anews brief DOING drop
+examine enter events get give
+goto index kill leave LOGOUT
+look move news page pose
+QUIT read rpage rules RWHO
+say score slay take think
+use whisper WHO
+" : ; & +
+
+In addition to these, there are '@' commands. @-commands usually are
+commands which can modify and affect the database in substantial ways.
+There are several types of '@' commands. The following help entries
+list available '@' commands:
+
+@-ATTRIBUTES @-BUILDING @-GENERAL @-WIZARD
+
+<Code> Higs says, "Is there anyway to use wild-cards with help entries?"
+<Code> Trispis says, "The PennMUSH help system accepts partial
+name-matching... example: help @desc (instead of @describe)."
+
+Trispis says, "You are probably familiar with most of the commands listed
+here, having used them quite frequently."
+
+Trispis says, "Note, also, at the bottom of this screen are listed the four
+additional topics I mentioned (a-d on your paper)."
+
+Trispis says, "Okay, gang. Hang in there just a bit longer. Only four more
+help screens to look at and then we start coding. (Woohoo!)"
+
+Calico applauds. :)
+
+Trispis says, "Let's look at these in order. First, type: help @-attributes"
+
+Trispis says, "Before moving on to the others, I'd like to say a few things
+about @-attributes."
+
+@-ATTRIBUTES
+'@' commands which are attribute-related set game-defined attributes.
+
+These are:
+@aahear @aclone @aconnect @adeath @adescribe
+@adisconnect @aefail @aenter @afailure @ahear
+@aleave @amhear @amove @apayment @asuccess
+@atport @ause @away @charges @cost
+@death @describe @drop @ealias @efail
+@enter @failure @filter @haven @idescribe
+@idle @infilter @inprefix @lalias @leave
+@listen @move @odeath @odescribe @odrop
+@oefail @oenter @ofailure @oleave @omove
+@opayment @osuccess @otport @ouse @oxenter
+@oxleave @oxtport @payment @prefix @runout
+@sex @startup @success @tport @use
+
+Trispis says, "Note the first line of this screen says...
+
+'@' commands which are attribute-related set game-defined attributes.
+
+
+Technically, the things on this screen are "@commands" which set attributes on
+objects (players, things, rooms, or exits). Some of them apply only to
+players, others only have practical application on exits, and so on and so
+forth. The point is that they are _@commands_ which set _attributes_ on
+_objects_, and the attribute they set has the same name as the @command which
+sets it.
+
+Example: @describe me=Tall, dark, and handsome.
+
+This sets an attribute called 'describe' on 'me' containing the text 'Tall,
+dark, and handsome'. This may seem confusing right now, but it will eventually
+clear up as we move on to the other @-topics (b-d on your paper)."
+
+Trispis says, "Next let's look at help @-building. Type: help @-building"
+
+@-BUILDING
+These '@' commands are building related (they modify the database):
+
+@atrlock @atrchown @chown @chzone @clone
+@cpattr @create @destroy @dig @elock
+@eunlock @firstexit @link @lock @mvattr
+@name @nuke @open @parent @recycle
+@set @undestroy @ulock @unlink @unlock
+@uunlock @wipe
+
+Trispis says, "Note the first line of this screen says in parentheses '(they
+modify the database)'. Heh. Well.. I have news for you... all of the commands
+in the previous screen modify the database, too. But, these are more along the
+lines of ownership, order, and control of the database information (i.e., the
+object they are applied to)."
+
+Trispis says, "Okay... Once again, I'm going to jump out of sequence (saving
+the best for last. heh-heh.) The commands in 'help @-wizard' are wizard-only
+commands. At this point, we have no use for them. Nonetheless, I expect you
+want to see them, so go ahead and type: help @-wizard"
+
+Trispis says, "Since we won't be using any of these commands today, I won't
+waste any time discussing them. Just know that they are wizard-only commands."
+
+@-WIZARD
+These '@' commands are only usable by wizards or privileged players:
+
+@allhalt @allquota @boot @chownall @chzoneall
+@comment @dbck @disable @dump @enable
+@fixdb @hide @kick @log @motd
+@newpassword @pcreate @poll @poor @power
+@purge @quota @readcache @rejectmotd @shutdown
+@sitelock @squota @toad @uptime @wall
+@wallemit @wallpose @wizemit @wizmotd @wizpose
+@wizwall cd
+
+
+Trispis says, "Now for the good stuff.... the stuff we use in coding (which we
+will actually be using very soon). Type: help @-general"
+
+Trispis says, "Note it says right at the top of this file...
+
+'These '@' commands are general utilities and programming commands'
+
+
+...and that's exactly what they are."
+
+Trispis says, "Some of you have probably used a few of the @commands on this
+list (examples: @emit and @pemit). For those of you who haven't, you'll get
+your chance in just a moment (a small exercise coming up). It's important to
+note that all of the @commands listed in all four of these groups each has its
+own help file to explain its usage."
+
+Trispis says, "There is one last 'list' we need to look at. Then, we can start
+coding. After we look this over, we will begin a small coding project. Please
+don't lose patience now, because it's going to get interesting in just a few
+minutes. So, let's look at: help flag list"
+
+Trispis says, "Type: help flag list"
+
+Trispis says, "This is a list of the standard PennMUSH flags."
+
+FLAG LIST
+Flag Title Flag Title Flag Title
+-----------------------------------------------------------------------
+A - Abode, Ansi C - Chown_Ok, Color D - Dark
+E - Exit (type) F - Floating, Fixed G - Going
+H - Haven I - Inherit J - Jump_Ok, Judge
+L - Link_Ok M - Monitor N - Nospoof, No_Tel, No_Leave
+O - Opaque P - Player (type) Q - Quiet
+R - Room (type) S - Sticky U - Unfindable
+V - Visual W - Wizard X - Safe
+Z - Zone, Z_Tel
+
+a - Audible b - Debug c - Connected, Cloudy
+d - Destroy_Ok e - Enter_Ok f - Force_White
+g - Gagged h - Halt j - Jury_Ok
+l - Light m - Myopic n - No_Command
+o - On-Vacation p - Puppet r - Royalty
+s - Suspect t - Transparent u - Uninspected
+v - Verbose w - No_Warn x - Terse
+z - Startup ? - Unregistered
+---------------------------------------------------------------------
+Some flags may not be enabled on some MUSHes.
+
+Trispis says, "Note it tells you that some flags may not be enabled."
+
+Trispis says, "Most of them will be. (:"
+
+<Code> Trispis says, "This concludes the lecture portion. It's a good time to
+cut class, if you've got somewhere else to go."
+
+<Code> Trispis says, "Are there any questions before we proceed to the lab
+portion of this class?"
+
+<Code> Morpheus says, "Will I still need wordpad--err, my pencil and paper"
+
+<Code> Trispis doesn't think so.
+
+<Code> Trispis takes a short (2 min) break to refill his tea glass and go to
+the little teachers room.
+
+<Code> Calico grins.
+
+<Code> Trispis returns, relieved and refreshed. (:
+
+<Code> Trispis says, "Is everyone ready?"
+
+<Code> Calico says, "Ready. :)"
+
+<Code> Higs nods.
+
+<Code> Morpheus says, "Ready.."
+
+<Code> Fragment says, "Ready"
+
+<Code> Alan nods.
+
+<Code> Trispis continues.
+
+Trispis says, "The remainder of this class is being manually typed (no
+script). If you have questions, continue to use +code."
+
+Trispis says, "The first command I only want you to use /once/ (excessive use
+of it will create clutter)."
+
+From afar, <Trispis's Alt> froze on the other screen. I've got to reboot. Tell
+them I'll be back in 5 min... smoke a cigarette or something.
+You paged <Trispis's Alt> with 'K.'.
+Trispis has disconnected.
+GAME: Trispis has disconnected.
+Tark eeps.
+You say, "Trispis needs to Reboot... so... everyone take a wee break."
+Tark wees in the corner.
+Morpheus says, "Darn, we lost another sub.... .... ... next ;)"
+Higs raises an eyebrow.
+Elocin goes to the desk and takes a whole pad of hall passes..
+Morpheus slides his straw and wadded up pieces of paper back into his robe
+pocket.
+Calico takes her own advice and a break. :)
+Higs taps his pencil on his desk.
+Elocin sneaks back to her desk.
+GAME: Trispis has connected.
+Trispis has connected.
+Calico grins.
+
+Trispis says, "Sorry. Had a technical problem."
+
+Trispis says, "The first command can create clutter. Please only use it once."
+
+Trispis says, "Read: help @create"
+
+@CREATE
+@create <name> [=<cost>]. Creates a thing with the specified name.
+Creation costs either <cost> pennies or 10 pennies, whichever is
+greater. The value of a thing is proportional to its cost. To be
+exact, value=(cost/5)-1. Value cannot be greater than 100, any
+values that would be greater than 100 are rounded down to 100.
+(see give re: greed)
+
+Trispis says, "Note the optional [=<cost>] parameter and the comments about
+it."
+
+Trispis says, "Ignore it."
+
+<Code> Higs says, "What if we've already created an object on here before? How
+do we find out the database reference number without being in the same room?"
+
+<Code> Trispis says, "Create a new one."
+
+<Code> Trispis says, "But, do it according to my instructions."
+
+Trispis says, "We're going to create a 'Lab Project'.... as follows... type
+this...
+
+@create Lab Project
+"
+
+Trispis says, "Now, if you do 'brief me', you'll see a 'Lab Project' in your
+contents."
+
+Trispis says, "It's probably a good idea to write down the #dbref of your lab
+project ... somewhere on your notepaper."
+
+<Code> Higs says, "Can you brief someone else to see what they're carrying?"
+
+Calico scribbles.
+
+<Code> Trispis says, "Only if they don't have the 'opaque' flag set on
+themselves."
+
+<Code> Calico says, "Right."
+
+<Code> Trispis says, "Then, you can only see the objects they carry that don't
+have DARK flags on them."
+
+<Code> Trispis says, "If the other player has the VISUAL flag on them, you can
+'brief' and 'examine' them just as if you /were/ them."
+
+<Code> Trispis returns to the exercise.
+
+Trispis says, "Let's give our lab projects descriptions... do: help @describe"
+
+@DESCRIBE
+@describe <object> [=<description>]. <object> can be a thing,
+player, exit, or room, specified as <name> or #<number> or 'me' or
+'here'. This sets the description a player sees when they use the
+command 'look <object>'. Without a description argument, it clears
+the message. It can be abbreviated @desc. @desc's on everything
+that isn't dark is considered to be Good Building Practice.
+
+Trispis says, "This time, we need to pay close attention to the optional
+parameter..."
+
+Trispis says, "Without the optional description, it clears any existing
+description."
+
+Trispis says, "Also note that this command can be abbreviated '@desc'."
+
+Calico's Lab Project/DESCRIBE - Set.
+
+Trispis says, "so, let's put something on our projects... do this...
+
+@describe lab project=My Lab Project. I am very proud of this.
+"
+
+Trispis says, "Okay... up to this point, I've discussed 'flags'... we'll be
+learning flags in about 15 minutes, but first I want to re-introduce our
+'Quick Reference' for the PennMUSH help..."
+
+Trispis says, "Look at your paper (or type: help)."
+
+Trispis says, "Then type: help topics"
+
+TOPICS
+Help available on the following Topics:
+
+ATTRIB-OWNERSHIP ATTRIBUTES BEING KILLED
+BOOLEAN VALUES CHAT CONTROL
+DROP-TO ENACTOR EVALUATION
+EXITS FAILURE FLAGS
+FUNCTIONS GENDER HERE
+HOMES LINKING LISTENING
+LISTS LOOPING MASTER ROOM
+NON-STANDARD ATTRIBUTES OBJECT PARENTS PARENT ROOMS
+PUPPETS ROBBERY SACRIFICING
+SEMAPHORES SETTING-ATTRIBUTES SPOOFING
+STACK SUBSTITUTIONS SUCCESS
+SWITCHES TYPES OF OBJECTS USER-DEFINED COMMANDS
+VERBS WARNINGS ZONE MASTERS
+ZONE OBJECTS
+
+Trispis says, "Note the entry 'NON-STANDARD ATTRIBUTES'."
+
+Trispis says, "Type: help non-standard attributes"
+
+NON-STANDARD ATTRIBUTES
+NON-STANDARD ATTRIBUTES
+Objects now have the capability of having an unlimited number of
+attributes. These attributes can have any name. In order to preserve
+backward compatibility, the VA-VZ, WA-WZ, and XA-XZ attributes still
+exist in their previous form, and are set like a normal attribute.
+To set a new style attribute, you use the form
+&<attribute name> <obj> = <value> OR
+@_<attribute_name> <obj> = <value> OR
+@set <obj> = <attribute_name>:<value>
+All attributes have the ability to be used in attribute locks (see help
+@lock). Attributes also have the new ability to be 'owned' independent
+of object ownership (see help ATTRIB-OWNERSHIP). All attributes
+can be addressed in get() as well as in edit, and %-substitute form,
+as well as accessed via the V-function.
+
+Trispis says, "The only thing we are concerned about at this time is that we
+can set our own attributes in the form...
+
+&<attrib-name> <obj>=<value>
+
+And, note that there cannot be any spaces in an attribute name (underscores
+and hyphens are okay, but no spaces)."
+
+Trispis says, "Another shortcut for coding is to use the #dbref instead of the
+name (saves typing)."
+
+Trispis says, "so, put an attribute on your lab project (using the
+non-standard format and the #dbref instead of the name)... like this...
+
+&test-attribute #<your lab project's dbref>=Woohoo!
+"
+
+Trispis says, "You should get a response confirming that you have done this."
+
+Calico's Lab Project/TEST - Set.
+
+Trispis says, "Something like: Lab Project/TEST_ATTRIBUTE - Set."
+
+Trispis says, "Okay... another help file from 'help topics'"
+
+Trispis says, "USER-DEFINED COMMANDS"
+
+Trispis says, "type: help user-defined commands"
+
+USER-DEFINED COMMANDS
+USER-DEFINED COMMANDS
+
+User-defined commands can be created by setting $comands on objects.
+These are set using &<attrib> <object>=$<command pattern>:<actions>. If
+something a user types matches the command pattern, the actions are
+executed. In order to execute a $command, you must pass the object's
+uselock. Otherwise, you will get a "Permission denied." message.
+
+Any number of *'s and ?'s may be in the command pattern. A * matches
+any number of characters, and a ? matches any single character. When
+the actions are executed, the values on the stack in %0-%9 are the
+portions of what the user types that match the first ten *'s or ?'s.
+To use a : in a command pattern, escape it with a \.
+
+For example, to make a 'wave' command, you could do the following, where
+<object> is an object in your inventory:
+&do-wave <object>=$wave *:@force owner(me)={:waves to %0.}
+You could then type:
+> wave Guest
+Rhyanna waves to Guest.
+
+See also: STACK, SUBSTITUTIONS
+
+Trispis says, "It says a bunch of stuff about stack values and substitutions
+and what-have-you. Ignore that for now. Just look down to their example...
+
+&do-wave <object>=$wave *:@force owner(me)={:waves to %0.}
+"
+
+Trispis says, "don't do this yet."
+
+Trispis says, "I want to identify all of the portions of the syntax."
+
+Trispis says, "Remember our earlier syntax for non-standard attributes...
+
+&<attr-name> <obj>=<value>
+
+Well, I'm going to discuss the <value> portion..."
+
+Trispis says, "$wave *:@force owner(me)={:waves to%0.}"
+
+Trispis says, "Just so you'll understand the 'stack' and 'substitutions'
+(without explaining them in detail, I'm going to modify this slightly..."
+
+Trispis says, "$wave * *:@force owner(me)={:waves to %0 and says, "%1"}"
+
+Trispis says, "The %0 is replaced by the first * ... the %1 is replaced by the
+second *"
+
+Trispis says, "The command @force does exactly what it says... it forces ...
+let's read 'help @force'"
+
+@FORCE
+@force <player/object>=<command>. Forces the game to act as though
+<player/object> had entered <command>. Only wizards may force
+players. May be abbreviated @fo. Wizards cannot be forced by
+players. Hard luck. You can always force objects you control, and
+will probably use this command to manipulate puppets.
+An abbreviated form of this command is simply "<#dbref> <command>".
+
+Trispis says, "So, What this 'user-defined attribute' has done is... It has
+place @force inside of itself... and allows us (or will soon) to have our lab
+project /force/ us to perform an action via a single command."
+
+Trispis says, "The curly brackets ({}) identify the beginning and the end of
+what that action will be."
+
+Trispis says, "Here's the example again..."
+
+Trispis says, "Here's my modified version...
+
+&do-wave <object>=$wave * *:@force owner(me)={:waves to %0 and says, "%1"}
+"
+
+<Code> Higs says, "We could put the attribute in ourselves instead of an
+external object, right?"
+
+<Code> Higs says, "I understand that we're doing this for a lab exercise, but
+practicality-wise, this would be easier if done in ourselves instead of an
+external object, right?"
+
+<Code> Trispis says, "Actually, no."
+
+<Code> Trispis says, "It's not wise to put code on your player."
+
+<Code> Higs says, "Oh."
+
+<Code> Trispis says, "There are problems that can arise down the road, if you
+do."
+
+<Code> Higs says, "Ah."
+
+<Code> Trispis says, "It has to do with security features."
+
+Trispis says, "One more thing about the syntax of their example..."
+
+Trispis says, "owner(me)"
+
+Trispis says, "That is called a 'function'"
+
+Trispis says, "I don't want to deal heavily with functions, but you can get a
+list of them by typing: @config/functions"
+
+Trispis says, "You can get help on individual functions by typing:
+
+help <function-name>()
+
+include the ()'s for best results."
+
+<Code> Higs says, "Is that one of the uses of the dark flag? So you can put
+code that you would put on yourself into an object that no one else can see?"
+
+<Code> Calico says, "Dark makes the object invisible like."
+
+<Code> Trispis says, "People can't see your code unless you have the visual
+flag set on it (flags coming up in a moment)."
+
+<Code> Higs says, "Er...I meant so that you could have an object with your
+code in it that wouldn't show up in your inventory, which might not be
+desirable."
+
+<Code> Trispis says, "Just hang tight, this will clear up when we learn
+flags."
+
+Trispis says, "Returning now to the original example, let's actually do
+something..."
+
+Trispis says, "Let's actually do this now...
+
+&do-wave #<your lab project>=$wave *:@force owner(me)={:waves to %0.}
+"
+
+Calico's Lab Project/DO-WAVE - Set.
+
+Trispis says, "Once you've done this, type: wave Trispis"
+
+Trispis says, "It shouldn't work."
+
+Trispis says, "The first reason it won't work is because your lab project has
+a flag on it that is preventing it from accepting commands..."
+
+Trispis says, "do: help flag list"
+
+Trispis says, "Note the lowercase 'n' stands for No_Command"
+
+Trispis says, "type: help no_command"
+
+NO_COMMAND
+Flag: NO_COMMAND (all types)
+
+The NO_COMMAND flag disables the checking of $-commands on an object.
+Most MUSHes will be configured to automatically set this flag on rooms
+and players. The server runs faster when fewer objects are checked for
+$-commands; thus, any object which does not have $-commands on it should
+be set NO_COMMAND.
+
+Trispis says, "Here's how we're going to fix this..."
+
+Trispis says, "read: help @set"
+
+@SET
+@set <object>=[!]<flag>
+@<pre-defined attribute> <object>=<value>
+@set <object>=<attribute>:<value>
+@set <object>/<attribute>=[!]<atrflag>
+
+The first form sets (or unsets) a flag on <object>.
+The second form sets a pre-defined attribute (such as MOVE, FAIL, etc.)
+on <object>.
+The third form sets an arbitrary attribute with <value> on <object>.
+
+See "help @set2" for more.
+
+Trispis says, "We only want to concern ourselves with the first syntax listed
+at the top."
+
+Trispis says, "The first sentence tells us that it sets or unsets a flag on
+<object>."
+
+Trispis says, "Note that there is an optional parameter [!]."
+
+Trispis says, "This is referred to as 'not'."
+
+Trispis says, "That is, the exclamation point means 'not'."
+
+Trispis says, "So, we want to do this...
+
+@set #<lab project>=!no_command
+"
+
+Flag reset.
+
+Trispis says, "Now, type: wave Trispis"
+
+Trispis says, "It shouldn't work (still)."
+
+Trispis says, "There's another flag we need to learn..."
+
+Trispis says, "Do: help flag list"
+
+Trispis says, "Note the uppercase 'I' stands for 'Inherit'."
+
+Trispis says, "Read: help inherit"
+
+INHERIT
+INHERIT
+Inherit is a security flag used to prevent objects without authorization
+from using @force, @set, and @trigger on other objects.
+Authorization is successful if:
+
+1. The enactor is WIZARD.
+2. The enactor's owner is INHERIT.
+2. The enactor is INHERIT.
+3. The target is not INHERIT.
+
+Only INHERIT or WIZARD objects may force their owners. Players can
+always @force, @set, and @trigger their objects.
+
+Read "help Inherit2" for more.
+
+Trispis says, "Note it says it prevents @force... And that's what we have in
+our code."
+
+Trispis says, "However, This file is not as intuitive as others... The absence
+of this flag is what 'prevents' @force... It says this under the numbered list
+... 'Only INHERIT ... objects may force their owners.'"
+
+Higs waves to Trispis.
+
+Trispis says, "So, we need to add the INHERIT flag to our project... as
+follows...
+
+@set #<lab project>=inherit
+"
+
+Trispis sees that Higs is moving quickly. (:
+
+Higs grins.
+
+Flag set.
+
+Trispis says, "Now... Since Higs has proven to us that this works, It's time
+for me to help anyone else with debugging (i.e., cleaning up any mistakes you
+might have made)."
+
+<Code> Higs says, "If I were to give my lab project to somebody, they could
+then force me to wave?"
+
+<Code> Trispis says, "At this point, yes."
+
+Morpheus waves to trispis.
+
+Fragment waves to trispis.
+
+Trispis says, "If your project isn't functioning, page me and I'll look at
+it."
+
+Higs looks around warily, making sure nobody steals his project and starts
+making him do bad things.
+
+Calico waves to Trispis.
+
+Elocin waves to herself happily and stuffs.
+
+Higs wonders if his project could be used to start a wave.
+
+Morpheus waves to Trispis.
+
+Morpheus grins.
+
+Trispis says, "Okay... a few more things, then we'll call it quits for today."
+
+Trispis says, "Higs asked about other people using his toy."
+
+Higs wonders about the phrasing of that, but smiles politely anyway.
+
+Trispis says, "We can prevent this with a lock... there are lots of files in
+the 'help @lock'. We /do/ want to at least browse them all."
+
+Trispis says, "so, type: help @lock (and 'help @lock2' and so on)... and pay
+attention to the 'Ralph Melton' locks."
+
+Trispis says, "We are currently using (as are many MUSHes) the extended lock
+system."
+
+Trispis says, "i.e., the 'Ralph Melton' locks."
+
+Trispis says, "The lock we are going to use is: @lock/use"
+
+Fragment knows who Ralph Melton is :)
+
+Trispis says, "This allows us to define who may use our toy. (:"
+
+Trispis says, "Here's what we want to do next...
+
+@lock/use #<lab project>==me
+
+Please note there are /two/ equal signs... we are using what is referred to as
+an 'is-lock' It means... only a thing that 'is me'... also note that when
+locking an object 'me' refers to you, the player. In other code, it can refer
+to the object containing the code. Don't concern yourself too much with this
+now, just know that 'me' in a lock means your player."
+
+Locked.
+
+Trispis says, "Now, to disappoint everyone..."
+
+Trispis says, "We're done with code basics."
+
+Higs raises an eyebrow.
+
+Calico cheers?
+
+Higs drops Lab Project.
+
+Lab Project says, "Go ahead...try to use me. I dare ya."
+
+Elocin laughs.
+
+Calico giggles.
+
+Higs grins.
+
+Trispis says, "A few security tips... any object you create should be given a
+home (read: help @link)"
+
+Trispis says, "Plus, every object you create should be locked to you (the
+basic lock: @lock <obj>=me) to prevent people from picking it up and walking
+away with it."
+
+Higs takes Lab Project.
+
+Trispis says, "If you want to learn an added bonus, I'll show you a little
+trick..."
+
+Fragment likes tricks.
+
+Trispis says, "it's just a confusing little enticement to return for more
+classes..."
+
+Morpheus will be at the next class without question anyway.
+
+Trispis says, "Reset your &do-wave like this...
+
+&do-wave #<lab proj>=$wave *:@force owner(me)={:waves to %0.
+[u(test-attribute)]}
+
+... if your client wrapped that, pretend that was all on one line."
+
+Trispis says, "What that does is... It gets the contents of the
+'test-attribute'."
+
+Calico's Lab Project/DO-WAVE - Set.
+
+Higs waves to Trispis. Woohoo!
+
+Trispis grins.
+
+Morpheus waves to Trispis. Dork!
+
+Trispis chuckles.
+
+Morpheus sat himself in the corner with his dunce cap for a reason.
+
+Morpheus waves to Trispis. Woohoo! 

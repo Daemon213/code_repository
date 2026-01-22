@@ -1,0 +1,681 @@
+ CLASS: MUSHCoding 101
+PART: 1
+DATE: 11/06/2002 TIME: 6 PM
+INSTRUCTOR: Luigi
+WHERE: 8BitMUSH
+DESCRIPTION: The first class of MUSHCoding 101 ever held. Most of it has
+been left in its original state, though some parts of the log were edited
+to remove spam or correct a speaker's typo. A '*' has been placed in front
+of the speaker's name.
+
+----------------------------------------------------------------------------
+
+* Luigi says, "One moment and we will begin."
+Phoenyx noted none of them mush. thank god. Hated 'em all
+Link grins at Rhayden a few minutes before putting on his headphones and watching
+Phoenyx.
+Phoenyx had a horrible time staying awake at school. Could consume a 2-liter of
+mountain dew and fall asleep right after
+Rhayden says, ""
+Yoda shrugs. Heh, just wanted to see how it turns out.
+Rhayden says, "Get more sleep, fool."
+Phoenyx says, "My average was 4 hours. some nights less."
+Link chuckles and turns up some System of a Down.
+* Luigi says, "Alright."
+* Luigi begins handing out syllabi.
+l
+Luigi's Classroom
+..is a pit. @Dolists and iter()'s float about, encapsulating each other, and
+surrounding and being surrounded by a plethora of other functions and @commands.
+It's a mess. Some of the code here is scribbled on walls and notebook paper, while
+even more of it is written on the windows with crayons or scratched into the floors.
+Madness. You wonder how you'll ever learn how to code now.
+Contents:
+Yoda
+Link
+Phoenyx
+Illmuri
+Rhayden
+Kronus
+Blackboard
+Obvious exits:
+<O>ut
+
+Phoenyx yawn.
+Faizah has arrived.
+Rhayden says, "Faizah, you made it just in time."
+Phoenyx nod, un-nod.
+Retrieving a pen from his pencil case, Link begins to dissisemble it, chuckling to
+himself over the process. Tearing a small bit off his first blank sheet of paper,
+he pops it into his mouth and begins chewing on it.
+Faizah's attention will be divided. Blah.
+Phoenyx look around, pulls out folder.
+Phoenyx look at syllabus, scoff, ditch.
+Phoenyx will wait for advanced class :)
+Link says, "Woah, hey! an EXAM?!?"
+Phoenyx goes home.
+Phoenyx has left.
+Phoenyx has arrived.
+Link says, "NO ONE SAID THERE WAS AN EXAM IN UNIVERSITY!"
+Phoenyx chuckle
+Tulioz has arrived.
+Rhayden throws a blackboard eraser at Phoenyx's head.
+Phoenyx duck!
+* Luigi says, "Alright, everybody please take a seat."
+Shaking his fist, Link arms his spitball shooter and glances around the class for a
+likely candidate for being his first victem.
+Phoenyx too late, brushes off chalk dust...
+Illmuri sloches.
+Phoenyx says, "Can I stay for free for amusement value? I know all this schtuff"
+* Luigi says, "My name is Lu-i-gi. *begins to write something on the board*"
+l
+* Luigi writes on the blackboard..
+l black
+Blackboard(#4216IScSoToTa)
+--------------------------------------------------------
+0 Luigi -
+1 -
+2 -
+3 -
+4 -
+5 -
+6 -
+7 -
+8 -
+9 -
+--------------------------------------------------------
+| chalk <line #>=<message> erase <line #> |
+--------------------------------------------------------
+* Luigi says, "Today's lecture is entitled, "MUSHCoding Fundamentals"."
+* Luigi says, "Yes, you may stay Phoenyx."
+Phoenyx says, "Thank you sir :)"
+Tulioz says, "Yo Loo do use gots any bafrooms?"
+* Luigi says, "Graduates of this class may go on to take MUSHCoding 201."
+* Luigi says, "You will have to hold it, Tulioz. *acts like all those mean teachers
+did in his school days*"
+Taking aim at Phoenyx, Link open fires... the small wad of paper flying off through
+the air.
+* Luigi says, "To begin, what is MUSHCode?"
+Rhayden raises his hand
+Illmuri says, "the crappiest code ever devised by humands"
+Tulioz says, "THis is bull crap Loo, I know mah rights!!!"
+Link raises his hand.
+* Luigi says, "Rhayden, do you have an answer?"
+Link waves his hand around impatiently.
+Rhayden says, "MUSHcode is the chaining together of various MUSH commands to
+accomplish a given task."
+* Luigi says, "Correct. Link?"
+Link says, "The type of ceral I had for breakfast this morning!"
+Link chuckles to himself.
+Phoenyx heh.
+Rhayden snicker
+* Luigi says, "MUSHCode is the in-game programming language which makes MUSH/MUX
+servers unique from all other MU* servers. Though in many MU*s you can program,
+the programming is often limited to players with builder bits. MUSH/MUX is designed
+to allow all levels of players to program within the game."
+Kronus rolls hie eyes
+Faizah nods.
+Tulioz slaps Link on his back, "Har har, good one."
+* Luigi says, "Now, with RP MU*s you will often not be able to program. But MUSH
+wasn't invented for role playing, originally."
+* Luigi steps up to the board.
+* Luigi writes on the blackboard..
+l black
+Blackboard(#4216IScSoToTa)
+--------------------------------------------------------
+0 Luigi -
+1 1989: TinyMUD -
+2 -
+3 -
+4 -
+5 -
+6 -
+7 -
+8 -
+9 -
+--------------------------------------------------------
+| chalk <line #>=<message> erase <line #> |
+--------------------------------------------------------
+Link nods to Tulioz before he continues, "I once had a MUX... but then it was run
+over."
+* Luigi says, "In 1989, James Aspnes wrote TinyMUD. This is considered the first
+'MUSH' persay."
+* Luigi says, "TinyMUD, as one can guess from the game, was designed to be smaller
+version of the MUDs previous to 1989. A smaller version, particularily of a MUD
+called Monster, which was written in Pascal. You don't need to remember this."
+Link jots something down on his paper and grins at it.
+Laci has arrived.
+* Luigi says, "The gimmic being that you could build onto the world. 13 years later,
+it has evolved into what we now call MUSH/MUX code, though originally the only code
+you could do was exit stuff (ie, locking exits)."
+* Luigi says, "MUSHCoding is an excellent starter language."
+* Luigi says, "Let us look at some of the most basic of code, first."
+* Luigi types --> say hi, all.
+* Luigi says, "hi, all."
+* Luigi says, "Behold, a command."
+Rhayden types --> foo bar baz
+* Luigi says, "I'm sure you're all amazed."
+* Luigi says, "Now.."
+Link nudges Rhayden, "Look, I'm Mr. Plumber, "Blah blah blah MUSHcode and mux blah
+blah, I know commands blah"
+Laci types --> say I will worship laci!
+Laci says, "I will worship laci!"
+Laci types --> pose throws an arplaine at the plumber
+Laci throws an arplaine at the plumber
+Phoenyx works on tonight's Late8 Radio Program!
+Laci oops, *paper airplane
+* Luigi says, "There is a wide array of commands. SAY, POSE, many you use every day.
+Commands are broken into two categories."
+* Luigi says, "Commands, and @Commands."
+Laci says, "what's the dif?"
+Tulioz says, "What about +commands?"
+Phoenyx raises his hand, "What about +commands?"
+Laci says, "and giant pig commands?"
+* Luigi says, "Oh yes, and those. But forget about those for now, they don't exist."
+Laci says, "isn't +help a +command?"
+Rhayden says, "+commands aren't commands. They're softcode."
+Link shouts out, "My dad says MUXes suck."
+Phoenyx says, ":looks at Laci in amazement. "There is no +...""
+Phoenyx go work on radio now.
+Laci says, "Oh, oops, multitasking 5 dif things is confuzzling me."
+* Luigi says, "Commands are the basic command<s> that every player on the MUSH is
+pretty much familiar with. They allow you to interact with the world, such as LOOK,
+PAGE, SAY, POSE. They are the very basic of commands, the meat and potatoes of
+MUSHing."
+Illmuri says, "you spam ceases to be amusing. some of us are here, and didnt pay to
+listen to you, we paid for L to talk"
+Kronus says, "yeah guys keep it down just a little please"
+* Luigi says, "@Command are commands that are used in MUSHcoding. There are many more
+@Commands than Commands."
+Rhayden scowls, but shuts up.
+* Luigi says, "Some examples:"
+Link nudges Rhayden, "Browners"
+Laci also scowls
+* Luigi types --> @emit This is the @emit command. It sends a message to a room.
+This is the @emit command. It sends a message to a room.
+* Luigi says, "Shut up, Link."
+Link nudges Rhayden, "He said shutup."
+* Luigi types --> @pemit Link=This sends a message to a player. Link is seeing this.
+Rhayden punches Link in the arm. "I'm trying to listen, so shut up."
+* Luigi types --> think This sends a message to you. Only you can see it. Try it.
+Link looks around, hearing voices in his head.
+* Luigi says, "There are tons of @commands. As we progress more of them will be
+introduced."
+* Luigi says, "Now we shall discuss Functions."
+Faizah nods.
+* Luigi says, "Functions are combined with commands, and can only (for the most part)
+be used within a Command/@Command."
+* Luigi says, "A function looks like this: functionName()"
+Rhayden heh. "Javastyle."
+Tulioz says, "Tue Nov 05 18:26:57 2002"
+* Luigi says, "The functionName is the name of the function, much like commands have
+names. The parenthesis can either be empty, or contain arguments."
+* Luigi says, "Everybody try this:"
+* Luigi types --> say time()
+* Luigi says, "Tue Nov 05 18:27:16 2002"
+Rhayden says, "time"
+Rhayden says, "Tue Nov 05 18:27:24 2002"
+Kronus says, "Tue Nov 05 18:27:24 2002"
+Link plays the Ocarina of Time: > A v > A v
+He played the Song of Time.
+Tulioz already did it, I'm ahead!
+* Luigi heh's at Tul.
+Faizah says, "Tue Nov 05 18:27:47 2002"
+Laci says, "time/()"
+Link says, "Tue Nov 05 18:27:59 2002"
+Laci says, "Tue Nov 05 18:28:02 2002"
+* Luigi says, "Time() is a very basic function. It takes no arguments. Now, let's see
+what I mean by arguments. The add() function takes at least 2 arguments. Try this:"
+Tulioz gives Lui an apple.
+* Luigi types --> say add(2,2)
+* Luigi says, "4"
+Laci says, "4"
+Rhayden says, "42"
+Tulioz types --> add(100,30000)
+Faizah says, "5 ;)"
+Laci says, "16"
+Tulioz types --> say add(100,30000)
+Tulioz says, "30100"
+* Luigi says, "As you can see, arguments are seperated by commas. Some functions
+require no arguments, some require 1 or more."
+Link grins at Yoda and snickers to himself, nudging Rhayden he passes it on.
+Yoda whistles.
+Kronus says, "34"
+* Luigi says, "Some functions, such as add, can take 2 and beyond."
+* Luigi types --> say add(1,1,1)
+* Luigi says, "3"
+* Luigi types --> say add(1,1,1,1)
+* Luigi says, "4"
+* Luigi types --> say add(1,1,1,1,1)
+* Luigi says, "5"
+Link says, "4"
+* Luigi types --> say add(1,1,1,1,1,2)
+* Luigi says, "7"
+Rhayden stifles a snicker
+Kronus grins
+* Luigi says, "Of course, how many arguments a function takes depends on the
+function."
+* Luigi says, "Before we go on, we should discuss the Help System."
+Laci goes home.
+Laci has left.
+* Luigi says, "MUSH has a built-in help system. Nobody is expected to remember the
+arguments and names of every function in the game. Which is why we have a help system."
+* Luigi types --> help add
+help add
+ADD(<number>,<number>,...)
+
+Returns the sum of some numbers.
+* Luigi says, "Simply type 'help <function name>' to find out how many arguments it
+takes. The '...' in HELP ADD indicates it can take 2 or any number more arguments."
+* Luigi says, "Now, onto the heart of MUSHcoding: $-Commands."
+* Luigi says, "We know about Commands/@Commands. But we can also make our own
+commands."
+* Luigi says, "First, everybody create an object. Type: @create Name Of Object"
+* Luigi says, "Name Of Object can be anything you wish."
+Link drops Name of Object.
+Link snickers.
+* Luigi says, "When you have created it, type: drop <whatever name you used>"
+Kronus drops Zero.
+Rhayden drops FooFooBunny.
+Faizah drops FizBum.
+* Luigi says, "I apologize for those of you who wish the immaturity level would
+lower. I think by MUSHCoding 201 most of the fat will be trimmed. *ding*"
+Tulioz drops Tul Ownz You.
+Link bursts out laughing as Luigi says fat.
+Kronus nods and grins at Luigi's comment
+Faizah says, "Mine is a nickname I came up with for myself when I had too much sugar
+one time... :P"
+* Luigi says, "Alright. You now have created an object. In order to make your own
+commands, you need an object to house the command."
+Link looks at Yoda and grins evilly.
+* Luigi says, "So we are going to use the object we just created."
+* Luigi says, "Type this:"
+Faizah says, "Perfectly innocent."
+Yoda types --> @create Halo around Head
+* Luigi types --> &hello <name of your object>=$hello:say Hello world!
+* Luigi says, "Then type 'hello'."
+FizBum says, "Hello world!"
+FizBum says, "Hello world!"
+FooFooBunny says, "Hello world!"
+Illmuri drops Cement Block.
+Tul Ownz You says, "Hello world!"
+FizBum says, "Hello world!"
+FooFooBunny says, "Hello world!"
+Zero says, "Hello World!"
+Tul Ownz You says, "Hello world!"
+FizBum says, "Hello world!"
+FooFooBunny says, "Hello world!"
+Zero says, "Hello World!"
+Name of Object says, "Hello world!?!"
+* Luigi grins.
+Cement Block say Hi
+(Many more "Hello world"s occur)
+Rhayden says, "Good gravy!"
+Phoenyx drops Myobject.
+* Luigi says, "Very basic. But you have created your first $-command, also known as a
+User-Defined Command."
+Link says, "HELLO"
+Illmuri says, "when its the same command, it triggers them all..."
+* Luigi nods.
+* Luigi says, "Alright, we shall fix that problem."
+Tul Ownz You says, "Hello world!"
+FizBum says, "Hello world!"
+(Many more "Hello world"s occur)
+* Luigi types --> &hello <name of your object>=$<any word of your choice>:say Hello
+world!
+FooFooBunny says, "Hello world!"
+Tul Ownz You says, "The pimps of 8bit MUSH have united!"
+FizBum says, "Hello world!"
+Name of Object says, "I lik kandy!"
+* Luigi says, "Whatever you change the word to, that's the word that will cause it to
+speak."
+FooFooBunny says, "Ahoy mateys!"
+* Luigi says, "Now, let's suppose we wanted it to do more than one command. Enter the
+semi-colon, and Command Stacking."
+Phoenyx drops MiniPhoe.
+* Luigi types --> &hello <name of your object>=$<any word of your choice>:say Hello
+world!;say Goodbye world!
+MiniPhoe says, "Hi, Luigi!"
+* Luigi says, "Change the messages as you wish."
+Zero says, "Hello World!"
+Zero says, "Good bye cruel world!"
+MiniPhoe says, "Hi, Zero!"
+FooFooBunny says, "Ahoy mateys!"
+FooFooBunny says, "Shiver me timbers, arrrr..."
+Name of Object says, "HI ALL!"
+Name of Object snickers
+Name of Object says, "GOODBYE CRUEL WORLD!"
+FizBum says, "Hello Faizah!"
+FizBum says, "Goodbye Faizah!"
+MiniPhoe says, "Hi, FizBum!"
+Name of Object says, "HI ALL!"
+Name of Object snickers
+Name of Object says, "I can do a sumbersault!"
+* Luigi says, "The semicolon seperates expressions. "Say Hello world!" is an
+expression, as is "say Goodbye world!". When you type the word that you set, it runs
+both expressions one after another."
+MiniPhoe says, "Hi, Luigi!"
+Tul Ownz You says, "The pimps of 8bit MUSH have united!"
+Tul Ownz You says, "Tulioz has come to rule you with his fellow pimps@!"
+Tul Ownz You says, "Join the UPF, United Pimp Foundation!"
+Tul Ownz You says, "Gotta love my spam!"
+Tul Ownz You says, "#-1 ARGUMENT MUST BE INTEGER"
+MiniPhoe says, "Hi, Tul Ownz You!"
+Illmuri has disconnected.
+Illmuri has connected.
+Illmuri says, "whew"
+Illmuri says, "telnet sucks"
+Tul Ownz You says, "The pimps of 8bit MUSH have united!"
+Tul Ownz You says, "Tulioz has come to rule you with his fellow pimps@!"
+Tul Ownz You says, "Join the UPF, United Pimp Foundation!"
+Tul Ownz You says, "Gotta love my spam!"
+Tul Ownz You says, "Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!"
+MiniPhoe says, "Hi, Tul Ownz You!"
+* Luigi says, "Alright, please pick up your junk."
+Rhayden takes FooFooBunny.
+* Luigi says, "Err- quality objects."
+Faizah takes FizBum.
+* Luigi tighten bowtie.
+Tulioz takes Tul Ownz You.
+Ralph the Object says, "I can do a sumbersault!"
+Link takes Ralph the Object.
+Tulioz says, "Good I can still use 'im."
+Kronus takes Zero.
+* Luigi says, "Alright, before I go on, do you all understand command stacking?"
+Kronus nods...
+Faizah nods.
+Rhayden nods.
+Link says, "I've heard of stacking the deck! *drumroll, cymbal*"
+* Luigi says, "In the previous code example, which looked like this.."
+* Luigi types --> &hello <name of your object>=$<any word of your choice>:say Hello
+world!;say Goodbye world!
+MiniPhoe says, "Hi, Luigi!"
+* Luigi says, "We did a few things. First, we set an Attribute on our object."
+* Luigi says, "Attributes are places we place data. You all set data into your
+DESCRIBE attribute when you first connected to the MUSH, via the @describe command.
+Type examine me/describe."
+Link says, "Is it similar in anyway to VB?"
+* Luigi says, "The & before &hello told the MUSH that you were going to be setting an
+attribute on something."
+* Luigi types --> &test me=hi
+&test me=hi
+SpamBot/TEST - Set.
+* Luigi types --> examine me/test
+examine me/test
+TEST [#4104]: hi
+* Luigi says, "If you've programmed in another language, it's pretty much like a
+variable."
+* Luigi says, "Only it's stored on an object, in the virtual world known as MUSH."
+Faizah says, "MUSH is my first, and only so far, coding language."
+* Luigi says, "Back to the code:"
+* Luigi types --> &hello <name of your object>=$<any word of your choice>:say Hello
+world!;say Goodbye world!
+* Luigi says, "The hello is the attribute name."
+* Luigi says, "Attribute names can be almost anything, but they cannot contain spaces."
+Faizah says, "I should get my brother to come here, I've been trying... He codes in
+Visual Basic..."
+* Luigi types --> &corn_dogs me=nyah
+* Luigi types --> &12345! me=nyah
+Link is learning it this semester.
+* Luigi says, "I just set the "CORN_DOGS" and "12345!" attributes on myself."
+* Luigi types --> &hello <name of your object>=$<any word of your choice>:say Hello
+world!;say Goodbye world!
+* Luigi says, "As you can see with the code above, we placed a $<any word of your
+choice>: before our "Hello world" code."
+* Luigi says, "This is the origin of the phrase, "$-commands"."
+* Luigi says, "The $ tells the MUSH that whatever text follows it is going to be the
+command to trigger this attribute."
+Tulioz busts out a 10 lb Oreck XL and vacums everything in the area.
+Tulioz says, "Don't you want one too?"
+* Luigi says, "It knows when the command name ends, and the code begins, by the :."
+* Luigi says, "So the format is: &<attributeName> <object>=$<command>:<code to run>"
+* Luigi says, "Now, let's go back to functions for a sec. I want to show you the ADD()
+function again, as well as 3 others."
+Link says, "Is +view and everything concerning it covered in this course?"
+* Luigi says, "I can discuss it after class Link. It's very simple."
+Link nods.
+* Luigi types --> say add(1,5)
+* Luigi says, "6"
+Illmuri has disconnected.
+* Luigi types --> say mul(6,10)
+* Luigi says, "60"
+* Luigi types --> say div(100,5)
+* Luigi says, "20"
+* Luigi types --> say sub(6000,5000)
+* Luigi says, "1000"
+Tulioz types --> say sub(100000,200)
+Tulioz says, "99800"
+Tulioz types --> say div(100000,200)
+Tulioz says, "500"
+* Luigi says, "ADD(), SUB(), DIV(), and MUL(). For adding, subtracting, dividing, and
+multiplying."
+* Luigi says, "A note, only ADD() accepts more than 2 arguments. The rest require 2
+and no more."
+Tulioz types --> say add(sub(100000,500),mul(200,100))
+Tulioz says, "119500"
+* Luigi says, "Very good Tulioz."
+* Luigi says, "Now I want to move into the fun part."
+Tulioz types --> say add(sub(100000,add(100,200,300,400,500),mul(200,div(100,30)))
+Tulioz says, "#-1 FUNCTION (ADD) EXPECTS AT LEAST 2 ARGUMENTS"
+Tulioz says, "<profanity>."
+* Luigi says, "How to send values to the $-Commands (also known as User-Defined
+Commands), and work with what is sent."
+Tulioz types --> say add(sub(100000,add(100,200,300,400,500)),mul(200,div(100,30)))
+Tulioz says, "99100"
+* Luigi says, "Using the object we have just created, we are going to make a new
+$-command."
+Kronus sighs... so much spam...
+Phoenyx types --> :types --> %ch%@dolist lnum%(100,1%)=pose sings, "## bottles of
+jolt on the wall, ## bottles of jolt, take one down, pass it around, switch%(##,0,no
+more,sub%(##,1%)%) bottles of jolt on the wall!"h#1971dolist lnum(100,1)=pose sings,
+"## bottles of jolt on the wall, ## bottles of jolt, take one down, pass it around,
+switch(##,0,no more,sub(##,1)) bottles of jolt on the wall!"
+Phoenyx says, "Feck."
+* Luigi hits Phoenyx in the face with a trash can.
+* Luigi types --> &getname <name of your object>=$name *:say Your name is %0.
+Link says, "heheh"
+* Luigi says, "Everybody type that."
+Rhayden says, "Phoenyx, you fool."
+Phoenyx snicker.
+Link drops Ralph the Object.
+* Luigi says, "Then, *furrows brow for a second*."
+Rhayden drops FooFooBunny.
+FooFooBunny says, "Your name is Luigi."
+Ralph the Object says, "Yewr name iz Luigi."
+* Luigi says, "Drop your object (drop <name of object>) and type 'NAME <any name>'.
+Sorry about the spam, but we'll deal with it. Once you've tried your object once,
+please pick it up."
+FooFooBunny says, "Your name is whee."
+Ralph the Object says, "Yewr name iz whee."
+name corndogs
+FooFooBunny says, "Your name is corndogs."
+Ralph the Object says, "Yewr name iz corndogs."
+Rhayden takes FooFooBunny.
+Faizah drops FizBum.
+Kronus drops Zero.
+Tulioz drops Tul Ownz You.
+Tul Ownz You says, "Your name out to be Faizah."
+Zero says, "Your name is Faizah."
+FizBum says, "Your name is Faizah"
+Ralph the Object says, "Yewr name iz Faizah."
+Tul Ownz You says, "Your name out to be Kronus."
+Zero says, "Your name is Kronus."
+FizBum says, "Your name is Kronus"
+Ralph the Object says, "Yewr name iz Kronus."
+Kronus takes Zero.
+Link takes Ralph the Object.
+* Luigi says, "Very good. Please pick up your objects."
+* Luigi says, "The code was:"
+* Luigi types --> &getname <name of your object>=$name *:say Your name is %0.
+Faizah takes FizBum.
+Tulioz takes Tul Ownz You.
+* Luigi says, "Now, the * is a wildcard. It basically means, any text at all. So
+'name bob' and 'name al' and 'name jimbo' all trigger the command now. More talk on
+wildcards later."
+Rhayden drops FooFooBunny.
+* Luigi says, "You can have more than one wildcard. Try this:"
+FooFooBunny says, "Your name is whee."
+* Luigi types --> &getname <name of your object>=$name * age *:say Your name is %0
+and you are %1 years old.
+* Luigi says, "Then drop your object, try the command, and pick it up again."
+* Luigi says, "The command being:"
+* Luigi says, "NAME <a name> AGE <a number>"
+Link drops Ralph the Object.
+* Luigi says, "Such as: name Hyacinth age 57"
+FooFooBunny says, "Your name is Rhayden and you are 222 years old."
+Tulioz drops Tul Ownz You.
+FooFooBunny says, "Er..."
+FooFooBunny says, "Your name is Rhayden and you are 22 years old."
+Tulioz says, "name"
+Tulioz says, "Foo."
+Tul Ownz You says, "Your name ought to be Zero and you are 1 minute years old, damn
+yer old."
+Ralph the Object says, "Yor name iz Zero age 1 minute."
+Ralph the Object says, "Rhayden smells funny."
+* Luigi says, "Beginning with zero, it places the first * into %0, then the second
+into %1. All the way up to %9, should you have that many wildcards (*)."
+Kronus raises his hand for a question?
+* Luigi nods to Kronus.
+* Luigi says, "Yes sir?"
+Kronus says, "What happens if you need more than 10 wild cards?"
+Tul Ownz You says, "Your name ought to be Faizah and you are 19 years old, damn yer
+old."
+Ralph the Object says, "Your name is Faizah and you are 19 years old."
+Rhayden grins. "That was my question."
+* Luigi says, "Well, I have two answers."
+Ralph the Object says, "Kronus smells funny."
+* Luigi says, "The first answer being, you almost never do."
+Kronus grins...
+Tulioz takes Tul Ownz You.
+Ralph the Object says, "Luigi smells funny."
+* Luigi says, "The second answer being.."
+Phoenyx is in a mood to code some really kickin' shiz-nit but is extremely hyper for
+some unknown reason and thus cannot sit still long enough to code it out
+* Luigi says, "You could always have it grab one of the wildcard, and then parse it
+out using advanced MUSHCoding Techniques."
+Rhayden is in a mood to slay stupid people who disrupt the whole class with mindless
+banter.
+* Luigi says, "But you rarely, if ever, will need to do this."
+Ralph the Object says, "I think I wet myself."
+Kronus nods "Ok thanks..."
+Link takes Ralph the Object.
+* Luigi says, "Who wants to input over 10 values in a $-Command? Might as well make
+10 $-Commands. But if you wish to see how this is done in a future class, let me know."
+* Luigi says, "Now, remember the Functions we discussed?"
+* Luigi types --> th add(1,2)
+* Luigi says, "And the like."
+Kronus nods.
+* Luigi says, "Watch this:"
+Tulioz says, "#-1 NO PERMISSION TO GET ATTRIBUTE"
+* Luigi types --> &getname <name of your object>=$name * age *:say Your name is %0 and
+you are %1 years old.;say In ten years you will be [add(%1,10)] years old!
+* Luigi says, "Try that (drop it, NAME <a name> AGE <a number>, then pick it up)."
+Kronus drops Zero.
+Tulioz drops Tul Ownz You.
+Tul Ownz You says, "Your name is Zero and you are 1 years old."
+Tul Ownz You says, "In ten years you will be 11 years old, you are still an oldie in
+mah book."
+Zero says, "Your name is Zero and you are 1 years old."
+Zero says, "In ten years you will be 11 years old!"
+Tulioz says, "Sup"
+Faizah drops FizBum.
+Faizah takes FizBum.
+Tul Ownz You says, "Your name is Faizah and you are 19 years old."
+Tul Ownz You says, "In ten years you will be 29 years old, you are still an oldie in
+mah book."
+Zero says, "Your name is Faizah and you are 19 years old."
+Zero says, "In ten years you will be 29 years old!"
+Tulioz says, "Word up."
+FooFooBunny says, "Your name is Rhayden and you are 22 years old."
+FooFooBunny says, "In ten years, according to conventional math, you should be 32
+years old."
+Kronus takes Zero.
+Rhayden takes Tul Ownz You.
+Rhayden drops Tul Ownz You.
+* Luigi says, "Notice how we used [] around the function. Functions can be placed
+inside of a string, but they need to be surrounded by [] if they do not come at the
+beginning of the string."
+Phoenyx says, "name Phoenyx age ;home"
+* Luigi types --> say add(1,2)
+* Luigi says, "3"
+* Luigi types --> say HI add(1,2)
+* Luigi says, "HI add(1,2)"
+* Luigi types --> say HI [add(1,2)]
+* Luigi says, "HI 3"
+(Some object spam removed.)
+* Luigi says, "Some people prefer to always use the []'s, it's your choice."
+* Luigi says, "These are known as braces. Now.. I am going to show you one last
+$-Command."
+Tulioz takes Tul Ownz You.
+* Luigi types --> &multiply <name of your object>=$multiply * by *:say %0 multiplied
+by %1 is [mul(%0,%1)].
+* Luigi says, "Add that code to your object, drop it, try it, pick it up please."
+* Luigi says, "MULTIPLY <number> by <number>"
+Ralph the Object says, "16 multiplied by 2 is 32."
+Faizah drops FizBum.
+Kronus drops Zero.
+FooFooBunny says, "2 multiplied by 2 is 4."
+Zero says, "3 multiplied by 4 is 12."
+FizBum says, "3 multiplied by 4 is 12"
+Zero says, "8 multiplied by 3 is 24."
+FizBum says, "8 multiplied by 3 is 24"
+Tulioz drops Tul Ownz You.
+Faizah takes FizBum.
+Kronus takes Zero.
+Link types --> I'm Luigi... BLAH BLAH BLAH
+* Luigi says, "Are there any questions about all of this?"
+Rhayden nein
+Link says, "Quineg"
+Kronus thinks he has it all
+* Luigi says, "Very well, before I announce homework let me answer Link's question
+first."
+* Luigi says, "Link asked about +view's."
+* Luigi says, "+View's are a MUSHCoded system. They are simply Attributes, like we
+talked about today, set on a room. Once set, the game knows they are +view's."
+Tulioz takes Tul Ownz You.
+Link says, "Simply because I was thinking of putting some in my lot and didn't want
+to look at the help files."
+* Luigi says, "They are set, if you are standing in the room to set them in, with:
+&V_<name_of_view> here=<what the view is>"
+* Luigi says, "Somebody coded the +VIEW $-command to accept one wildcard, and search
+the room for that attribute."
+* Luigi says, "Now, for homework I want you to create for me a Calculator. Doesn't
+have to be fancy. But I want the following things on it:"
+* Luigi says, "* The ability to add, subtract, multiply, and divide 2 numbers. Using 4
+$-Commands, and ADD(), MUL, DIV, and SUB."
+Tulioz wonders if we get dorm rooms.
+* Luigi says, "* The ability to do something else, using one of the functions
+described in HELP MATH."
+Tulioz has left.
+* Luigi says, "If you wish to make a command that multiplies 3 numbers with ADD(),
+that will also be counted."
+Tulioz has arrived.
+* Luigi says, "Thank you for your time. Shall we schedule the next class for next
+Tuesday, same time?"
+* Luigi says, "I might lower the cost to 1 coin per class."
+Rhayden nods.
+Kronus nods
+Tulioz wishes we could do it on a Thurs.
+Kronus stands up on his desk and says "Oh Captain, My Captain!"
+* Luigi says, "Oh, one last thing. If you ever need to see the code on your object,
+type EXAMINE <name of object>."
+* Luigi says, "Please feel free to email me questions, eightbitmush@hotmail.com"
+Phoenyx says, "Or @dec (@decompile) Name of object"
+Kronus says, "Cool... thanks Luigi"
+* Luigi says, "Also, if this seemed too easy for some of you, have patience. It's
+just the first class. :)"
+* Luigi says, "Thank you all for coming."
+* Luigi erases something on the blackboard..
+* Luigi erases something on the blackboard..
+Kronus claps for Luigi
+Rhayden says, "Thank-you for teaching today."
+Kronus says, "Yeah thanks"
+Tulioz falls asleep.
+Phoenyx standing ovation
+Kronus is so excited he can hardly standit
+A cigarette sounds pretty good right about now.
+* Luigi is going to make this class free. Refunds being provided now, thanks to those
+of you who paid. Next class bring 1 coin.
+* Luigi says, "I think all first classes may be free, possibly."
+* Luigi says, "And now, I must flee."
+* Luigi has disconnected.

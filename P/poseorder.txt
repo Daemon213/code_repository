@@ -1,0 +1,49 @@
+------------------------------------------------------------------------------
++poseorder (1 of 2)
+
+ +po (short for Pose Order) is a set of commands used to manage the listed
+ pose order in a room. This is useful for spammy scenes or scenes with a lot
+ of participants, removing the need to ask "is it my turn yet?"
+
+  SYNTAX: +po
+          +poclear
+          +ponew <list of names>
+          +poadd <position>=<name>
+          +podel <name>
+          +poswap <name>=<name>
+
+ +po: Shows the current pose order, if one exists.
+ +poclear: Clears the existing pose order.
+
+ Credit: This command was donated by Cedric.
+
+Continued in +poseorder2
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
++poseorder (2 of 2)
+
+ +ponew <list of names>: Sets a new pose order consisting of <list of names>
+ in the order they are given. Names should be one word only.
+  
+ +poadd <position>=<name>: Adds <name> to the pose order in position
+ <position>. <Position> must be an integer corresponding to the position you
+ want <name> to have. For example, if the current pose order is Bob, Joe,
+ Sue, and Jack, and Maria comes in and wants to jump in after Joe,  the
+ command is '+poadd 3=Maria', because she'll be the third person in the new
+ list.
+  
+ +podel <name>: Removes <name> from the pose order list.
+  
+ +poswap <name>=<name>: Swaps those two names in the list, used for
+ rearranging pose order.
+
+------------------------------------------------------------------------------
+
+@create Pose Order Object=10
+&CMD.PO Pose Order Object=$+po: think [setq(0, get(%l/dt.porder))]; @switch [t(%q0)]=1,{@pemit %#=GAME: The current pose order is: [itemize(%q0)].},0,{@pemit %#=There is no pose order currently set on this room.}
+&CMD.PO-ADD Pose Order Object=$+poadd *=*: think [setq(0,get(%l/dt.porder))]; @switch [and(isint(%0),between(%0,1,inc(words(%q0))))]=1,{&dt.porder %l=[insert(%q0,%0,[capstr(lcstr(%1))])]; @remit %l=GAME: %N has added [capstr(lcstr(%1))] to the pose order.},0,{@pemit %#=Position must be an integer between 1 and however long the current pose order is. See +help +po for assistance if you're confused.}
+&CMD.PO-CLEAR Pose Order Object=$+poclear: @wipe %l/dt.porder; @remit %l=GAME: %N has cleared the pose order.
+&CMD.PO-NEW Pose Order Object=$+ponew *: &dt.porder %l=[iter(secure(%0), capstr(lcstr(##)))]; @remit %l=GAME: %N has set a new pose order. The new pose order is: [itemize(get(%l/dt.porder))]
+&CMD.PO-DEL Pose Order Object=$+podel *: think [setq(0, get(%l/dt.porder))][setq(1,capstr(lcstr(%0)))]; @switch [t(%q0)][t(member(%q0,%q1))]=11,{&dt.porder %l=[trim(squish(remove(%q0,%q1)))]; @remit %l=GAME: %N has removed %q1 from the pose order.},10,{@pemit %#=Sorry, %0 is not in the current pose order.},0*,{@pemit %#=No pose order currently exists. Use +ponew <list of names> to set a new pose order.}
+&CMD.PO-SWAP Pose Order Object=$+poswap *=*: think [setq(a,capstr(lcstr(%0)))][setq(b,capstr(lcstr(%1)))][setq(0,get(%l/dt.porder))][setq(1,member(%q0,%qa))][setq(2,member(%q0,%qb))]; @switch [t(%q0)][and(%q1,%q2)]=11,{&dt.porder %l=[replace(replace(%q0,%q1,%qb),%q2,%qa)];@remit %l=%N has swapped %qa and %qb in the pose order.},10,{@pemit %#=Either %qa or %qb are not in the current pose order. Please check your spelling?},0*,{@pemit %#=No pose order is currently set.}

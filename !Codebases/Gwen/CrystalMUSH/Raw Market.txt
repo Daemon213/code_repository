@@ -1,0 +1,28 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @create Raw Market=10\
+&VL-SETPATTERN Raw Market=24 12 10 10 10 10 8 7 7 7 7 7 5 4 4 4 4 4 4 1 1 1 1 1 1 1 1\
+&VL-COLOR Raw Market=9 8 10 15 25 50 7\
+&VL-SHADE Raw Market=6 8 10 12 15 20 20\
+&VL-CLARITY Raw Market=2 7 10 13 18\
+&VL-SIZE Raw Market=3 5 7 9 10 13 18 25\
+&VL-SHAPE_RANGE Raw Market=20 17 14 12 10 8 6 4\
+&VL-COLOR_RANGE Raw Market=50 25 15 10 9 8 7\
+&VL-SIZE_RANGE Raw Market=25 18 13 10 9 7 5 3\
+&VL-SHAPE Raw Market=12 8 4 17 14 20 10 6\
+&RG-SETPATTERN Raw Market=XXXXXXXX X.X.X.XX XXXXX... .XXXXX.. ..XXXXX. ...XXXXX X.X.X..X XXXX.... .XXXX... ..XXXX.. ...XXXX. ....XXXX X.X.X... XXX..... .XXX.... ..XXX... ...XXX.. ....XXX. .....XXX X....... .X...... ..X..... ...X.... ....X... .....X.. ......X. .......X\
+&RG-SHAPE Raw Market=pyramid rectangle pentagon octagon dodecahedron cylinder prism cone\
+&RG-COLOR Raw Market=rose green blue yellow white black amethyst\
+&RG-SHADE Raw Market=very$pale pale light medium deep rich$deep pure\
+&RG-CLARITY Raw Market=majorly$flawed flawed slightly$flawed very$slightly$flawed perfect\
+&RG-SIZE Raw Market=tiny very$small small medium$small medium medium$large large very$large\
+@Desc Raw Market=This crystal stores current marketing data that is used by the tuning and sorting computers to compute the value of crystal.\
+&MOD-SIZE Raw Market=9.0 8.0 4.0 2.0 1.2 1.0 2.0 15.0\
+@set Raw Market=VISUAL\
+@set Raw Market=PARENT_OK\
+}

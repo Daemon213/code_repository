@@ -1,0 +1,508 @@
+ CLASS: MUSHCoding 101
+PART: 2
+DATE: 11/12/2002 TIME: 6 PM
+INSTRUCTOR: Luigi
+WHERE: 8BitMUSH
+DESCRIPTION: The first class of MUSHCoding 101 PART 2 ever held. Most of
+it has been left in its original state, though some parts of the log were
+edited to remove spam or correct a speaker's typo. A '*' has been placed in
+front of the speaker's name.
+
+----------------------------------------------------------------------------
+(Faizah, Rhayden, and Kronus pay class fees.)
+* Luigi says, "Thank you for coming."
+Wayne has arrived.
+Link has arrived.
+Kronus says, "My payment"
+* Luigi says, "Thank you."
+Kronus says, "I'll be back quick as I can..."
+* Luigi says, "Last week we talked about the Fundamentals of MUSHCoding."
+Laci has arrived.
+Illmuri has arrived.
+* Luigi says, "We talked about Commands, and Functions."
+* Luigi says, "Commands as you remember, are things such as 'say', 'pose', and
+'@emit'."
+Illmuri switches clients
+Illmuri has disconnected.
+Illmuri has connected.
+* Luigi says, "Functions look like this, functionName(), and have a variety of uses
+depending on which function they are. If you completed your homework you used add(),
+sub(), div(), and mul(), and perhaps one or more others."
+* Luigi says, "Lastly, we talked about user defined commands, or $-commands. We made
+our own commands, and your calculators had their own commands on them."
+* Luigi says, "Any questions or troubles you had with homework, before we begin on
+today's lesson?"
+Faizah shakes head.
+Laci says, "does not doing it count?"
+Illmuri says, "neg"
+Rhayden raises his hand. "You got my homework, yes?"
+* Luigi nods.
+Rhayden says, "Nifty."
+Link says, "My polour bear ate it."
+Rhayden pokes Link and chuckles.
+* Luigi says, "Alright, let's dive right in. First we'll just talk about a few more
+basic commands you should be familiar with."
+* Luigi says, "First off, you remember we set attributes like so:
+&<attribute name> <object>=<what the attribute contains>"
+* Luigi says, "You should be aware that if you ever wish to remove an attribute, you
+can type: &<attribute name> <object>"
+Laci says, "Can you give us an example?"
+* Luigi says, "Sure"
+* Luigi says, "Everybody type this:"
+* Luigi types --> &zorg me=hi
+* Luigi types --> ex me/zorg
+* Luigi types --> &zorg me
+* Luigi types --> ex me/zorg
+* Luigi says, "Understand?"
+Laci says, "yup"
+Rhayden nods.
+* Luigi says, "There is also a @wipe command, which does the same thing, and can be
+used like this: @wipe <object>/<attribute>"
+Faizah nods.
+* Luigi says, "Which you use is up to you."
+Rhayden has had problems with @wipe before.
+* Luigi says, "Next, do you all remember @create?"
+Faizah nods.
+* Luigi says, "It creates an object, like the calculator in the homework."
+Rhayden nods again.
+Laci nods
+* Luigi says, "Well, if you ever wish to get rid of such a creation. @destroy <object
+name>"
+* Luigi says, "If you feel like @creating something and then @destroying it, feel
+free."
+* Luigi types --> @create zorg zorg
+* Luigi types --> @destroy zorg zorg
+* Luigi types --> @destroy zorg zorg
+Rhayden says, "How to you spare an object from destruction?"
+Illmuri says, "twice to instantly remove it, once will take 10 minutes"
+Illmuri says, "incase you want to keep it"
+* Luigi nods to Illmuri.
+Rhayden says, "*do"
+* Luigi says, "Well, if you type @destroy once, and then change your mind, you can
+@undestroy <object>."
+* Luigi says, "It's probably smarted to do it once and wait, but I always do it twice
+because I want results now. :)"
+Faizah says, "Ah! I wondered why @destroy/instant didn't work."
+Link says, "Once I had an object, but then it was @nuked."
+* Luigi says, "Now I want to introduce a couple of new functions."
+Rhayden says, "Does @undestroy work here?"
+* Luigi says, "Yep."
+Rhayden recalls having to use something else.
+* Luigi says, "On some MU*s you have to do: @set <object>=!going, but that's not here.
+I think maybe MUX does it like that."
+* Luigi says, "The first function we shall discuss is rand()."
+* Luigi says, "This is a fun little function which returns a random number."
+* Luigi types --> say rand(15)
+* Luigi says, "12"
+* Luigi types --> say rand(15)
+* Luigi says, "3"
+Rhayden says, "400"
+* Luigi says, "The number it returns is from 0 to the number given it minus one."
+Laci says, "#-1 ARGUMENT MUST BE INTEGER"
+Faizah says, "7"
+Faizah says, "1"
+Faizah says, "4"
+* Luigi says, "If you'll remember our discussion on square braces last week.."
+* Luigi types --> say [rand(50)] [rand(50)] [rand(50)] [rand(50)] [rand(50)]
+* Luigi says, "13 15 19 45 8"
+Laci says, "there should be something that lets you say "pigscanfly""
+* Luigi types --> say [rand(50)] [rand(50)] [rand(50)] [rand(50)] [rand(50)]
+* Luigi says, "37 29 44 35 13"
+Faizah says, "39 4 26 18 26"
+Faizah says, "8 2 18 15 7"
+Rhayden says, "2 5 45 8 38"
+Laci says, "26 #-1 FUNCTION () NOT FOUND"
+Laci says, "oops."
+* Luigi says, "Next we have get()."
+Laci says, "you could use that to create die, right?"
+* Luigi nods to Laci.
+* Luigi says, "Or, the DIE() function. :)"
+* Luigi types --> say die(1,6)
+* Luigi says, "3"
+Rhayden says, "Except there's already a lovely... yeah, what Luigi said."
+* Luigi types --> say die(1,6)
+* Luigi says, "4"
+* Luigi says, "Get() allows you to get an attribute from something and use it in code."
+* Luigi says, "Try this:"
+* Luigi types --> &corndogs me=i like corn dogs
+* Luigi types --> say [get(me/corndogs)]
+* Luigi says, "i like corn dogs"
+Faizah says, "i like corn dogs"
+Laci says, "i like corn dogs"
+Rhayden says, "I like corn doggies"
+* Luigi says, "In code, you could set an attribute to something via a $-command, and
+later get() its contents."
+Laci says, "are $-commands like my parrots?"
+Faizah says, "Hmm..."
+* Luigi says, "$-commands are the things we did last week, which look like this:"
+* Luigi types --> &<attribute> <object>=$<command>:<code to run when someone types
+the command>
+Ale Maid has arrived.
+* Luigi says, "Do you remember?"
+Laci says, "yup, that's my parrot!"
+Laci says, "g2g"
+* Luigi says, "Get() and Rand() come in handy with one of the most useful @commands
+ever: @switch."
+Laci goes home.
+Laci has left.
+Ale Maid has left.
+Faizah takes Ale Maid.
+* Luigi says, "@Switch, if you know any other programming languages, is like the
+SELECT CASE in VB/Qbasic/C++/Java... If you don't know any other programming languages,
+ignore this comment. :)"
+* Luigi says, "Let me show you an example rather than try to explain it with
+definitions."
+Faizah nods.
+* Luigi types --> @switch 5=1,{say one!},2,{say two!},3,{say three!},{say four or five!}
+* Luigi says, "four or five!"
+* Luigi types --> @switch 4=1,{say one!},2,{say two!},3,{say three!},{say four or five!}
+* Luigi says, "four or five!"
+* Luigi types --> @switch 3=1,{say one!},2,{say two!},3,{say three!},{say four or five!}
+* Luigi says, "three!"
+* Luigi types --> @switch 2=1,{say one!},2,{say two!},3,{say three!},{say four or five!}
+* Luigi says, "two!"
+* Luigi types --> @switch 1=1,{say one!},2,{say two!},3,{say three!},{say four or five!}
+* Luigi says, "one!"
+Illmuri says, "thats like... case select in basic?"
+* Luigi says, "Might look a bit confusing if you've never seen one before."
+* Luigi nods to Illmuri.
+Illmuri says, "ok"
+* Luigi says, "@Switch takes something, and like the name implies, reacts differently
+depending on what that something is."
+* Luigi says, "A more basic @switch.."
+* Luigi types --> @switch yes=no,{say no!},yes,{say yes!}
+* Luigi says, "yes!"
+* Luigi types --> @switch no=no,{say no!},yes,{say yes!}
+* Luigi says, "no!"
+* Luigi says, "The format is as follows:"
+* Luigi types --> @switch <what to switch on>=<if>,<then>,<else if this>,<then>,
+<else if this>,<then>
+Faizah nods. Makes sense..
+Illmuri has disconnected.
+Kronus nods...
+* Luigi says, "@Switch accepts wildcards as well, similar to the $-command wildcards."
+* Luigi types --> @Switch Corndogs=*dogs,{say Had dogs in it!}
+* Luigi says, "Had dogs in it!"
+* Luigi types --> @Switch Cornbeef=*dogs,{say Had dogs in it!}
+* Luigi says, "Now, @switch matches all occurances, and doesn't stop after the first.
+So.."
+Rhayden says, "Nice. :)"
+Rhayden says, "It doesn't?"
+* Luigi types --> @Switch Corndogs=*dogs,{say Had dogs in it!},corn*,{say Had corn in
+it!}
+* Luigi says, "Had dogs in it!"
+* Luigi says, "Had corn in it!"
+* Luigi says, "But if you don't want it to do this, use @Switch/First (abbreviated
+@Swi/first)"
+* Luigi types --> @Switch/first Corndogs=*dogs,{say Had dogs in it!},corn*,{say Had
+corn in it!}
+* Luigi says, "Had dogs in it!"
+* Luigi types --> @Switch Corndogs=*dogs,{say Had dogs in it!},corn*,{say Had corn in
+it!}
+* Luigi says, "Had dogs in it!"
+* Luigi says, "Had corn in it!"
+* Luigi says, "Any questions?"
+Kronus ah hah's....
+Kronus niffty...
+Rhayden says, "Doesn't using @switch/first imply that you're being a lazy coder?"
+* Luigi says, "Perhaps, but I use it 90% of the time."
+Kronus grins...
+Rhayden says, "I mean, if you're coding properly you shouldn't have to worry about
+multiple options being run."
+* Luigi says, "Negative, Rhayden. In my opinion."
+Rhayden says, "I guess that's up to coding style."
+* Luigi says, "It's easy to make mistakes. Why should I, as the programmer, want to
+worry about what order my @switch options are in? I don't. I use @swi/first and get
+done 2.5 seconds sooner because I never thought about the order. :)"
+* Luigi says, "But it's all your choice. People have different styles, as you say.:)"
+* Luigi says, "A reminder that in between the { }'s you can place more than one
+command if you wish, using Command Stacking (the semi-colon)."
+* Luigi types --> @Switch Corndogs=*Corndogs*,{say Wow!;say Had corn AND dogs in it!}
+* Luigi says, "Wow!"
+* Luigi says, "Had corn AND dogs in it!"
+* Luigi types --> @Switch Corndogs=*corn*,{say C;say O;say R;say N}
+* Luigi says, "C"
+* Luigi says, "O"
+* Luigi says, "R"
+* Luigi says, "N"
+Faizah idles for coffee. Ignore me, I'm logging.
+* Luigi says, "Everyone understand?"
+Rhayden nods.
+* Luigi says, "One more feature of @switch (though there are a few more we shall
+discuss next class).."
+* Luigi says, "The default. Just like in the Qb/VB/Java/C++ select statements.. you
+can have a default."
+* Luigi says, "A CASE ELSE, so to speak."
+* Luigi types --> @switch corndogs=shrimp,{say mm, Shrimp!},steak,{say Alright, steak!},
+{say Something else.}
+* Luigi says, "Something else."
+* Luigi types --> @switch shrimp=shrimp,{say mm, Shrimp!},steak,{say Alright, steak!},
+{say Something else.}
+* Luigi says, "mm, Shrimp!"
+* Luigi types --> @switch candy=shrimp,{say mm, Shrimp!},steak,{say Alright, steak!},
+{say Something else.}
+* Luigi says, "Something else."
+* Luigi says, "The default is the last {} in the switch."
+Rhayden says, "Useful that one is."
+Kronus nods
+Faizah says, "Back."
+* Luigi says, "So after all of your pairs (if this, then this), you place one last {}
+and that will be what happens when none of the others match."
+Faizah says, "Hmm. I have a question on switches.."
+Rhayden says, "Good place for error messages."
+* Luigi types --> @swi A=A,{say A},B,{say B},{say Anything else.}
+* Luigi says, "A"
+* Luigi types --> @swi B=A,{say A},B,{say B},{say Anything else.}
+* Luigi says, "B"
+* Luigi types --> @swi C=A,{say A},B,{say B},{say Anything else.}
+* Luigi says, "Anything else."
+* Luigi says, "Shoot, Faizah. Ask away."
+Faizah says, "Is it possible to have a switch that does different things according to
+what it 'hears'? Like, if someone says "Hello" it does one thing, if they say "Bye" it
+does another?"
+* Luigi says, "Sure. We have some time, so I'll teach you that now if nobody objects."
+Kronus says, "I do..... not object..."
+Rhayden says, "Go for it"
+Faizah nods. Cool. I'll drag out my Designated Test Object.
+* Luigi says, "Though there is another way, the simplest way to do listens is with the
+@listen command."
+* Luigi says, "Everybody create an object."
+* Luigi says, "After you've created it, type:"
+* Luigi types --> @listen <that object>=* says, "*"
+* Luigi says, "The @Listen tells the MUSH that, whenever this object hears whatever
+pattern is in it, to do something."
+* Luigi says, "What it does, is trigger the @Ahear attribute (along with about 2 other
+attributes we won't discuss right away)."
+* Luigi types --> @ahear <that object>=say %0 said %1
+* Luigi says, "Do that, then drop your object and say something."
+Sumthin has arrived.
+Rhayden drops Sumthin.
+Rhayden says, "Hi"
+Sumthin says, "Rhayden said Hi"
+FizBum has arrived.
+Faizah drops FizBum.
+Faizah says, "Testing"
+FizBum says, "Faizah said Testing"
+Sumthin says, "Faizah said Testing"
+Sumthin says, "FizBum said Faizah said Testing"
+FizBum says, "Sumthin said Faizah said Testing"
+FizBum says, "Sumthin said FizBum said Faizah said Testing"
+Sumthin says, "FizBum said Sumthin said Faizah said Testing"
+Sumthin says, "FizBum said Sumthin said FizBum said Faizah said Testing"
+FizBum says, "Sumthin said FizBum said Sumthin said Faizah said Testing"
+FizBum says, "Sumthin said FizBum said Sumthin said FizBum said Faizah said Testing"
+Sumthin says, "FizBum said Sumthin said FizBum said Sumthin said Faizah said Testing"
+Sumthin says, "FizBum said Sumthin said FizBum said Sumthin said FizBum said Faizah
+said Testing"
+FizBum says, "Sumthin said FizBum said Sumthin said FizBum said Sumthin said Faizah
+said Testing"
+FizBum says, "Sumthin said FizBum said Sumthin said FizBum said Sumthin said FizBum
+said Faizah said Testing"
+Sumthin says, "FizBum said Sumthin said FizBum said Sumthin said FizBum said Sumthin
+said Faizah said Testing"
+Sumthin says, "FizBum said Sumthin said FizBum said Sumthin said FizBum said Sumthin
+said FizBum said Faizah said Testing"
+FizBum says, "Sumthin said FizBum said Sumthin said FizBum said Sumthin said FizBum
+said Sumthin said Faizah said Testing"
+FizBum says, "Sumthin said FizBum said Sumthin said FizBum said Sumthin said FizBum
+said Sumthin said FizBum said Faizah said Testing"
+Sumthin says, "FizBum said Sumthin said FizBum said Sumthin said FizBum said Sumthin
+said FizBum said Sumthin said Faizah said Testing"
+FizBum has left.
+Faizah takes FizBum.
+Sumthin says, "FizBum said Sumthin said FizBum said Sumthin said FizBum said Sumthin
+said FizBum said Sumthin said FizBum said Faizah said Testing"
+* Luigi says, "HEH"
+Sumthin says, "Luigi said HEH"
+* Luigi says, "Pick them up!"
+Sumthin says, "Luigi said Pick them up!"
+* Luigi grins.
+ex sum
+Sumthin(#6331ScSoToTa)
+Type: Thing Flags:
+Owner: Rhayden Zone: *NOTHING* Coins: 1
+Parent: *NOTHING*
+Basic Lock: Rhayden(#12460PIOQweACMcs)
+Powers:
+Warnings checked: none
+Created: Tue Nov 12 18:40:33 2002
+Last Modification: Tue Nov 12 18:42:38 2002
+AHEAR [#12460$]: say %0 said %1
+LISTEN [#12460$]: * says, "*"
+QUEUE [#1icw]:
+Home: Rhayden's Igloo :: Main Area(#12103RHnN)
+Location: Luigi's Classroom(#7358RHn)
+Faizah laughs!
+Kronus says, "That was horrible"
+Sumthin says, "Kronus said That was horrible"
+* Luigi says, "Now, we are going to take the %0 and %1, and @Switch on them in the
+@Ahear."
+Sumthin says, "Luigi said Now, we are going to take the %0 and %1, and @Switch on them
+in the @Ahear."
+Faizah has tears streaming down her face.. Oh, heh, I needed that. *grin*
+* Luigi types --> @Ahear <that object>=@switch/first %1=*bye*,{say Bye bye},*hi*,{say
+Hello!}
+Sumthin has left.
+Rhayden takes Sumthin.
+* Luigi says, "You might all want to type '@lock/listen <that object>=me' to prevent
+it from triggering on anyone but you. We won't talk about what @lock does in today's
+class."
+Faizah says, "locked. and ahear set"
+Sumthin has arrived.
+Rhayden drops Sumthin.
+FizBum has arrived.
+Faizah drops FizBum.
+Faizah says, "Hi"
+FizBum says, "Hello!"
+Sumthin says, "Hello!"
+Rhayden says, "Bye"
+Sumthin says, "Bye-bye!"
+Faizah says, "Bye"
+FizBum says, "Bye bye"
+Sumthin says, "Bye-bye!"
+GAME: Genvieve created.
+GAME: Genvieve has connected.
+Sumthin says, "Bye-bye!"
+Butler has arrived.
+Kronus drops Butler.
+Kronus says, "buy"
+Kronus says, "Bye"
+Butler says, "Bye bye"
+Sumthin says, "Bye-bye!"
+Sumthin says, "Bye-bye!"
+Kronus says, "Hi"
+Butler says, "Hello!"
+Sumthin says, "Hello!"
+Rhayden says, "aaaaaaaaaaaaaaahiaaaaaaaaaaaaaaaaaaaa"
+Sumthin says, "Hello!"
+* Luigi says, "@Switch is very useful. Let's try a $-Command with it."
+Sumthin has left.
+Rhayden takes Sumthin.
+Butler has left.
+Kronus takes Butler.
+Faizah says, "Fizzy only listens to me now. Heh."
+* Luigi types --> &password <your object>=$password *:@switch/first %0=corndogs,{say
+Password correct!},{say That is not the password!}
+* Luigi says, "Then drop your object, and type 'password corndogs'."
+FizBum says, "Password correct!"
+FizBum says, "That is not the password!"
+password fdgd
+FizBum says, "That is not the password!"
+Sumthin has arrived.
+Rhayden drops Sumthin.
+Sumthin says, "Password correct!"
+Sumthin says, "Password correct!"
+FizBum says, "Password correct!"
+FizBum says, "That is not the password!"
+Sumthin says, "I'm sorry, that's not the password."
+Kronus says, "this is interesting..."
+* Luigi says, "Lastly, let's set an attribute and get() it in a $-command."
+Kronus says, "Yay! This is what I need to learn"
+Faizah says, "Okie dokie"
+* Luigi types --> &setpassword <your object>=$setpassword *:&password me=%0
+* Luigi types --> &checkpassword <your object>=$password *:@switch/first
+%0=[get(me/password)],{say Password correct!},{say That is not the password!}
+* Luigi says, "Set those two. One of them is a new version of PASSWORD."
+* Luigi says, "While the object is in your inventory, type 'setpassword <any password
+you want>'"
+* Luigi says, "Then drop the object, and type 'password <that password>'."
+FizBum has left.
+Faizah takes FizBum.
+(Some of log removed where Luigi made a codind-oversight and had to fix it. Typo fixed
+in this log.)
+FizBum has arrived.
+Faizah drops FizBum.
+FizBum says, "That is not the password!"
+Kronus says, "Hrmmm"
+Link has disconnected.
+Kronus says, "hi"
+* Luigi says, "There. It needs the updated code, which uses [get(me/password)] as one
+of the switch options."
+FizBum says, "Password correct!"
+Kronus says, "There we go"
+Sumthin says, "That is not the password!"
+Sumthin says, "Password correct!"
+Faizah says, "I'm in a silly mood today. This is cool."
+FizBum says, "Hello!"
+* Luigi smiles.
+Faizah pokes Fizzy.
+* Luigi says, "Do we all understand?"
+Faizah nods.
+Kronus says, "Not completely..."
+* Luigi says, "Alright. Where are you confused, Kronus?"
+Kronus says, "Looking... hold just a sec"
+Faizah says, "hihihihihi""
+FizBum says, "Hello!"
+Kronus says, "I think I got it..."
+Faizah says, "HiBye"
+FizBum says, "Bye bye"
+Faizah says, "HiByehi"
+FizBum says, "Bye bye"
+* Luigi says, "Alright. Just to clarify, I put a function inside the switch like so.."
+Faizah says, "HiByehibye"
+FizBum says, "Bye bye"
+FizBum has left.
+Faizah takes FizBum.
+* Luigi types --> @switch 1=[rand(5)],{say Rand 5 was equal to 1},{say not equal}
+* Luigi says, "not equal"
+* Luigi types --> @switch 1=[rand(5)],{say Rand 5 was equal to 1},{say not equal}
+* Luigi says, "not equal"
+* Luigi types --> @switch 1=[rand(5)],{say Rand 5 was equal to 1},{say not equal}
+* Luigi says, "not equal"
+* Luigi types --> @switch 1=[rand(5)],{say Rand 5 was equal to 1},{say not equal}
+* Luigi says, "not equal"
+* Luigi types --> @switch 1=[rand(5)],{say Rand 5 was equal to 1},{say not equal}
+* Luigi says, "not equal"
+* Luigi types --> @switch 1=[rand(5)],{say Rand 5 was equal to 1},{say not equal}
+* Luigi says, "not equal"
+* Luigi types --> @switch 1=[rand(5)],{say Rand 5 was equal to 1},{say not equal}
+* Luigi says, "not equal"
+* Luigi types --> @switch 1=[rand(5)],{say Rand 5 was equal to 1},{say not equal}
+* Luigi says, "not equal"
+* Luigi types --> @switch 1=[rand(5)],{say Rand 5 was equal to 1},{say not equal}
+* Luigi says, "Rand 5 was equal to 1"
+Faizah nods.
+* Luigi says, "And the format for get was [get(<object>/<attribute>)]"
+Kronus says, "Ok I think I got that..."
+* Luigi says, "Alright. That's all for tonight. Now let's talk about homework for next
+class."
+Sumthin has left.
+Rhayden takes Sumthin.
+Faizah says, "Homework? My dog ate it. ;)"
+Kronus nods
+* Luigi says, "I want you to create a House Plant which changes description according
+to how many times someone types 'water plant'."
+Faizah says, "Heh. I tried that. I'll try a less complex one this time."
+* Luigi says, "You will want to use a @Switch in the 'water plant' command, which sets
+the @description like so: @desc me=<some description>. Or, you may look up Switch() and
+put that directly into the @description."
+Faizah says, "Always the perfectionist."
+* Luigi says, "You may use ANSI/FANSI in the description for extra credit. See HELP
+ANSI(), HELP COLOR() for information on these."
+* Luigi says, "Help C() and HELP MUSHII may also help."
+Rhayden nods.
+Faizah says, "Ahh. Extra credit in an area I'm great at. ;)"
+* Luigi says, "But you don't need ANSI. Just a house plant that changes description
+implying it has grown, when you water it."
+* Luigi says, "Thank you very much for showing up. Next week we can continue our
+studies. You know quite a bit more than the average MUSHer now, believe it or not.
+@Switch is very useful."
+Faizah nodnods. I think I know more about coding than I did when I first attempted it.
+Heh.
+Kronus bows...
+* Luigi says, "Thank you, and please give me 1 coin if you haven't already. :)"
+Kronus says, "Thanks teacher"
+Kronus already did...
+* Luigi goes to find HIkenin to do the raffle, talk to you guys later, gotta go soon.
+* Luigi will grade your homework by next class..
+Faizah says, "I prefer switch() but that's me. Are there any differences between
+switch() and @switrch?"
+Rhayden says, "Yep"
+Rhayden says, "You can't use @switch inside a function."
+Rhayden says, "For a (bad) example... [ansi(@switch blah)] wouldn't work"
+Rhayden says, "You would use [ansi([switch()])] instead."
+Faizah heh. There's a few reasons that wouldn't work.
+Rhayden nods.
+Rhayden says, "But you get my point?"
+Faizah nods.
+Rhayden says, "Nifty. :)"

@@ -1,0 +1,254 @@
+ ©2002 Anomaly@OGR. You may copy and redistribute this document provided that it remains complete, with credits intact, and is used only for non-profit purposes.*
+*****
+
+MU* Security
+
+Anomaly says "Now, this class assumes a certain amount of code knowledge. How much? A lot, really. And we've got a lot of ground to cover."
+
+Anomaly says "Code security equals game security. It's just that simple. You've got to have secure code, or else your game can be compromised. Nasty tricks can be performed with un-secure code, from players giving themselves ROYALTY bits to performing database wiping activities, to compromising the master room, so patching up these soft-code security holes is important."
+
+Anomaly says "Go ahead and examine your objects - they show examples of secure and un-secure code."
+
+nails renamed his to avoid conflict with the primary object
+
+Anomaly says "A wise wiz named nails once said something to the effect of, 'The
+first line of security is regular backups'. Always run backups, and always keep some archive of backups off-site. That way, no matter what happens to your game, you've got it backed up."
+
+Antithesis says "Can you put your object down again, Anomaly? I was just going to refer to that."
+
+nails says "note: when chowning an object, you can type: @chown <obj>=<newname>"
+
+Anomaly dropped Demonstration Object <DO>.
+Anomaly says "There ya go, Anti."
+
+nails says "this will create your own copy with a unique name to avoid confusion"
+
+Antithesis says "Thanks."
+
+nails says "the copy will be made in the room, so please pick it up, and @lock/use it to
+yourself"
+
+Cavni blinks. @chown'ing can create a new object? She's learned already.
+
+nails says "err, @clone"
+nails says "sorry :)"
+
+Moth grins
+
+Anomaly says "There are several ways a village idiot can hack your game for nefarious purposes."
+
+Anomaly says "The first is running of unwanted commands as demonstrated by +set. As you can see, this object stores its data on itself. This is very bad if the object is INHERIT and owned by a wizard. Imagine someone running the +set command with '+set $+royme:@set \%#=ROYALTY'. Then they just type +royme and they are now a
+roy. Very nasty, indeed, because then they've got all sorts of powers over your game."
+
+Theo says "I'm sorry, what's the topic here?""
+
+Cavni grins. No prob. "Or you could @clone/inventory <obj>=<newname> to get it right in your inventory. I /think/.
+
+nails says "Code Security"
+nails checks his object
+
+Theo says "Is this geared towards a specific MU* release?"
+
+nails says "Anomaly stated that he uses MUX2, but the topics should cover MUSH
+variants as well."
+
+Anomaly says "You can use secure() around user-settable data, as illustrated by +setsecure, but it cannot always be relied upon. Sometimes it has disasterous effects on data, such as eliminating commas. That's not good for storing sentences for bulletin boards and rumors and the like."
+
+Anomaly says "The best thing to do to avoid the problem is a) do not set data on wiz-inherit objects. b) Use get() instead of u() to pull data, and only use u() when you /must/ pass an argument to the u(). Proper use of get and u can make the difference between a secure MU* and a hacked MU*. +uget2 is an example of how to best pull data."
+
+Anomaly says "Generally, setting data on any global is a bad idea."
+Anomaly says "Function-based coding plugs up this hole, but I have been told by gurus that even that cannot be entirely relied on. +stackfun demonstrates the function-based
+coding method."
+Anomaly says "Semaphores are the best way to plug up this hole. @wait me, @notify, and @drain are your friends. :) +stacksem (always accompanied by a STARTUP attribute for the @drain and @notify commands) illustrates an example of semaphore coding, though Adam tells me it is bugged."
+
+Adam nods. "Sorry, yes."
+
+Anomaly says "Gah, I missed something."
+Anomaly says "Let me rephrase that last bit. :)"
+
+nails grins
+
+Anomaly says "The third way is queue violations, demonstrated by +stack. Some systems, such as +vote, can only be used a few times per day. With an @switch to check for how many times it has been used, it places an extra cycle in the queue and thus can be violated. @force me={+stack;+stack;+stack;+stack} demonstrates how this can be accomplished - even though the code is limited to three uses, it allows four. This bug in chargen can eliminate game balance for your game without checks and balances."
+
+nails ahs!
+
+Anomaly says "(and now this...) Function-based coding plugs up this hole, but I have been told by gurus that even that cannot be entirely relied on. +stackfun demonstrates the function-based coding method."
+
+Anomaly says "Semaphores are the best way to plug up this hole. @wait me, @notify, and @drain are your friends. :) +stacksem (always accompanied by a STARTUP attribute for the @drain and @notify commands) illustrates an example of semaphore coding."
+
+Anomaly says "The iter() function can be particularly nasty, because iter always evaluates from its own perspective before running. So an iter(%0,<etc>) can be deadly to your game. Imagine a global being run for +iter: '+iter \[tel(%#,loc(me))]'. Player X has just made it into your master room, a place you do not want him to be. You're best off using the map() function to run a process on a list, illustrated with +map."
+
+Anomaly says "To fix the +stacksem code, you'd add an '@wait 0=' before the @notify me command."
+
+Anomaly says "There are some other functions on other platforms that also behave like iter(), so always know how a function parses its arguments."
+
+nails interjects: "And note that even things like iter() may vary from platform to platform"
+
+Anomaly says "I've found a good resource for an intro on security, though it's a little
+outdated. http://www.calormen.com/Calormen/Text_Files/MUSH_Security.txt - I'm not sure of the author, but it gives more info than I've been able to touch on here. One last note..."
+
+Anomaly says "Just because it's out on the web does not make it secure. There are bits of code in the archives that I've been to that have been very bugged, very un-secure. ALWAYS double-check what you are installing, in order to make sure that it doesn't have potential security holes."
+
+nails says "hear hear!"
+
+Adam says "Sorry to interrupt. As written, the '@notify me' command runs directly after the '@wait me', before the @switch is run. You actually need '@wait 0=@notify me' /inside/ the {} of the @wait for it to work as expected."
+
+Anomaly says "The best way to make sure you don't have holes, is log in from a player
+perspective, and try to hack your own game - it will save you the heartache and hassle of watching your MU* laid to waste. If you can exploit it, so can someone else. Hopefully Sexmachine will one day release his code security document to the masses, so that everyone can benefit from it."
+
+Anomaly says "Caveat is, it's not nearly complete - but it goes into detail that I didn't
+have time to cover today (and some stuff I never even thought of)."
+
+nails says "augh!"
+nails typed WHO. badbadbad
+
+Anomaly says "Well, floor is open."
+
+nails says "Hmm"
+
+nails says "Since the wait/notify stuff is key, and yet probably very unfamiliar to most people, maybe we could dig into the usage of that more."
+
+Anomaly says "Ack, Semaphores are not my forte, as it can be demonstrated by +stacksem. ;) Would Adam or Sexmachine like to stab at it?"
+
+nails is afraid of Sexmachine's stabbings, but..
+
+Adam says "I don't recommend messing with semaphores unless 1) you absolutely cannot code it a different way, and 2) you have a really strong understanding of how the
+queues work."
+
+nails nods.
+nails wants more understandisngs of how the queues work :)
+
+Sexmachine thinks nails should hold off that question for later.
+
+Adam says "That's an hour lecture unto itself. I'm willing to do that talk some other time."
+
+Anomaly will attend, certainly. :)
+
+nails says "I'll be there, or be squarepants."
+
+Adam says "But play with this: &cmd-test me=$test: @pemit %# = START; @dolist 1 2 3 = {@pemit me = ##}; @pemit %# = END"
+
+Anomaly says "Does anyone have any other questions?"
+
+Adam says "Once you figure out why it's broken and know how to fix it, you'll
+understand the queue a little better. It's a softcode koan. ;)"
+
+Sexmachine nods to Adam's excellent example.
+
+Anomaly says "Thanks, Adam. :)"
+
+Anomaly says "Sexmachine has offered to donate his services to test your code, if
+you'd like them - contact him if you're worried about your own game's security and he can provide limited assistance in identifying problems."
+
+Vadiv says "Of course, who knows what token you have to pay him wit. ;)"
+
+Sexmachine bahs.
+
+nails says "You're my token, Vadiv."
+
+Adam says "When you use secure, it munges your data beyond recognition. What if you
+want secured data, but want to be able to redisplay it in its original form?"
+
+Sexmachine grins at Adam. "You're talking about escape()?"
+
+Adam says "Both munge your data, don't they?"
+
+Sexmachine says " actually escapes your data."
+Sexmachine bahs. "Escape() actually escapes your data."
+
+Adam says "I never use it. Can you tell?"
+
+Sexmachine hms? "Can I tell what?"
+
+nails says "That he never uses escape() :)"
+
+Theo says "That he never uses escape()."
+
+nails monotheobrain.
+
+Anomaly says "Proper use of get, and storing the data on a non-inherit object is the best way I know."
+
+Theo grins.
+
+Sexmachine bahs. "I didn't expect such a silly question. :)"
+
+Sexmachine notes that storing data on a no_command non-inherit non-wizard-owned non-staff-owned object is typically safe.
+
+Adam says "One thing people should be careful of, whenever letting a player store
+data on an object that can run commands, is that the player might write a $command on it. Doing what Sexmachine just suggested is the smart thing to do, or prepend some meaningless stuff in front of the data (&data me = DATA: %0)."
+
+nails says "how about setting HALT on data only objects.. does that add anything over no_command?"
+
+Sexmachine grins, "Yup, but unfortunately the data is still subject to be u()-attacked."
+
+Sexmachine grins. That was in response to Adam's point.
+
+Sexmachine says "No_command means it won't match any commands typed/heard. Halt means it won't execute any commands at all."
+
+Sexmachine says "And on Penn it won't execute any code. :)"
+
+nails nods and has run across the halt issue in evaluated descs on Penn.
+
+Sexmachine says "On TinyMUSH 3.x HALT is much more useful because of some functions that they allow."
+
+Adam has to take his hungry-cranky wife out for dinner. ;) Thanks for the talk, Anomaly!
+
+Sexmachine says "Which inject commands into the queue."
+
+Anomaly says "I think we're about out of time. Thanks for attending, I hope you will recheck your game for security problems to avoid potential abuse. Thanks to Adam for setting me straight on the Semaphores, and thanks to Sexmachine for his document and assistance. My apologies for mangling my speech. I hope you're walking away with at least the abilities to test your own games for security holes."
+
+Sexmachine waves to Adam. "Have fun. :)"
+
+nails says "Good eatins, Adam."
+
+Adam thinks there's nothing after this lecture for a while, so you guys can keep on
+going if you want. ;)
+
+nails says "Thanks, Anomaly. :)"
+
+Sexmachine grins and will stick 'round, then. "Thank you for organizing, Anomaly. :)"
+
+nails pokes the peanut gallery. "Anybody alive?"
+
+Kitjer is alive. :)
+
+Lilith says "Ayep."
+
+Adam says "Is the 6:00 gonna be here or the discussion room?"
+
+Cavni is panicking elseMU* at her own lousy security. ;)
+
+Anomaly says "Thanks to OGR for letting us have these. :)"
+
+Lace nodnods
+
+Sexmachine says "BTW, if anyone reads scm.txt, I'd appriciate some constructive
+feedback."
+
+Anomaly thinks it's the best thing since sliced timecycles for security that is out there. :)
+
+Nymeria plans to go through it once she's stopped groaning about having to consider all these changes. ;)
+
+Sexmachine nods. "If you'd like some advice on how to make fixing security problems
+easier, I'd be happy to help."
+
+Nymeria says "Thanks. :) It does look like a very useful document."
+
+Sexmachine says "Yea, but it needs to be about ten times larger, with more technical information."
+
+Sexmachine notes there's a lot of tricks and features that aren't documented in any MU*.
+
+Nymeria says "Just write a book already. ;)"
+
+Sexmachine says "Essentially."
+Sexmachine isn't a writer, though.
+
+nails says "Ooh. An O'reilly book."
+
+Sexmachine thinks efforts would be better spent on a softcoding manual.
+
+Lilith says "What animal would O'Reilly put on the cover..?"
+
+Sexmachine says "As one could embed security information within that quite easily."
+
+Nymeria believes someone already tried approaching them about a MUSH code related book, though.

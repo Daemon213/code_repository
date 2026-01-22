@@ -1,0 +1,75 @@
+& +where
+  +where
+
+  This gives you an idea of where players are located. This is OOC information,
+  of course.
+& +who
+  +who
+
+  This command lists all connected players, with some information about them.
+& ooc
+& +ooc
+  +ooc <message>
+
+  This command sends an OOC message to all the connected players in the room.
+& +set
+  +set <IC|OOC>
+
+  By typing '+set OOC', you can move to the OOC nexus and get away from the
+  game for a little bit. Idling in OOC rather than an IC room is appreciated.
+
+  '+set IC' will return you to where you were when you went OOC.
+
+  Going OOC to avoid IC consequences of an action is considered Bad Form(tm).
+& time
+  time
+
+  Shows you the current IC date & time.
+& +finger
+  +finger <person>
+
+  This command gives you OOC information about a player. If you are wondering
+  why it has a strange name, ask your friendly neighborhood UNIX-knowledgeable
+  greybeard computer geek.
+& +staff
+  +staff
+  
+  This command lists all online and offline game staff. Feel free to bug us
+  if you have a problem; if you just have a general question, see if there's
+  a guide online first (via +guides).
+& +guides
+  +guides
+  
+  This command lists all online and offline player guides. These are regular
+  players who are knowledgeable about the game and who have volunteered their
+  time to help answer questions and orient new players.  On occasion, guides 
+  also run small events and mini-plots for other characters.
+& +bg
+  +bg
+
+  +bg lets you view your chargen questions and answers once you've left chargen.
+& +map
+  +map
+
+  This shows you an IC map of our systems and how they're connected, via jump
+  point.
+& +911
+Syntax: +911 <reason>
+ 
+This command will send an emergency request for an administrator.  This is for
+situations when you need an administrator for a time-sensitive issue, such as
+an in-character combat situation.  For problems that don't require an immediate
+resolution, use +ticket.
+& +concept
+  +concept
+ 
+  +concept lets you view your chargen character concept once you've left
+  chargen.
+& +web
+& +web/register
+  +web/register <password>
+
+  This command allows you to create a user account on the game's website at 
+  wcmush.com.  Having an account allows you to create and edit wiki pages. 
+  By default, the login for your account is the email you used to register 
+  with the game.

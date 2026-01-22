@@ -1,0 +1,68 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @@ This is a typical vampire sphere object. As mentioned in the credits, it doesn't have a particular\
+@@ origin, it was just an object I came across somewhere (could be Full Circle or Texas Twilight, or even\
+@@ Denver).\
+@@\
+@@ In any case, I updated several of the commands, including 'fixing' the generation check to actually work.\
+@@\
+@@ This object presumes you use Didi-Style chargen, and is configured for TinyMUSH/TinyMUX servers. It will\
+@@ also work on Penn (you need to change setting it INHERIT, to setting it WIZARD).\
+\
+@create Global Vampire Object <GVO>=10\
+&DO_FEED Global Vampire Object <GVO>=$+feed *:@switch [strmatch([get(%#/race)],*vampire)][not(strmatch([get(%#/bpp)],0))]=0*,\{@pemit\'a0%#=Huh? \\(Type "help" for help.\\)\},10,\{@pemit\'a0%#=Not enough blood to feed another person.\},11,\{@switch [not(strmatch([get(secure(*%0)/bpp)],[get(secure(*%0)/bp)]))]=0,\{@pemit\'a0%#=[name(secure(*%0))] is at the max BP possible.\},1,\{@pemit\'a0%#=You feed [name(secure(*%0))] a blood point.;&bpp\'a0%#=[sub([get(%#/bpp)],1)];&bpp [num(secure(*%0))]=[add([get([num(secure(*%0))]/bpp)],1)];@pemit [num(secure(*%0))]=%n just fed you one blood point.\}\}\
+&DO_PUMP Global Vampire Object <GVO>=$+pump *:[setq(0,match(vampire ghoul kindred pvampire,secure(%0*)))]; @switch/first 0=[match(strength dexterity stamina,get(%#/race))],\{@pemit\'a0%#=CODE: You cannot use blood to raise your stats.\},[gte(get(%#/bpp),1)],\{@pemit\'a0%#=CODE: You do not have any blood to use.\},[match(vampire ghoul kindred pvampire,secure(%0*))],\{@pemit\'a0%#=CODE: That is not a legal attribute to raise.\},[and(strmatch(get(%#/race),*ghoul*),lte(add(1,extract(get(%#/tattr),%q0,1)),4,1)))],\{@pemit\'a0%#=You cannot increase '[extract(vampire ghoul kindred pvampire,%q0,1)]' any higher with blood.\},[lte(add(1,extract(get(%#/tattr),%q0,1)),extract(10 10 10 10 9 8 7 6 5 5 5 5 5 5,get(%#/generation),1))],\{@pemit\'a0%#=You cannot increase '[extract(vampire ghoul kindred pvampire,%q0,1)]' any higher with blood.\},\{&tattr\'a0%#=[replace(get(%#/tattr),%q0,add(1,extract(get(%#/tattr),%q0,1)))]; @pemit\'a0%#=CODE: You pump blood into '[extract(vampire ghoul kindred pvampire,%q0,1)]'.; &bpp\'a0%#=[sub(u(%#/bpp),1)]\}\
+&DO_RELAX Global Vampire Object <GVO>=$+relax:@switch member(strength dexterity stamina)=0,\{@pemit\'a0%#=\{@pemit\'a0%#=Huh? \\(Type "help" for help.\\)\},\{@pemit\'a0%#=CODE: You relax as you calm down from the rush of the blood.; &tattr\'a0%#=[get(%#/attr)]\}\
+&DO_VHELP Global Vampire Object <GVO>=$+vhelp:@switch [member(strength dexterity stamina,get(%#/race))]=0,\{@pemit\'a0%#=CODE: There is no help for creatures that do not exist.\},\{@pemit\'a0%#=[center(Vampire Help,60,-)]%r[ljust(+pump *,10)]-Use blood to raise <Attribute>.%r[ljust(+relax,10)]-Resets stats after the scene is over.%r%r[ljust(+vshift <form>,10)]-Usable with Protean%, lets you shapeshift into Bat%, Human or Wolf forms. If you want a special desc for each%, set them in the attributes '&desc_man'%, '&desc_bat' and '&desc_wolf'. If you don't set any desc%, your appearance won't be changed.%r%rYou can also configure "&shift_<form name>" and "&ashift_<form name>" attributes for each form. The SHIFT attributes are to provide a creative form changing emit to the room. The ASHIFT attributes are to provide a trigger list to update your character upon shifting (commonly used to change name and +finger information).\'a0%r[center(,60,-)]\}\
+&DO_VSHIFT Global Vampire Object <GVO>=$+vshift *:@switch/first [gt(extract(u(%#/powvals),member(u(%#/powers),18),1),3)][gt(match(human bat wolf,%0),0)][not(strmatch(get(%#/current_form),%0))][gt\
+(match(extract(human bat wolf,switch(get(%#/race),*vampire,1),1,|),%0),0)]=0*,\{@pemit\'a0%#=Huh?%b%b(Type "help" for help.)\},10*,\{@pemit\'a0%#=CODE: No such form as\'a0%0 try again\},110*,\{@pemit\'a0%#=You're already in your\'a0%0 form.\},1110,\{@pemit\'a0%#=CODE: Form missmatch, or invalid form.\},1111,\{@switch [not(strmatch([get(%#/bpp)],0))]=0,\{@pemit\'a0%#=CODE: You don't have the blood points to shift forms.\},1,\{&bpp\'a0%#=[sub([get(%#/bpp)],1)];&Tattr\'a0%#=[setq(0,0)][iter(get(%#/attr),[setq(0,add(%q0,1))][setq(1,add(##,[setq(2,extract(v([switch(get(%#/race),*vampire,shift_%0,[get(%#/shift)]_%0)]),%q0,1))][switch(%q2,X,-##,%q2)]))][switch(lt(%q1,0),1,0,%q1)])];@pemit\'a0%#=CODE: You assume the\'a0%0 form.;&current_form\'a0%#=[lcstr(%0)];@desc\'a0%#=[get(%#/desc_%0)];@tr\'a0%#/ashift_%0;@remit\'a0%l=%N [switch(hasattr(%#,shift_%0),1,[get(%#/shift_%0)],shifts into\'a0%p\'a0%0 form.)]\}\}\
+&SHIFT_BAT Global Vampire Object <GVO>=-2 1 0 0 -3 0 2 0 0\
+&SHIFT_HUMAN Global Vampire Object <GVO>=0 0 0 0 0 0 0 0 0\
+&SHIFT_WOLF Global Vampire Object <GVO>=1 2 2 0 -3 0 0 0 0\
+&CREDITS Global Vampire Object <GVO>=Original code: unknown, based on code that circulates through many WoD games. Edited and updated by Gwen Morse (http://www.geocities.com/goldmooneachna/mush.html).\
+@set Global Vampire Object <GVO> = INHERIT\
+@set Global Vampire Object <GVO> = SAFE\
+@set Global Vampire Object <GVO> = COMMANDS\
+\
+@@\
+@@ Here's some code that uses POM's (Persistence of Memory's) chargen. Don't expect the stat-changing code\
+@@ to work, as is. However, the basic code is still functional. You just need to change what commands you use\
+@@ to read (and write to) stats. \
+@@\
+@@ Get_stat should work with my "statz" function, or SGP's "stat" function, as-is, by changing to the appropriate\
+@@ fuction name.\
+@@\
+@@ This is the Vampire Hunting Room. It's very simple and doesn't take into account any special bonuses or penalties\
+@@ to hunting.\
+\
+@dig/teleport Feeder Room - POM\
+@Desc here=[center(%b%xr%xhBloodSucker Feeder Room - POM%xn%b,80,=)]%r%rThis is the place to be in if you want to recover blood pool. If you can't recover blood pool, you may as well go 'home' right now, because you won't be able to use commands in this room.\'a0%r%rImportant to note, while you are hunting, you may not leave this room, IC time is used to determine how long you need to stay, given the in-game time ratio of <[time_ratio()]>. You *can* disconnect and wait out the time when you're offline. Botched hunts will be noted in @mail messages sent to Vampire Staff and the bloodsucker who botched, and may result in any number of repercussions, at the prerogative of staff.\'a0%r%RThis room has been made to simulate all areas of the city for hunts, and the code is basic, and very simple.\'a0%xhLeaving this room before the hunt code is done voids the hunt and you will get no blood%xn.\'a0%r%RCommands:\'a0%r+feed/areas: This shows you what areas you may feed in.%r%r+feed <area>=<Number of hours to feed>: This command is the actual feeding command. You may not feed for more than 8 IC hours. The <area> may be the whole name or a partial name of the area. the longer you feed, the more potential blood you can gain, as well as the more risk you'll botch the hunt.%r%rOnce you're done, type 'home' to return to your home.%r%r[repeat(=,80)]%r\
+&LOCALES here=Slums|Lower Class|Nightclub|Downtown|Warehouse District|Parks|Upper Class|Barrens\
+&LOCALDIF here=5|6|9|6|6|6|9|4\
+&DO_CLEAR here=$clear:@wipe me/hunt_%#;@pemit\'a0%#=CODE: Your hunt flag has been 'clear'ed.\
+&DO_AREAS here=$+feed/areas:@pemit\'a0%#=%r%r[center(%bLocales to Feed From%b,78,=)]%r[iter(u(locales),##\{,\},|)]%r\
+&DO_FEED here=$+feed *=*:@switch/first 0=match(u(%#/race),*vampire),\{@pemit\'a0%#=CODE: You must be a bloodsucker to hunt here.\},lt(get_stat(%#,BPLeft),get_stat(%#,Bloodpool)),\{@pemit\'a0%#=CODE: You do not need to feed.\},not(hasattr(me,hunt_%#)),\{@pemit\'a0%#=CODE: You're already hunting. If this is not correct, please type 'clear'.\},and(gt(secure(%1),0),lte(secure(%1),8)),\{@pemit\'a0%#=CODE: '[secure(%1)]' must be a number of hours between 1 and 8.\},match(lcstr(u(locales)),*[secure(%0)]*,|),\{@pemit\'a0%#=CODE: I don't understand the locale: '[secure(%0)]'\},\{think [setq(1,roll(%1,extract(u(localdif),match(lcstr(u(locales)),*%0*,|),1,|)))][setq(2,[die(%q1,10)])]; &hunt_%# me=1; @pemit\'a0%#=CODE: You stalk through the night, looking for a likely source of blood.; @wait div(mul(secure(%1),3600),time_ratio())=\{@switch/first hasattr(me,hunt_%#)=0,\{@pemit\'a0%#=CODE: You left [name(me)] before your hunt was finished. Too bad!\},1,\{@switch ncomp(%q1,0)=-1,\{@pemit\'a0%#=CODE: A complication in your feeding has arisen! If a Vampire Staff member is not connected, do /not/ go IC until this matter can be taken care of.; A @mail message has been sent to Vamp Staff. Thanks you for your patience.; @mail/quick\'a0%# *VampStaff/Hunting Botch=\{[name(%#)] (%#) botched [poss(%#)] attempt to find a suitable hunting victim. This is the relevant information: It was in area '[secure(%0)]'. The final roll was a botch total of: '%q1'. [name(%#)] committed to hunting for [secure(%1)] hour(s) at the IC time of [vrtime()] (please adjust to IC NightTime if necessary).\}; @wipe me/hunt_%#\},0,\{@pemit\'a0%#=CODE: You fail in your feeding attempt.; @wipe me/hunt_%#\},1,\{@pemit\'a0%#=CODE: You succeed in finding [switch(%q1,1,a victim,some victims)] to feed from.; think [setq(3,min(secure(%1),add(get_stat(%#,BPLeft),%q2),get_stat(%#,Bloodpool)))] [set(%#,stats:[replace(get(%#/stats),match(get(%#/stats),BR-1-*,|),BR-1-%q3,|)])]; @wait 1=@pemit\'a0%#=CODE: You have been awarded your blood. Your blood points are now: [get_stat(%#,BPLeft)]; @wipe me/hunt_%#\},\{@pemit\'a0%#=CODE: The Vamp feed code has malfunctioned. Please contact code staff.\}\}\}\}\
+@Startup here=@wipe me/hunt_*\
+@Aleave here=@swi hasattr(me,hunt_%#)=1,\{@pemit\'a0%#=CODE: You left early, so you will not get any blood for this hunt.; @wipe me/hunt_%#\}\
+&CREDITS here=Originally written by Piouhgd at Full Circle MUX. Cleaned up and updated by Gwen Morse <http://www.hatrack.net/gwen/mushcode/index.html>\
+@set here=DARK\
+@set here=INHERIT\
+@set here=SAFE\
+@set here=COMMANDS\
+\
+@@\
+@@ Bonus code:\
+@@ A blood-drain command. This removes 1 Blood Point, once per IC day (24 hours), but only when the vamp is connecting.\
+@@ Put it on an object in the Master Room.\
+@@\
+@@ Like the above code, it doesn't quite work with Didi's Chargen or SGP, but, it can with some minor hacks.\
+@@ Provided here as example code, only. A modified form may eventually be posted that will work with more common\
+@@ Chargen systems\
+\
+@Aconnect Global Vampire Object =@switch u(%#/race)=vampire,\{@switch or(gt(sub(convtime(vrtime()),get(%#/lastblood)),604800),not(hasattr(%#,lastblood)))=1,\{[setq(0,max(0,sub(get_stat(%#,BPLeft),1)))][set(%#,stats:[replace(get(%#/stats),match(get(%#/stats),BR-1-*,|),BR-1-%q0,|)])]; @unlock\'a0%#/lastblood; &lastblood\'a0%#=[convtime(vrtime())]; @lock\'a0%#/lastblood; @pemit\'a0%#=CODE: Your Blood Pool has been reduced by one to [get_stat(%#,BPLeft)]. You may want to consider hunting, soon.\},\{@pemit\'a0%#=CODE: You're approximately [add(1,div(sub(86400,sub(convtime(vrtime()),get(%#/lastblood))),3600))] IC hour(s) from losing a Blood Point upon your next reconnect.\}\}\
+}

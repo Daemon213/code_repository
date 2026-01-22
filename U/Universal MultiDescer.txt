@@ -1,0 +1,31 @@
+------------------------------------------------------------------------------
+Universal Multidescer
+
+       Type 'umd help' for the universal multidescer help file.
+
+------------------------------------------------------------------------------
+
+@create Universal Multi Desc Commands=10
+@create Global UMD Code Parent=10
+@lock Universal Multi Desc Commands=*Daemon
+@Adesc Universal Multi Desc Commands=@fo %#=+commands [num(me)]
+&UMD_LIST_CMD Universal Multi Desc Commands=$UMD LIST:@pemit %#=[repeat(=,78)]%r UniversalMultiDescer%r[repeat(-,78)]%r%rThere are several classes of lists:%r%t%tUMD LIST PERSONAL%r%t%tUMD LIST CLOTHING%r%t%tUMD LIST MOOD%r%r(C) 1995, KrennCode%r[repeat(=,78)]
+&UMD_LIST_X_CMD Universal Multi Desc Commands=$UMD LIST *:@swi member(PERSONAL CLOTHING MOOD,[setq(0,ucstr(%0))]r(0))=0,{@pemit %#=Bad option choice. Choose from PERSONAL, CLOTHING, or MOOD.},{@pemit %#=[repeat(=,78)]%r UniversalMultiDescer: LIST [r(0)]%r[repeat(-,78)]%rThese are the names of the [r(0)] desc components you have written:%r[parse(lattr(%#/DESC_[%0]_*),[space(10)][extract(##,3,1,_)])]%r%r(C) 1995, KrennCode%r[repeat(=,78)]}
+&UMD_CHANGE_CMD Universal Multi Desc Commands=$UMD CHANGE:@pemit %#=[repeat(=,78)]%r UniversalMultiDescer: CHANGE%r[repeat(-,78)]%r%r You must specify which portion of your desc you are changing, and which%rselection you wish to change it to.%r%r EXAMPLE: umd change clothing=fancy%r%r(C) 1995, KrennCode%r[repeat(=,78)]
+&UMD_CHANGE_X_CMD Universal Multi Desc Commands=$UMD CHANGE *=*:@swi member(lattr(%#/DESC_[%0]_*),DESC_[ucstr(%0)]_[ucstr(%1)])=0,{@pemit %#=There are no entries for [ucstr(%0)] titled [ucstr(%1)].},{&WEARING_[%0] %#=[ucstr(%1)];@trig me/UMD_REDESC_FN=%#;@pemit %#=[ucstr(%0)] portion of desc changed to [ucstr(%1)]. Rebuilding desc.}
+&UMD_ADD_CMD Universal Multi Desc Commands=$UMD ADD:@pemit %#=[repeat(=,78)]%rUniversalMultiDescer: ADD%r[repeat(-,78)]%r%r You must specify which type of desc you are adding, and a name for it.%r%r EXAMPLE: umd add clothing=fancy/The Imperial Navy uniform gleams in the light.%r%r(C) 1995, KrennCode%r[repeat(=,78)]
+&UMD_ADD_X_CMD Universal Multi Desc Commands=$UMD ADD *=*/*:@swi member(PERSONAL CLOTHING MOOD,[setq(0,ucstr(%0))]r(0))=0,{@pemit %#=Bad option choice for type. Choose from PERSONAL, CLOTHING, or MOOD.},{&DESC_[%0]_[%1] %#=[%2];@pemit %#=Desc component of type [r(0)] named [ucstr(%1)] added to you.}
+&UMD_EDIT_X_CMD Universal Multi Desc Commands=$UMD EDIT *=*/<*>,<*>:@swi member(lattr(%#/DESC_[%0]_*),DESC_[ucstr(%0)]_[ucstr(%1)])=0,{@pemit %#=There are no entries for [ucstr(%0)] titled [ucstr(%1)].},{@pemit %#={[repeat(-,78)]%rPrevious [ucstr(%0)]/[ucstr(%1)]%r%r[get(%#/DESC_[%0]_[%1])]%r[repeat(-,78)]};@edit %#/DESC_[%0]_[%1]={[%2]},{[%3]};@pemit %#={[repeat(-,78)]%rModified [ucstr(%0)]/[ucstr(%1)]%r%r[get(%#/DESC_[%0]_[%1])]%r[repeat(-,78)]}
+&UMD_HELP_CMD Universal Multi Desc Commands=$UMD HELP:@pemit %#=[repeat(=,78)]%r UniversalMultiDescer: HELP%r[repeat(-,78)]%r%r There are three sections of your desc for the UMD (perhaps more to come).%rAt the moment, they are CLOTHING (talk about what you are wearing in this),%rPERSONAL (talk about what you look like), and MOOD (what you *look* like%ryou're feeling at the moment. The commands for the UMD are:%r%r%tUMD CHANGE%r%tUMD ADD%r%tUMD EDIT%r%tUMD DELETE%r%r Type those commands by themselves to see the how they are used.%r%r(C) 1995, KrennCode%r[repeat(=,78)]
+&UMD_DELETE_CMD Universal Multi Desc Commands=$UMD DELETE:@pemit %#=[repeat(=,78)]%r UniversalMultiDescer: DELETE%r[repeat(-,78)]%r%r You must specify which portion of your desc you are deleting.%r%rEXAMPLE: umd delete clothing=fancy%r%r(C) 1995, KrennCode%r[repeat(=,78)]
+&UMD_DELETE_X_CMD Universal Multi Desc Commands=$UMD DELETE *=*: @swi member(lattr(%#/DESC_[%0]_*),DESC_[ucstr(%0)]_[ucstr(%1)])=0,{@pemit %#=There are no entries for [ucstr(%0)] titled [ucstr(%1)].}, {&DESC_[%0]_[%1] %#=; @pemit %#=Deleted item [ucstr(%1)] of UMD type [ucstr(%0)].}
+&UMD_EDIT_CMD Universal Multi Desc Commands=$UMD EDIT:@pemit %#=[repeat(=,78)]%r UniversalMultiDescer: EDIT%r[repeat(-,78)]%r%r You must specify the name and type of desc you are editing, then the edits%ryou wish to make. It uses almost the same format as @edit. The <> pairs are%rrequired for this to work.%r%r EXAMPLE: umd edit clothing=fancy/<String 1>,<String 2>%r%r(C) 1995, KrennCode%r[repeat(=,78)]
+&D.PCHELP.UMD Universal Multi Desc Commands=UMD HELP%r%rThis is the help command for the Universal Multi Desc controller.
+@set Universal Multi Desc Commands=INHERIT
+@set Universal Multi Desc Commands=SAFE
+@name PARENT: GLOBAL UMD Code=Global UMD Code Parent
+@parent Universal Multi Desc Commands=Global UMD Code Parent
+&START_UMD Global UMD Code Parent=*** START UMD Code ***
+&UMD_REDESC_FN Global UMD Code Parent=@desc %0=parse(switch(member(lattr(%0),ORDER),0,{PERSONAL CLOTHING MOOD},{[get(%0/ORDER)]}),%r[get(%0/DESC_##_[get(%0/WEARING_##)])]%r)
+&UMD_END Global UMD Code Parent=*** END ***
+@set Global UMD Code Parent=SAFE

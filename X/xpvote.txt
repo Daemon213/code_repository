@@ -1,0 +1,19 @@
+@create Vote Command Object=10
+@lock/UseLock Vote Command Object=LOCKELIGIBLE/1
+&V-INFO Vote Command Object=VA: Vote DB Dbref
+@VA Vote Command Object=#268
+&VOTES_PER_PLAYER Vote Command Object=7
+&XP_PER_VOTE Vote Command Object=0.25
+&ELIGIBLE Vote Command Object=[not(hasflag(%0,unregistered))]
+&FINALIZE Vote Command Object=&VOTES_PER_PLAYER me=0; @wait me={ @wipe %va; &VOTES_PER_PLAYER me=7 };@dol [lattr(%va/#*)] = think [iter(get(%va/##),[setq(0,R[first(itext(0),-)])][setq(1,get(%va/%q0))][@@(u(SQL_INSERT_VOTE,[after(##,#)],[after(first(itext(0),-),#)],[rest(itext(0),-)]))][set(%va,%q0:[inc(first(%q1,|))]|[setunion(rest(%q1,|),after(itext(0),-),|)])],|)];@wait 0={@dol/notify [lattr(%va/R#*)]= {&_xp [setr(0,after(##,R))] = [add(get(%q0/_xp-total),mul(v(xp_per_vote),setr(1,first(get(%va/##),|))))];&_xp [setr(0,after(##,R))] = [add(get(%q0/_xp),mul(v(xp_per_vote),setr(1,first(get(%va/##),|))))];@mail %q0=Votes/Congratulations! You have received %q1 +votes from other players this week.[switch(rest(get(%va/##),|),,,%rReasons given included:%r[iter(rest(get(%va/##),|),wrap(itext(0),72),|,%r%r)])]}}
+&SQL_INSERT_VOTE Vote Command Object=INSERT votes SET voter=%0, votee=%1[switch(%2,,,\, reason='[sqlescape(%2)]')]
+&VOTESUSED Vote Command Object=[words(get(%va/%#),|)]
+&LOCKELIGIBLE Vote Command Object=[u(eligible,%#)]
+&C.VOTE Vote Command Object=$^\+vote ([^=|]+)\s*(=\s*([^|]+))?:@switch/first 1=[strmatch(setr(0,pmatch(%1)),#-*)],{ @pemit %#=I can't figure out who you mean. },[strmatch(%#,%q0)],{ @pemit %#=You can't vote for yourself. },[not(u(eligible,%q0))],{ @pemit %#=That player isn't eligible to receive votes. },[gte(u(votesused,%#),v(VOTES_PER_PLAYER))],{ @pemit %#=You've already used all your votes. You must wait until the next voting cycle or remove one of your votes with +unvote. },[t(match(get(%va/%#),%q0-*,|))],{ @pemit %#=You've already voted for that player. },{ &%# %va = [setunion(get(%va/%#),%q0-%3,|)]; @pemit %#=You register a vote for [name(%q0)]. }
+@set Vote Command Object/C.VOTE = regexp
+&C.UNVOTE Vote Command Object=$^\+unvote (.+):@switch/first 1=[strmatch(setr(0,pmatch(%1)),#-*)],{ @pemit %#=I can't figure out who you mean. },[strmatch(setr(1,grab(get(%va/%#),%q0-*,|)),)],{ @pemit %#=You haven't voted for that player yet. List votes with +vote. },{ &%# %va = [setdiff(get(%va/%#),%q1,|)]; @pemit %#=You remove your vote for [name(%q0)]. }
+@set Vote Command Object/C.UNVOTE = regexp
+&C.VOTE-LIST Vote Command Object=$^\+vote$:@pemit %#=You may vote for up to [v(VOTES_PER_PLAYER)] players. You have voted for:%r[iter(get(%va/%#),[ansi(h,name(first(itext(0),-)))][switch(setr(0,after(itext(0),-)),,,%r[wrap([space(4)]%q0,70,70,%r[space(4)])])],|,%r)]
+@set Vote Command Object/C.VOTE-LIST = regexp
+@set Vote Command Object=INHERIT
+@set Vote Command Object=SAFE

@@ -1,0 +1,255 @@
+
+
+An introduction to MUSH security
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is targetted at administrators, but non-Gods/ Wizards/
+Helpers/ Royalty should realize that they are administrators of
+their own object and their own commands, and that while security
+breaches of Wizard-empowered objects can be disasterous for a
+MUSH, security holes in player objects can be equally devastating
+for the player. Thus, all players who code or build should read
+this.
+
+
+The first thing any administrator should do is recognize that
+everything is a potential security hole. It is not possible to
+construct a totally secure system that is at all usable. But
+there are steps you should take to increase the security of a
+system to reasonable levels.
+
+
+For MUSH security, the worst possible hole is the God
+character. God should own *nothing*, should have no unnecessary
+attributes on him, no unnecessary flags (especially not INHERIT)
+and should be uselocked (@lock/use me==me). If an object requires
+God priviledges to run it is most likely either a result of a bad
+configuration of the MUSH, or an object which can muck with
+wizards; the first can be solved (a typical example is the
+default permissions of the @attribute command, which should be
+made wizard-runnable) and the second is probably not necessary.
+
+
+The God character is a special case, and easily handled. The most
+common potential holes are wizard-empowered objects, those that
+control every other object on the MUSH. To get an idea of how
+many of these exist, type:
+
+@create TestObject
+@set TestObject=INHERIT
+@search eval=controls(##,TestObject)
+
+Every listed object has the potential to destroy the entire MUSH
+in a few seconds.
+
+
+How an object becomes wiz-powered:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+An object has wizard powers if:
+
+It is set WIZARD (by the God character)
+It is owned by someone set WIZARD and is set INHERIT
+It is owned by someone set WIZARD *who* is set INHERIT
+
+Note carefully the third option. Any wizard who is set INHERIT
+makes everything they own wizard-powered and thus a potential
+security hole of gargantual proportions.
+
+==== WIZARDS SHOULD NEVER BE SET INHERIT ====
+
+Wizards are humans, and prone to make mistakes; this includes
+creating insecure objects. If a wizard is set INHERIT, any
+insecure object they create is wizard-powered. If they are not
+set INHERIT, they have to explicitly grant wizard powers to the
+objects they create one by one. Thus, wizards should never be set
+INHERIT. If a wizard is set INHERIT, they should remove the flag
+immediately. If they complain about being too lazy, ask them if
+they are willing to reconstruct the entire MUSH from scratch if
+it should be damaged due to a potential security hole in their
+objects.
+
+
+Next and fairly obviously, only objects which need to perform
+wizard-power operations should be set INHERIT. If something
+doesn't need to perform wizard operations (and if you have
+creative players, you know how much you can get away with sans
+wizbit) remove the INHERIT flag.
+
+I estimate that if the average MUSH follows the steps outlined in
+this section, the number of wizard-powered objects will be cut in
+half.
+
+
+Security holes: Locks
+~~~~~~~~~~~~~~~~~~~~~
+
+(This applies to objects who's use you want to restrict;
+obviously, public globals won't be uselocked in this manner)
+
+@lock/use object=me
+
+Only I can use the object now, right?
+
+==== WRONG ====
+
+Ignoring @averb attributes for now, this is one of the most
+common security holes seen on MUSHes. The syntax of that lock
+sets what is known as an is-or-carry lock.
+
+@lock/use Foo = Fizbin
+
+This means:
+
+A can use Foo if A *is* Fizbin
+
+AND
+
+A can use Foo if A *carries* Fizbin
+
+(that is, Fizbin is in A's contents list)
+
+Consider a wizard that does:
+
+@create WizToys
+@set WizToys=INHERIT
+@lock/use WizToys=me
+&FAB_CMD WizToys=$fab:@do some wonderful stuff
+
+If a player can convince the wizard to drop WizToys in a room
+that the player owns, the room can run the fab command, since the
+room passes the "carries" part of the lock.
+
+
+==== CORRECT SYNTAX ====
+
+@lock/use object = =me
+
+The "=me" is an *is* lock ONLY. This is the secure way to lock
+objects.
+
+Now do:
+
+@dolist search(me eval=controls(##,TestObject))=
+@pemit me=[name(##)](##) - [lock(##/use)]
+
+This will show you the UseLock of every wiz-powered object you own.
+You should make sure that all of your own objects have the
+correct lock usage. Then run do:
+
+@dolist search(eval=controls(##,TestObject))=
+@pemit me=[name(owner(##))]: [name(##)](##) - [lock(##/use)]
+
+This checks everyone's wiz objects. If you find insecurely
+locked ones, send mail to the wizard and let them know, or fix
+the lock yourself.
+
+
+Security holes: Commands
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now that you've made sure that only those who need access to
+commands can run them, what about commands that everyone should
+be able to run, like globals?
+
+Here's the nastiest command possible:
+
+&SOME_CMD Global object=$+do *:@fo me={%0}
+
+This lets anyone run any command, fairly obviously, and you're
+not going to find this on many MUSHes (at least, I hope not).
+
+But here's a similar example that's equally nasty:
+
+&SOME_CMD2 Global object=$+do2 *:@fo me={@pemit %#=You +do2'd: %0}
+
+It looks harmless enough at first, but
+
+==== @force evaluates its 2nd argument ====
+==== before enqueuing the results ====
+
+What's that mean in English? If I do:
+
+@force me={@pemit me=test: %va}
+
+And my @va attribute is:
+
+haha! ; @destroy me
+
+Then the 2nd argument of @force becomes, on substitution:
+
+@pemit me=test: haha! ; @destroy me
+
+And *both* of these commands are run. Adios, amigo.
+
+==== AVOID @force IN GLOBALS LIKE THE PLAGUE ====
+
+At the very least, be extremely careful. Test it with arguments
+with semicolons. One way to secure an @force is:
+
+@force me={@pemit me=test: {%va}}
+
+This should work properly. The {} around the %va delay its
+evaluation, so that the 2nd argument of the @force evaluates to:
+
+@pemit %#=You +do3'd: {haha!; @destroy me}
+
+This runs just fine.
+
+
+Security holes: Attributes
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Players should beware of this one especially; on Narnia, I had a
+public bulletin board (non-wiz, non-global) which did pretty much
+what I'm about to say is a big mistake. It patched it before
+anyone exploited the hole, however.
+
+
+A potential mail editing system might look like this:
+
+$-*:@switch member(v(EDITING),%#)=
+0,{@pemit %#=You're not editing a message!},
+{
+&MESSAGE-%# me=[v(MESSAGE-%#)]%r%0;
+@pemit %#=(message continued)
+}
+
+Danger! Danger Will Robinson! If a user (#1234) types:
+
+-$breakin *:@force me={%0}
+
+Then MESSAGE-#1234 on the object becomes:
+
+$breakin *:@force me={%0}
+
+This should look familiar. Ways to avoid this:
+
+- Never set arbitrary attributes (user input) on
+objects which are publicly accessable. For example,
+store the actual text strings comprising a bulletin
+board on a data object, not the global object.
+
+- Set any attribute thus created NO_COMMAND:
+
+@set obj/attrib=NO_COMMAND
+
+- Never allow a prefix to start with user input, e.g.
+
+&BBPOST bboard=$post *:
+@vn me=add(%vn,1);
+&POST-%vn me=%n -- %r %0;
+
+Setting attributes with arbitrary names is also a major no-no,
+but that's less common.
+
+
+Security holes: @averbs
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Anyone can potentially run these, so watch out. If you want to
+restrict their use, put an explicit check into the code.
+
+
+--
+Joshua, aka Algol@NarniaGolden

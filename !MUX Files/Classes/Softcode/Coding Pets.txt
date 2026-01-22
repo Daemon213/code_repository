@@ -1,0 +1,692 @@
+ Topic: Coding Pets
+Author: Stoko
+Summary: Stoko walks through the creation of a pet, progressing from basic
+commands through more complex commands.
+
+"Coding Pets", held by Stoko@M*U*S*H at 16th October 2002 in RedHat Hall.
+Logged by Zebranky@M*U*S*H
+
+<Lecturer> Stoko says, "hello, fellow M*U*S*H'ers. The lecture starts."
+<Lecturer> Stoko says, "everyone, read -help lecture and -help lecture2 if you
+haven't yet."
+<Lecturer> Stoko says, "let's start with coding a basic pet, which can only do
+SIT, STAY, SPEAK, ROLLOVER and BEG."
+<Lecturer> Stoko says, "first, we will create an object which will be our pet.
+@create <pet's name>."
+<Lecturer> Stoko says, "then, we will put the custom commands on him."
+<Lecturer> Stoko says, "&command_sit <pet's dbref>=$sit:@emit <the text which
+should be displayed to describe the pet's action of sitting>"
+<Lecturer> Stoko says, "&command_stay <pet's dbref>=$stay:@emit <the text
+which should be displayed to describe the pet's action of staying>"
+<Lecturer> Stoko says, "et cetera. We do the same thing for the remaining
+three commands. &command_<the name of the command> <pet's dbref>=$<the name of
+the command>:@emit <the text that should be displayed to everyone in the room
+when someone types that command>"
+<Lecturer> Stoko says, "so, whenever we type the text between $ and :,
+everyone in the room will be displayed the text after @emit"
+<Lecturer> Stoko says, "the next step is unsetting the NO_COMMAND flag on the
+pet"
+<Lecturer> Stoko says, "NO_COMMAND is put on every newly created object, and
+it needs to be reset in order to enable the object (our pet, in this case), to
+respond to commands that are programmed on it."
+<Lecturer> Stoko says, "we reset it with @set <pet's dbref>=!no_command"
+<Lecturer> Stoko says, "next, we @describe our pet with @desc <pet's
+dbref>=Pet's description."
+<Lecturer> Stoko says, "and the major part of the work for the basic pet is
+done and we only need to make several finishing touches"
+<Lecturer> Stoko says, "first, the owner may disable everyone except him to
+pick the pet up"
+<Lecturer> Stoko says, "it's done with @lock <pet's dbref>=me"
+<Lecturer> Stoko says, "also, the owner can disable everyone except him to use
+the commands stored in the pet's attributes."
+<Lecturer> Stoko says, "he does so by typing @ulock <pet's dbref>=me"
+<Lecturer> Stoko says, "and that's it, regarding the begginer pets."
+<Lecturer> Stoko says, "any questions before we move to intermediate pets?"
+<Lecturer> Stoko pouts at the sleeping audience.
+You say, "I have a question. Are there cocktail shrimp after the show?"
+<Lecturer> Stoko lies to keep Zebranky here, "Yes."
+You say, "YAY!"
+<Lecturer> Stoko says, "so, now I'll talk about coding the intermediate pets."
+Zebranky cant read, and sees that as 'Stoko likes to keep Zebranky here'
+banana would like some shrimp as well!
+China says, "if sir, we use the commands simply as 'sit' 'stay' etc, will that
+trigger all the other pets to do thier tricks too at the same time?"
+<Lecturer> Stoko says, "it will, unless they are @ulocked or in the
+inventories of their owners."
+China nodnods.
+<Lecturer> Stoko says, "also, some of the pets don't have their commands
+triggered by 'sit', 'speak', etc. Those pets are the advanced ones, because
+for the advanced pets all the commands are spoken and not typed."
+<Lecturer> Stoko greets the newcomer, "Take a seat, colleague."
+<Lecturer> Stoko says, "okay, now about the intermediate pets."
+<Lecturer> Stoko says, "for intermediate pets, one of the basic commands (sit,
+speak, stay, rollover, beg) has to be spoken"
+<Lecturer> Stoko says, "those commands start with ^ instead of $"
+<Lecturer> Stoko says, "and are given to the object (or pet) not by typing,
+but with speaking ('say sit' - Stoko says, "sit"), for instance."
+<Lecturer> Stoko says, "for the SIT command, we will make this code:
+&command_sit <pet's dbref>=^* says, "Sit":@emit <the text that will be
+displayed to everyone in the room>"
+<Lecturer> Stoko says, "the MONITOR flag has to be set on the pet with the
+^-command. Otherwise, it won't react to such commands at all."
+<Lecturer> Stoko says, "@set <pet's dbref>=monitor"
+<Lecturer> Stoko says, "that covers the spoken commands."
+<Lecturer> Stoko says, "before we move to the advanced pets, I'll explain how
+to code the FETCH and the COME command. FETCH will be first to be explained."
+<Lecturer> Stoko says, "we have to create an object which the pet will fetch.
+@create <the fetch-object's name>"
+<Lecturer> Stoko says, "I have seen several variations of the FETCH command,
+one of it is the searching of an object in the entire MUSH, passing several
+exits, getting the object, and returning back to the master again,..."
+<Lecturer> Stoko says, "and second was fetching an object on the adjacent
+location"
+Farside raises hand.
+<Lecturer> Stoko sighs, perspirates and lights a cigarrette, apologizing, and
+thinking frantically about the ways how to code this command, "Just give me a
+moment, please."
+<Lecturer> Stoko says, "yes?"
+Farside says, "Wait, nevermind. Sorry."
+Farside returns to his seat.
+<Lecturer> Stoko shrugs and takes a few inhalations of the cigarette's smoke.
+<Lecturer> Stoko says, "for instance, we could, for our commotion, code a
+fetch object which has a 'throw' command on it."
+<Lecturer> Stoko says, "the 'throw' command will cause the object to leave
+your inventory and enter an adjacent location with 'go <exit's name>'. the
+syntax will be 'throw <exit's name>'"
+<Lecturer> Stoko says, "we already created the fetch object, and now we'll
+first unset the no_command flag."
+<Lecturer> Stoko says, "we'll type: &throw <fetch object's dbref>=$throw
+*:@force me=leave;@emit Stoko throws the [name(me)].;go %0 . This is a simple,
+sloppy, version of the code for 'throw', but it will work if the exit's name
+is typed correctly."
+<Lecturer> Stoko says, "next, we'll code the spoken fetch command on the pet."
+<Lecturer> Stoko says, "it could be triggered by typing: say <pet's name>,
+fetch <fetch object's name>"
+<Lecturer> Stoko says, "it's good to put the '<pet's name>,' part in the
+spoken commands because, otherwise, commands could be triggered by
+accidentally saying the command word in a conversation or by some other
+petmaster's command to his own pet."
+<Lecturer> Stoko says, "but this percaution isn't necessary to avoid the
+latter case if the pet is @ulocked to you."
+<Lecturer> Stoko ponders a little.
+Letters is late. :/
+<Lecturer> Stoko writes some code on the blackboard, and says, "It's halfway
+written."
+<Lecturer> Stoko finishes the code, wiping perspiration from his forehead,
+"&command_fetch <pet's dbref>=^* says, "<pet's name>, fetch <fetch object's
+name>":@force me=go
+[setq(0,loc(me)][iter(lexits(here),switch(1,gt(match(lcon(loc(##)),<fetch
+object's dbref>),0),##),%b,{});get <fetch object's dbref>;go
+iter(lexits(here),switch(%q0,loc(##),##),%b,{})"
+<Lecturer> Stoko says, "this is the code for the fetch command."
+<Lecturer> Stoko says, "I'll explain what it does."
+China drops her jaw.
+Farside raises hand.
+<Lecturer> Stoko says, "farside?"
+Letters drops his jaw too...
+Farside says, "In your first function, setq, you have a parenthesis error."
+<Lecturer> Stoko says, "true. thank you, Farside."
+Farside says, "No problem."
+Farside sits back down.
+<Lecturer> Stoko adds a bracket to the code on the blackboard. The code is now
+like this:
+<Lecturer> &command_fetch <pet's dbref>=^* says, "<pet's name>, fetch <fetch
+object's name>":@force me=go
+[setq(0,loc(me)][iter(lexits(here),switch(1,gt(match(lcon(loc(##)),<fetch
+object's dbref>),0),##),%b,{});get <fetch object's dbref>;go
+iter(lexits(here),switch(%q0,loc(##),##),%b,{})
+<Lecturer> Stoko says, "sorry."
+<Lecturer> &command_fetch <pet's dbref>=^* says, "<pet's name>, fetch <fetch
+object's name>":@force me=go
+[setq(0,loc(me))][iter(lexits(here),switch(1,gt(match(lcon(loc(##)),<fetch
+object's dbref>),0),##),%b,{});get <fetch object's dbref>;go
+iter(lexits(here),switch(%q0,loc(##),##),%b,{})
+<Lecturer> Stoko says, "there."
+<Lecturer> Stoko says, "so, the explanation."
+<Lecturer> Stoko says, "the setq part sets the dbref of the starting location
+to a local variable, %q0, because it will be useful later, to returning to the
+starting point."
+<Lecturer> Stoko says, "another error."
+<Lecturer> Stoko adds a square bracket to the code.
+<Lecturer> &command_fetch <pet's dbref>=^* says, "<pet's name>, fetch <fetch
+object's name>":@force me=go
+[setq(0,loc(me))][iter(lexits(here),switch(1,gt(match(lcon(loc(##)),<fetch
+object's dbref>),0),##),%b,{})];get <fetch object's dbref>;go
+iter(lexits(here),switch(%q0,loc(##),##),%b,{})
+<Lecturer> Stoko says, "I hadn't have closed the square bracket in front of
+first iter()"
+<Lecturer> Stoko rolls another cigarette before continuing.
+Farside wonders why you did a switch(1,...
+<Lecturer> Stoko says, "we'll come to that."
+<Lecturer> Stoko lights the cigarette and says, "the first iter checks all the
+exits in the room to see in which of it's destinations is the fetch object. It
+checks that with switch() which returns the exit's dbref if it's destination
+contains the object we're looking for.
+<Lecturer> Stoko says, "so, the resulting command is 'go <the dbref of the
+exit that leads to the location which contains the fetch object>', and the
+result is that the pet leaves the room through that exit, arriving at the same
+place with the fetch object."
+<Lecturer> Stoko says, "now, to answer Farside's question."
+<Lecturer> Stoko says, "the second part of the switch is 0 if the dbref of the
+fetch object isn't among the contents of the location we are probing, and
+greater than zero otherwise."
+<Lecturer> Stoko ponders, "Perhaps it puzzled you why I didn't simply use >0
+<Lecturer> Stoko says, "am I right?"
+Farside says, "Oh, I see. Backwards heh."
+<Lecturer> Stoko says, "the result is the same, but I've, wrongly, chosen the
+bulkier variation."
+<Lecturer> Stoko ponders a little more and continues, "The next thing the pet
+does is 'get <fetch object's dbref>'. That part is clear
+<Lecturer> Stoko says, "the last part of the code is returning to the starting
+location, to put the fetch object in front of the pet's master afterward. I
+forgot to put the last part in the code, but I will after I explain the
+returning to the starting location."
+<Lecturer> Stoko says, "the iter checks all the exits on the new location to
+see which one leads back to the starting room. The code recognizes the
+starting room by it's dbref which it stored in the local variable %q0"
+<Lecturer> Stoko says, "and the resulting code is 'go <the dbref of the exit
+that leads to the starting location>'"
+<Lecturer> Stoko appends some code to the code on the blackboard.
+<Lecturer> &command_fetch <pet's dbref>=^* says, "<pet's name>, fetch <fetch
+object's name>":@force me=go
+[setq(0,loc(me))][iter(lexits(here),switch(1,gt(match(lcon(loc(##)),<fetch
+object's dbref>),0),##),%b,{})];get <fetch object's dbref>;go
+iter(lexits(here),switch(%q0,loc(##),##),%b,{});drop <fetch object's dbref>
+<Lecturer> Stoko says, "the last command in the semicolon-separated queue is
+'drop <fetch object's dbref>"
+<Lecturer> Stoko says, "that's it, regarding the functional part of the FETCH.
+One can put some @emits in the code to make the thing look more pretty."
+<Lecturer> Stoko says, "feel free to queue your questions before we move to
+the COME command."
+<Lecturer> Stoko says, "no questions? all right."
+<Lecturer> Stoko says, "the COME command orders the pet to come to you from
+the adjacent location."
+<Lecturer> Stoko says, "we have to make a command object for otherwise the
+absent pet wouldn't know that we called it."
+<Lecturer> Stoko says, "@create <command object's name - "<pet's name>'s
+command object" should be fine>"
+<Lecturer> Stoko says, "we will store the spoken COME command onto the pet's
+command object."
+<Lecturer> Stoko says, "but, before that, we can code the spoken 'go' command
+which we will use to make the pet leave our location and get to the place from
+which we will call it."
+<Lecturer> Stoko says, "&command_go <pet's dbref>=^* says, "<pet's name>, go
+*":go "
+<Lecturer> Stoko says, "sorry.."
+<Lecturer> Stoko says, "&command_go <pet's dbref>=^* says, "<pet's name>, go
+*":go %1"
+<Lecturer> Stoko says, "It took so long because I wanted to make a longer,
+less sloppy, error-proof, command, but I changed my mind."
+<Lecturer> Stoko says, "then we'll put the COME command on the command object"
+<Lecturer> Stoko says, "after typing @set <command object's
+dbref>=!no_command"
+<Lecturer> Stoko says, "and @setting the command object MONITOR"
+<Lecturer> Stoko starts writing the code for COME on the blackboard.
+<Lecturer> &command come <command object's dbref>=^* says, "<pet's name>,
+come":@force <pet's dbref>=go iter(lexits(loc(<pet's
+dbref>)),switch(1,gt(match(lcon(loc(##)),<pet owner's dbref>),0),##),%b,{})
+<Lecturer> Stoko ponders over the code, making sure he got everything right.
+<Lecturer> Stoko says, "yeah, the code is good."
+<Lecturer> Stoko says, "so, we'll also @ulock the command object to ourselves
+with @ulock <command object's dbref>=me"
+<Lecturer> Stoko says, "and also lock it to ourselves so that none other may
+pick it up, with @lock <command object's dbref>=me"
+<Lecturer> Stoko says, "and we'll drop it before using the come command, and
+pick it up afterward."
+<Lecturer> Stoko says, "we use this spoken command with 'say <pet's name>,
+come"
+<Lecturer> Stoko says, "that covers the intermediate pets"
+<Lecturer> Stoko says, "any questions before we move to advanced ones?"
+China says, "is this 'command object' the Controller Thingy that Grinna wanted
+all the pets to have?"
+<Lecturer> Stoko says, "yeah."
+<Lecturer> Stoko says, "since it seems that no more questions will be asked,
+I'll start explaining how to code advanced pets."
+China says, "if it was never required before, why does she require it now?"
+China says, "oops, sorry."
+<Lecturer> Stoko says, "it's okay."
+<Lecturer> Stoko says, "I don't know. She's the person to ask about that, not
+me."
+<Lecturer> Stoko says, "not I, I mean."
+Farside says, "Can you teach us how to make pets that learn new tricks on
+command, and age, and die, and how to build obidience schools?"
+China nods. "just wondered. Thought it was something to do with how code
+works."
+<Lecturer> Stoko says, "in fact, even a basic pet could be coded to work with
+a controller"
+<Lecturer> Stoko says, "simply, you put the commands on the controller, and
+not on the pet, but the controller forces the pet to perform the commands."
+<Lecturer> Stoko says, "with @force."
+China ponders this.
+<Lecturer> Stoko says, "I can, Farside, teach you the first three things you
+mentioned, but I'm not certain what the obedience schools are."
+<Lecturer> Stoko says, "although, that digression would take too much time and
+would prevent me from explaining the crucial thing, from explaining how to
+code advanced pets."
+Farside says, "Alright. Just do what you were going to do. :-)"
+<Lecturer> Stoko says, "perhaps after I'm done with the advanced pets, if you
+really are interested."
+<Lecturer> Stoko nods.
+<Lecturer> Stoko says, "while the novice level required only three basic
+commands which can be either $commands or spoken ones, and while the
+intermediate level required four basic tricks plus one intermediate command
+(FETCH or COME), requiring at least one of those five total commands to be a
+spoken one, the advanced level requires all the novice and intermediate tricks
+plus find, and all of those commands have to be spoken."
+<Lecturer> Stoko says, "I'll have to return to the intermediate level for a
+moment, though, because I forgot something."
+<Lecturer> Stoko says, "COME code again.."
+<Lecturer> &command come <command object's dbref>=^* says, "<pet's name>,
+come":@force <pet's dbref>=go iter(lexits(loc(<pet's
+dbref>)),switch(1,gt(match(lcon(loc(##)),<pet owner's dbref>),0),##),%b,{})
+<Lecturer> Stoko adds some text to the end of the code.
+<Lecturer> &command come <command object's dbref>=^* says, "<pet's name>,
+come":@force <pet's dbref>=go iter(lexits(loc(<pet's
+dbref>)),switch(1,gt(match(lcon(loc(##)),<pet owner's
+dbref>),0),##),%b,{});follow <owner's dbref>
+<Lecturer> Stoko says, "I've added the 'follow' part. I suppose everyone here
+knows what the 'follow' and 'unfollow' commands do, and, if not, they should
+type 'help follow' and learn."
+<Lecturer> Stoko says, "I've done so to give the intermediate version of the
+STAY command a purpose."
+<Lecturer> Stoko says, "this way, COME will cause the pet to come to it's
+owner and follow him around."
+<Lecturer> Stoko says, "while the STAY command will, except for giving a
+picturesque description to everyone in the room, cause the pet to stop
+following it's owner. It's code can be like this:"
+<Lecturer> Stoko says, "let's make it in the spoken-command form."
+<Lecturer> &command_stay <pet's dbref>=^* says, "stay":@force me=@emit <the
+text displayed to everyone in the room>;unfollow <pet owner's dbref>
+<Lecturer> Stoko says, "so, finally, the advanced level."
+<Lecturer> Stoko says, "FIND is the only thing left to explain for the
+advanced level."
+<Lecturer> Stoko says, "FIND should cause the pet to say where the wanted
+object or person is, and to, afterwards, go to that object or person."
+<Lecturer> Stoko says, "we will make the code that causes the pet to say where
+the object or person is and go to it's location only if it's adjacent."
+<Lecturer> Stoko says, "furthermore, this code will find the objects only if
+their dbref is supplied and say their name, and find a specific player if his
+or her name is said."
+<Lecturer> Stoko starts writing.
+<Lecturer> &find <pet's dbref>=^* says, "<pet's name>, find *":@force me={@sel
+1=isdbref(%1),{"The object with that dbref is named [name(setr(0,num(%1)))]
+and it's location is
+[loc(%1)].},hastype(*%1,player),{"[name(setr(0,num(*%1)))]'s location is
+[name(loc(*%1))]};@sel 1=match(loc(me),loc(%q0)),{@emit <pet's name> points to
+name(%q0) which is right
+here.},words(setr(1,iter(lexits(here),switch(1,gt(match(lcon(loc(##)),%q0),0),
+##,%b,{}))),go %q1
+<Lecturer> Stoko says, "this code could be made better by putting some finesse
+in it, which could include causing the pet to say that a player is unfindable
+if he is."
+<Lecturer> Stoko says, "that's it about find. First, I'd like to give you a
+chance to ask a question or two before I say several finishing notes."
+<Lecturer> Stoko says, "oh, yes, one more thing regarding the finesse. This
+code will work only if something findable is said in it's syntax. If a
+nonexistant dbref or player is mentioned, the code will show its sloppiness."
+<Lecturer> Stoko says, "that's another one thing that should be fixed."
+<Lecturer> Stoko says, "okay. how many of you, in the audience, are still
+awake?"
+China smiles.
+<Lecturer> Stoko says, "one, at least."
+<Lecturer> Stoko says, "okay, the finishing remarks, now."
+China continues to listen intently.
+You say, "I'm awa--zzzZZZzzz..."
+<Lecturer> Stoko says, "all the spoken commands can be easily transformed into
+commands that are invoked by POSE-ing"
+<Lecturer> Stoko says, "and if you want to make an advanced pet, it would be
+nice if at least one command was posed, as the bb post 18/10 says."
+<Lecturer> Stoko says, "let's consider a spoken SIT command."
+<Lecturer> Stoko says, "&command_sit <pet's dbref>=^* says, "<pet's name>,
+sit":@emit <the description of the pet obeying the command>"
+<Lecturer> Stoko says, "to convert this spoken command into a posed one, we
+type:"
+<Lecturer> Stoko says, "&command_sit <pet's dbref>=^* shouts at <pet's name>
+angrily, "Sit, you no-good, flea-bitten sonofab....":@emit <the description of
+the pet biting the owner>"
+<Lecturer> Stoko says, "and we use the command by typing: pose shouts at
+<pet's name> angrily, "Sit, you no-good, flea-bitten sonofab....""
+China chuckles.
+<Lecturer> Stoko says, "that's it, regarding the technical stuff. Next, and
+probably the last, in queue is the cosmetical stuff."
+You say, "Mmm, comestible stuff..."
+You say, "Oh, cosmetical."
+<Lecturer> Stoko says, "It's almost crucial that the pets are unique and funny
+or interesting, not merely functional, so you'll want to make interesting and
+creative @emits and poses on the part of the pet."
+<Lecturer> Stoko says, "also, please don't forget the @description."
+<Lecturer> Stoko says, "the commands mentioned in bbpost 18/10 are the
+required ones, but it would do no harm if the pet's owner puts the commands on
+the pet which he or she himself or herself made up."
+China says, "Wed Oct 16 20:35:29 2002"
+China crys as her log now has a 'hole' in it.
+<Lecturer> Stoko says, "that's it. any questions that need to be answered or
+any new, miscellaneous, direction in which this lecture could go before it
+ends?"
+Another Robot Drone pats China and gives her a can of Patch-A-Log spray. I'm a
+lumberjack and I'm okay... :)
+You say, "Well, how about Farside's strange question about learning, aging,
+death, etc?"
+Farside says, "Don't forget rabies and breeding."
+<Lecturer> Stoko says, "if three of five of you in the audience vote for
+hearing twenty minutes of lecture on pets with AI, I'll indulge Farside's
+wish."
+<Lecturer> Stoko says, "you've got two minutes to voice your opinion."
+China is willing to listen. :)
+<Lecturer> Stoko says, "since farside asked about it, and zebranky reminded me
+of it, it seems that three indeed are interested."
+China smiles.
+You say, "And now I idle to sleep. But I continue logging. Spooky."
+<Lecturer> Stoko says, "so, let's shed light on the AI by taking an exact
+purpose for the AI we want to make: making a code that will code a novice pet"
+<Lecturer> Stoko says, "first, we have created the pet, then we @described it,
+we've set it !no_command, @locked it and @ulocked it to ourselves."
+<Lecturer> Stoko says, "we'll set it MONITOR, too, because we'll code all the
+commands as spoken."
+<Lecturer> Stoko ponderse.
+<Lecturer> Stoko typos and ponders.
+<Lecturer> Stoko takes out a sandwich and meditates while eating. You try to
+calculate the duration of this interruption, and conclude he'll be done with
+devouring the poor piece of bread and ham in, around, three minutes.
+China grins.
+<Lecturer> Stoko finishes eating and throws, over his shoulder, the paper in
+which his meal was wrapped straight into the trash basket by the blackboard.
+<Lecturer> Stoko says, "We will code this in a cosmetically sloppy way."
+<Lecturer> Stoko says, "since I can't come up with something sufficiently
+acceptable."
+<Lecturer> Stoko says, "we'll make a spoken command for learning"
+<Lecturer> Stoko says, "to use it, we'll be typing this: say <pet's name>,
+when I say "*", everyone in the room will see: *"
+<Lecturer> Stoko says, "and the code will be like this:"
+<Lecturer> &command_learn <pet's dbref>=^* says, "<pet's name>, when I say
+"*", everyone in the room will see: *":@force me={@set me=%1:^* says, "<pet's
+name>, %2":@emit %3;pose intelligently nods to %N.}
+<Lecturer> Stoko will code such pet now.
+<Lecturer> Stoko drops An Archetypal Pet.
+<Lecturer> Stoko looks at the topic, puzzled, "It's blank"
+<Lecturer> Stoko goes down the few steps to the seating area.
+Stoko comes down the few steps from the stage.
+<Lecturer> Stoko has left.
+Stoko has arrived.
+Stoko carefully walks up the narrow stairs to the stage.
+Stoko has left.
+<Lecturer> Stoko has arrived.
+<Lecturer> An Archetypal Pet is now listening.
+Farside furrows brow.
+<Lecturer> Stoko finishes assembling the pet, putting only the single command
+on it.
+<Lecturer> Stoko says, "pet, when I say "sit", everyone in the room will see:
+The pet sits."
+<Lecturer> Stoko gahs.
+<Lecturer> Stoko says, "lapsus..."
+<Lecturer> Stoko debugs
+<Lecturer> &command_learn #4784=^* says, "Pet, when I say "*", everyone in the
+room will see - *":@force me={@set me=%1:^* says, "Pet, %2":@emit %3;pose
+intelligently nods to %N.}
+<Lecturer> Stoko debugs some more
+<Lecturer> &command_learn #4784=^* says, "Pet, when I say "*", everyone in the
+room will see - *":@force me={@set me=command_%1:^* says, "Pet, %1":@emit
+%2;pose intelligently nods to %N.}
+<Lecturer> &command_learn #4784=^* says, "Pet, when I say "*", everyone in the
+room will see - *":@force me={@set me=command_%1:^* says, "Pet, %1":@emit
+%2;pose intelligently nods to %N.}
+<Lecturer> Stoko oopses.
+<Lecturer> Stoko says, "sorry for repasting. I accidentaly hit the 'enter'
+key."
+<Lecturer> Stoko says, "pet, when I say "sit", everyone in the room will see -
+Pet sits."
+<Lecturer> An Archetypal Pet intelligently nods to Stoko.
+<Lecturer> Stoko says, "pet, sit"
+<Lecturer> Pet sits.
+<Lecturer> Stoko says, "this way, we can put all the novice commands on the
+pet, and, of course, much more of them."
+<Lecturer> Stoko says, "but, we should be more creative than I'm right now."
+<Lecturer> Stoko says, "pet, when I say "speak", everyone in the room will see
+- Pet barks."
+<Lecturer> An Archetypal Pet intelligently nods to Stoko.
+<Lecturer> Stoko says, "pet, speak"
+<Lecturer> Pet barks.
+China says, "oh cool."
+<Lecturer> Stoko takes An Archetypal Pet.
+China says, "I just was thinking I didn't understand your goal with just the
+first example, but with the additional second one I understand. :)"
+<Lecturer> Stoko nods and smiles.
+<Lecturer> Stoko says, "here is a sample of the code made by the
+'command_learn' code:"
+<Lecturer> Stoko says, "(copy/pasted from the Pet object itself)"
+<Lecturer> ^* says, "Pet, sit":@emit Pet sits.
+<Lecturer> Stoko says, "rather, I'll set the object visual"
+<Lecturer> Stoko says, "it's dbref is #4784"
+China looks.
+<Lecturer> Stoko says, "that much about the novice pets with AI."
+<Lecturer> Stoko says, "which enable you to design commands for them and the
+reactions to them without typing any code."
+China thinks about this.
+<Lecturer> Stoko says, "it would be complicated, if not impossible, to make an
+AI which could learn tricks of the intermediate or advanced level type."
+<Lecturer> Stoko says, "so, we'll develop our archetypal pet in a different
+direction."
+<Lecturer> Stoko grins evilly, "we'll make it age until it dies!"
+China blinks.
+<Lecturer> Stoko says, "we will define it's lifespan, we'll cause it to get
+older over time and we will cause it to die when it's time comes."
+Bob emerges from the Linux Lobby.
+Bob has arrived.
+<Lecturer> Stoko greets Bob and tells him to take a seat. Also, he points to
+-help lecture and -help lecture2
+<Lecturer> Stoko drops An Archetypal Pet.
+Bob takes a seat in the Left Front Row.
+Bob says, "Whoa...fun-kayyyy.."
+<Lecturer> Stoko addresses Bob, "Unfortunately, you missed the most
+interesting part. Now, you'll probably only hear a lot of gibberish about
+coding a pet that has a lifespan."
+<Lecturer> Stoko says, "first, we could code a command that defines the length
+of the lifespan."
+Bob nods and leans back to listen.
+<Lecturer> &command_lifespan <pet's dbref>=^* says, "<pet's name>, you will
+live * hours.":@force me={:nods.;@set me=data_lifespan:[mul(%1,60,60)]
+<Lecturer> Stoko says, "this command stores the attribute on the pet with the
+number of seconds which define the length of its life."
+<Lecturer> Stoko scratches his head, "No, it's unnecessary to store it in
+seconds. We'll take plain hours, rather."
+<Lecturer> &command_lifespan <pet's dbref>=^* says, "<pet's name>, you will
+live * hours.":@force me={:nods.;@set me=data_lifespan:%1
+<Lecturer> Stoko says, "then, we could make the command which will cause it to
+be born and get older and older."
+<Lecturer> Stoko says, "the status of it's life could be stored in the
+&data_status attribute, and could be either alive or dead."
+<Lecturer> Stoko says, "and the command for getting born could go like this:"
+Bob stands and leaves the Left Front Row.
+Bob goes home.
+Bob has left.
+China listens, absolutely fasinated.
+Farside says, "This isn't good enough. I want my pet to love me. To really,
+truly love me :~("
+Farside is so lonely *cries*
+<Lecturer> Stoko says, "thank you for your support, China", and continues
+writing the code on the blackboard.
+<Lecturer> Stoko says, "well, Farside, since I started explaining this, I'll
+finish."
+China nodnodnods, and definitely wants you to finish this. :)
+<Lecturer> &command_revive <pet's dbref>=^* says, "<pet's name>, you are now
+alive.":@sel 1=match(v(status),alive),:stares at %N, puzzled.,{@set
+me=data_age:0;@set me=data_status:alive}
+<Lecturer> Stoko says, "We'll probably return to this command to add some
+stuff to it later."
+<Lecturer> Stoko says, "now, we need a code that will increase pet's age every
+full hour after we've made him alive."
+<Lecturer> Stoko says, "and also a way of preventing it to react to commands
+if it's dead."
+<Lecturer> Stoko says, "there is, also, an option to make it forget all it
+learned before it died after we revive it, but we won't"
+<Lecturer> Stoko says, "I mean, but we won't put that option in the code."
+<Lecturer> Stoko says, "to do so, we'll use @wait and @trigger"
+<Lecturer> Stoko says, "we'll now recode the revive command, to start the loop
+that will age the pet every hour"
+<Lecturer> &command_revive <pet's dbref>=^* says, "<pet's name>, you are now
+alive.":@sel 1=match(v(status),alive),:stares at %N, puzzled.,{@set
+me=data_age:0;@set me=data_status:alive;@trigger me/loop_aging}
+<Lecturer> Stoko says, "and now to put the code in the loop_aging attribute."
+<Lecturer> Stoko says, "sorry... I'll change the command_revive a little"
+<Lecturer> Stoko says, "hm.. never mind. now to make loop_aging"
+<Lecturer> &loop_aging <pet's dbref>=@sel
+0=gte(v(data_age),v(data_lifespan)),{@set me=age:[inc(v(age))];@wait 3600=@tr
+me/loop_aging},{@set me=data_status:dead;@emit name(me) drops dead!}
+<Lecturer> Stoko says, "this loop, every hour, checks whether it's pet's time
+to die and kills him if it is, and otherwise increases it's age and queues
+another aging loop that will get executed in an hour."
+<Lecturer> Stoko says, "there are ways of unabling a pet to react to commands
+if it's data_status attribute isn't set to alive, but we won't code that."
+<Lecturer> Stoko says, "I'll, now, demonstrate the birth, very short life and
+death of the archetypal pet."
+<Lecturer> Stoko says, "his lifespan will be measured in minutes, and not in
+hours."
+<Lecturer> Stoko starts coding.
+<Lecturer> Stoko says, "at any time, you can examine #4784 to see the code on
+the pet."
+China don't see those commands on #4784.
+<Lecturer> Stoko says, "I'm putting them right now."
+China says, "oh. *blushes* sorry."
+<Lecturer> Stoko says, "done"
+<Lecturer> Stoko says, "ack. just a second"
+<Lecturer> Stoko says, "done."
+<Lecturer> Stoko says, "pet, you will live 2 minutes."
+<Lecturer> An Archetypal Pet nods.
+<Lecturer> Stoko says, "pet, you are now alive."
+<Lecturer> Stoko says, "he should drop dead in two minutes"
+<Lecturer> Stoko looks at his watch, "We'll wait."
+<Lecturer> Stoko says, "we won't. something has gone wrong"
+<Lecturer> &command_revive #4784=^* says, "Pet, you are now alive.":@sel
+1=match(v(status),alive),:stares at %N\, puzzled.,{@set me=data_age:0;@set
+me=data_status:alive;@trigger me/loop_aging}
+<Lecturer> Stoko says, "there was a comma in the text of :-pose in the
+command, and I fixed the problem by escaping that comma with a \"
+<Lecturer> Stoko says, "pet, you are now alive."
+<Lecturer> Stoko says, "okay, so we wait."
+<Lecturer> Stoko says, "hm..."
+<Lecturer> Stoko @halts the pet
+<Lecturer> Stoko says, "a bug again"
+China smiles.
+<Lecturer> &loop_aging pet=@sel 0=gte(v(data_age),v(data_lifespan)),{@set
+me=data_age:[inc(v(age))];@wait 60=@tr me/loop_aging},{@set
+me=data_status:dead;@emit name(me) drops dead!}
+<Lecturer> Stoko says, "instead of data_age, I typed only 'age'"
+<Lecturer> Stoko says, "one more time..."
+<Lecturer> Stoko says, "pet, you are now alive."
+<Lecturer> Stoko !halts the pet.
+<Lecturer> Stoko says, "pet, you are now alive."
+<Lecturer> Stoko says, "okay, we're waiting."
+<Lecturer> Stoko says, "and I think it should work."
+<Lecturer> Stoko facepalms.
+<Lecturer> Stoko says, "yeah... I see the error"
+<Lecturer> &loop_aging pet=@sel 0=gte(v(data_age),v(data_lifespan)),{@set
+me=data_age:[inc(v(date_age))];@wait 60=@tr me/loop_aging},{@set
+me=data_status:dead;@emit name(me) drops dead!}
+<Lecturer> Stoko says, "pet, you are now alive"
+<Lecturer> Stoko says, "I had to type 'date_age' instead of 'age' where it was
+an argument of v()"
+<Lecturer> Stoko says, "I'm certain that it'll work now."
+<Lecturer> Stoko says, "the class is over when the pet dies."
+China laughs.
+<Lecturer> Stoko says, "while we wait, are there any questions?"
+China says, "you going to do more lectures on other code things? :)"
+<Lecturer> Stoko says, "I'd like to, every few weeks or so."
+<Lecturer> Stoko says, "when someone asks me to explain some subject to him,
+I'll do it here."
+<Lecturer> Stoko says, "and whoever wants to listen, he's welcome"
+China HOPES she can make them all then. :)
+<Lecturer> Stoko smiles, bows and thanks very much for the compliment.
+<Lecturer> Stoko kills the pet, since it won't die of old age.
+China LAUGHS.
+China usually drop kicks objects across the room when they won't work.
+<Lecturer> Stoko says, "there was another bug, it seems."
+<Lecturer> Stoko says, "well, that's all."
+<Lecturer> Stoko says, "Thank you for attending the lecture."
+China awwws. "but I still 'enjoyed' what you talked on, sir. :)
+China applauds.
+<Lecturer> Stoko bows, "Thank you, thank you."
+<Lecturer> Stoko goes down the few steps to the seating area.
+Stoko comes down the few steps from the stage.
+<Lecturer> Stoko has left.
+Stoko has arrived.
+China extends her hand to shake Stoko's for his having given the lecture
+tonight.
+Glassbrain says, "Thanks."
+Stoko accepts the hand which gets all shook up, "You're welcome."
+China smiles, "if you get the pet's age to work, will you append the lecture,
+Sir?"
+Stoko says, "I hope you managed to learn something today from my babbling."
+Glassbrain ding.
+Stoko says, "No, I won't. the lecture's over. *shrugs*"
+China says, "I kept doing exams as I wanted to see if some of the code on it
+would get deleted when it died."
+Stoko says, "it wouldn't get deleted."
+Stoko says, "but the pet could be coded that way, that the things it learned
+get deleted."
+China nodnods.
+Stoko says, "you'll participate in the pet show, china?"
+China nodnods, "yes every one I can. But I've never gotten past 'fancy'
+beginners.
+China says, "and I'd finally gotten to a simple form of the advanced ones, and
+Grinnna added that 'controller thing' which I never understood what it was or
+how it was to work."
+Stoko says, "well, if you get a level higher because of this lecture, it will
+be the best possible compliment to it."
+China says, "yes, I'm going to keep going over this, til I understand it
+completely ...as I understand if asked, you NEED to be able to explain what's
+happening wiht the code parts that you use."
+China says, "which til I 'learn' it I can't use it in the pet show."
+Stoko nods.
+China says, "I'd wanted very much to enter last years. I've entered all the
+others since I've been on M*U*S*H."
+Stoko nods.
+China says, "and I've had an idea for a pet since last year. :)"
+Glassbrain making uber-moosie.
+Glassbrain says, "If you givez him a muffin he duz your taxes."
+China says, "anyway... I just feel real lucky that I was here when I heard
+mention on Public channel of asking about where lecture was. :)"
+Stoko says, "thank god for this lecture, the opportunity to occupy my brain
+with something other than with my usual obsessive thoughts concentrated on a
+girl that's been almost continuously on my mind for almost a year."
+Stoko nods.
+China chuckles, "oh you need distraction to forget her."
+China says, "or to just not be so obsessed? :)"
+Stoko says, "both."
+Stoko says, "the former, rather"
+Stoko says, "glassbrain, any impressions or comments regarding the lecture,
+maybe?"
+China says, "well I'm glad you stepped forward with doing it. I know Trispis
+canceled his, which I was looking forward too. I try to attend all those I
+can/know about. Unfortunately I'm not an easy learner, being rather dence
+about how it all works."
+Stoko says, "either negative or positive?"
+Stoko nods, "I've got 33% of a lecture about my style of coding prepared.
+perhaps I'll hold it soon."
+China nodnods, "I'd like to attend it. :)
+Mika says, "Thanks for letting me idle here."
+Mika says, "ANd thanks for the lecture!"
+Mika poofs.
+Mika goes home.
+Mika has left.
+Stoko nods, "I think I'll inform you about the time, in time."
+Stoko says, "the time of the lecture."
+China says, "I have some problems happening in November, so I don't know my
+schedule then."
+Stoko nods.
+China says, "do your lectures get posted on the M*U*S*H website, Sir?"
+Stoko says, "nope."
+China :(
+Stoko says, "perhaps the lecture about the coding style that tries to be as
+fast and as short as possible will"
+China says, "I'll just have to pray that timing will be perfect for me to
+attend then. :)"
+Stoko nods and shrugs.
+China chuckles as your having the knowledge is the easier end, then for the
+ones who still hunger for it.
+China says, "anyway.. I apprecitate your doing the lecture and your
+willingness to do more of them. Thank you again."
+Stoko says, "you're welcome."
+China smiles and leaves now, before she begins to bore you. :)
+China enters Linux Lobby.
+China has left.
+Stoko has left. 

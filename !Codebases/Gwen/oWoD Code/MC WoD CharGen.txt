@@ -1,0 +1,527 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @dig/teleport Void\
+@lock here=#0\
+@set here=OOC\
+@dig/teleport The Womb\
+@lock here=#0\
+@Desc here=Welcome to Mountain Cauldron, set in Asheville, North Carolina.%r[space(4)]Before you begin weaving your character, we advise you to read ALL the news items and think very carefully about what you want your character to be like. You can see the  concepts of various characters already on the MUSH by typing '+concepts'. Note that everyone at Mountain Cauldron starts off as a mortal. 'News supers' describes how we pick our supers. No starting character may have a five in anything other than a virtue. Also note that the Mountain Cauldron Staff will be carefully examining your character before it is approved for roleplay. If you have too many 4s, particularly in melee, brawl, dodge, alertness, and firearms, your entrance into roleplay will be delayed .%r[space(4)]To begin character generation, type +begin <concept> where concept is a few words about your character's basic purpose/profession. Your concept is anonymous and only used to generate the +concepts list.%rYou may find it helpful to join the help channel while in chargen. To do this, type @com +newbie. For more information on channels type +help channel.\
+@Succ here=%rYou may find it helpful to listen in to the help channel. To join it, type @com +help. For more information on channels, type +help channel.%r%rNOTE: CHARACTERS WHO DO NOT LEAVE THIS ROOM BEFORE FIVE DAYS WILL BE NUKED!!!%r\
+@VA here=$+begin *:&concept\'a0%#=mid(%0, 0, 76); &bacp\'a0%#=5; &bgnds\'a0%#=0 0 0 0; &virts\'a0%#=1 1 1; &virp\'a0%#=7; &freebies\'a0%#=switch(get(%#/race), Mortal, 21, Kinfolk, 21, 15); &hu\'a0%#=2; &wp\'a0%#=1; @dolist powers powvals set_attr set_abil done abils sabils mfs mp fp flawnums mernums=\{&##\'a0%#\}; &started\'a0%#=1; @tel\'a0%#=#277\
+@VB here=$+concepts:@pemit\'a0%#=[center(CONCEPTS,76,-)][iter(sort(search(type=p)),switch(get(##/concept),,,%r[get(##/concept)]))]\
+&WIZZIE here=[hasflag(%#,WIZARD)]\
+&ADMINI here=[hasflag(%#,ADMIN)]\
+@Listen here=* has arrived.\
+@Ahear here=@switch or(hasflag(%#,wizard),hasflag(%#,royalty),hasflag(%#,immortal))=0, @link\'a0%#=#273\
+&IS_STAFF here=[or(hasflag(%#,wizard),hasflag(%#,royalty),)]\
+@lock/TeloutLock here==STARTED:1|IS_STAFF/1\
+@set here=DARK\
+@set here=FLOATING\
+@set here=INHERIT\
+@set here=SAFE\
+@set here=OOC\
+\
+@dig/teleport Chargen -- The many doors\
+@Desc here=%r%b%bWelcome to Mountain Cauldron's Chargen. There are five categories of Traits you must set. They are, Attributes, Abilities, Backgrounds, Virtues and Merits & Flaws. You must set them all before you can go to the last step, Freebies.%r%b%bV\
+isit each section in the order you wish, then go into the "Freebies" portal. If, at any point, you are unhappy with your stats, you can type 'restart' to restart from scratch. You can visit each room more than once, so don't worry. You can modify your sta\
+ts at any point before visiting the Freebies room.%r%b%bWhen you're all done, type 'freebies'.%r\
+&OVERLIM here=fold(me/add_nums,[iter(cat(get(%0/attr),get(%0/abils),get(%0/virts)),gt(##,5))] [iter(get(%0/bgnds),gt(##,4))] [gt(get(%0/wp),8)] [gt(get(%0/hu),10)])\
+&OVERPOOL here=fold(me/add_nums,iter( cat(get(%0/atp1),get(%/atp2),get(%0/atp2),get(%0/abp1),get(%0/abp2),get(%0/abp3),get(%0/bacp),get(%0/virp)),lt(##,0) ))\
+&POINTS here=$+points:@pemit\'a0%#=%r[switch(get(%#/set_attr),1,\{Attribute Points Remaining: Physical: [get(%#/ATP1)], Social: [get(%#/ATP2)], Mental: [get(%#/ATP3)]%r\},\{Attribute point priority not yet selected.%r\})][switch(get(%#/set_abil),1,\{Ability Point\
+s Remaining: Talents: [get(%#/ABP1)], Skills: [get(%#/ABP2)], Knowledges: [get(%#/ABP3)]%r\},\{Ability point priority not yet selected.%r\})][switch(get(%#/started),1,\{Virtue Points Remaining: [get(%#/VIRP)]%rBackground Points Remaining: [get(%#/BACP)]\},\{The\
+re seems to be a problem, get help from a staff member.\})]\
+&IS_STAFF here=[or(hasflag(%#,wizard),hasflag(%#,admin),hasflag(%#,judge))]\
+&RESTART here=$restart:&started\'a0%#;@pemit\'a0%#=Restarting chargen...;@tel\'a0%#=#273\
+@lock/TeloutLock here=!=STARTED:1|IS_STAFF/1\
+@VE here=$+stats:@switch [get(%#/set_attr)]=1,\{@trig #274/showattr=%#,%#,0\},\{@pemit\'a0%#=You have no Attributes yet. Visit the Attributes room.\}; @switch [get(%#/set_abil)]=1,\{@trig #274/showabil=%#,%#,%0\},\{@pemit\'a0%#=You have no Abilities yet. Visit the Abi\
+lities room.\}; @switch [get(%#/started)]=1,\{@trig #274/showadvs=%#,%#,0; @trig #274/showmisc=%#,%#\}, \{@pemit\'a0%#=Your character is somehow mis-generated. Type 'restart'.\}\
+@set here=DARK\
+@set here=FLOATING\
+@set here=INHERIT\
+@set here=SAFE\
+\
+@dig/teleport Chargen -- Merits and Flaws\
+@Desc here=[repeat(=,28)] MERITS & FLAWS [repeat(=,28)]%r[iter(u(lwnum,words(get(%#/mfs),|)),switch(mod(##,3),1,%r%b%b[ljust(index(get(%#/mfs),|,##,1),23)],[ljust(index(get(%#/mfs),|,##,1),23)]))][switch(words(get(%#/mfs),|),0,,%r)]%r[space(23)]Freebie po\
+ol: [get(%#/freebies)]%r%r[repeat(-,72)]\
+&LWNUM here=cat(rest(lnum(%0)),%0)\
+&MERITS here=$+merit*:@pemit\'a0%#=[repeat(=,33)] MERITS [repeat(=,32)][iter(rest(lnum(11)),%r[switch(u(hasmerit,##),1,*%b,%b%b)][ljust(M##,3)][ljust([extract(u(mlist),##,1,|)] <[u(meritval,##)]>,31)][switch(u(hasmerit,add(##,10)),1,*%b,%b%b)][ljust(M[add(##\
+,10)],3)] [ljust([extract(u(mlist),add(##,10),1,|)] <[u(meritval,add(##,10))]>,35)])][space(38)][switch(u(hasmerit,21),1,*%b,%b%B)]M21 Longevity <2>%r[repeat(-,72)]%r%r%bType 'buymerit <merit num>' to buy a Merit, or 'resetmf' to remove all your Merits an\
+d Flaws. The number in <>'s is the cost in Freebies. (*) Indicates you have this Merit.\
+&MLISTVALS here=1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2\
+&FLISTVALS here=1 1 1 1 1 1 1 1 2 2 2 1 2 2 2 2 2 2 1 1 2 2 1 1 2 1 1 1 2\
+&FLIST here=Compulsion|Intolerance|Nightmares|Phobia (mild)|Overconfident|Shy|Soft-Hearted|Speech Impediment|Low Self Image|Short Fuse|Vengeance|Addiction|Addiction|Sadism|Masochism|Obsession|Amnesia|Confused|Color Blindness|Hard of Hearing|Bad Sight|One \
+Eye|Illiterate|Allergy|Allergy|Asthma|Short|Lazy|Disfigured\
+&MLIST here=Code of Honor|Higher Purpose|Common Sense|Concentration|Lightning Calculator|Time Sense|Acute Hearing|Acute Sense of Smell|Acute Sense of Taste|Acute Vision|Ambidextrous|Computer Aptitude|Crack Driver|Mechanical Aptitude|Pitiable|Poison Resist\
+ance|Double-Jointed|Catlike Balance|Early Riser|Thick-Skinned|Longevity\
+&MERITVAL here=extract(u(mlistvals),%0,1)\
+&FLAWS here=$+flaw*:@pemit\'a0%#=[repeat(=,33)] FLAWS [repeat(=,33)][iter(rest(lnum(15)),%r[switch(u(hasflaw,##),1,*%b,%b%b)][ljust(F##,3)][ljust([extract(u(flist),##,1,|)] <[u(flawval,##)]>,31)][switch(u(hasflaw,add(##,14)),1,*%b,%b%b)][ljust(F[add(##,14)],\
+3)] [ljust([extract(u(flist),add(##,14),1,|)] <[u(flawval,add(##,14))]>,35)])]%r[space(36)][switch(u(hasflaw,23),1,*%b,%b%b)]F29 Disfigured <2>%r[repeat(-,72)]%r%r%bType 'buyflaw <flaw num>' to buy a Flaw, or 'resetmf' to remove all your Merits and Flaws.\
+ The number in <>'s is the bonus Freebies. (*) Indicates you have this Flaw.\
+&HASFLAW here=sign(member(get(%#/flawnums),%0))\
+&FLAWVAL here=extract(u(flistvals),%0,1)\
+&HASMERIT here=sign(member(get(%#/mernums),%0))\
+&BUYMERIT here=$buymerit *:@pemit\'a0%#=[switch(0,and(lte(%0,22),gte(%0,1)),Invalid Merit number.,not(u(hasmerit,%0)),You already have this merit.,u(meritcomp,%0),You have a merit that is incompatible with the one you wish to buy. Remove the other if you wan\
+t this one.,lte(add(get(%#/mp),u(meritval,%0)),3),You cannot have more than 3 points in Merits without clearing it with an Admin.,Merit bought. Freebies pool now: [sub(get(%#/freebies),u(meritval,%0))])];@wait [setq(0,)][setq(1,me)][r(and(gte(22,%0),lte(1\
+,%0),u(meritcomp,%0),not(u(hasmerit,%0)),lte(add(get(%#/mp),u(meritval,%0)),3)))]=\{&mernums\'a0%#=[cat(get(%#/mernums),%0)]; &mp\'a0%#=[add(get(%#/mp),u(meritval,%0))]; &freebies\'a0%#=[sub(get(%#/freebies),u(meritval,%0))];&mfs\'a0%#=[switch(words(get(%#/mfs)),0,u(m\
+eritname,%0),edit(get(%#/mfs),$,|[u(meritname,%0)]))]\};@notify [setq(0,)][setq(1,me)][r(and(gte(22,%0),lte(1,%0),u(meritcomp,%0),not(u(hasmerit,%0)),lte(add(get(%#/mp),u(meritval,%0)),3)))]\
+&MERITNAME here=[extract(u(mlist),%0,1,|)] <[u(meritval,%0)]m>\
+&MERITCOMP here=not(or(and(match(%0,2),u(hasflaw,1)),and(match(%0,7),u(hasflaw,20)),and(match(%0,10),u(hasflaw,21))))\
+&BUYFLAW here=$buyflaw *:@pemit\'a0%#=[switch(0,and(lte(%0,29),gte(%0,1)),Invalid Flaw number.,not(u(hasflaw,%0)),You already have this flaw.,u(flawcomp,%0),You have a merit or flaw that is incompatible with the one you wish to buy. Remove the other if you w\
+ant this one.,lte(add(get(%#/fp),u(flawval,%0)),3),You cannot have more than 3 points in Flaws without clearing it with an admin.,Flaw bought. Freebies pool now: [add(get(%#/freebies),u(flawval,%0))])];@wait [setq(0,)][setq(1,me)][r(and(gte(29,%0),lte(1,%\
+0),u(flawcomp,%0),not(u(hasflaw,%0)),lte(add(get(%#/fp),u(flawval,%0)),3)))]=\{@pemit\'a0%#=[setq(0,)][setq(1,To precise what your flaw is\\, type 'flawtype <flaw number>=<type>'. For instance: flawtype 3=Heights.)][r(sign(member(get(me/flawtypelist),%0)))];&f\
+lawnums\'a0%#=[cat(get(%#/flawnums),%0)]; &fp\'a0%#=[add(get(%#/fp),u(flawval,%0))]; &freebies\'a0%#=[add(get(%#/freebies),u(flawval,%0))];&mfs\'a0%#=[switch(words(get(%#/mfs)),0,u(flawname,%0),edit(get(%#/mfs),$,|[u(flawname,%0)]))]\};@notify [setq(0,)][setq(1,me)][r\
+(and(gte(29,%0),lte(1,%0),u(flawcomp,%0),not(u(hasflaw,%0)),lte(add(get(%#/fp),u(flawval,%0)),3)))]\
+&FLAWCOMP here=not(or(and(match(%0,1),u(hasmerit,2)),and(match(%0,12),u(hasflaw,13)),and(match(%0,13),u(hasflaw,12)),and(match(%0,20),u(hasmerit,7)),and(match(%0,21),u(hasmerit,10)),and(match(%0,24),u(hasflaw,25)),and(match(%0,25),u(hasflaw,24))))\
+&FLAWNAME here=[extract(u(flist),%0,1,|)] <[u(flawval,%0)]f>\
+@Adesc here=@pemit\'a0%#=%r%b%bType '+merits' to get a list of Merits, or '+flaws' to get a list of Flaws. Type 'buyflaw <number>' or 'buymerit <number>' to buy them. Type 'resetmf' to remove your Merits and Flaws and redo them. Type 'done' when done. Note: \
+You cannot take more than 3 points in merits, and 3 points in flaws.%r\
+&FLAWTYPELIST here=2 4 12 13 16 24 25\
+&FLAWTYPE here=$flawtype *=*:@switch u(hasflaw,%0)=0, @pemit\'a0%#=You do not have this Flaw., \{@switch sign(member(u(flawtypelist),%0))=0, @pemit\'a0%#=This Flaw does not require additional precising., \{@pemit\'a0%#=Flaw now: [extract(u(flist),%0,1,|)]:\'a0%1 <[u(fl\
+awval,%0)]f>;&mfs\'a0%#=[edit(get(%#/mfs),[u(flawname,%0)],[extract(u(flist),%0,1,|)]:\'a0%1 <[u(flawval,%0)]f>)]\}\}\
+&RESETMF here=$resetmf:@pemit\'a0%#=Merits and Flaws reset.;&mp\'a0%#;&fp\'a0%#;&freebies\'a0%#=15;&flawnums\'a0%#;&mernums\'a0%#;&mfs\'a0%#\
+&CHARHELP here=$charhelp:@pemit\'a0%#=CHARGEN HELP: Merits and Flaws%r[repeat(-,30)]%r%r* Type 'buymerit <number>' or 'buyflaw <number>' to buy a merit or flaw. Type 'resetmf' to remove all your Merits and Flaws and start again.%r%r* Type '+merits' or '+flaw\
+s' to get a list of merits or flaws.%r%r* When a precision to a Flaw is required, type 'flawtype <number>=<precision>'. <Precision> is anything pertinent, like, 'Cocaine' for Addiction <2f>.%r%r* Type 'done' when done. If you need to restart all your char\
+acter anew, type 'restart'. This will wipe ALL your stats.%r%r* Anything else, ask a member of the on-line staff.\
+@lock/TeloutLock here=!=STARTED:1|IS_STAFF/1\
+&IS_STAFF here=[or(hasflag(%#,wizard),hasflag(%#,admin),hasflag(%#,judge))]\
+@VE here=$+stats:@switch [get(%#/set_attr)]=1,\{@trig #274/showattr=%#,%#,0\},\{@pemit\'a0%#=You have no Attributes yet. Visit the Attributes room.\}; @switch [get(%#/set_abil)]=1,\{@trig #274/showabil=%#,%#,%0\},\{@pemit\'a0%#=You have no Abilities yet. Visit the Abi\
+lities room.\}; @switch [get(%#/started)]=1,\{@trig #274/showadvs=%#,%#,0; @trig #274/showmisc=%#,%#\}, \{@pemit\'a0%#=Your character is somehow mis-generated. Type 'restart'.\}\
+&NOBUYFLAW here=$buyflaw f*:@pemit\'a0%#=You should enter the number, and not the code. For instance, use 'buyflaw 1' and NOT 'buyflaw f1'.\
+&NOBUYMERIT here=$buymerit m*:@pemit\'a0%#=You should enter the number, and not the code. For instance, use 'buymerit 1' and NOT 'buymerit m1'.\
+&CHKVAL here=switch(1,gt(mul(%2,%0),%3),0,lt(%2,0),1,gt(add(%2,%4),%1),2,3)\
+&RESTART here=$restart:&started\'a0%#;@pemit\'a0%#=Restarting chargen...;@tel\'a0%#=#273\
+@set here=DARK\
+@set here=FLOATING\
+@set here=INHERIT\
+@set here=SAFE\
+\
+@open Freebies <F>;f;freebies;free;freebie\
+@lock Freebies <F>=IS_SURE/1\
+&IS_SURE Freebies <F>=[sign(member(u(i_am_sure),%#))]\
+@Afail Freebies <F>=@pemit\'a0%#=[setq(0,You must set your Abilities first. Visit the Abilities room.)][setq(1,)][r(u(abil_done))];@pemit\'a0%#=[setq(0,)][setq(1,Are you sure you want to proceed to the Freebies room? If so\\, type 'freebies' again. Once there\\, \
+you won't be able to modify your stats unless you _start anew_.)][r(and(u(attr_done),u(abil_done)))];@wait [setq(0,)][setq(1,me)][r(and(u(attr_done),u(abil_done)))]=\{&i_am_sure me=[setunion(u(i_am_sure),%#)];@wait 30=&i_am_sure me=[setdiff(u(i_am_sure),%#\
+)]\};@notify [setq(0,)][setq(1,me)][r(and(u(attr_done),u(abil_done)))]\
+&ATTR_DONE Freebies <F>=strmatch(get(%#/set_attr),1)\
+&ABIL_DONE Freebies <F>=strmatch(get(%#/set_abil),1)\
+@Fail Freebies <F>=[setq(0,You must set your Attributes first. Visit the Attributes room.)][setq(1,)][r(u(attr_done))]\
+@Asucc Freebies <F>=&atp1\'a0%#; &atp2\'a0%#; &atp3\'a0%#; &abp1\'a0%#; &abp2\'a0%#; &abp3\'a0%#; &bacp\'a0%#; &virp\'a0%#; &mp\'a0%#; &fp\'a0%#; &attr2\'a0%#=[get(%#/attr)]; &abils2\'a0%#=[get(%#/abils)]; &bgnds2\'a0%#=[get(%#/bgnds)]; &freebies2\'a0%#=[get(%#/freebies)]; &virts2\'a0%#=[get(%#/virt\
+s)]; &wp2\'a0%#=[get(%#/wp)]; &hu2\'a0%#=[get(%#/hu)]; &sabils2\'a0%#=[get(%#/sabils)]\
+@set Freebies <F>=INHERIT\
+@set Freebies <F>=LIGHT\
+@set Freebies <F>=SAFE\
+\
+@dig/teleport Chargen -- Freebies\
+&CHKVAL here=switch(1,gt(mul(%2,%0),%3),0,or(not(eq(trunc(%2),%2)),lt(%2,0)),1,gt(add(%2,%4),%1),2,3)\
+&MISCNAMES here=Race Class Humanity Willpower Health Experience Gnosis Rage Blood Generation Rank Sekhem Ba Ka Paradox Quintessence\
+&MISCIDS here=race class hu wp wounds xp gnosis rage bp generation rank sekhem ba ka paradox quint\
+&POOLIDS here=race class hu wpp wounds xp gps rp bpp generation rank sek ba ka paradox quint\
+&GCMISC here=switch(get(%0/[extract(v(miscids),%1,1)]),,#-2,get(%0/[extract(v(miscids),%1,1)]))\
+&GCTMISC here=switch(get(%0/[extract(v(miscids),%1,1)]),,#-2,get(%0/[extract(v(poolids),%1,1)]))\
+&ATTRNAMES here=Strength Dexterity Stamina Charisma Manipulation Appearance Perception Intelligence Wits\
+&GATTR here=extract(get(%0/ATTR),%1,1)\
+&GCATTR here=extract(get(%0/ATTR),%1,1)\
+&GCTATTR here=switch(get(%0/TATTR),,extract(get(%0/ATTR),%1,1),extract(get(%0/TATTR),%1,1))\
+&GVATTR here=[setq(8,extract(get(%0/ATTR),%1,1))][setq(9,extract(get(%0/TATTR),%1,1))][switch(sub(%q8,%q9),0,%q8,%q8 \\(%q9\\))]\
+&GETATP here=get(%0/atp[div(add(%1,2),3)])\
+&ATPA here=atp[div(add(%0,2),3)]\
+&TESTATTR here=and(gte(%0,0),lt(%0,10))\
+&ATTRNAME here=extract(v(attrnames),%0,1)\
+&ABILNAMES here=Acting Alertness Athletics Brawl Dodge Empathy Expression Intimidation Leadership Streetwise Subterfuge Awareness Intuition Primal-Urge Kenning Animal-Ken Drive Etiquette Melee Music Performance Repair Security Stealth Survival Firearms Te\
+chnology Meditation Leadership Blank Bureaucracy Computer Culture Enigmas Finance Investigation Law Linguistics Medicine Politics Science Cosmology Mythlore Occult Rituals\
+&GABIL here=extract(get(%0/ABILS),%1,1)\
+&GETABP here=get(%0/abp[div(add(%1,14),15)])\
+&ABPA here=abp[div(add(%0,14),15)]\
+&GCABIL here=switch([member(get(%0/abils),%1)],0,0,extract(get(%0/abilvals),member(get(%0/abils),%1),1))\
+&TESTABIL here=or(and(gt(%0,0),lt(%0,46),lt(mod(sub(%0,1),15),11)),eq(%0,44))\
+&ABILNAME here=extract(v(abilnames),%0,1)\
+&SABILNAME here=extract(get(#274/sabilnames),%0,1)\
+&GCSABIL here=switch([member(get(%0/sabils),%1)],0,0,extract(get(%0/sabilvals),member(get(%0/sabils),%1),1))\
+&VIRTNAMES here=Conscience Self-Control Courage Honour Love Humour Truth Callousness Instincts Morale Glory Succor Wisdom Treachery Cruelty Infamy Power Cunning Actor Nature Fae Prop Scene\
+&TESTVIRT here=and(gt(%0,0),lt(%0,4))\
+&VIRTNAME here=extract(v(virtnames),%0,1)\
+&GVIRT here=extract(get(%0/virts),%1,1)\
+&GCVIRT here=switch([member(get(%0/virts),%1)],0,0,extract(get(%0/virtvals),member(get(%0/virts),%1),1))\
+&BGNAMES here=Contacts Fame Influence Resources Arcane Avatar Destiny Dream Fetish Herd Library Node Past-Life Pure-Breed Retainers Rites Status Talisman Generation Mentor Allies Status Kinfolk Totem Black-Hand Alt-Identity Pack-Recognition Reputation Mne\
+sis Supernatural Sabbat-Status Familiar-Spirit Chantry Sanctum Den-Realm Talisman Artifact Eidolon Haunt Memoriam Notoreity Wealth Age Military-Force Elder-Status Elder-Gen Old-Soul Dreamers Gremayre Holdings Title Chimera Treasure Retinue\
+&TESTBG here=and(gt(%0,0),lt(%0,5))\
+&BGNAME here=extract(v(bgnames),%0,1)\
+&GBG here=extract(get(%0/bgnds),%1,1)\
+&GCBG here=switch([member(get(%0/bgnds),%1)],0,0,extract(get(%0/bgndvals),member(get(%0/bgnds),%1),1))\
+&GCPOW here=switch([member(get(%0/powers),%1)],0,0,extract(get(%0/powvals),member(get(%0/powers),%1),1))\
+&GWNDNAME here=[setq(9,get(%0/woundnames))][extract(switch(%q9,,v(woundnames),%q0),add(get(%0/wounds),1),1)]\
+&PENALTY here=[setq(9,get(%0/penalties))][extract(switch(%q9,,switch(get(%0/race),mortal*,v(penalties),,v(penalties),v(spenalties)),%q9),add(get(%0/wounds),1),1)]\
+&MAPWNDNAME here=[setq(9,get(%0/woundnames))][extract(switch(%q9,,v(woundnames),%q9),add(%1,1),1)]\
+&MAPPENALTY here=[setq(9,get(%0/penalties))][extract(switch(%q9,,switch(get(%0/race),mortal*,v(penalties),,v(penalties),v(spenalties)),%q9),add(%1,1),1)]\
+&WOUNDNAMES here=Unhurt Bruised Hurt Injured Wounded Mauled Crippled Incap'd Dead\
+&PENALTIES here=0 0 -1 -2 -3 -4 -5 n/a n/a\
+&SPENALTIES here=0 0 -1 -1 -2 -2 -5 n/a n/a\
+&UNDO here=$undo:@wait me=\{&attr\'a0%#=[get(%#/attr2)];&abils\'a0%#=[get(%#/abils2)];&bgnds\'a0%#=[get(%#/bgnds2)];&virts\'a0%#=[get(%#/virts2)];&hu\'a0%#=[get(%#/hu2)];&wp\'a0%#=[get(%#/wp2)];@trigger #274/rmitem=%#,powers,powvals,61;&sabils\'a0%#=[get(%#/sabils2)];&freebies\
+ %#=[get(%#/freebies2)];@pemit\'a0%#=Changes undone.;@notify me\}\
+&ADJATTR here=$adjattr * *:@switch get(%#/set_attr)=1,\{@switch [u(testattr,%0)]=0,@pemit\'a0%#=There is no attribute number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,5,4,%1,get(%#/freebies),u(gattr,%#,%0))]= 0,@pemit\'a0%#=Not \
+enough points left., 1,@pemit\'a0%#=You cannot reduce an attribute here., 2, \{@pemit\'a0%#=You may not raise an attribute over 4 without clearing it with an admin.\}, 3,\{&ATTR\'a0%#=[replace(get(%#/ATTR),%0,add(%1,u(gattr,%#,%0)))]; &freebies\'a0%#=[sub(get(%#/freebie\
+s),mul(5,%1))]; @pemit\'a0%#=\{[u(attrname,%0)] now [u(gattr,%#,%0)], [get(%#/freebies)] freebie points remaining.\}\}\}\}\},\{@pemit\'a0%#=Your character has been mis-generated, call a wizard or admin for help.\}\
+&ADJABIL here=$adjabil * *:@switch get(%#/set_abil)=1,\{@switch [u(testabil,%0)]=0,@pemit\'a0%#=There is no ability number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,2,switch(match(%0,44),1,1,4),%1,get(%#/freebies),u(gabil,%#,\
+%0))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You cannot reduce an ability here., 2, \{@pemit\'a0%#=[switch(match(%0,44),1,You may not raise your Occult over 1.,You may not raise an ability over 4 without clearing it with an admin.)]\}, 3,\{&ABILS\'a0%#=\
+[replace(get(%#/ABILS),%0,add(%1,u(gabil,%#,%0)))]; &freebies\'a0%#=[sub(get(%#/freebies),mul(2,%1))]; @pemit\'a0%#=\{[u(abilname,%0)] now [u(gabil,%#,%0)], [get(%#/freebies)] freebie points remaining.\}\}\}\}\},\{@pemit\'a0%#=Your character has been mis-generated, call \
+a wizard or admin for help.\}\
+&ADJVIR here=$adjvir * *:@switch [u(testvirt,%0)]=0,@pemit\'a0%#=There is no virtue number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,2,5,%1,get(%#/freebies),u(gvirt,%#,%0))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=\
+You cannot reduce a virtue here., 2, \{@pemit\'a0%#=You may not raise a virtue over 5.\}, 3,\{&VIRTS\'a0%#=[replace(get(%#/VIRTS),%0,add(%1,u(gvirt,%#,%0)))]; &freebies\'a0%#=[sub(get(%#/freebies),mul(2,%1))]; @switch\'a0%0=3,\{&wp\'a0%#=[add(get(%#/wp),%1)]; @switch [gt(ge\
+t(%#/wp),8)]=1,\{&freebies\'a0%#=add(get(%#/freebies),sub(get(%#/wp),8));&wp\'a0%#=8;@pemit\'a0%#=Some freebie points were returned as you have maxed out on Willpower.%rYou now have [get(%#/freebies)].\}\},; @switch\'a0%0=1,\{&hu\'a0%#=[add(get(%#/hu),%1)];@switch [gt(get(%\
+#/hu),10)]=1,&hu\'a0%#=10;\},2,\{&hu\'a0%#=[add(get(%#/hu),%1)]; @switch [gt(get(%#/hu),10)]=1,&hu\'a0%#=10;\},; @pemit\'a0%#=\{[u(virtname,%0)] now [u(gvirt,%#,%0)], [get(%#/freebies)] freebie points remaining.\}\}\}\}\
+&ADJBG here=$adjbg * *:@switch [u(testbg,%0)]=0,@pemit\'a0%#=There is no background number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,1,4,%1,get(%#/freebies),u(gbg,%#,%0))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=Yo\
+u cannot reduce a background here., 2, \{@pemit\'a0%#=You may not raise a background over 4 without clearing it with an admin.\}, 3,\{&BGNDS\'a0%#=[replace(get(%#/BGNDS),%0,add(%1,u(gbg,%#,%0)))]; &freebies\'a0%#=[sub(get(%#/freebies),%1)]; @pemit\'a0%#=\{[u(bgname,%0)] \
+now [u(gbg,%#,%0)], [get(%#/freebies)] freebie points remaining.\}\}\}\}\
+&ADJWP here=$adjwp *:@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,1,6,%0,get(%#/freebies),get(%#/wp))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You cannot reduce willpower here., 2, \{@pemit\'a0%#=You may not raise willpower o\
+ver 6.\}, 3,\{&wp\'a0%#=[add(get(%#/wp),%0)]; &freebies\'a0%#=[sub(get(%#/freebies),%0)]; @pemit\'a0%#=\{Willpower now [get(%#/wp)], [get(%#/freebies)] freebie points remaining.\}\}\}\
+&ADJHU here=$adjhu *:@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,1,10,%0,get(%#/freebies),get(%#/hu))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You cannot reduce humanity here., 2, \{@pemit\'a0%#=You may not raise humanity ov\
+er 10.\}, 3,\{&hu\'a0%#=[add(get(%#/hu),%0)]; &freebies\'a0%#=[sub(get(%#/freebies),%0)]; @pemit\'a0%#=\{Humanity now [get(%#/hu)], [get(%#/freebies)] freebie points remaining.\}\}\}\
+&POINTS here=$+points:@pemit\'a0%#=You have [get(%#/freebies)] freebie points remaining.\
+&SHOWATTR here=@pemit\'a0%0=[repeat(=,30)] ATTRIBUTES [repeat(=,30)]%r%b%b----- Physical -----[space(4)]------ Social ------[space(4)]------ Mental ------%r1%bStrength[rjust(u(gattr,%1,1),12,.)][space(2)]4%bCharisma[rjust(u(gattr,%1,4),12,.)]%b%b7%bPerceptio\
+n[rjust(u(gattr,%1,7),10,.)]%r2%bDexterity[rjust(u(gattr,%1,2),11,.)]%b%b5%bManipulation[rjust(u(gattr,%1,5),8,.)]%b%b8%bIntelligence[rjust(u(gattr,%1,8),8,.)]%r3%bStamina[rjust(u(gattr,%1,3),13,.)]%b%b6%bAppearance[rjust(u(gattr,%1,6),10,.)]%b%b9%bWits[r\
+just(u(gattr,%1,9),16,.)][switch(%2,1,%r[repeat(-,72)],)];\
+&SHOWABIL here=@pemit\'a0%0=[repeat(=,30)] ABILITIES [repeat(=,31)]%r%b%b----- Talents ------[space(4)]------ Skills ------[space(4)]--- Knowledges ----[iter(1 2 3 4 5 6 7 8 9 10 11,%r[ljust(##,2)][ljust(u(abilname,##),18,.)][rjust(u(gabil,%1,##),2,.)][rjust\
+(add(##,15),3)]%b[ljust(u(abilname,add(##,15)),18,.)][rjust(u(gabil,%1,add(##,15)),2,.)][rjust(add(##,30),3)]%b[ljust(u(abilname,add(##,30)),18,.)][rjust(u(gabil,%1,add(##,30)),2,.)])][space(56)]44%b[ljust(Occult,18,.)][rjust(u(gabil,%1,44),2,.)][switch(%\
+2,1,%r[repeat(-,72)],)];\
+&MAKELIST here=iter(iter(lnum(words(%0)),switch(extract(%0,add(1,##),1),0,,add(1,##))),##)\
+&INDEXLIST here=iter(%0,u(%1,%2,##))\
+&LWNUM here=cat(rest(lnum(%0)),%0)\
+&POWNAME here=extract(v(pownames),%0,1)\
+&POWNAMES here=Animalism Auspex Bardo Celerity Chimerstry Daimoinon Dementation Dominate Fortitude Melpominee Mytherceria Necromancy Obeah Obfuscate Obtenebration Potence Presence Protean Quietus Sanguinus Serpentis -Spiritus- Thanatosis Thaumaturgy Vicis\
+situde Visceratika Lure-of-Flames Movement-Mind Weather-Control Conjuring Neptune's-Might Sprt-Thaumaturgy Taste-of-Blood Elemental-Mastery Corruption Gift-of-Morpheus Correspondence Entropy Forces Life Mind Matter Prime Spirit Time Alchemy Amulets Celest\
+ial Figurines Hekau Necromancy Astral-Form Clairvoyance Psychometry Telekinesis Telepathy Duration Extent Ritual Arete Faith Armour Magick-Resistance Dark-Thaumaturgy Pyrokinesis Rift Kai Investments Chains-of-Pleasure Hands-of-Destruction Fires-of-Infern\
+o Pestilence Phobos Secret-Knowledge Torture Blood_Purity Dance_of_Knives Instinct Evil_Eye The_Sight Mediumship Draba Truth_of_the_Rom Zapaderin Temporis Nihilistics Spirit_of_Wolf Patteran Blood_Sense Argos Castigate Embody Fatalism Inhabit Keening Life\
+web Moliate Outrage Pandemonium Phantasm Puppetry Usury Biothaumaturgy Flux Intimation Mnemosynis Chicanery Legerdemain Primal Soothsay Sovereign Wayfare Faerie_Threads Healing Sight\
+&SHOWADVS here=@pemit\'a0%0=[repeat(=,30)] ADVANTAGES [repeat(=,30)]%r%b%b------ Powers ------[space(4)]--- Backgrounds ----[space(4)]----- Virtues ------%r[ljust(%b%BFaith,20)][rjust(u(gcpow,%1,61),2)]%b%b1 [ljust(u(bgname,1),18)][rjust(u(gbg,%1,1),2)]%b%b1\
+[ljust(u(virtname,1),18)][rjust(u(gvirt,%1,1),2)][iter(rest(u(lwnum,4)),%r[space(24)][switch(lt(##,5),1,\{## [ljust(u(bgname,##),18)][rjust(u(gbg,%1,##),2)]\},space(22))]%b%b[switch(lt(##,4),1,\{## [ljust(u(virtname,##),18)][rjust(u(gvirt,%1,##),2)]\},)])][s\
+witch(%2,1,%r[repeat(-,72)],)];\
+&SHOWMISC here=@pemit\'a0%0=[repeat(-,72)]%r%b%bHumanity[rjust(get(%1/hu),12)][space(4)]Willpower[rjust([get(%1/wp)]/[get(%1/wpp)],11)][space(4)]Experience[rjust(get(%1/xp),10)]%r[switch(get(%1/race),vampire,\{%b%bBlood Pool[rjust([get(%1/bp)]/[get(%1/bpp)],1\
+0)]\},were,\{%b%bRage[rjust([get(%1/rage)]/[get(%1/rp)],16)]\},mage,\{%b%bQuint/Paradox[rjust([get(%1/quint)]/[get(%1/paradox)],7)]\},[space(22)])][space(4)]Health[rjust(u(gwndname,%1),14)][space(4)][switch(get(%1/wounds),0,,Penalty[rjust(u(penalty,%1),13)])]%\
+r[repeat(-,72)]\
+@Startup here=@drain me; @notify me\
+&DONE here=$done:@switch/first [and(or(strmatch(get(%#/sex),f*),strmatch(get(%#/sex),m*)),gt(words(get(%#/desc)),0))]=0,@pemit\'a0%#=\{You must set your gender and a valid description before you can leave here.\'a0%rTo do so, Type:%r%r@sex me=<Male or Female>%r@\
+desc me=<Your description>\},@wait me=\{@switch add(u(#2410/OVERLIM,%#),lt(get(%#/freebies),0))=>0,\{@pemit\'a0%#=You have spent more points than you are allowed, or exceeded the maxima for%ryour stats (4 for backgrounds, 8 for willpower, 10 for humanity, 5 for\
+ everything else)%rand thus the changes you have made in freebies have been undone. Please try again.; &attr\'a0%#=[get(%#/attr2)];&abils\'a0%#=[get(%#/abils2)];&bgnds\'a0%#=[get(%#/bgnds2)];&virts\'a0%#=[get(%#/virts2)];&hu\'a0%#=[get(%#/hu2)];&wp\'a0%#=[get(%#/wp2)];&fre\
+ebies\'a0%#=[get(#2410/FREEBIE_POOL)];@notify me\},\{@quota\'a0%#=[switch(extract(get(%#/bgnds),4,1),0,2,1,5,2,10,3,15,4,20,5,25)];&null me=[setq(0,u(makelist,get(%#/abils)))][setq(1,iter(r(#),u(gabil,%#,##)))][setq(2,u(makelist,get(%#/bgnds)))][setq(3,iter(%q2,u\
+(gbg,%#,##)))][setq(4,u(makelist,get(%#/virts)))][setq(5,iter(%q4,u(gvirt,%#,##)))][setq(6,u(makelist,get(%#/sabils)))][setq(7,iter(%q6,u(gsabil,%#,##)))]; &sabils\'a0%#=%q6; &sabilvals\'a0%#=%q7; &sabils2\'a0%#;&mernums\'a0%#;&flawnums\'a0%#; &abils\'a0%#=%q0; &abilvals\'a0%\
+#=%q1;&bgnds\'a0%#=%q2; &bgndvals\'a0%#=%q3; &virts\'a0%#=%q4; &virtvals\'a0%#=%q5;&attr2\'a0%#; &abils2\'a0%#; &virts2\'a0%#; &bgnds2\'a0%#; &wp2\'a0%#; &freebies2\'a0%#; &hu2\'a0%#; &wpp\'a0%#=[get(%#/wp)]; &tattr\'a0%#=[get(%#/attr)]; @link\'a0%#=#6475; @set\'a0%#=ENTER_OK; @lock\'a0%#=#0; @lock/ent\
+er\'a0%#=%#;&race\'a0%#=mortal; @drain\'a0%#; @pemit\'a0%#=\{Character generation is complete, you take your first step out into the world.\}; &done\'a0%#=1; &xp\'a0%#=0; &dollars\'a0%#=[switch(u(gcbg,%#,4),0,50,1,300,2,1500,3,5000,4,25000,5,100000)];@tel\'a0%#=#19; @switch get(%#\
+/freebies)=0,&freebies\'a0%#; @notify me\}\}\
+@VA here=$+attrs:@switch [get(%#/set_attr)]=1,\{@trig me/showattr=%#,%#,1\},@pemit\'a0%#=Your character has been mis-generated, call a wizard or admin for help.\}\
+@VB here=$+abils:@switch [get(%#/set_abil)]=1,\{@trig me/showabil=%#,%#,1\},@pemit\'a0%#=Your character has been mis-generated, call a wizard or admin for help.\}\
+@VC here=$+advs:@switch [get(%#/started)]=1,\{@trig me/showadvs=%#,%#,1\},@pemit\'a0%#=Your character has been mis-generated, call a wizard or admin for help.\}\
+@VD here=$+misc:@switch [get(%#/started)]=1,\{@trig me/showmisc=%#,%#\},\{@pemit\'a0%#=Your character has been mis-generated, call a wizard or admin for help.\}\
+@VE here=$+stats:@switch [get(%#/set_attr)]=1,\{@trig me/showattr=%#,%#,0\},\{@pemit\'a0%#=Your character has been mis-generated, call a wizard or admin for help.\}; @switch [get(%#/set_abil)]=1,\{@trig me/showabil=%#,%#,0\},\{@pemit\'a0%#=Your character has been mis-\
+generated, call a wizard or admin for help.\}; @switch [get(%#/started)]=1,\{@trig me/showadvs=%#,%#,0; @trig me/showmisc=%#,%#\},\{@pemit\'a0%#=Your character has been mis-generated, call a wizard or admin for help.\}\
+@VF here=$+chargen:@pemit\'a0%#=You are already in chargen, type 'restart' if you want to start over.\
+&XSHOWCOM here=@pemit\'a0%0=[setq(0,get(%1/race))][center(%b[Name(%1)] -[switch(%q0,vampire,%b[get(%1/generation)]th generation [get(%1/class)] vampire%b,were,%b[get(%1/class)] shifter - rank [get(%1/rank)]%b,mage,%b[get(%1/class)] mage%b,mummy,%bAn ancient \
+immortal Egyptian%b,ghoul,%b[get(%1/class)]'s ghoul%b,fomori,A [get(%1/class)] fomori%b)],72,-)]%r%b%bStrength[rjust(u(gvattr,%1,1),12)][space(4)]Brawl[rjust(u(gcabil,%1,4),15)][space(4)]Health[rjust(\\([u(penalty,%1)]\\) [u(gwndname,%1)],14)]%r%b%bDexterit\
+y[rjust(u(gvattr,%1,2),11)][space(4)]Dodge[rjust(u(gcabil,%1,5),15)][space(4)]Willpower[rjust([get(%1/wp)]/[get(%1/wpp)],11)]%r%b%bStamina[rjust(u(gvattr,%1,3),13)][space(4)]Melee[rjust(u(gcabil,%1,19),15)][space(4)][switch(%q0,vampire,Blood Pool[rjust([g\
+et(%1/bp)]/[get(%1/bpp)],10)],ghoul,Blood Pool[rjust([get(%1/bp)]/[get(%1/bpp)],10)],were,Rage[rjust([get(%1/rage)]/[get(%1/rp)],16)],mage,Quint/Paradox[rjust([get(%1/quint)]/[get(%1/paradox)],7)],Faith[rjust(u(gcpow,%1,61),15)])]%r%b%bPerception[rjust(u(\
+gvattr,%1,7),10)][space(4)]Firearms[rjust(u(gcabil,%1,27),12)][space(4)][switch(%q0,were,Gnosis[rjust([get(%1/gnosis)]/[get(%1/gps)],14)])]%r%b%bWits[rjust(u(gvattr,%1,9),16)][space(4)]Alertness[rjust(u(gcabil,%1,2),11)][space(4)]Alias[rjust(get(%1/alias)\
+,15)]%r[repeat(-,72)]\
+&XSHOWATTR here=@pemit\'a0%0=[repeat(=,30)] ATTRIBUTES [repeat(=,30)]%r%b%b----- Physical -----[space(4)]------ Social ------[space(4)]------ Mental ------%r%b%bStrength[rjust(u(gvattr,%1,1),12)][space(4)]Charisma[rjust(u(gvattr,%1,4),12)][space(4)]Perceptio\
+n[rjust(u(gvattr,%1,7),10)]%r%b%bDexterity[rjust(u(gvattr,%1,2),11)][space(4)]Manipulation[rjust(u(gvattr,%1,5),8)][space(4)]Intelligence[rjust(u(gvattr,%1,8),8)]%r%b%bStamina[rjust(u(gvattr,%1,3),13)][space(4)]Appearance[rjust(u(gvattr,%1,6),10)][space(4\
+)]Wits[rjust(u(gvattr,%1,9),16)][switch(%2,1,%r[repeat(-,72)],)];\
+&SPLITABILS here=iter(u(lwnum,words(%0)),switch(div(sub(extract(%0,##,1),1),15),%1,extract(%0,##,1)))\
+&NTOV here=extract(%1,member(%0,extract(%2,%3,1)),1)\
+&SPLITSABILS here=iter(u(lwnum,words(%0)),switch(div(sub(extract(%0,##,1),1),90),%1,extract(%0,##,1)))\
+&XSHOWADVS here=@pemit\'a0%0=[setq(0,get(%1/powers))][setq(1,get(%1/powvals))][setq(2,get(%1/bgnds))][setq(3,get(%1/bgndvals))][setq(4,get(%1/virts))][setq(5,get(%1/virtvals))][setq(6,max(words(%q0),words(%q2),words(%q4)))][repeat(=,30)] ADVANTAGES [repeat(=\
+,30)]%r%b%b------ Powers ------[space(4)]--- Backgrounds ----[space(4)]----- Virtues ------[iter(u(lwnum,%q6),%r%b%b[ljust(u(powname,extract(%q0,##,1)),18)][rjust(extract(%q1,##,1),2)][space(4)][ljust(u(bgname,extract(%q2,##,1)),18)][rjust(extract(%q3,##,\
+1),2)][space(4)][ljust(u(virtname,extract(%q4,##,1)),12)][rjust(extract(%q5,##,1),8)])][setq(7,get(%1/mfs))][switch(%q7,,,%r--Merits/Flaws[repeat(-,58)][iter(u(lwnum,words(%q7,|)),switch(mod(##,3),1,%r%b%b[ljust(index(%q7,|,##,1),23)],[ljust(index(%q7,|,#\
+#,1),23)]))])][setq(7,get(%1/gifts))][switch(%q7,,,%r--Gifts[repeat(-,65)][iter(u(lwnum,words(%q7,|)),switch(mod(##,3),1,%r%b%b[ljust(index(%q7,|,##,1),23)],[ljust(index(%q7,|,##,1),23)]))])][setq(7,get(%1/rites))][switch(%q7,,,%r--Rites[repeat(-,65)][ite\
+r(u(lwnum,words(%q7,|)),switch(mod(##,3),1,%r%b%b[ljust(index(%q7,|,##,1),23)],[ljust(index(%q7,|,##,1),23)]))])][setq(7,get(%1/rituals))][switch(%q7,,,%r--Rituals[repeat(-,63)][iter(u(lwnum(#274/gcmisc,%0,match(get(#274/miscnames),%1))),u(#274/gcbg,%0,ma\
+tch(get(#274/bgnames),%1))),u(#274/gcvirt,%0,match(get(#274/virtnames),%1))),u(#274/gcpow,%0,match(get(#274/pownames),%1))),u(#274/gcsabil,%0,match(get(#274/sabilnames),%1))),u(#274/gcabil,%0,match(get(#274/abilnames),%1))),u(#274/gcattr,%0,match(get(#274\
+/attrnames),%1))),#-1 PERMISSION DENIED)]\
+&TSTAT here=[switch(u(#274/cansee,%#),1,switch(member(get(#274/attrnames),%1),0,switch(member(get(#274/abilnames),%1),0,switch(member(get(#274/sabilnames),%1),0,switch(member(get(#274/pownames),%1),0,switch(member(get(#274/virtnames),%1),0,switch(member(g\
+et(#274/bgnames),%1),0,switch(member(get(#274/miscnames),%1),0,#-1,u(#274/gctmisc,%0,member(get(#274/miscnames),%1))),u(#274/gcbg,%0,member(get(#274/bgnames),%1))),u(#274/gcvirt,%0,member(get(#274/virtnames),%1))),u(#274/gcpow,%0,member(get(#274/pownames)\
+,%1))),u(#274/gcsabil,%0,member(get(#274/sabilnames),%1))),u(#274/gcabil,%0,member(get(#274/abilnames),%1))),u(#274/gctattr,%0,member(get(#274/attrnames),%1))),#-1 PERMISSION DENIED)]\
+&HASSTATS here=[and(get(%0/started),get(%0/set_attr),get(%0/set_abil),get(%0/done))]\
+&DESC_OLD here=You are now in the last stage of character generation. You have a pool of 'freebie' points which may be used to increase any of your statistics. You may increase attributes (5 freebies per point), abilities (2 freebies per point), virtues (\
+2 freebies per point), backgrounds, humanity and willpower (all 1 freebie per point). This is done with the commands you should know by now, 'adjattr', 'adjabil', 'adjbg' and 'adjvir'. To alter your Humanity and Willpower you should use the commands 'adjw\
+p <amount>' and 'adjhu <amount>'. To view your stats and the stat numbers use '+stats', '+attrs', '+abils', '+advs' and '+misc' (which shows Willpower etc). To see how many points you have left use '+points'. Unlike the previous stage you cannot specify a negative value to reduce a stat once you have increased it. You may however type 'undo' to restart freebie allocation from scratch, and 'restart' to start character generation from the very beginning. You do not have to spend all your freebie points, typ\
+e 'done' whenever you like to exit character generation and enter into the game world. For help type 'help CHARGEN'.\
+@Desc here=[repeat(=,31)] FREEBIES [repeat(=,31)]%r%r[space(22)]Freebie pool: [get(%#/freebies)]%r%r[ljust(Trait type,15)][ljust(Freebie cost,15)][ljust(Cmd to view,15)]Cmd to buy%r[repeat(-,72)]%r[ljust(Attributes,20)][ljust(5,10)][ljust(+attrs,15)]adjat\
+tr <num> <amount>%r[ljust(Abilities,20)][ljust(2,10)][ljust(+abils,15)]adjabil <num> <amount>%r[ljust(Sec. Abils,20)][ljust(1,10)][ljust(+sabils,15)]adjsabil <num> <amount>%r[ljust(Backgrounds,20)][ljust(1,10)][ljust(+advs,15)]adjbg <num> <amount>%r[ljust\
+(Virtues,20)][ljust(2,10)][ljust(+advs,15)]adjvir <num> <amount>%r[ljust(Willpower,20)][ljust(1,10)][ljust(+misc,15)]adjwp <amount>%r[ljust(Humanity,20)][ljust(1,10)][ljust(+misc,15)]adjhu <amount>%r[ljust(Faith \\(+\\),20)][ljust(5,10)][ljust(+advs,15)]adj\
+faith <amount>%r[repeat(-,72)]%r[space(5)](+): You can only buy Faith if you have a Humanity score above 8.%r%rBy typing "done" you agree to the following: I agree to be as polite as I know how to everyone at Mountain Cauldron. I will be at the very least\
+ civil to everyone. I shall not waste time arguing with a judge while others are waiting to play. I shall reserve such discussions for after the scene is over. I accept that my IC actions have IC consequences which may include death. I shall abide by the \
+guidelines on sexual harassment and I shall not use offensive profanity against anyone here while OOC.%r\
+@Adesc here=@pemit\'a0%#=%r%b%bType 'charhelp' for help, and 'done' when your character is completed.%r%r**NOTE** Faith is no longer available from this menu. Staff approval will be required to obtain it.%r\
+&CHARHELP here=$charhelp*:@pemit\'a0%#=CHARGEN HELP: Freebies%r[repeat(-,21)]%r%r* Use the appropriate command to adjust your Traits. Note, however, that you cannot reduce a Trait once Freebies were bought to raise it.%r%r* Type 'undo' to restart the Freebie\
+s stage, or 'restart' to start all your character anew.%r%r* Type '+stats' to see your complete stat sheet.%r%r* For anything else, contact a staff member on-line.\
+&SABIL_1 here=[repeat(=,25)] SECONDARY ABILITIES [repeat(=,26)]%r- Talents, pool [ljust(get(%0/abp1),4)] - -- Skills, pool [ljust(get(%0/abp2),4)] -- - Knowledges, pool [ljust(get(%0/abp3),4)][iter(rest(lnum(14)),%r[ljust(##,2)][ljust(u(sabilname,##),18,.\
+)][rjust(u(gsabil,%0,##),2,.)][rjust(add(##,90),3)]%b[ljust(u(sabilname,add(##,90)),18,.)][rjust(u(gsabil,%0,add(##,90)),2,.)][rjust(add(##,120),4)]%b[ljust(u(sabilname,add(##,120)),17,.)][rjust(u(gsabil,%0,add(##,120)),2,.)])][switch(%1,1,%r[repeat(-,72)\
+],)]%r%r[space(5)]\\[Type '+sabils2' for more.]\
+&GSABIL here=extract(get(%0/sabils),%1,1)\
+&SHOWSABIL here=$+sabils:@pemit\'a0%#=[setq(0,u(abil_0))][setq(1,u(sabil_1,%#,1))][r(strmatch(u(%#/set_abil),1))]\
+@set here/SHOWSABIL = no_command\
+&SABIL_1.2 here=[repeat(=,24)] SECONDARY ABILITIES (2) [repeat(=,25)]%r- Talents, pool [ljust(get(%0/abp1),4)] - -- Skills, pool [ljust(get(%0/abp2),4)] -- - Knowledges, pool [ljust(get(%0/abp3),4)][iter(lnum(3),%r[space(22)][ljust(add(##,74),3)]%b[ljust(\
+u(sabilname,add(##,74)),18,.)][rjust(u(gsabil,%0,add(##,74)),2,.)][rjust(add(##,134),4)]%b[ljust(u(sabilname,add(##,134)),17,.)][rjust(u(gsabil,%0,add(##,134)),2,.)])][iter(lnum(10),%r[space(46)][rjust(add(##,137),4)]%b[ljust(u(sabilname,add(##,137)),17,.\
+)][rjust(u(gsabil,%0,add(##,137)),2,.)])][switch(%1,1,%r[repeat(-,72)],)]%r%r%bType 'charhelp' for help; remember that Secondary Abilities cost 0.5 per dot. Type 'done' when done.%r\
+&SHOWSABIL2 here=$+sabils2:@pemit\'a0%#=[setq(0,u(abil_0))][setq(1,u(sabil_1.2,%#,1))][r(strmatch(u(%#/set_abil),1))]\
+@set here/SHOWSABIL2 = no_command\
+&GETSABP here=get(%0/abp[div(add(%1,89),90)])\
+&TESTSABIL here=sign(member(cat(rest(lnum(14)),iter(lnum(16),add(##,61)),iter(lnum(26),add(##,121))),%0))\
+&SABPA here=abp[div(add(%0,89),90)]\
+&ADJSABIL here=$adjsabil * *:@switch get(%#/set_abil)=1,\{@switch [u(testsabil,%0)]=0,@pemit\'a0%#=There is no secondary ability number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,2,u(sabiltop,%0),%1,get(%#/freebies),u(gsabil,%\
+#,%0))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You cannot reduce a secondary ability here., 2, \{@pemit\'a0%#=[u(sabiltopmsg,%0)]\}, 3,\{&SABILS\'a0%#=[replace(get(%#/SABILS),%0,add(%1,u(gsabil,%#,%0)))]; &freebies\'a0%#=[sub(get(%#/freebies),%1)]; @pemit \
+%#=\{[u(sabilname,%0)] now [u(gsabil,%#,%0)], [get(%#/freebies)] freebie points remaining.\}\}\}\}\},\{@pemit\'a0%#=Your character has been mis-generated, call a wizard or admin for help.\}\
+@set here/ADJSABIL = no_command\
+&SABILTOP here=switch(1,sign(member(3 68 71 76 129 133 136 144,%0)),1,sign(member(13 61 63 67 72 135,%0)),2,match(124,%0),u(gabil,%#,44),sign(member(125 126 127 131 132 134 139 140 141 142,%0)),u(gabil,%#,41),match(146,%0),u(gsabil,%#,127),4)\
+&SABILTOPMSG here=switch(1,sign(member(3 68 71 76 129 133 136 144,%0)),You cannot raise your [u(sabilname,%0)] score above 1 without clearing it with an admin.,sign(member(13 61 63 67 72 135,%0)),You cannot raise your [u(sabilname,%0)] score above 2 witho\
+ut clearing it with an admin.,match(124,%0),Your Astrology score cannot be greater than your Occult score.,sign(member(125 126 127 131 132 134 139 140 141 142,%0)),Your [u(sabilname,%0)] cannot be greater than your Science score.,match(146,%0),Your Toxico\
+logy score cannot be greater than your Chemistry score.,You may not raise a secondary ability over 4 without clearing it with an admin.)\
+&SABILCHKVAL here=switch(gt(fdiv(%2,2),%3),1,0, switch(lt(add(%2,%4),%0), 1,1, switch(gt(add(%2,%4),%1), 1,2, 3)))\
+&ADJFAITH here=$adjfaith *:@switch gte(get(%#/hu),9)=0, @pemit\'a0%#=Your Humanity must be at least 9 in order to buy Faith., \{@switch [u(chkval,5,2,%0,get(%#/freebies),u(gcpow,%#,61))]=0, @pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You cannot reduce Fait\
+h., 2, \{@pemit\'a0%#=You may not raise Faith above 2 without admin approval.\}, 3,\{@tri #274/additem=%#,powers,powvals,61,add(%0,u(gcpow,%#,61)); &freebies\'a0%#=[sub(get(%#/freebies),mul(5,%0))]; @Pemit\'a0%#=\{Faith adjusted, [get(%#/freebies)] freebie points rema\
+ining.\}\}\}\
+@set here/ADJFAITH = no_command\
+&TIDY here=iter(%0,add(0,%0))\
+&ORDER here=iter(%0,switch(lt(%0,10),1,0%0,%0))\
+&ADDITEM here=&null me=[setq(0,setunion(u(order,get(%0/%1)),u(order,%3)))][setq(1,member(%q0,u(order,%3)))][setq(2,get(%0/%2))];@switch [gt(words(%q0),words(get(%0/%1)))]=1,\{&%1\'a0%0=[u(tidy,%q0)]; &%2\'a0%0=[cat(extract(%q2,1,sub(%q1,1)),%4,extract(%q2,%q1,wo\
+rds(%q0)))]\},\{&%2\'a0%0=[u(tidy,replace(%q2,%q1,%4))]\}\
+&IS_STAFF here=[or(hasflag(%#,wizard),hasflag(%#,admin),hasflag(%#,judge))]\
+&RESTART here=$restart:&started\'a0%#;@pemit\'a0%#=Restarting chargen...;@tel\'a0%#=#273\
+&XSHOWABIL here=@pemit\'a0%0=[setq(0,get(%1/abils))][setq(1,get(%1/abilvals))][setq(3,u(splitabils,%q0,0))][setq(4,u(splitabils,%q0,1))][setq(5,u(splitabils,%q0,2))][setq(6,iter(u(lwnum,words(%q3)),u(ntov,%q0,%q1,%q3,##)))][setq(7,iter(u(lwnum,words(%q4)),u(\
+ntov,%q0,%q1,%q4,##)))][setq(8,iter(u(lwnum,words(%q5)),u(ntov,%q0,%q1,%q5,##)))][setq(3,iter(%q3,u(abilname,##)))][setq(4,iter(%q4,u(abilname,##)))][setq(5,iter(%q5,u(abilname,##)))][setq(0,get(%1/sabils))][setq(1,get(%1/sabilvals))][setq(2,u(splitsabils\
+,%q0,0))][setq(6,cat(%q6,iter(u(lwnum,words(%q2)),u(ntov,%q0,%q1,%q2,##))))][setq(3,cat(%q3,iter(%q2,u(sabilname,##))))][setq(2,u(splitsabils,%q0,1))][setq(7,cat(%q7,iter(u(lwnum,words(%q2)),u(ntov,%q0,%q1,%q2,##))))][setq(4,cat(%q4,iter(%q2,u(sabilname,#\
+#))))][setq(2,u(splitsabils,%q0,2))][setq(8,cat(%q8,iter(u(lwnum,words(%q2)),u(ntov,%q0,%q1,%q2,##))))][setq(5,cat(%q5,iter(%q2,u(sabilname,##))))][setq(9,max(words(%q6),words(%q7),words(%q8)))][repeat(=,30)] ABILITIES [repeat(=,31)]%r%b%b----- Talents --\
+----[space(4)]------ Skills ------[space(4)]--- Knowledges ----[iter(u(lwnum,%q9),%r%b%b[ljust(extract(%q3,##,1),18)][rjust(extract(%q6,##,1),2)][space(4)][ljust(extract(%q4,##,1),18)][rjust(extract(%q7,##,1),2)][space(4)][ljust(extract(%q5,##,1),18)][rju\
+st(extract(%q8,##,1),2)])][switch(%2,1,%r[repeat(-,72)],)];\
+&XSHOWSHAD here=@pemit\'a0%0=[setq(0,get(%1/race))][repeat(-,72)]%r%b%b[switch(%q0,wraith,\{Archetype[rjust([get(%1/shadow)],11)][space(4)]Angst[rjust([get(%1/angst)]/[get(%1/app)],15)][space(4)]Psyche[rjust([get(%1/psyche)],15)][setq(7,get(%1/thorns))][switc\
+h(%q7,,,%r--Thorns[repeat(-,64)][iter(u(lwnum,words(%q7,|)),switch(mod(##,3),1,%r%b%b[ljust(index(%q7,|,##,1),23)],[ljust(index(%q7,|,##,1),23)]))])][setq(7,get(%1/dpassions))][switch(%q7,,,%r--Dark Passions[repeat(-,57)][iter(u(lwnum,words(%q7,|)),switch\
+(mod(##,3),1,%r%b%b[ljust(index(%q7,|,##,1),23)],[ljust(index(%q7,|,##,1),23)]))])][switch(%2,1,%r[repeat(-,72)],)]\},This person is not a wraith!)]\
+&CANSEE here=or(hasflag(%0,judge),hasflag(%0,wizard),hasflag(%0,admin))\
+&SHOWABILS here=$+sabils*:@pemit\'a0%#=[switch(or(gt(%0,6),lt(%0,0)),1,Invalid.,[setq(0,u(abil_0))][setq(1,u(sabil_o,%#,1,[switch(gt(%0,1),1,%0,1)]))][r(strmatch(u(%#/set_abil),1))])]\
+&SABIL_O here=[repeat(=,25)] SECONDARY ABILITIES [repeat(=,26)]%r- Talents, pool [ljust(get(%0/abp1),4)]\'a0%B- -- Skills, pool [ljust(get(%0/abp2),4)]\'a0%B%B--\'a0%B- Knowledges, pool [ljust(get(%0/abp3),4)][iter(rest(lnum(14)),%r[setq(0,add(mul(sub(%2,1),13),##\
+))][switch(isnum(u(sabilname,%q0)),1,space(23),[ljust(%q0,2)] [ljust(u(sabilname,%q0),18,.)][rjust(u(gsabil,%0,%q0),2,.)])] [switch(isnum(u(sabilname,add(%q0,90))),1,space(23),[rjust(add(%q0,90),3)]%b[ljust(u(sabilname, add(%q0,90)),18,.)][rjust(u(gsabil,\
+%0,add(%q0,90)),2,.)])][switch(isnum(u(sabilname,add(%q0,180))),1,space(23),[rjust(add(%q0,180),4)]%b[ljust(u(sabilname,add(%q0,180)),17,.)][rjust(u(gsabil,%0,add(%q0,180)),2,.)])])]%r[repeat(-,72)]%r%r[space(5)][switch(%2,6,,\\[Type '+sabils[add(%2,1)]' f\
+or more.\\])]\
+&TESTSABIL2 here=and(gt(%0,0),lt(%0,270),not(isnum(u(sabilname,%0))),not(sign(member(get(#275/offlimits),u(sabilname,%0)))))\
+&ADJSABIL2 here=$adjsabil * *:@switch get(%#/set_abil)=1,\{@switch [u(testsabil2,%0)]=0,@pemit\'a0%#=You either have no permission to take that\\, or there is no ability number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,2,4,%1,\
+get(%#/freebies),u(gsabil,%#,%0))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You cannot reduce a secondary ability here., 2, \{@pemit\'a0%#=[u(sabiltopmsg,%0)]\}, 3,\{&SABILS\'a0%#=[replace(get(%#/SABILS),%0,add(%1,u(gsabil,%#,%0)))]; &freebies\'a0%#=[sub(get\
+(%#/freebies),%1)]; @pemit\'a0%#=\{[u(sabilname,%0)] now [u(gsabil,%#,%0)], [get(%#/freebies)] freebie points remaining.\}\}\}\}\},\{@pemit\'a0%#=Your character has been mis-generated, call a wizard or admin for help.\}\
+@set here=DARK\
+@set here=FLOATING\
+@set here=INHERIT\
+@set here=SAFE\
+\
+@dig/teleport Chargen -- Backgrounds\
+&TESTBG here=and(gt(%0,0),lt(%0,5))\
+&BGNAME here=extract(get(#274/bgnames),%0,1)\
+&GBG here=extract(get(%0/bgnds),%1,1)\
+&ADJBG here=$adjbg * *:@switch [u(testbg,%0)]=0,@pemit\'a0%#=There is no background number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,1,4,%1,get(%#/BACP),u(gbg,%#,%0))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You ca\
+nnot reduce a background below zero., 2, \{@pemit\'a0%#=You may not raise a background over 4 without help from a wizard.\}, 3,\{&BGNDS\'a0%#=[replace(get(%#/BGNDS),%0,add(%1,u(gbg,%#,%0)))]; &BACP\'a0%#=[sub(get(%#/BACP),%1)]; @pemit\'a0%#=\{[u(bgname,%0)] now [u(gbg,%#\
+,%0)], pool now [get(%#/BACP)]\}\}\}\}\
+@Desc here=[repeat(=,29)] BACKGROUNDS [repeat(=,29)]%r[space(23)]-- Backgrounds, pool [get(%#/bacp)][iter(u(lwnum,4),%r[space(23)][##] [ljust(u(bgname,##),19)][rjust(u(gbg,%#,##),2)])]%r[repeat(-,71)]\
+&LWNUM here=cat(rest(lnum(%0)),%0)\
+&CHKVAL here=switch(1,gt(mul(%2,%0),%3),0,or(not(eq(trunc(%2),%2)),lt(add(%2,%4),%0)),1,gt(add(%2,%4),%1),2,3)\
+@Adesc here=@pemit\'a0%#=%r%b%bType 'charhelp' for help, and 'done' when done.%r\
+&CHARHELP here=$charhelp*:@pemit\'a0%#=CHARGEN HELP: Backgrounds%r[repeat(-,25)]%r%r* Type 'adjbg <number> <amount> to add or substract <amount> from your current background value. For example, to add 2 points to your Influence, type 'adjbg 3 2'.%r%r* Type '\
+done' when finished. You can always come back at any point before you enter the 'Freebies' room, so don't worry.%r%r* Type 'restart' if you want to begin all your character anew. This will wipe ALL your stats.%r%r* Anything else, contact a member of the s\
+taff on-line.\
+@lock/TeloutLock here=!=STARTED:1|IS_STAFF/1\
+&IS_STAFF here=[or(hasflag(%#,wizard),hasflag(%#,admin),hasflag(%#,judge))]\
+@VE here=$+stats:@switch [get(%#/set_attr)]=1,\{@trig #274/showattr=%#,%#,0\},\{@pemit\'a0%#=You have no Attributes yet. Visit the Attributes room.\}; @switch [get(%#/set_abil)]=1,\{@trig #274/showabil=%#,%#,%0\},\{@pemit\'a0%#=You have no Abilities yet. Visit the Abi\
+lities room.\}; @switch [get(%#/started)]=1,\{@trig #274/showadvs=%#,%#,0; @trig #274/showmisc=%#,%#\}, \{@pemit\'a0%#=Your character is somehow mis-generated. Type 'restart'.\}\
+&RESTART here=$restart:&started\'a0%#;@pemit\'a0%#=Restarting chargen...;@tel\'a0%#=#273\
+@set here=DARK\
+@set here=FLOATING\
+@set here=INHERIT\
+@set here=SAFE\
+\
+@dig/teleport Chargen -- Virtues\
+&TESTVIRT here=and(gt(%0,0),lt(%0,4))\
+&VIRTNAME here=extract(get(#274/virtnames),%0,1)\
+&GVIRT here=extract(get(%0/virts),%1,1)\
+&ADJVIR here=$adjvir * *:@switch [u(testvirt,%0)]=0,@pemit\'a0%#=There is no virtue number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,1,5,%1,get(%#/VIRP),u(gvirt,%#,%0))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You \
+cannot reduce a virtue below one., 2, \{@pemit\'a0%#=You may not raise a virtue over 5.\}, 3,\{&VIRTS\'a0%#=[replace(get(%#/VIRTS),%0,add(%1,u(gvirt,%#,%0)))]; &VIRP\'a0%#=[sub(get(%#/VIRP),%1)]; &wp\'a0%#=[u(gvirt,%#,3)]; &hu\'a0%#=[add(u(gvirt,%#,1),u(gvirt,%#,2))]; @pem\
+it\'a0%#=\{[u(virtname,%0)] now [u(gvirt,%#,%0)], pool now [get(%#/VIRP)]\}\}\}\}\
+&GWNDNAME here=extract(get(#274/woundnames),add(get(%0/wounds),1),1)\
+&PENALTY here=extract(switch(get(%0/super),1,get(#274/penalties),get(#274/penalties)),get(%0/wounds),1)\
+&LWNUM here=cat(rest(lnum(%0)),%0)\
+&CHKVAL here=switch(1,gt(mul(%2,%0),%3),0,or(not(eq(trunc(%2),%2)),lt(add(%2,%4),%0)),1,gt(add(%2,%4),%1),2,3)\
+@Desc here=[repeat(=,32)] VIRTUES [repeat(=,31)]%r[space(26)]-- Virtues, pool [get(%#/virp)]\'a0%b--[iter(u(lwnum,4),%r[space(26)][switch(lt(##,4),1,\{## [ljust(u(virtname,##),18)][rjust(u(gvirt,%#,##),2)]\},)])]%r[repeat(-,72)]%r%b%bHumanity[rjust(get(%#/hu),\
+12)][space(4)]Willpower[rjust([get(%#/wp)],10)]%r%r[repeat(-,72)]\
+&CHARHELP here=$charhelp:@pemit\'a0%#=CHARGEN HELP: Virtues%r[repeat(-,21)]%r%r* Type 'adjvir <number> <amount>' to add or substract <amount> from your current virtue value. For example, to add 2 points to Courage, type 'adjvir 3 2'.%r%r* Humanity is the sum\
+ of your Conscience and your Self-Control. Willpower is equal to your Courage. They are automaticly calculated as you raise your virtues.%r%r* Type 'done' when you are finished. You can always come back at any point before you enter the 'Freebies' room, s\
+o don't worry.%r%r* Type 'restart' if you want to begin all your character anew. This will wipe ALL your stats.%r%r* Anything else, contact a member of the staff on-line for help.\
+@Adesc here=@pemit\'a0%#=%r%b%bType 'charhelp' for help, and 'done' when done.%r\
+@lock/TeloutLock here=!=STARTED:1|IS_STAFF/1\
+&IS_STAFF here=[or(hasflag(%#,wizard),hasflag(%#,admin),hasflag(%#,judge))]\
+@VE here=$+stats:@switch [get(%#/set_attr)]=1,\{@trig #274/showattr=%#,%#,0\},\{@pemit\'a0%#=You have no Attributes yet. Visit the Attributes room.\}; @switch [get(%#/set_abil)]=1,\{@trig #274/showabil=%#,%#,%0\},\{@pemit\'a0%#=You have no Abilities yet. Visit the Abi\
+lities room.\}; @switch [get(%#/started)]=1,\{@trig #274/showadvs=%#,%#,0; @trig #274/showmisc=%#,%#\}, \{@pemit\'a0%#=Your character is somehow mis-generated. Type 'restart'.\}\
+&RESTART here=$restart:&started\'a0%#;@pemit\'a0%#=Restarting chargen...;@tel\'a0%#=#273\
+@set here=DARK\
+@set here=FLOATING\
+@set here=INHERIT\
+@set here=SAFE\
+\
+@dig/teleport Chargen -- Abilities\
+&PRIMARY_AB here=11\
+&SECONDARY_AB here=7\
+&TERTIARY_AB here=4\
+&GABIL here=extract(get(%0/ABILS),%1,1)\
+&GETABP here=get(%0/abp[div(add(%1,14),15)])\
+&ABPA here=abp[div(add(%0,14),15)]\
+&TESTABIL here=or(and(gt(%0,0),lt(%0,46),lt(mod(sub(%0,1),15),11)),eq(%0,44))\
+&ABILNAME here=extract(get(#274/abilnames),%0,1)\
+&RESETABILS here=&set_abil\'a0%0=1; &ABILS\'a0%0=[iter(lnum(45),0)]; @pemit\'a0%0=You may modify your score in abilities by using the command%r'adjabil <ability number> <amount>'. You have a pool of points for each ability group which you allocate when you 'adjabi\
+l'. The adjust amount may be negative, allowing you to take points back into the pools if you make a mistake. You can view the points left in your pools with the command '+points'. Entering a new ability priority (e.g. TSK), will reset your abilities, lea\
+ving your other stats unaffected..%r%rYou may also purchase Secondary Abilities, more specific abilities costing%rhalf the primary abilities' cost, by using the command%r'adjsabil <sec. abil number> <amount>'. You can get a list of them by typing%r'+sabil\
+s'.%r%rType 'look' to see the available Abilities.;&sabils\'a0%0=[repeat(0%b,270)]\
+&ADJABIL here=$adjabil * *:@switch [get(%#/set_abil)]=1,\{@switch [u(testabil,%0)]=0,@pemit\'a0%#=There is no ability number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,1,switch(%0,44,1,3),%1,u(getabp,%#,%0),u(gabil,%#,%0))]= 0\
+,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You cannot reduce an ability below zero., 2, \{@pemit\'a0%#=[switch(%0,44,You may not raise your Occult score above 1 in chargen.,You may not raise an ability over 3 at this point.)]\}, 3,\{&ABILS\'a0%#=[replace(get(\
+%#/ABILS),%0,add(%1,u(gabil,%#,%0)))]; &[u(abpa,%0)]\'a0%#=[sub(u(getabp,%#,%0),%1)]; @pemit\'a0%#=\{[u(abilname,%0)] now [u(gabil,%#,%0)], pool now [u(getabp,%#,%0)]\}\}\}\}\},\{@pemit\'a0%#=You must select a priority for your abilities before you may set their values, \
+type one of TSK, TKS, STK, SKT, KTS or KST. (T=Talents, S=Skills, K=Knowledges).\}\
+&ABIL_1 here=[repeat(=,30)] ABILITIES [repeat(=,31)]%r- Talents, pool [ljust(get(%0/abp1),4)] - -- Skills, pool [ljust(get(%0/abp2),4)] -- - Knowledges, pool [ljust(get(%0/abp3),4)][iter(1 2 3 4 5 6 7 8 9 10 11,%r[ljust(##,2)][ljust(u(abilname,##),18,.)][\
+rjust(u(gabil,%0,##),2,.)][rjust(add(##,15),3)]%b[ljust(u(abilname,add(##,15)),18,.)][rjust(u(gabil,%0,add(##,15)),2,.)][rjust(add(##,30),3)]%b[ljust(u(abilname,add(##,30)),18,.)][rjust(u(gabil,%0,add(##,30)),2,.)])]%r[rjust(44 Occult,56)][repeat(.,13)][u\
+(gabil,%#,44)][switch(%1,1,%r[repeat(-,72)],)]\
+@Desc here=[u(abil_[strmatch(u(%#/set_abil),1)],%#,1)]\
+&TSK here=$tsk:&ABP1\'a0%#=[v(primary_ab)];&ABP2\'a0%#=[v(secondary_ab)]; &ABP3\'a0%#=[v(tertiary_ab)];@trig me/resetabils=%#\
+&TKS here=$tks:&ABP1\'a0%#=[v(primary_ab)];&ABP3\'a0%#=[v(secondary_ab)]; &ABP2\'a0%#=[v(tertiary_ab)];@trig me/resetabils=%#\
+&STK here=$stk:&ABP2\'a0%#=[v(primary_ab)];&ABP1\'a0%#=[v(secondary_ab)]; &ABP3\'a0%#=[v(tertiary_ab)];@trig me/resetabils=%#\
+&SKT here=$skt:&ABP2\'a0%#=[v(primary_ab)];&ABP3\'a0%#=[v(secondary_ab)]; &ABP1\'a0%#=[v(tertiary_ab)];@trig me/resetabils=%#\
+&KTS here=$kts:&ABP3\'a0%#=[v(primary_ab)];&ABP1\'a0%#=[v(secondary_ab)]; &ABP2\'a0%#=[v(tertiary_ab)];@trig me/resetabils=%#\
+&KST here=$kst:&ABP3\'a0%#=[v(primary_ab)];&ABP2\'a0%#=[v(secondary_ab)]; &ABP1\'a0%#=[v(tertiary_ab)];@trig me/resetabils=%#\
+@Adesc here=@pemit\'a0%#=%r%b%bType 'charhelp' for help, '+sabils' for a list of Secondary Abilities, and 'done' when done. Type 'adjabil <number> <amount>' to buy an ability or 'adjsabil <number> <amount>' to buy a secondary ability. (Numbers for secondary \
+abilities are in '+sabils' and '+sabils2-6'.)%r\
+&MAKELIST here=iter(lnum(words(%0)),switch(extract(%0,add(1,##),1),0,,add(1,##)))\
+&INDEXLIST here=iter(%0,u(%1,%2,##))\
+&ADD_NUMS here=add(%0,%1)\
+&CHKVAL here=switch(1,gt(mul(%2,%0),%3),0,and(eq(trunc(%2),%2),lt(add(%2,%4),%0)),1,gt(add(%2,%4),%1),2,3)\
+&ABIL_0 here=Before you can decide values for your abilities, you must first decide of your abilities' priority. There are three categories of abilities:%r%r[space(5)](T)alents (Intuitive and untrained abilities)%r[space(5)](S)kills (Abilities learned thr\
+ough training)%r[space(5)](K)nowledges (Abilities requiring rigorous application of the mind)%r%r%b%bTo select a priority, please type the three letters of the categories in the order you wish to select. For instance, if you want Primary: Skills, Secondar\
+y: Talents, Tertiary: Knowledges, type 'STK' (for "(S)kills, (T)alents, (K)nowledges").\
+&SABIL_1 here=[repeat(=,25)] SECONDARY ABILITIES [repeat(=,26)]%r- Talents, pool [ljust(get(%0/abp1),4)] - -- Skills, pool [ljust(get(%0/abp2),4)] -- - Knowledges, pool [ljust(get(%0/abp3),4)][iter(rest(lnum(14)),%r[ljust(##,2)][ljust(u(sabilname,##),18,.\
+)][rjust(u(gsabil,%0,##),2,.)][rjust(add(##,90),3)]%b[ljust(u(sabilname,add(##,90)),18,.)][rjust(u(gsabil,%0,add(##,90)),2,.)][rjust(add(##,180),4)]%b[ljust(u(sabilname,add(##,180)),17,.)][rjust(u(gsabil,%0,add(##,180)),2,.)])][switch(%1,1,%r[repeat(-,72)\
+],)]%r%r[space(5)]\\[Type '+sabils2' for more.]\
+&SABILNAME here=extract(get(#274/sabilnames),%0,1)\
+&GSABIL here=extract(get(%0/sabils),%1,1)\
+&SHOWSABIL here=$+sabils:@pemit\'a0%#=[setq(0,u(abil_0))][setq(1,u(sabil_1,%#,1))][r(strmatch(u(%#/set_abil),1))]\
+@set here/SHOWSABIL = no_command\
+&SABIL_1.2 here=[repeat(=,24)] SECONDARY ABILITIES (2) [repeat(=,25)]%r- Talents, pool [ljust(get(%0/abp1),4)] - -- Skills, pool [ljust(get(%0/abp2),4)] -- - Knowledges, pool [ljust(get(%0/abp3),4)][iter(lnum(3),%r[space(22)][ljust(add(##,104),3)]%b[ljust\
+(u(sabilname,add(##,104)),18,.)][rjust(u(gsabil,%0,add(##,104)),2,.)][rjust(add(##,194),4)]%b[ljust(u(sabilname,add(##,194)),17,.)][rjust(u(gsabil,%0,add(##,194)),2,.)])][iter(lnum(10),%r[space(46)][rjust(add(##,137),4)]%b[ljust(u(sabilname,add(##,137)),1\
+7,.)][rjust(u(gsabil,%0,add(##,137)),2,.)])][switch(%1,1,%r[repeat(-,72)],)]%r%r%bType 'charhelp' for help; remember that Secondary Abilities cost 0.5 per dot. Type 'done' when done.%r\
+&SHOWSABIL2 here=$+sabils2:@pemit\'a0%#=[setq(0,u(abil_0))][setq(1,u(sabil_1.2,%#,1))][r(strmatch(u(%#/set_abil),1))]\
+@set here/SHOWSABIL2 = no_command\
+&GETSABP here=get(%0/abp[div(add(%1,89),90)])\
+&TESTSABIL here=sign(member(cat(rest(lnum(14)),iter(lnum(16),add(##,91)),iter(lnum(26),add(##,181))),%0))\
+&SABPA here=abp[div(add(%0,89),90)]\
+&ADJSABIL here=$adjsabil * *:@switch [get(%#/set_abil)]=1,\{@switch [u(testsabil,%0)]=0,@pemit\'a0%#=There is no ability number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(sabilchkval,0,u(sabiltop,%0),%1,u(getsabp,%#,%0),u(gsabil,%#,%\
+0))]= 0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You cannot reduce an ability below zero., 2, @pemit\'a0%#=[u(sabiltopmsg,%0)], 3, \{&sabils\'a0%#=[replace(get(%#/sabils),%0,add(%1,u(gsabil,%#,%0)))]; &[u(sabpa,%0)]\'a0%#=[sub(u(getsabp,%#,%0),fdiv(%1,2))]; @\
+pemit\'a0%#=\{[u(sabilname,%0)] now [u(gsabil,%#,%0)], pool now [u(getsabp,%#,%0)]\}\}\}\}\},\{@pemit\'a0%#=You must first select a priority for your abilities before you may set their values, type one of TSK, TKS, STK, SKT, KTS, KST. (T=Talents, S=Skills, K=Knowledge\
+s).\}\
+@set here/ADJSABIL = no_command\
+&SABILTOP here=switch(1,sign(member(3 68 71 76 129 133 136 144,%0)),1,sign(member(13 91 63 67 72 135,%0)),2,match(124,%0),u(gabil,%#,44),sign(member(125 126 127 131 132 134 139 140 141 142,%0)),u(gabil,%#,41),match(146,%0),u(gsabil,%#,127),3)\
+&SABILTOPMSG here=switch(1,sign(member(3 68 71 76 129 133 136 144,%0)),You cannot raise your [u(sabilname,%0)] score above 1 in chargen.,sign(member(13 91 63 67 72 135,%0)),You cannot raise your [u(sabilname,%0)] score above 2 in chargen.,match(124,%0),Yo\
+ur Astrology score cannot be greater than your Occult score.,sign(member(125 126 127 131 132 134 139 140 141 142,%0)),Your [u(sabilname,%0)] cannot be greater than your Science score.,match(146,%0),Your Toxicology score cannot be greater than your Chemist\
+ry score.,You may not raise an ability over 3 at this point.)\
+&SABILCHKVAL here=switch(gt(fdiv(%2,2),%3),1,0, switch(or(not(eq(trunc(%2),%2)),lt(add(%2,%4),%0)), 1,1, switch(gt(add(%2,%4),%1), 1,2, 3)))\
+&CHARHELP here=$charhelp:@pemit\'a0%#=CHARGEN HELP: Abilities and Secondary Abilities%r[repeat(-,23)]%r%r* Type 'adjabil <number> <amount>' to add or substract <amount> from your current ability value. For example, to add 2 points to Athletics, type 'adjabil\
+ 3 2'.%r%r* Type your ability priority again (ex.:STK for Skills, Talents, Knowledges) to wipe your abilities and start anew with them. This will not reset other traits like Attributes, for instance.%r%r* Type 'done' when you are finished. You can always \
+come back at any point before you enter the 'Freebies' room, so don't worry.%r%r* Type 'restart' if you want to begin all your character anew. This will wipe ALL your stats.%r%r* Type '+stats' for your complete stat sheet.%r%r[space(5)]\\[Type 'charhelp2' \
+for more.]\
+&CHARHELP2 here=$charhelp2:@pemit\'a0%#=CHARGEN HELP: Abilities and Secondary Abilities%r[repeat(-,23)]%r%r* Type 'adjsabil <number> <amount>' to add or substract <amount> from your current Secondary Ability value.%r%r* Type '+sabils' to get a list of availa\
+ble Secondary Abilities. Note: These Abilities are said to be 'secondary' because they are more specific. However, they cost half the normal Ability cost. (e.g., they cost 0.5 points at this step.)%r%r* Also note that some Secondary Abilities are limited \
+by a value of a Primary Ability to which they are linked. For instance, your score in the Secondary Ability 'Physics' can never exceed your score in Science.%r%r* Anything else, contact a member of the staff on-line for help.\
+@lock/TeloutLock here=!=STARTED:1|IS_STAFF/1\
+&IS_STAFF here=[or(hasflag(%#,wizard),hasflag(%#,admin),hasflag(%#,judge))]\
+@VE here=$+stats:@switch [get(%#/set_attr)]=1,\{@trig #274/showattr=%#,%#,0\},\{@pemit\'a0%#=You have no Attributes yet. Visit the Attributes room.\}; @switch [get(%#/set_abil)]=1,\{@trig #274/showabil=%#,%#,%0\},\{@pemit\'a0%#=You have no Abilities yet. Visit the Abi\
+lities room.\}; @switch [get(%#/started)]=1,\{@trig #274/showadvs=%#,%#,0; @trig #274/showmisc=%#,%#\}, \{@pemit\'a0%#=Your character is somehow mis-generated. Type 'restart'.\}\
+&RESTART here=$restart:&started\'a0%#;@pemit\'a0%#=Restarting chargen...;@tel\'a0%#=#273\
+&SABIL_O here=[repeat(=,25)] SECONDARY ABILITIES [repeat(=,26)]%r- Talents, pool [ljust(get(%0/abp1),4)]\'a0%B- -- Skills, pool [ljust(get(%0/abp2),4)]\'a0%B%B--\'a0%B- Knowledges, pool [ljust(get(%0/abp3),4)][iter(rest(lnum(14)),%r[setq(0,add(mul(sub(%2,1),13),##\
+))][switch(isnum(u(sabilname,%q0)),1,space(23),[ljust(%q0,2)] [ljust(u(sabilname,%q0),18,.)][rjust(u(gsabil,%0,%q0),2,.)])] [switch(isnum(u(sabilname,add(%q0,90))),1,space(23),[rjust(add(%q0,90),3)]%b[ljust(u(sabilname, add(%q0,90)),18,.)][rjust(u(gsabil,\
+%0,add(%q0,90)),2,.)])][switch(isnum(u(sabilname,add(%q0,180))),1,space(23),[rjust(add(%q0,180),4)]%b[ljust(u(sabilname,add(%q0,180)),17,.)][rjust(u(gsabil,%0,add(%q0,180)),2,.)])])]%r[repeat(-,72)]%r%r[space(5)][switch(%2,6,,\\[Type '+sabils[add(%2,1)]' f\
+or more.\\])]\
+&SHOWSABILO here=$+sabils*:@pemit\'a0%#=[switch(or(gt(%0,6),lt(%0,0)),1,Invalid.,[setq(0,u(abil_0))][setq(1,u(sabil_o,%#,1,[switch(gt(%0,1),1,%0,1)]))][r(strmatch(u(%#/set_abil),1))])]\
+&OFFLIMITS here=Intrigue Masquerade Blatancy Kalindo Fire-Eating Bujo Diversion The_Talith Clan-Impers Hypnotism Demolitions Gunsmithing Do Lock-Picking Torture Fire-Walking Heavy-Weapons Falconry Fast-Draw City-Secrets Camarilla-Lore Clan-Knowledge Compu\
+ter-Hacking Faerie-Lore Kindred-Lore Lupine-Lore Mage-Lore Sabbat-Lore Sewer-lore Spirit-Lore Wyrm-Lore Arcanum-Lore Thanatology Black-Hand-Lore Demon-Lore Casting Chantry-Politics Romany_Lore Underworld-Lore Blood-Preparation Malk-Time High-Rituals Kenni\
+ng Mythlore Mummy-Lore Umbra-Lore\
+&SABILS_MORTAL here=[setdiff(v(sabils),v(offlimits)]\
+&SABILTOPMSG2 here=You may not raise an ability over 3 at this point.\
+&ADJSABIL2 here=$adjsabil * *:@switch [get(%#/set_abil)]=1,\{@switch [u(testsabil2,%0)]=0,@pemit\'a0%#=You either have no permission to take that\\, or there is no ability number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(sabilchkval,\
+0,3,%1,u(getsabp,%#,%0),u(gsabil,%#,%0))]=0,@pemit\'a0%#=Not enough points left., 1,@pemit\'a0%#=You cannot reduce an ability below zero., 2, @pemit\'a0%#=[u(sabiltopmsg2,%0)], 3, \{&sabils\'a0%#=[replace(get(%#/sabils),%0,add(%1,u(gsabil,%#,%0)))]; &[u(sabpa,%0)]\'a0%#=\
+[sub(u(getsabp,%#,%0),fdiv(%1,2))]; @pemit\'a0%#=\{[u(sabilname,%0)] now [u(gsabil,%#,%0)], pool now [u(getsabp,%#,%0)]\}\}\}\}\},\{@pemit\'a0%#=You must first select a priority for your abilities before you may set their values, type one of TSK, TKS, STK, SKT, KTS, K\
+ST. (T=Talents, S=Skills, K=Knowledges).\}\
+&TESTSABIL2 here=and(gt(%0,0),lt(%0,270),not(isnum(u(sabilname,%0))),not(sign(member(get(#275/offlimits),u(sabilname,%0)))))\
+@set here=DARK\
+@set here=FLOATING\
+@set here=INHERIT\
+@set here=SAFE\
+\
+@dig/teleport Chargen -- Attributes\
+&PSM here=$psm:&ATP1\'a0%#=[v(primary_at)];&ATP2\'a0%#=[v(secondary_at)]; &ATP3\'a0%#=[v(tertiary_at)];@trig me/resetattr=%#\
+&PMS here=$pms:&ATP1\'a0%#=[v(primary_at)];&ATP3\'a0%#=[v(secondary_at)]; &ATP2\'a0%#=[v(tertiary_at)];@trig me/resetattr=%#\
+&SPM here=$spm:&ATP2\'a0%#=[v(primary_at)];&ATP1\'a0%#=[v(secondary_at)]; &ATP3\'a0%#=[v(tertiary_at)];@trig me/resetattr=%#\
+&SMP here=$smp:&ATP2\'a0%#=[v(primary_at)];&ATP3\'a0%#=[v(secondary_at)]; &ATP1\'a0%#=[v(tertiary_at)];@trig me/resetattr=%#\
+&MSP here=$msp:&ATP3\'a0%#=[v(primary_at)];&ATP2\'a0%#=[v(secondary_at)]; &ATP1\'a0%#=[v(tertiary_at)];@trig me/resetattr=%#\
+&PRIMARY_AT here=6\
+&SECONDARY_AT here=4\
+&TERTIARY_AT here=3\
+&ATTR_1 here=[repeat(=,30)] ATTRIBUTES [repeat(=,30)]%r-- Physical, pool [get(%0/atp1)] --%b%b--- Social, pool [get(%0/atp2)] ---%b%b--- Mental, pool [get(%0/atp3)] ---%r1%bStrength[rjust(u(gattr,%0,1),12,.)][space(2)]4%bCharisma[rjust(u(gattr,%0,4),12,.)\
+]%b%b7%bPerception[rjust(u(gattr,%0,7),10,.)]%r2%bDexterity[rjust(u(gattr,%0,2),11,.)]%b%b5%bManipulation[rjust(u(gattr,%0,5),8,.)]%b%b8%bIntelligence[rjust(u(gattr,%0,8),8,.)]%r3%bStamina[rjust(u(gattr,%0,3),13,.)]%b%b6%bAppearance[rjust(u(gattr,%0,6),10\
+,.)]%b%b9%bWits[rjust(u(gattr,%0,9),16,.)][switch(%1,1,%r[repeat(-,72)],)]\
+@Desc here=[u(attr_[strmatch(u(%#/set_attr),1)],%#,1)]\
+&RESETATTR here=&set_attr\'a0%0=1; &ATTR\'a0%0=1 1 1 1 1 1 1 1 1;@pemit\'a0%0=You may now alter the value of your attributes by using the command%r'adjattr <attribute number> <amount>', the amount is the number of points to add to that attribute, You have a pool o\
+f points for each attribute group which you allocate when you 'adjattr'. The adjust amount may be negative, allowing you to take points back into the pools if you make a mistake. Entering a new attribute priority (e.g. psm) will reset your attributes, lea\
+ving your other stats unaffected.%r%rType 'look' to see the list of the available Attributes.\
+&ADJATTR here=$adjattr * *:@switch [get(%#/set_attr)]=1,\{@switch [u(testattr,%0)]=0,@pemit\'a0%#=There is no attribute number '%0'.,\{@switch\'a0%1=0,@pemit\'a0%#=Silly adjust amount: '%1'.,\{@switch [u(chkval,1,4,%1,u(getatp,%#,%0),u(gattr,%#,%0))]= 0,@pemit\'a0%#=Not\
+ enough points left., 1,@pemit\'a0%#=You cannot reduce an attribute below one., 2, \{@pemit\'a0%#=You may not raise an attribute over 4 without admin approval.\}, 3,\{&ATTR\'a0%#=[replace(get(%#/ATTR),%0,add(%1,u(gattr,%#,%0)))]; &[u(atpa,%0)]\'a0%#=[sub(u(getatp,%#,%0)\
+,%1)]; @pemit\'a0%#=\{[u(attrname,%0)] now [u(gattr,%#,%0)], pool now [u(getatp,%#,%0)]\}\}\}\}\},\{@pemit\'a0%#=You must select a priority for your attributes before you may set their values, type one of PSM, SPM, SPM, SMP, MPS, MSP. (P=Physical, S=Social, M=Mental).\
+\}\}\
+&GATTR here=extract(get(%0/ATTR),%1,1)\
+&GETATP here=get(%0/atp[div(add(%1,2),3)])\
+&ATPA here=atp[div(add(%0,2),3)]\
+&TESTATTR here=and(gte(%0,0),lt(%0,10))\
+&ATTRNAME here=extract(get(#274/attrnames),%0,1)\
+@Adesc here=@Pemit\'a0%#=%r%b%bType 'charhelp' for help, and 'done' when done. To add or substract to an Attribute, type 'adjattr <number> <amount>'.%r\
+&CHARHELP here=$charhelp*:@pemit\'a0%#=CHARGEN HELP: Attributes%r[repeat(-,24)]%r%r* Type 'adjattr <number> <amount>' to add or substract <amount> from your current attribute value. For example, to add 2 points to Stamina, type 'adjattr 3 2'.%r%r* Type your \
+attribute priority again (ex.: SMP for Social, Mental, Physical) to wipe your attributes and start anew with them. This will not reset your other traits like Abilities, for instance.%r%r* Type 'done' when you are finished. You can always come back at any \
+point before you enter the 'Freebies' room, so don't worry.%r%r* Type 'restart' if you want to begin all your character anew. This will wipe ALL your stats.%r%r* Anything else, contact a member of the staff on-line for help.\
+&MAKELIST here=iter(lnum(words(%0)),switch(extract(%0,add(1,##),1),0,,add(1,##)))\
+&INDEXLIST here=iter(%0,u(%1,%2,##))\
+&RESTART here=$restart:&started\'a0%#;@pemit\'a0%#=Restarting chargen...;@tel\'a0%#=#273\
+&ADD_NUMS here=add(%0,%1)\
+&ATTR_0 here=%r%b%bBefore you can decide values for your attributes, you must first decide of your attributes' priority. There are three categories of attributes:%r%r[space(5)](P)hysical: Strength, Dexterity, Stamina%r[space(5)](S)ocial: Charisma, Manipul\
+ation, Appearance%r[space(5)](M)ental: Perception, Intelligence, Wits%r%r%b%bTo select your priority, please type the three letters of the categories in the order you wish to select. For instance, if you want Primary: Mental, Secondary: Physical, Tertiary\
+: Social, type 'MPS' (for "(M)ental, (P)hysical, (S)ocial").\
+@lock/TeloutLock here=!=STARTED:1|IS_STAFF/1\
+&IS_STAFF here=[or(hasflag(%#,wizard),hasflag(%#,admin),hasflag(%#,judge))]\
+@VE here=$+stats:@switch [get(%#/set_attr)]=1,\{@trig #274/showattr=%#,%#,0\},\{@pemit\'a0%#=You have no Attributes yet. Visit the Attributes room.\}; @switch [get(%#/set_abil)]=1,\{@trig #274/showabil=%#,%#,%0\},\{@pemit\'a0%#=You have no Abilities yet. Visit the Abi\
+lities room.\}; @switch [get(%#/started)]=1,\{@trig #274/showadvs=%#,%#,0; @trig #274/showmisc=%#,%#\}, \{@pemit\'a0%#=Your character is somehow mis-generated. Type 'restart'.\}\
+&MPS here=$mps:&ATP3\'a0%#=[v(primary_at)];;&ATP2\'a0%#=[v(tertiary_at)];&ATP1\'a0%#=[v(secondary_at)];@trig me/resetattr=%#\
+&CHKVAL here=switch(1,gt(mul(%2,%0),%3),0,and(eq(trunc(%2),%2),lt(add(%2,%4),%0)),1,gt(add(%2,%4),%1),2,3)\
+@set here=DARK\
+@set here=FLOATING\
+@set here=INHERIT\
+@set here=SAFE\
+\
+Remember that, at any point before you enter the Freebies room, you can come back and\
+modify your Merits and Flaws.\
+Chargen -- The many doors(#277RDFIs)\
+Contents:\
+Important note on Trait values <<'look note'>>(#318ls)\
+Obvious exits:\
+Attributes <At>  Abilities <Ab>  Virtues <V>  Backgrounds <B>  Merits and Flaws <MF>\
+Freebies <F>\
+Freebies <F>;f;freebies;free;freebie(#319EIls)\
+Type: EXIT Flags: INHERIT LIGHT SAFE\
+Owner: Globals  Key: IS_SURE/1 Code credits: 0\
+IS_SURE:[sign(member(u(i_am_sure),%#))]\
+Afail:@pemit\'a0%#=[setq(0,You must set your Abilities first. Visit the Abilities room.)][setq(1,)][r(u(abil_done))];@pemit\'a0%#=[setq(0,)][setq(1,Are you sure you want to proceed to the Freebies room? If so\\, type 'freebies' again. Once there\\, you won't be able to modify your stats unless you _start anew_.)][r(and(u(attr_done),u(abil_done)))];@wait [setq(0,)][setq(1,me)][r(and(u(attr_done),u(abil_done)))]=\{&i_am_sure me=[setunion(u(i_am_sure),%#)];@wait 30=&i_am_sure me=[setdiff(u(i_am_sure),%#)]\};@notify [setq(0,)][setq(1,me)][r(and(u(attr_done),u(abil_done)))]\
+ATTR_DONE:strmatch(get(%#/set_attr),1)\
+ABIL_DONE:strmatch(get(%#/set_abil),1)\
+Fail:[setq(0,You must set your Attributes first. Visit the Attributes room.)][setq(1,)][r(u(attr_done))]\
+Asucc:&atp1\'a0%#; &atp2\'a0%#; &atp3\'a0%#; &abp1\'a0%#; &abp2\'a0%#; &abp3\'a0%#; &bacp\'a0%#; &virp\'a0%#;\
+&mp\'a0%#; &fp\'a0%#; &attr2\'a0%#=[get(%#/attr)]; &abils2\'a0%#=[get(%#/abils)]; &bgnds2\
+%#=[get(%#/bgnds)]; &freebies2\'a0%#=[get(%#/freebies)]; &virts2\'a0%#=[get(%#/virts)]; &wp2\'a0%#=[\
+get(%#/wp)]; &hu2\'a0%#=[get(%#/hu)]; &sabils2\'a0%#=[get(%#/sabils)]\
+Source: Chargen -- The many doors(#277RDFIs)\
+Destination: Chargen -- Freebies(#274RDFIs)\
+}

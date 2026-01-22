@@ -1,0 +1,221 @@
+ Topic: @locks and locktypes
+Author: Raevnos
+Summary: Raevnos demonstrates the use of @lock and assorted locktypes.
+
+Raevnos says, "Locks are used to control access to objects in various ways -
+who can pick up an object, who can go through an exit, who can use commands on
+an object, and so on."
+
+Raevnos says, "I'm not going to cover the various types of locks, but rather
+how to make them. See HELP LOCKTYPES for all the different locks and what they
+do."
+
+China nods.
+
+Raevnos says, "Locks are set with @Lock/<type of lock> <object>=<lock>. If no
+type-of-lock is given, the default 'Basic' lock is used. An empty lock clears
+it."
+
+Raevnos says, "The simplest kind of lock is one that's not there. If a lock
+type is looked up on an object and not found, that lock is passed."
+
+Raevnos says, "Otherwise, it's evaluated to see if the object being tested
+passes or fails the set lock."
+
+Raevnos says, "There's a bunch of different tests that can be used in locks,
+as well as ways to combine them."
+
+Raevnos says, "The simplest to use is just a dbref, *playername, or the name
+of a nearby object. Either that object, or one carrying it, will pass the
+lock."
+
+Raevnos types --> @lock demo=#1234
+Locked.
+
+Raevnos says, "Putting a = before the dbref or name to match restricts it to
+just that object, and not things holding it."
+
+Raevnos types --> @lock demo==#1234
+Locked.
+
+China says, "aah."
+
+Reavnos says, "A + restricts it to objects carrying that object."
+
+Raevnos types --> @lock demo=+#1234
+Locked.
+
+Raevnos says, "Two tests can be combined with a |, which is a OR. If the test
+on the left side of the | passes, the lock passes. If it fails, and the test
+on the right side passes, the lock passes. Otherwise it fails."
+
+Raevnos says, "So a lock of #1234 is equilivant to =#1235|+#1234"
+
+Raevnos says, "You can also combine locks with &, which is AND. The tests on
+both sides of the & must both pass for the lock to pass."
+
+Raevnos says, "And a ! before the test will reverse it. !=#1234 will pass for
+any object /but/ #1234, instead of just #1234."
+
+Raevnos says, "A lock test starting with $ compares owners. $#1234 will pass
+for any object that has the same owner as #1234. Since players own themselves,
+this is an easy way to allow any of a given player's objects to pass a lock."
+
+Raevnos says, "Or to fail to pass it. '@lock/page me=!$*twink' is a quick way
+of stopping someone who's been harrassing or spamming you from being able to
+do so."
+
+Raevnos says, "You can also tell a lock to use the same lock type, but on a
+different object, with @. For example, '@lock/use #4321=@#1234' will set
+#4321's use-lock to #1234's use-lock. This is useful if you have a complex
+lock you want a bunch of objects to share."
+
+Raevnos says, "A test like 'NAME:PATTERN' will look up the attribute NAME on
+the object that's trying to pass the lock, and pass if it's contents match
+PATTERN. So, for example, to lock something to only players with a female sex,
+'@lock foo=sex:F*'. The object the lock is on has to be able to get() the
+attribute for this to work, so it's usually best to use it for attributes that
+are normally visual."
+
+Raevnos says, "The last lock type is the evaluation lock, the most powerful
+type of test. It looks like 'NAME/VALUE'. The attribute NAME on the object the
+lock is on is evaluated, and what it returns compared to VALUE. If they match,
+it passes, otherwise it fails."
+
+Raevnos finishes his rehash of the help files. Any questions?
+
+China says, "yes sir. If I may."
+
+Raevnos says, "Ask away."
+
+China says, "on your one of the !=#1234 ...is the ! actually on the side of
+the obj's db# of the = sign?"
+
+Raevnos says, "Before the =."
+
+Raevnos says, "=!#1234 doesn't work."
+
+China says, "so it would be set up like @lock obj!=#1234 and all but 1234
+could use it."
+
+Raevnos says, "Ah. No. The first = is for the @lock command, to split the
+object to set the lock on apart from the lock itself."
+
+China says, "like @lock obj !=#1234?"
+
+Raevnos says, "'@lock foo==#1234' is split into 'foo' and '=#1234'."
+
+Raevnos says, "So it'd be @lock foo=!=#1234"
+
+China says, "OH! Ok."
+
+China says, "another question and jprobably jsut me being confused. On the
+@lock/use #4321=@#1234 you said it would allow "all" of #1234's objects to use
+it besides owner's?"
+
+China says, "or would you also have to have the $ in there too?"
+
+Raevnos says, "@ is used to point to a lock on another object. $ checks for a
+common owner."
+
+China thinks on this.
+
+Raevnos says, "In that example, anything that passes #1234's use-lock would
+also pass #4321's use-lock, because they basically have the same lock."
+
+China says, "I think I see what your saying."
+
+China says, "lastly ...would you be kind enough to give an example of a value
+lock?"
+
+China says, "I don't know what a value is."
+
+China says, "but you don't have to explain value. That's a different subject.
+I'd just like to see such a lock."
+
+Raevnos says, "You mean an evaluation lock? The name/value one?"
+
+China says, "yes, Sir. That one."
+
+Lock Demo/ISADMIN - Set.
+Locked.
+Lock Demo(#3903Vn)
+Type: Thing Flags: VISUAL NO_COMMAND
+Owner: Raevnos Zone: Raevnos' ZMO(#1398) Ducats: 10
+Parent: *NOTHING*
+Basic Lock: isadmin/1
+Powers:
+Warnings checked: none
+Created: Tue Sep 26 20:16:40 2000
+Last Modification: Tue Sep 26 20:48:19 2000
+ISADMIN [#1622]: orflags(%#, Wr)
+Home: Code Classroom(#1061RnJ)
+Location: Code Classroom(#1061RnJ)
+
+Raevnos says, "examine lock demo"
+
+Raevnos says, "That checks for a wizard or royal flag on the object trying to
+pass the lock."
+
+China says, "aah. Thank you."
+
+China makes a note that flags are values.
+
+Raevnos says, "Checking for a set flag is such a common thing in evaluation
+locks that it'll probably be made it's own test sometime in the future, to
+save on having to look up and evaluate an attribute every time."
+
+China says, "you mean like a @lock/<flag name> obj= #1234?"
+
+China says, "sorry. I'm always thinking and asking questions beyond the
+subject. Didn't mean to ask."
+
+Raevnos says, "No, something like '@lock/use foo=flag:wizard|flag:royalty',
+though that uses the attribute-lock syntax, so it'll probably look different.
+I just haven't decided on a form."
+
+China says, "I'm not very good at figuring out the helps syntax examples. So I
+really do appreciate thast you gave examples of the locks."
+
+China looks quickly over her notes again to see if she missed any questions.
+
+China says, "oh... what did you mean by the simplest lock is the one not on
+the object. How if it's not there and is passed, is it a lock?"
+
+Raevnos says, "It's just automatically passed if it's not set. A lock that
+doesn't actually lock anything."
+
+China says, "aaah, ...ok, and may I ask a quesion on a type of lock you didn't
+mention? The @chan/join <channel> =<key> types? Might you show an example of
+that...as I don't know what the brackets mean, or what they want for a key?"
+
+Raevnos says, "@clock/join, not @chan/join. <key> is what I called <lock>.
+Something like '=#1234|=#1235|=#1236' to restrict a channel to just a few
+people."
+
+China says, "yes, sir. I typed it wrong your correct. So the <key> is a list
+of allowed players and not an object the one setting who can join, is
+carring."
+
+Raevnos says, "It can be (almost) anything that works with a normal @lock.
+Evaluation locks don't work because channels don't have attributes. An
+indirect lock to an object that has a lock that does the right thing is needed
+then. @clock/join channel=@#1234"
+
+Raevnos says, "The lock name that's checked on #1234 is mentioned in the help
+somewhere."
+
+Raevnos says, "HELP @CLOCK2"
+
+China says, "I do read the helps several times over ...but then a lot of the
+syntaxs, if there's no example, I just flat out don't know what to type some
+times. That was one I jsut didn't know what it wanted."
+
+China nods understanding your explination. Now is seeing she can't presently
+find any more questions.
+
+China says, "I'm sure I'll have more as I get into doing more with them. :)"
+
+Raevnos grins.
+
+China folds her notebook, not having any more questions that she can find. 

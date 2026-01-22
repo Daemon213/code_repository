@@ -1,0 +1,41 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs24 \cf0 @create Global Staff Commands............GSC=10\
+@Desc Global Staff Commands............GSC=Contents (via +scan):%r[u(#225/FN_SCAN,%!)]\
+&CMD_JOIN Global Staff Commands............GSC=$+join *:@pemit *%#=You will be joining [capstr(fullname(num(*%0)))] in a few seconds.;@pemit/contents [loc(*%0)]=\\[STAFF/JOIN\\] [name(%#)] will be joining you in a few seconds.;@wait 2=@tel *%#=[loc(*%0)]\
+&CMD_SUMMON Global Staff Commands............GSC=$+summon *:@pemit\'a0%#=You summon [capstr(fullname(num(*%0)))] to you.;@wait 3=@pemit *%0=\\[STAFF/SUMMON\\] You suddenly feel yourself suddenly pulled in a different direction...then..POOF!;@pemit/contents loc(*%0)=\\[STAFF/SUMMON\\] [fullname(num(*%0))] glances around, looking confused before suddenly disappearing in a puff of smoke.;&last-loc *%0=loc(*%0);@wait 5=@tel *%0=loc(%#)\
+&ISSTAFF Global Staff Commands............GSC=[orflags(%#,wWiZ)]\
+@lock/UseLock Global Staff Commands............GSC=ISSTAFF/1\
+&DO_BUSY Global Staff Commands............GSC=$+busy:&status\'a0%#=busy;@pemit\'a0%#=You set yourself busy.\
+&DO_UNBUSY Global Staff Commands............GSC=$+unbusy:&status\'a0%#=unbusy;@pemit\'a0%#=You set yourself unbusy.\
+&CMD_RETURN Global Staff Commands............GSC=$+return *:@switch [hasattr(*%0,last-loc)]=0,\{@pemit\'a0%#=Person has already been returned or has no last location!\},\{setq(0,get_eval(*%0/last-loc));@pemit *%0=\\[STAFF RETURN\\] You suddenly feel yourself suddenly pulled in a different direction...then..POOF!...you are back in your original location.;@pemit/contents [loc(*%0)]=\\[STAFF RETURN\\] [name(*%0)] is sent back to wence they came.;@pemit/contents [%q0]=\\[STAFF RETURN\\] [name(*%0)] suddenly appears in a puff of smoke.;@tel *%0=[get_eval(*%0/last-loc)];&last-loc *%0\}\
+&CMD_WALL Global Staff Commands............GSC=$+wall *:@dolist [lwho()]=@pemit ##=Announcement: [switch(%0,:*,[name(%#)]%b[after(%0,:)],\\;*,[name(%#)][after(%0,\\;)],~*,[after(% 0,~)],[name(%#)]%bsays "%0")]\
+&DO_SET_QUOTA Global Staff Commands............GSC=$+setquota *=*:@pemit\'a0%#=[setq(9,pdbref(%0))][switch(%q9,#-1 NO MATCH,\{'%0' is not a valid player.\},\{switch(isnum(%1),0,\{'%1' must be a number.\},\{Setting quota for [name(%q9)] to\'a0%1.\})\})]\
+&DO_LASTSTAFF Global Staff Commands............GSC=$+laststaff:@pemit\'a0%#=[u(GMD/header,The last login times for staff members)];@pemit\'a0%#=[list(get(GMC/staff_list),[setq(9,get(##/last))][setq(8,sub(secs(),convtime(%q9)))][name(##)][space(sub(25,strlen(name(##))))]%q9 \\([singletime(%q8)] ago\\)%cn)]\
+&DO_SETADMIN Global Staff Commands............GSC=$+setadmin *:[setq(0,pdbref(%0))];@switch [isdbref(%q0)]=0,\{@pemit\'a0%#=Sorry, '%0' is not a valid player.\},\{@pemit\'a0%#=Setting [name(%q0)] (%q0) up as an admin.; @set\'a0%q0=STAFF;@set\'a0%q0=ROYALTY;@power\'a0%q0=BUILDER;@power\'a0%q0=ANNOUNCE;@power\'a0%q0=COMM_ALL;@power\'a0%q0=EXPANDED_WHO;@power\'a0%q0=FIND_UNFINDABLE;@power\'a0%q0=FREE_QUOTA;@power\'a0%q0=FREE_MONEY;@power\'a0%q0=HIDE; @power\'a0%q0=MONITOR; @force\'a0%q0=addcom st=Staff;@force\'a0%q0=addcom ss=StaffSpam;@force\'a0%q0=addcom g=Guests;@switch [match(get(GMC/STAFF_LIST),%q0)]=0,\{[setq(1,get(GMC/STAFF_LIST))]; &STAFF_LIST GMC=%q1\'a0%q0\}; @switch [hasattr(%q0,BIT)]=0,\{&BIT\'a0%q0=:%cmAdmin%cn:\}\}\
+&DO_SHEET_1 Global Staff Commands............GSC=$+sheet *:[setq(9,pdbref(%0))]; @switch [isdbref(%q9)]=0,\{@pemit\'a0%#=Sorry, '%0' is not a valid player.\},\{@pemit\'a0%#=[u(GMD/HEADER_LINE,Character Sheet For [name(%q9)])]; [setq(0,ulocal(CGF/FN_NOHIDDEN,u(CGF/SHEET-FMT)))]; @dolist/delimit |\'a0%q0=\{@pemit\'a0%#=%b%b[u(CGF/SHOW_SECTION_HEADER,##,76)];[u(GMD/FN_MAKE_COLUMNS,u(CGF/SHOW_SECTION_BODY,%q9,##),~,|,76,X:X)]\}; @force\'a0%#=@pemit\'a0%#=[u(GMD/HEADER_LINE,End: Character Sheet For [name(%q9)])]\}\
+&DO_DELADMIN Global Staff Commands............GSC=$+deladmin *:[setq(0,pdbref(%0))];@switch [isdbref(%q0)]=0,\{@pemit\'a0%#=Sorry, '%0' is not a valid player.\},\{@pemit\'a0%#=Removing [name(%q0)]'s (%q0) admin status.; @set\'a0%q0=!STAFF;@set\'a0%q0=!ROYALTY;@power\'a0%q0=!BUILDER;@power\'a0%q0=!ANNOUNCE;@power\'a0%q0=!COMM_ALL;@power\'a0%q0=!EXPANDED_WHO;@power\'a0%q0=!FIND_UNFINDABLE;@power\'a0%q0=!FREE_QUOTA;@power\'a0%q0=!FREE_MONEY;@power\'a0%q0=!HIDE; @power\'a0%q0=!MONITOR; @force\'a0%q0=delcom st;@force\'a0%q0=delcom ss;@force\'a0%q0=delcom g;[setq(1,get(GMC/STAFF_LIST))]; [setq(2,match(%q1,%q0))]; @switch [gt(%q2,0)]=1,\{&STAFF_LIST GMC=[ldelete(%q1,%q2)]\}; &BIT\'a0%q0\}\
+@Aconnect Global Staff Commands............GSC=@switch [isstaff(%#)]=1,\{@switch [hasflag(%#,DEAD)]=1,@pemit\'a0%#=%rWelcome back.%r;@set\'a0%#=!DEAD\}\
+&FLOOK Global Staff Commands............GSC=$+flook *:@pemit\'a0%#=[switch(%0,here,get_eval(loc(%#)/faedesc),get_eval(%0/faedesc))]\
+&STAFFALT_ADD Global Staff Commands............GSC=$+staffalt/add *:[setq(0,pdbref(%0))];@switch\'a0%q0=#-1 NO MATCH,\{@pemit\'a0%#=Sorry,\'a0%0 is not a valid player\},\{[setq(1,v(alts_%#))][setq(3,setunion(%q1,%q0))];&alts_%# me=%q3;[setq(4,v(alts_%#))];@pemit\'a0%#=New alt list: [iter(%q4,[name(##)])]\}\
+&ALTS_#7 Global Staff Commands............GSC=#254 #995\
+&STAFFALT_LIST1 Global Staff Commands............GSC=$+staffalt/list:[setq(1,v(alts_%#))];@pemit\'a0%#=List of your alts: [iter(%q1,name(##))]\
+&STAFFALT_LIST2 Global Staff Commands............GSC=$+staffalt/list *:[setq(0,pdbref(%0))];@switch\'a0%q0=#-1 NO MATCH,\{@pemit\'a0%#=Sorry,\'a0%0 is not a valid player\},\{[setq(1,v(alts_%q0))];@pemit\'a0%#=Alt list for [name(%q0)]: [iter(%q1,name(##))]\}\
+&STAFFALT_LIST3 Global Staff Commands............GSC=$+staffalt/listall:@pemit\'a0%#=[u(GMD/header,List of Staff Alts)];[list(u(GMC/STAFF_LIST),[setq(1,v(alts_##))]Alt list for [name(##)]: [u(STAFFALT_LIST,%q1)])]\
+&STAFFALT_LIST Global Staff Commands............GSC=[iter(%0,name(##))]\
+&STAFFALT_DEL Global Staff Commands............GSC=$+staffalt/del *:[setq(0,pdbref(%0))];@switch\'a0%q0=#-1 NO MATCH,\{@pemit\'a0%#=Sorry,\'a0%0 is not a valid player\},\{[setq(1,v(alts_%#))][setq(2,match(%q1,%q0))][setq(3,ldelete(%q1,%q2))];&alts_%# me=%q3;[setq(4,v(alts_%#))];@pemit\'a0%#=New alt list: [iter(%q4,[name(##)])]\}\
+&DO_SETADMIN1 Global Staff Commands............GSC=$+setadmin1 *:[setq(0,pdbref(%0))];@switch [isdbref(%q0)]=0,\{@pemit\'a0%#=Sorry, '%0' is not a valid player.\},\{@pemit\'a0%#=Setting [name(%q0)] (%q0) up as an admin.; @set\'a0%q0=STAFF;@set\'a0%q0=ROYALTY;@power\'a0%q0=BUILDER;@power\'a0%q0=ANNOUNCE;@power\'a0%q0=COMM_ALL;@power\'a0%q0=EXPANDED_WHO;@power\'a0%q0=FIND_UNFINDABLE;@power\'a0%q0=FREE_QUOTA;@power\'a0%q0=FREE_MONEY;@power\'a0%q0=HIDE;@power\'a0%q0=MONITOR\}\
+&ALTS_#4 Global Staff Commands............GSC=#8\
+&ALTS_#812 Global Staff Commands............GSC= #932\
+&DO_APPROVE Global Staff Commands............GSC=$+approve *:[setq(9,locate(%#,%0,*))]; @switch isdbref(%q9)=1,\{[setq(2,time())]; @switch [strmatch(PLAYER,type(%q9))]=1,\{@pemit\'a0%#=This command is not for players, use +approve/rp\'a0%0 instead.\},\{@set\'a0%q9=UNINSPECTED; &APPROVAL\'a0%q9=Approved on\'a0%q2 by\'a0%n.; @pemit\'a0%#=You have approved [name(%q9)] dated\'a0%q2.\}\},\{@pemit\'a0%#=Invalid object.\}\
+&ALTS_#36 Global Staff Commands............GSC= #229\
+&DO_DELADMIN1 Global Staff Commands............GSC=$+deladmin1 *:[setq(0,pdbref(%0))];@switch [isdbref(%q0)]=0,\{@pemit\'a0%#=Sorry, '%0' is not a valid player.\},\{@pemit\'a0%#=Removing [name(%q0)]'s (%q0) admin status.; @set\'a0%q0=!STAFF;@set\'a0%q0=!ROYALTY;@power\'a0%q0=!BUILDER;@power\'a0%q0=!ANNOUNCE;@power\'a0%q0=!COMM_ALL;@power\'a0%q0=!EXPANDED_WHO;@power\'a0%q0=!FIND_UNFINDABLE;@power\'a0%q0=!FREE_QUOTA;@power\'a0%q0=!FREE_MONEY;@power\'a0%q0=!HIDE; @power\'a0%q0=!MONITOR\}\
+@set Global Staff Commands............GSC=INHERIT\
+@set Global Staff Commands............GSC=SAFE\
+@set Global Staff Commands............GSC=STICKY\
+}

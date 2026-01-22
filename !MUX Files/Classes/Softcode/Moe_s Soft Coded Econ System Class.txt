@@ -1,0 +1,539 @@
+ OGR - Tuesday, November 28, 2000, 6:17 PM
+
+-----
+
+Satyr has arrived.
+
+Morgianna pats the seat next to her.
+Morgianna leans over.."Can I borrow a pencil?"
+
+You say "Alright, children, ladies, and the rest of you who are listening in the log. This is the class on Softcoded Econ systems. It will be logged for the purposes of posting on the OGR webpage, so if you would like your comments edited out, please let me know."
+
+Satyr giggles!
+
+Moses gets notice that others are incoming.
+Moses ducks.
+
+Dark-Angel enters the room through the double doors, which swing closed behind her.
+Dark-Angel has arrived.
+
+Satyr wants to be a star, boss, a star!
+
+Moses waves to Dark-Angel.
+
+Morgianna will be happy as groupie!
+
+Dark-Angel wavies
+
+You say "Welcome. This class is being logged, so if you want your comments edited out, please let me know."
+You say "Alright, while this is a 'code class', by definition(mine), tonight's is going to be a lot of discussion and debate."
+
+Satyr woos!
+
+Dark-Angel just looked at you.
+
+Moses will try and slip code in where applicable, but this is a touchy issue with a lot of people, particularly coders and headwizzes, so I want to discuss the whys and wherefores as much as I can.
+You say "Also, I will be hearkening back to a lot of the information I covered in the first code class in the +wear series, as regards approaching the coding of a global system."
+You say "Have any of you read that log?"
+Morgianna panics as she realizes she was drunk that week and missed class....
+
+Dark-Angel hasn't, but knows the basics of coding. I'm here because we're considering putting in an economy system on DWR.
+
+Moses ah-ha's. Okay.
+
+Morgianna opted for no Econ on Glyph.
+
+You say "In that log, I went over a series of questions that I consider 'a good way'(TM) of approaching the coding of a global system. Since this is a similar situation, I'll reiterate the questions, and we can discuss them, hopefully at length, interjecting code where it may be necessary."
+You say "1) What is the list of capabilities I want this system to have? Put another way,"
+Moses curses. Darn enter key.
+
+You say "1) What is the list of capabilities I want this system to have? Put another way, what is the list of things I want players to be able to do with this code? This is /always/ the first thing I ask myself.""
+You say "There. That makes more sense."
+
+Satyr says "I don't know. I thought the first one had a certain film noir air."
+
+Morgianna giggles.
+
+Moses passes out buttons that read 'Smart-aleck'. First one goes to Satyr.
+
+Satyr woos!
+
+Morgianna pouts.
+
+You say "Alright, what are aspects of an econ system that you need for player interaction?"
+You say "Don't worry, you'll get yours Morg. I'm sure of it."
+
+Satyr whispers to Morgianna. "Psst. Answer 'coins'."
+
+Morgianna blushes and quickly answers, without thinking, "Coins?"
+
+Moses hands Satyr another badge. :)
+
+Satyr snaps fingers, but places this one on her head.
+Satyr will shut up now, I promise. ;)
+
+You say "Okay, Morg. Good point. Your econ system has to represent a certain coinage system."
+Moses grins at Satyr and goes on, "You are coding an econ system because you want a different form of currency besides the hardcoded building credits."
+You say "So, one of the first aspects of your econ has to be the form of currency you are representing."
+You say "For a medieval setting, most likely it would all be in coins. Gold, silver, copper, etc."
+You say "A twentieth-century setting would involve paper money, perhaps checks, too. Late twentieth-century can get into credit cards if they want. Debit machines, etc."
+You say "Sci-fi/futuristic can do credsticks, lots of funky things."
+
+Dragaera enters the room through the double doors, which swing closed behind it.
+Dragaera has arrived.
+
+Moses waves to Dragaera.
+
+Dragaera waves.:)
+
+You say "We're discussing what aspects of an econ system are necessary for player interaction."
+You say "I asked the question: 1) What is the list of capabilities I want this system to have?"
+You say "In that question, 'I' is the designer of the system."
+
+Dragaera nods.
+
+You say "Right now, we just touched on that your econ is representing a different system of currency from your hardcoded building credits."
+You say "What's another aspect of player interaction that we need to consider? Another capability we have to give the system?"
+
+Morgianna offers, "How much and how often do players get paid? And does 'Occupation have a factor in it?"
+
+You say "If we generalize that a bit further, you have a good point. In fact, one of the most important points. Players have to be able to exchange money."
+You say "So, some form of command that transfers money from one player to another is necessary."
+You say "As well, taking it to the level you said, should employers be able to 'hire' a character, with weekly wages and such?"
+You say "Off the top of my head, I can think of two more points. Anyone else have one(or more)?"
+Moses tosses one out: Should we make this a totally global system, incorporating all IC transactions into the econ system?
+You say "There are both pros and cons to this."
+
+Dark-Angel's thinking: +cash, +income, +loans and +pay. A fairly simple system.
+
+Moses nods to DA's(excuse the abbreviations, please) list.
+You say "Those are good ideas for the next step, which is designing the command structure. But, we can touch on them as capabilities."
+
+Dark-Angel tries to earn a Smart-aleck badge! "Faster to type my full name than to apologise for not." *duck*
+
+You say "He brought up in his list one of the points I was thinking of. Players have to have a way of finding out how much money they have."
+
+Morgianna ooos!
+
+You say "And if I type only DA from now on, and excuse once, I'm set."
+Moses grins.
+
+Dark-Angel chuckles
+
+Morgianna tosses a paper airplane @ Moe.
+
+Moses ducks and goes on.
+
+Satyr has two badges! Hah! And wakes up, with that. ;)
+
+Moses will come back to DA's list of commands in just a minute. Promise.
+You say "Pros and cons of incorporating all IC transactions into the econ system."
+You say "Pros include: Uniformity of coding, a centralized db of all player money, and a core system to base further growth and development from."
+You say "Cons include: Potential security risks, difficulty in establishing robustness of the code to handle any situation, and wear and tear on your coder."
+You say "Anyone have any to add to that?"
+You say "To either of those?"
+
+Dark-Angel smiles, "Cons include.... a question. May I?"
+
+You say "Please. Just throw 'em out."
+
+Moses is very very informal in his classes. Feel free to make outbursts, throw paper airplanes, whatever. *looks at Morg*
+
+Satyr grins.
+
+Morgianna humms to herself, not making eye contact..
+
+Dark-Angel asks, "How do you deal with the numerous players who have already been on the grid for a while? Do they start out with more money? Luckily, DWR has the "Approved on <date> by <name>" type thing, but I'm not exactly sure what to do with it...
+
+Satyr waves a hand frantically at that. Oooh. Oooh.
+
+You say "Well, that can be of benefit having record-keeping to that degree. I generally advocate keeping track of creation dates, and approval dates, if applicable. <con't, then Satyr.>"
+You say "What I would suggest is making a general table of say...four different income levels. Break your IC population into 'groups' based on affluence. Then, @dol your way through each list, granting a certain degree of IC wealth based on the two factors of age of the character, and level of income."
+You say "Now, Satyr."
+
+Dark-Angel nods, "We have ... technically 6 (Resources 0 to Resources 5)
+
+Satyr says "I'd recommend giving the same amount of money to everybody no matter how long they've been on the grid. Just because the risk of slipping up, giving folks too much/too little, sounds relatively big?"
+Satyr says "Or going after what Moses said. :}"
+Satyr is done.
+
+You say "Well, that's even better...and if the stats are set that way, it makes it much easier to process the lists."
+
+Dark-Angel nods to Satyr, "That, plus you can't just give already-approved people a ton of money and assume they never spent any IC (In Character).
+Dark-Angel adds some "s to the end of her statements. :P
+
+Moses nods. And there are always the characters that are wealthy by nature, and have tremendous amounts of savings, etc.
+Moses has a character like that on CDI...if they ever converted to IC econ, he'd...well, have a lot of coins around.
+Morgianna says "My reason for not having an IC econ - fairness. Everyone wants to be rich. How do you handle that?"
+You say "That enter key just keeps jumping up and slapping my finger, I tell ya."
+
+Morgianna giggles.
+
+Dark-Angel grins, "What I've thought up, initially was a +money/setup command (+money/setup <cash percentage>/<income percentage>) i.e.: (+money/setup 50/50) -- that command is used to determine how much money you start out with and how much your income is, based on that and your resources level."
+
+You say "Actually, not everyone wants to be rich...And the way you handle it is that everyone starts off with some menial amount at character creation. And then, depending on what they app with, they are then granted a certain amount of money."
+
+Morgianna okays. "True true.
+
+Moses nods to Dark-Angel, and types her name. "Right. Add a random factor in there, so that not everyone at the same level starts out with exactly the same amount of money."
+You say "Going back to what I said to Morg, there is one more capability you have to give your econ system. An administrative command that allows admin to doctor the books, in a sense. A +grant style command that gives or takes away money from a player, based on approval/merit/circumstance."
+
+Dark-Angel nodnods, "For example, '+money/setup 90/10' means your income is /relatively/ low but your savings are relatively high."
+
+Morgianna umms. "Nice idea."
+
+Moses nods again to DA. Good setup style. Encourages differences in RP, stature, etc.
+You say "Okay, since we're into commands, I'll go on to question #2, which is: What style of commands do we want to institute for this system?"
+You say "With the +wear class I taught, it was more efficient to have one large command, with many switches."
+You say "With this system, I avidly believe that you can't do it all with one command. You have to have multiple different commands, each fulfilling a different function."
+You say "Granted, this is hard to code in its own right, but if we take care of some housekeeping and good coding practices, it will be made easier."
+You say "Now, as promised, I want to get back to DA's list of proposed commands."
+Moses quotes: Dark-Angel's thinking: +cash, +income, +loans and +pay. A fairly simple system.
+You say "If I read this right, +cash would report how much you have on your person."
+You say "+income would list what kinds of paychecks/investments exist that give you income in regular periods, and what periods they are."
+You say "+loans would be both money lent and money owed to you."
+
+Dragaera has to slip out. My sincere apologies.
+
+You say "Including due date, and rate of interest if any."
+Moses nods to Dragaera.
+
+Dragaera goes southwest, through the double doors, exiting the lecture room.
+Dragaera has left.
+
+Moses waves.
+
+Dark-Angel grins, "I also have '+money' which shows all 3 lines (Cash, Income, and Loans <which can only be set by staff>)
+
+Moses misses.
+Moses ahhs. Good point.
+You say "+pay would be to transfer money from one player to another."
+You say "The +money command would summarize all that info."
+You say "I also suggest a +audit command for admin, that has the capability to view all of this information on a player, as well as check bank balances, etc."
+You say "And, we shouldn't forget the +money/setup command that DA suggested earlier as well."
+
+Dark-Angel smiles, "Money owed to you is all in +income. Money you owe is in +loans."
+
+Moses chuckles and nods. Okay, that's an acceptable way to do it, however I would argue the point that Money owed to you isn't guaranteed income. :)
+You say "Just because they're /supposed/ to pay you back at a certain date doesn't mean it's going to happen. A job with a paycheck is a different ethic, entirely."
+
+Dark-Angel ahhs and nods, "Good point. Although that'll make my simple code a little more difficult.. :)"
+
+Moses notes that, with luck, all of the commands we discuss here will eventually be coded to some degree throughout the course of these classes.
+Moses nods. Understood. However, I might be able to make some suggestions on that front.
+You say "Can anyone think of any other commands that we should implement?"
+
+Dark-Angel cools, "Right now, I don't have the code yet. Just the help files (I always write those before I write the code:)"
+
+Morgianna says "+steal?"
+Morgianna grins
+
+Moses grins at Morgianna. You get a cookie.
+
+Dark-Angel laughs
+
+Moses blinks at DA. Wow..that's an..interesting way to code. I personally do the exact opposite.
+
+Morgianna claps and nibbles her cookie.
+
+You say "I always write the docs last, because I don't want to have to change them to call a bug a feature. :)"
+
+Dark-Angel hmms... +money, money <name>, +cash, cash <name>, +income, +income <name>, +loans, +loans <name>, +pay <name>=<amount>.
+
+You say "But, of course, my code /never/ has bugs in it. *coughBScough*"
+
+Dark-Angel chuckles
+
+Moses nods to DA's list.
+
+Morgianna grins.
+
+You say "Okay, yes Morg. +steal, +rob, +pickpocket, whatever you want to call it."
+You say "This is...tricky in more than one way."
+You say "You have to take into account that, inherently, people don't like to be robbed."
+
+Dark-Angel won't do a coded +steal. Too much OOC abuse potential.
+
+You say "Either in RL, or in IC."
+
+Satyr says "Just have it be some random number, maybe? Or base it on the skills of the person doing the stealing?"
+
+Moses nods to DA's point. Exactly. I only suggest +steal in a system where you have specifically stat'ed criminal abilities.
+You say "With a random number thrown in. So yes to both of those, Satyr."
+You say "Now, another aspect of +steal is this: You cannot code a +steal that does not notify the victim, as it is somewhat unethical. Ok, you /can/, but you /shouldn't/."
+You say "Even in a strictly dice-oriented game, players should know they were stolen from."
+
+Dark-Angel grins, "We DO have specifically stat'ed criminal abilities, but those things are staff-run, as TinyPlots. :)"
+
+Moses grins at DA.
+
+Satyr says "Sleepy question: why is it somewhat unethical?"
+Satyr knows, but wantsahearit.
+
+Dark-Angel winks, "Taking something from someone without even telling them is a Bad Thing (tm)."
+Dark-Angel says "Therefore, while you can steal and be a jerk ICly, you have to be courteous about it OOCly."
+
+Moses grins and hands Satyr a pillow. "Because, even in games where there are no consent rules, the players are consenting to play the game because they know they will be treated well. Being able to steal IC money from them without notification violates this trust."
+
+Dark-Angel nods to Moses too.
+
+Morgianna says "However, done right, it can really add spice and realism to the game..."
+
+Satyr takes the pillow and places it under her head, whilst clonking her feet up on the desk. Zzzz... "Gotcha."
+
+Moses chuckles. Okay, that about does it for commands. Now on to Question #3.
+You say "3) What is the most efficient way for me to store the data that my code will"
+You say "...use."
+
+**Post class note: My Enter Key was possessed that night.**
+
+You say "This is the meat and potatoes of your code. This will make or break you, /particularly/ in a global econ system."
+
+Karma has arrived.
+
+You say "Now, in a system like DA is proposing, we have basically three categories of money. Money you have. Money that is involved in a loan. And money that you have, but is not on your person."
+Moses waves to karma.
+Moses kapitalizes his k's.
+
+Karma waves to all then quiets to catch up on what's going on.
+
+You say "We just started discussing what the best way to store the data of the econ system is."
+You say "Previously, we've covered what capabilities we want the system to have, and what the command structure should be."
+
+Dark-Angel brings in her handy dandy COgod! :)
+
+You say "There will be a log."
+
+Karma smiles appreciatively. "Thanks."
+
+Moses goes back to what he said. There is argument for a fourth category, money that is 'income'. Which I suppose we should add in order to implement the suggested +income command.
+You say "Now, having had some experience with coded econs, both as user and as coder, I can say that one of the best ways I have found to store the data is by category, with the dbref of the character as an identifier."
+
+**Post-Class note: I didn't get questions on this, and sorta steamrolled on. This surprised me. The reason I suggest dbrefs as the identifier is that they are more constant than name. As well, it's easier to code for. The best way I have found for this style of attribute is to do &attrname_dbref obj=data This works well on any codebase. It also allows for easy searching, because you can either lattr(obj/attrname*) for a general list, or for a specific one, lattr(obj/*_dbref).
+
+You say "So, cash_#123 would be the money that character number #123 would have in their pocket at that particular moment."
+You say "Similarly, you can have a loan_#123, income_#123."
+You say "The loan attribute would track all the loans you have out and coming in."
+
+Dark-Angel hrms and was actually thinking a separate &cash attribute on the player itself...
+
+You say "Well...okay, let's discuss that first."
+
+You say "There are essentially two places to store the econ data. 1) On the player. 2) Not on the player."
+You say "Again, pros and cons to both."
+
+You say "Pros of on the player: Easier to code for. No risk of losing all your econ data by someone being careless with an object."
+You say "Cons of on the player: Security risk that you have to code extra to prevent."
+
+Dark-Angel hmms, "Pros: No security risk. All you need to do is attribute lock the appropriate attributes to wiz only."
+
+You say "Okay. Yes and no."
+You say "What you said validates what I said. You have to code extra to ensure that no security risk exists."
+You say "I personally don't think one method is necessarily 'better' than the other."
+You say "For my own style of coding, I favour global data objects."
+You say "They are easier to maintain, require less power on the code object, and don't pose the same risk that attrs on the char will."
+You say "However, there is strong argument for coding the attrs on the player, and so for the purposes of this class, I am going to discuss doing it that way."
+You say "Any objection/comment?"
+Moses will move on to ideas on how to formulate the attrs themselves, then.
+
+Dark-Angel asks, "So which one are we discussing? Data objects which you prefer, or on the player which is easier and less risky? ;)"
+
+You say "On the player, and it's not necessarily less risky. It's a matter of personal preference."
+
+Dark-Angel says "i.e.: &cash #123=5 or &cash_#123 <data-object>=5? Ahh, ok."
+
+You say "Okay, the cash_### attr is pretty simple. The simplest of the four, really."
+You say "And it's basically what DA said. &cash #123=money"
+You say "The income attr is somewhat easy as well. You list the source of the income, and how much it is."
+Moses suggests listing the source by dbref, as names can change(not always to protect the innocent).
+You say "So, &income #123=#345:100|#455:10|#567:1000"
+You say "The first number of each pair is the source, the second number is the amount."
+You say "Now, there is also the possibility of adding in the ability to report /when/ the amounts are due."
+
+Karma presumes that amount is set to a given time period to be stated later ... never mind. :)
+
+You say "This can be done by adding another number to each 'set', detailing either a timestamp of the due date, or a timestamp of how long until you are paid."
+
+**Post-class note: Timestamp means putting a 'date' on something. It's possible to do this in two ways. One is to use the base time() function. This returns something like: Wed Nov 29 17:30:00 2000. Another way to do this, that is shorter in string length, is to use the convtime(time()) function pairing. This will return something that looks like: 975548426. What this number means is the number of seconds since Jan 1, 1970. I will talk about this a lot more in later classes. But, you can convert that big number back into a regular time with convsecs().
+
+You say "Neither of which is difficult to code for, necessarily."
+You say "loan attribute. Since DA brought it up, I've been playing with it in the back of my mind."
+
+Dark-Angel nods, "On a global @aconnect, you have a check of whether this person was paid this week or this month, or not."
+
+Moses nods. Very very good point.
+
+Dark-Angel buffs her nails.
+
+Moses gives DA a cookie.
+
+Dark-Angel grins
+
+You say "The other option is a mushcron code, whether the Mushcron obj in Penn, or @cron in Tiny, that checks every 24 hours to update paid/unpaid information."
+You say "Now, for the loan attr, I would suggest this: &loan #123=#234:+100:timestamp|#987:-100:timestamp|#555:+100:timestamp"
+You say "With this, you display the list based on the +/- of the amount. + amounts are loans owed to you. Negative are loans you owe others."
+
+Dark-Angel ooohs. I had something different, but like yours better. :)
+
+You say "The dbref listed is either the source or the recipient, depending on the sign of the amount. And the timestamp lists when it is due in either case."
+
+Dark-Angel had a much simpler scheme:
++loan/set <name>=<amount> Set up a loan *staff only, also gives money*
++loan/pay <amount> Pay off part or all of the loan
+
+Moses nods. The other option is to have certain switches available for +pay. +pay/loan, +pay/wage.
+You say "This allows you to interact with different sections of your econ."
+You say "However, either is good."
+
+Dark-Angel winks, "In other words, if a PC owes you something, that's not the code's problem. ;)"
+
+You say "Precisely. :)"
+
+Karma smiles. "I like that..."
+
+Moses smiles. The fourth question I dealt with in the class starting the +wear series doesn't apply here. The question there was: Is this for personal or global use. This is obviously global.
+You say "The next question I dealt with was one of coding style. And it centered around the differences between side-effect functions and command-dependent coding."
+
+Dark-Angel nodnods, "Very definitely global, although I've added an option of people changing their base commands (&paygive, &apaygive &paytake &apaytake etc)"
+Dark-Angel says "That's mostly for puppets, though.. go on. :)"
+
+Moses hmms. Interesting option. Perhaps adds a bit of difficulty.//Hehe. Puppets can still be forced to do the pay commands.
+You say "In this instance, as in most, I think side-effect functions are going to be not only the better route, but in some cases essential to the success of the code, and the continued sanity of the coder."
+You say "The advent of the set() function is one of the nicest thing the developers of MUSHes ever gave us coders."
+
+Dark-Angel says "Eep, I'm self-taught. Could you give a quick definition or Example of "side-effect function" and "command-dependent coding"? :)"
+
+Moses nodnods. No problem.
+You say "ex armoire/cmd-wear1 and ex armoire/cmd-wear2"
+
+Dark-Angel Ohhhhs. set() vs @set/&; emit() vs @pemit/@oemit/etc?
+
+You say "This is the object I did for the +wear class. The two commands there exhibity both styles of coding."
+
+Armoire's Code: CMD-WEAR1:$+wear1/* *:@pemit %#=[switch(gt(words(%1,=),1),1,[setq(0,first(%1,=))][setq(1, rest(%1,=))][u(fn-notclear,%0,%q0,%q1)],0,[u(fn-clear,%1)],Boing. Code Error. Please report it to [name(owner(me))].)]
+
+CMD-WEAR2:$+wear2/* *:@switch gt(words(%1,=),1)=1,{@switch %0[setq(0,first(%1,=)) ][setq(1,rest(%1,=))]=new-*,{@tr me/do-new=%#,[after(%0,-)],%q0,%q1},del*,{@tr me/do-delete=%#,%q0,%q1},put*,{@tr me/do-wear=%#,%q0,%q1},{@pemit %#=I'm sorry. That isn't a valid command.}},0,{@switch %0=clear,{@tr me/do-clear=%#,%1},{@pemit %#=I'm sorry. That isn't a valid command.}},{@pemit %#=Boing. Code Error. Please report it to [name(owner(me)) ].}
+
+You say "cmd-wear1 is side-effect, ufun dependent. It relies heavily on functions."
+
+Dark-Angel prefers the second type, but it's just personal preference. Easier to read ;)
+
+You say "cmd-wear2 is the command-dependent version. Does all the same stuff."
+You say "It is easier to read, but it's harder to edit, harder to bugcheck."
+
+Dark-Angel winks, "Unless you're used to coding command-dependent, in which case the other one is harder to edit and bugcheck."
+
+You say "With ufun dependent code, like cmd-wear1, you can isolate faults more easily, because you have broken your code up into managable pieces that each do a specific task. ufuns also make the passing of parameters easier. @tr will change your %# quicker than..well, a lot of things. :)"
+
+Karma cut his teeth on assembler ... I prefer the first type. :)
+
+Moses grins at Karma. Yes, it is /entirely/ personal preference.
+You say "There /do/ exist situations where you have to use one particular style."
+
+Karma chuckles and shows his age, of course.
+
+Moses says nothing about his age, as regards coding. Nope, nuttin'.
+
+Satyr snickers.
+
+Dark-Angel grins
+
+You say "The reason I suggest side-effect functions mostly for this system is this: By coding a global system, we are going to benefit from also coding in some global @functions"
+You say "And, those are easier to implement in ufuns than in commands."
+
+Dark-Angel nodnods, "Very good point."
+
+You say "This topic(which will be our last for the evening) hearkens back to question #2 a bit."
+You say "What's the best way to structure our commands was question #2."
+You say "Well, we need to consider some @functions that we can use to simplify a lot of our coding tasks."
+You say "It is going to be a lot simpler to code hasmoney(%#,%0) than it is to repetitively type: lt(get(%#/cash),%0)"
+You say "As well, I strongly suggest a payfrom() function, or whatever we decide to name it. payfrom(payer,payee,amount)"
+
+Dark-Angel oooohhhs.. Another good point!! *takes notes*
+
+Karma says "Not to mention a hell of a lot easier to read/debug."
+
+You say "Because otherwise, you're going to be repetitively typing: &cash dbref1=[add (get(dbref1/cash),amount)];&cash dbref2=[sub(get(dbref2/cash),amount)]"
+You say "Plus, you can code in a hasmoney() check into your payfrom() function, returning a #-1 error, which increases the robustness of your code."
+
+Dark-Angel oohs, a payfrom() and a payto() would be useful for both. :)
+
+Moses nods. Yes. payto() is for instances where the money is quite literally coming out of thin air, rather than from a source.
+
+Karma wants one of those sources IRL.
+
+Dark-Angel hmms, "Wait. Hold on. What DOES a payfrom() function return, exactly?"
+
+You say "Ideally, nothing. :) side-effect functions rarely do return anything. You can code it to return 1 for success, or #-1 for error."
+
+Dark-Angel says "payfrom(payer,payee,amount) <- Ahhh.... I usually do 1 success and 0 failure. :)"
+
+You say "But, if you have done the proper checks for hasmoney(), validity of transaction, etc....you shouldn't need a return from payfrom()."
+You say "Well, yes. But, in this case, you'd need a why for your failure."
+You say "#-1 PAYER LACKS FUNDS for instance."
+You say "Or #-1 INVALID TARGET is another."
+You say "If you try and pay an exit. :)"
+
+Dark-Angel nods
+
+You say "Best thing to do in that case is: setq(0,payfrom(dbref,dbref,amount)), then switch(first(%q0),#-1,%q0)"
+
+Dark-Angel says "Or #-1 YOU CAN'T DO THAT YOU TWINK, in case someone tries to give a negative amount. ;)"
+
+Moses grins. You'd code around that. abs() is your friend. :)
+You say "Though a stupidity error is usually fun. :)"
+
+Dark-Angel oohs. abs()
+
+Karma laughs.
+
+You say "The code I put up above will allow payfrom() to work silently, but if there is an error, you'd get the message and be able to display it. The switch() would go into whatever output the vendor/player would be getting."
+You say "Okay, five minutes left. Please barrage me with any and all questions about what we've talked about tonight, or what we'll talk about in the next class."
+
+Dark-Angel grins, "Do you have an Armoire-like example for economy? When are the classes? What will the next one be? ;)"
+
+Karma chuckles and lets DA handle the questions.
+
+Dark-Angel grins
+
+You say "Respectively: Not yet, but I should have something by the next class. The next class will be either a week from Friday or the following Tuesday, depending on my schedule. The next one will be: Coding the @functions. We'll need to handle that first before we code any commands."
+Moses pulls the pillow out from under Satyr's head.
+You say "Any questions, smart-aleck?"
+
+Satyr wakes up and yawns, at that. "Mmm. Do these buttons come in purple?"
+
+You say "Yes, if you'll come back to my place and see my etchings..."
+
+Dark-Angel snickers
+
+Moses a-hems at himself.
+Moses pokes Morg. "Any questions?"
+
+Karma averts his eyes.
+
+Satyr giggles!
+
+Moses looks at Karma. "Sure you don't have any of your own?"
+
+Satyr says "Hey, Moses? Have there been any coding classes covering making your own +time, or is that too complicated?"
+
+You say "That's simple. :)"
+Moses can work with you on that, outside of class times.
+
+Satyr wiggles happily. "Can I put in a request... Ooooh. Private ed!"
+
+You say "Tomorrow, perhaps? I have to go in about five minutes."
+
+Karma smiles and is going through your armoire example. "Not really ... I think I'm getting the concepts. I'm a coder by trade but new to Mux-code...give me simple old C any day." :)
+
+Satyr says "Sounds excellent. :)"
+
+Moses nodnods to Karma. Yes, I understand. I came to mushcode from a background in Forth, Pascal, Fortran, and C/C++. Moses now does some Java and mostly VB.
+
+Dark-Angel came to Mushcode first, then to everything else ;) You say "Okay, I'm closing the log now if there's nothing else?" Karma now mostly does KCML, C++ and Perl.
+Karma says "VB under duress. :)"
+
+Morgianna did too DA.
+
+Moses ahhs. Cool. :)
+Moses closes the log.

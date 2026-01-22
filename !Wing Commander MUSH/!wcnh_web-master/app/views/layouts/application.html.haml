@@ -1,0 +1,39 @@
+!!!
+%html
+  %head
+    %title #{yield(:page_title)} - Wing Commander: New Horizon MUSH
+    = stylesheet_link_tag    "application", :media => "all" 
+    %link{:rel => 'stylesheet', :type => 'text/css', :href => 'http://fonts.googleapis.com/css?family=Ubuntu+Condensed|Terminal+Dosis:400,600'}
+
+    = javascript_include_tag "application" 
+    = csrf_meta_tags
+  %body
+    =image_tag "bg.jpg", :id => "bg"
+    #utility.row
+      =render :partial => "shared/utility"
+    #header.row
+      .logo.column.grid_6
+        %a{:href => '/'}= image_tag "logo.png"
+      =render :partial => "shared/nav"
+    #down
+      %p On March 5, 2013, Wing Commander: New Horizon MUSH was shut down due to lack of activity. Thanks to the staff and players for your support. We had a good run and created some amazing memories. Keep in touch on the <a href="https://www.facebook.com/wcmush">Facebook page</a> for the game, which will be preserved.
+      %p The entire game's codebase and database (minus player information) has been <a href="http://tkrajcar.github.io/wcnh/">open-sourced</a> and released to the public, and the game itself is back up to help support the code at <strong>wcmush.com 2199</strong>!
+    #notices.row
+      -if !notice.nil?
+        %p.notice
+          %span=notice
+      -if !alert.nil?
+        %p.alert
+          %span=alert
+    #page.row
+      -if content_for?(:page_h1)
+        %h1=yield(:page_h1)
+      = yield
+
+    #footer.row
+      .column.grid_12
+        %p
+          <a href="https://www.facebook.com/wcmush" target="_blank"><img src="/assets/social/facebook.png" alt="Facebook" /></a>
+          <a href="http://www.mudconnect.com/cgi-bin/vote_rank.cgi?mud=Wing+Commander:+New+Horizon"><img border="0" src="http://www.mudconnect.com/images/tmcvote1.gif" alt="Vote for WCNH on TMC!"></a>
+          <a href="https://twitter.com/wcmush" target="_blank"><img src="/assets/social/twitter.png" alt="Twitter" /></a>
+        %p All content Copyright &copy; 2012 Wing Commander: New Horizon MUSH unless prior copyright ownership exists. Design by <a href="http://www.capelio.com" target="_blank">Capelio</a>.

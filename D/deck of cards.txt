@@ -1,0 +1,13 @@
+@create Deck of Cards
+@lock Deck of Cards==me
+&LIST Deck of Cards=1 Ace Spades|2 Two Spades|3 Three Spades|4 Four Spades|5 Five Spades|6 Six Spades|7 Seven Spades|8 Eight Spades|9 Nine Spades|10 Ten Spades|11 Jack Spades|12 Queen Spades|13 King Spades|14 Ace Hearts|15 Two Hearts|16 Three Hearts|17 Four Hearts|18 Five Hearts|19 Six Hearts|20 Seven Hearts|21 Eight Hearts|22 Nine Hearts|23 Ten Hearts|24 Jack Hearts|25 Queen Hearts|26 King Hearts|27 Ace Clubs|28 Two Clubs|29 Three Clubs|30 Four Clubs|31 Five Clubs|32 Six Clubs|33 Seven Clubs|34 Eight Clubs|35 Nine Clubs|36 Ten Clubs|37 Jack Clubs|38 Queen Clubs|39 King Clubs|40 Ace Diamonds|41 Two Diamonds|42 Three Diamonds|43 Four Diamonds|44 Five Diamonds|45 Six Diamonds|46 Seven Diamonds|47 Eight Diamonds|48 Nine Diamonds|49 Ten Diamonds|50 Jack Diamonds|51 Queen Diamonds|52 King Diamonds
+@VA Deck of Cards=&CARD me=[index(u(list), |, first(shuffle(setdiff(u(all_cards), get(drawn_cards)))), 1)] ;&DRAWN_CARDS me=cat(v(drawn_cards), first(u(card))) ;@emit [name(%0)] draws the [insert(rest(u(card)), 2, of)].
+&ALL_CARDS Deck of Cards=1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52
+&DRAWN_CARDS Deck of Cards=99
+@Desc Deck of Cards=%rA deck of playing cards. It looks like they might run out after a little over four dozen cards, but they can always be re-shuffled. 'CARDDRAW'%r%rAspect of note: One cannot get the same card twice, until the deck has been polished off, unlike with most softcoded card decks.%r
+&CARD_CMD Deck of Cards=$carddraw:@switch words(u(me/drawn_cards))=53,{@emit That was the last card. The deck has been re-shuffled.;&drawn_cards me=99;@trigger me/va=%# },@trigger me/va=%#
+&RESET_CMD Deck of Cards=$cardreset:&drawn_cards me=99
+&CARD Deck of Cards=46 Seven Diamonds
+@set Deck of Cards=PARENT_OK
+@set Deck of Cards=VISUAL
+@set Deck of Cards=COMMANDS

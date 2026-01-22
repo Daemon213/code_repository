@@ -1,0 +1,56 @@
+ @create Generic Deck
+@lock/Basic Generic Deck==me
+@lset Generic Deck/Basic=no_inherit
+@set Generic Deck=!NO_COMMAND
+&BASE_DECK Generic Deck=C2 C3 C4 C5 C6 C7 C8 C9 C10 CJ CQ CK CA D2 D3 D4 D5 D6 D7 D8 D9 D10 DJ DQ DK DA H2 H3 H4 H5 H6 H7 H8 H9 H10 HJ HQ HK HA S2 S3 S4 S5 S6 S7 S8 S9 S10 SJ SQ SK SA
+&CARDSALL_FN Generic Deck=[iter(DECK_PLAY [lattr(me/DECK_*_UP)] [lattr(me/DECK_*_HAND)],%r[ljust(u(deckname,##),20)][v(##)])]
+&CARDS_CMD Generic Deck=$+cards: @pemit %# = after(edit(u(cards_fn),%r,%r%va >%b),%r)
+&CARDS_FN Generic Deck=[iter(sort(lattr(me/DECK_*)),%r[ljust(u(deckname,##),20)][if(u(hidden,##),switch(v(##),* *, ([words(v(##))] cards),,,one card),v(##))][space(5)][u(chips_fn,edit(##,DECK_,CHIPS_,_HAND,))][u(pot_fn,edit(##,DECK_,STAKES_,_HAND,))][u(tricks_fn)]
+&CENTER_CMD Generic Deck=$+center *: think [switch(gte(words(v(deck_main)),%0),1,ulocal(transfer,main,play,%0,%N draws CARDS from the Main deck to the play area.),pemit(%#,%va > Not enough cards in the deck.))]
+&CHIPS_FN Generic Deck=[switch(hasattr(me,%0),1,rjust([u(%0)] chips,12))]
+&CLEAR_CMD Generic Deck=$+clear: &deck_discard me = v(deck_play) [v(deck_discard)]; @wipe me/deck_play; @emit %va %N clears the cards from the play area.
+&CORE_USE Generic Deck=DECK MANAGEMENT%r%b%b+shuffle%t%tShuffle%r%b%b+shuffle discard%tShuffle discard pile back into main deck%r%b%b+shuffle all%t%tShuffle everything into main deck%r%b%b+cut%t%t%tCuts the deck%r%b%b+clear%t%tDiscard the play area to the discard pile%r%b%b+trick%t%tLike +clear, but tracks who took the trick%r%rDEALING%r%b%b+deal P = N%t%tDeal N cards to P from main deck%r%b%b+dealup P = N%t%tDeal N cards to P's table from main deck%r%b%b+dealdown P = N%tDeal N cards to P face down (P needs to +peek)%r%b%b(to deal to multiple players, use +multideal etc. instead of +deal)%r%b%b+center N%t%tDeal N cards into the play area%r%rCARD ACTION%r%b%b+draw N%t%tDraw N cards (default N=1)%r%b%b+play X%t%tPlay X from hand/table to play area%r%b%b+get X%t%tPut X in hand (if face-up somewhere)%r%b%b+discard X%t%tDiscard X from hand/table/play area to discard%r%b%b+fold%t%t%tDiscard your hand to the discard pile%r%rVIEWING AND REVEALING%r%b%b+cards%t%tSee the cards%r%b%b+peek%t%t%tPeek at your hand%r%b%b+show X%t%tMove X cards from hand to table (default X=all)%r%b%b+sort%t%t%tSort hand%r%b%b+expose%t%tExpose all hands%r
+&CUT_CMD Generic Deck=$+cut: &deck_main me = [setq(0,first(shuffle(v(deck_main))))]%q0 [squish(after(v(deck_main),%q0))] [squish(before(v(deck_main),%q0))]; @emit %va %N cuts the deck.
+&DEALDOWN_CMD Generic Deck=$+dealdown *=*: think [switch([num(squish(%0))] [gte(words(v(deck_main)),squish(%1))],#-*,pemit(%#,%va > Can't find [squish(%0)].),* 1,ulocal(transfer,main,num(squish(%0))_HAND,squish(%1),%N counts out [switch(squish(%1),1,one card,squish(%1) cards)] from the deck and slides them face down to [name(squish(%0))].),pemit(%#,%va > Not enough cards. Time to shuffle?))]
+&DEALUP_CMD Generic Deck=$+dealup *=*: think [switch([num(squish(%0))] [gte(words(v(deck_main)),squish(%1))],#-*,pemit(%#,%va > Can't find [squish(%0)].),* 1,ulocal(transfer, main,num(squish(%0))_UP,squish(%1),%N deals CARDS to [name(squish(%0))]%, face up.), pemit(%#, %va > Not enough cards. Time to shuffle?))]
+&DEAL_CMD Generic Deck=$+deal *=*: think [switch([num(squish(%0))] [gte(words(v(deck_main)),squish(%1))], #-*, pemit(%#, %va > Can't find [squish(%0)].), * 1, ulocal(transfer,main,num(squish(%0))_HAND,squish(%1),%N deals [switch(squish(%1),1,a card,squish(%1) cards)] to [name(squish(%0))]., num(squish(%0)), You were dealt CARDS.), pemit(%#, %va > Not enough cards. Time to shuffle?))]
+&DECKNAME Generic Deck=switch(setq(0,after(%0,DECK_))%q0,MAIN,Main deck,PLAY,Play area,DISCARD,Discard pile,*_UP,name(before(%q0,_UP))'s table,*_HAND,name(before(%q0,_HAND))'s hand,%q0)
+&DECK_MAIN Generic Deck=C2 C3 C4 C5 C6 C7 C8 C9 C10 CJ CQ CK CA D2 D3 D4 D5 D6 D7 D8 D9 D10 DJ DQ DK DA H2 H3 H4 H5 H6 H7 H8 H9 H10 HJ HQ HK HA S2 S3 S4 S5 S6 S7 S8 S9 S10 SJ SQ SK SA
+&DESCRIBE Generic Deck=A plain deck of cards. Type "use [name(me)]" for commands.%r[u(cards_fn)]
+@set Generic Deck/DESCRIBE=no_command visual prefixmatch public nearby
+&DISCARD_CMD Generic Deck=$+discard *: think [switch([setq(0,after(u(location_fn,ucstr(%0)),DECK_))][switch(%q0, %#_*, 1,PLAY, 1, 0)], 1, ulocal(movecards, %q0, DISCARD, ucstr(%0), %N discards [switch(u(hidden,DECK_%q0) %0,0 *,CARDS,1 * *, words(%0) cards, a card)] from [switch(%q0,*_HAND,%p hand,*_UP,%p table, PLAY, the play area)].), pemit(%#, %va > The cards must be in your hand\, on your table\, or in play.))]
+&DRAW1_CMD Generic Deck=$+draw: think [switch(gte(words(v(deck_main)),1), 1, ulocal(transfer, main,%#_HAND,1, %N draws a card from the Main deck.,%#,You drew CARDS.), pemit(%#, %va > Not enough cards in the deck.))]
+&DRAW_CMD Generic Deck=$+draw *: think [switch(gte(words(v(deck_main)),%0), 1, ulocal(transfer, main,%#_HAND,%0,%N draws %0 cards from the Main deck.,%#,You drew CARDS.), pemit(%#, %va > Not enough cards in the deck.))]
+&FOLD_CMD Generic Deck=$+fold: &deck_discard me = v(deck_%#_hand) [v(deck_discard)]; @wipe me/deck_%#_hand; @emit %va %N tosses %p hand into the discard pile.
+&GET_CMD Generic Deck=$+get *: think [switch([setq(0,after(u(location_fn,ucstr(%0)),DECK_))][switch(%q0, *_UP, 1, PLAY, 1, 0)], 1, ulocal(movecards, %q0, %#_HAND, ucstr(%0), %N takes CARDS from [switch(%q0,%#_UP,%p table,PLAY,the play area,*_UP,name(before(%q0,_UP))'s table)].), pemit(%#, %va > The cards must be face up somewhere.))]
+&HIDDEN Generic Deck=[switch(%0,DECK_MAIN,1,DECK_*_HAND,1,DECK_DISCARD,1,0)]
+&LOCATION_FN Generic Deck=squish(iter(lattr(me/deck_*),switch(,%0,,setdiff(%0,ucstr(v(##))),##)))
+&MOVECARDS Generic Deck=[set(me,deck_%0:[u(remove,ucstr(v(deck_%0)),%2)])][set(me,deck_%1:%2 [squish(v(deck_%1))])][emit(%va [edit(%3,CARDS,%2)])]
+&MULTIDEALDOWN_CMD Generic Deck=$+multidealdown *=*: think [switch([setr(0,iter(%0,num(##)))] [gte(words(v(deck_main)),mul(words(%0),%1))],*#-*, pemit(%#, Sorry\, I couldn't understand that.), * 1, ulocal(multitransfer, main,iter(%0,num(##)_HAND),squish(%1), %N counts out [switch(squish(%1),1,a card,squish(%1) cards)] from the deck and slides them face down to PLAYER., iter(%0,num(##))), pemit(%#, %va > Not enough cards. Time to shuffle?))]
+&MULTIDEALUP_CMD Generic Deck=$+multidealup *=*: think [switch([setr(0,iter(%0,num(##)))] [gte(words(v(deck_main)),mul(words(%0),%1))], *#-*, pemit(%#, Sorry\, I couldn't understand that.), * 1, ulocal(multitransfer, main,iter(%0,num(##)_UP),squish(%1), %N deals CARDS to PLAYER%, face up., iter(%0,num(##))), pemit(%#, %va > Not enough cards. Time to shuffle?))]
+&MULTIDEAL_CMD Generic Deck=$+multideal *=*: think [switch([setr(0,iter(%0,num(##)))] [gte(words(v(deck_main)),mul(words(%0),%1))], *#-*, pemit(%#, Sorry\, I couldn't understand that.), * 1, ulocal(multitransfer, main,iter(%0,num(##)_HAND),squish(%1), %N deals [switch(squish(%1),1,a card,squish(%1) cards)] to PLAYER., iter(%0,num(##)), You were dealt CARDS.), pemit(%#, %va > Not enough cards. Time to shuffle?)
+&MULTITRANSFER Generic Deck=[set(me,deck_%0:[squish(after(v(deck_%0),setr(0,extract(v(deck_%0),1,mul(words(%1),%2)))))])][iter(%1,[set(me,deck_##:[setr(1,[extract(revwords(%q0), add(mul(sub(#@,1),%2),1), %2)] [v(deck_##)])][emit(%va [edit(%3,CARDS,%q1,PLAYER,name(extract(%4,#@,1)))])][pemit(switch(%5,,,extract(%4,#@,1)),%va > [edit(%5,CARDS,%q1)])])])]
+&PEEK_CMD Generic Deck=$+peek: @emit %va %N glances at %p hand.; @pemit %# = %va > Your hand is [ansi(g,squish(v(deck_%#_HAND)))]. ; @pemit %# = %va > The table has [switch(setr(0,squish(v(deck_play))),,no cards up,ansi(r,%q0))].
+&PLAY_CMD Generic Deck=$+play *: think [switch(u(location_fn,ucstr(%0)), DECK_%#_HAND, ulocal(movecards, %#_HAND, PLAY, ucstr(%0), %N plays CARDS from %p hand.), DECK_%#_UP, ulocal(movecards, %#_UP, PLAY, ucstr(%0), %N plays CARDS from %p table.), pemit(%#, %va > The cards must be in your hand or on your table.))]
+&POT_FN Generic Deck=[switch(hasattr(me,%0),1,[rjust(v(%0),5)] in the pot[setq(0,sub(u(left_to_call_fn),v(%0)))][switch(%q0,>0,\, %q0 to call)])]
+&REMOVE Generic Deck=fold(remove_primitive,%1,%0)
+&REMOVE_PRIMITIVE Generic Deck=remove(%0,%1)
+&SHOWALL_CMD Generic Deck=$+show: &deck_%#_UP me = setq(0,squish(v(deck_%#_hand)))%q0 [setq(1,squish(v(deck_%#_up)))]%q1; @wipe me/deck_%#_hand; @emit %va %N reveals %p hand as %q0[switch(%q1,,,%, next to the cards %q1 already on the table)].
+&SHOW_CMD Generic Deck=$+show *: think [switch(u(location_fn,ucstr(%0)), DECK_%#_HAND, ulocal(movecards, %#_HAND, %#_UP, ucstr(%0), %N places CARDS on the table from hand.), pemit(%#, %va > The cards must be in your hand.))]
+&SHUFFLE Generic Deck=$+shuffle: &deck_main me = shuffle(v(deck_main)); @emit %va %N shuffles the Main deck.
+&SHUFFLEDISCARD_CMD Generic Deck=$+shuffle discard: &deck_main me = shuffle(v(deck_main) [v(deck_discard)]); &deck_discard me; @emit %va %N shuffles the Discard pile into the Main deck.
+&SHUFFLE_ALL_CMD Generic Deck=$+shuffle all: @wipe me/deck_*; @wipe me/tricks_#*; &deck_main me = shuffle(v(base_deck)) ;@emit %va %N gathers all the cards and shuffles them together.
+&SHUFFLE_DECK Generic Deck=&deck_%0 me = shuffle(v(deck_%0)); @emit %va: %1 shuffles [u(deckname,%0)].
+&SHUFFLE_INTO Generic Deck=&deck_%1 me = [shuffle(v(deck_%1) v(deck_%0))]; &deck_%0 me; @emit %va: %2 shuffles [u(deckname,%0)] into [u(deckname,%1)].
+&SORTHAND_CMD Generic Deck=$+sort: &deck_%#_hand me = u(sort_fn,v(deck_%#_hand)); @emit %va %N sorts %p hand.; @pemit %# = %va > Your hand is now [v(deck_%#_hand)].
+&SORT_FN Generic Deck=setq(8,first(%1 BASE_DECK))[sortby(sort_primitive,%0)]
+&SORT_PRIMITIVE Generic Deck=sub(member(v(%q8),%0),member(v(%q8),%1))
+&TABLE_CMD Generic Deck=$+expose: @emit %va %N exposes all the cards.[edit(u(cardsall_fn),%r,%r%va%b)]
+&TRANSFER Generic Deck=[set(me,deck_%0:[setq(0,extract(v(deck_%0),1,%2))][squish(after(v(deck_%0),%q0))])][set(me,deck_%1:[revwords(%q0)] [v(deck_%1)])][emit(%va [edit(%3,CARDS,%q0)])][pemit(%4,%va > [edit(%5,CARDS,%q0)])]
+&TRICKS_FN Generic Deck=[switch(lattr(me/TRICKS_#*),,,%rTricks: [iter(sort(lattr(me/TRICKS_#*)),[name(after(##,TRICKS_))]: [v(##)],%b,%t)])]
+&TRICK_CMD Generic Deck=$+trick: &deck_discard me = v(deck_play) [v(deck_discard)]; @wipe me/deck_play; &tricks_%# me=[inc(v(tricks_%#))]; @emit %va %N takes the trick and clears the cards from the play area.
+&USE Generic Deck=[u(core_use)]
+@set Generic Deck/USE=no_command prefixmatch
+&VA Generic Deck=DECK:
+
+use Generic Deck 

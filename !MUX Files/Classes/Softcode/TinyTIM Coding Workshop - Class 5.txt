@@ -1,0 +1,1194 @@
+ R'nice says "Ok, everyone kindly go east."
+
+R'nice disappears down the eastern passage.
+
+R'nice has left.
+
+You walk down a corridor, come to a door, open it, and pass outside into the sunshine.
+
+A trail contines to the east, and you follow it for a while, finally ending up...
+
+West Bank
+
+You are standing on a grassy clearing, with woods to the north and south. A trail runs from the west, and ends here. To the east your way is blocked by a wide river.
+
+Contents:
+
+R'nice
+
+Renth(#4096PLeTc)
+
+a jet pack
+
+a bathing suit
+
+a heavy diving suit
+
+DAB comes down the trail from the west.
+
+DAB has arrived.
+
+Farward comes down the trail from the west.
+
+Farward has arrived.
+
+Sydney comes down the trail from the west.
+
+Sydney has arrived.
+
+Empedocles comes down the trail from the west.
+
+Empedocles has arrived.
+
+Squeaky comes down the trail from the west.
+
+Squeaky has arrived.
+
+You say "Ooh! It's Renth!"
+
+You are looking at Renth, a huge bronze dragon. He is strong and well proportioned, and keenly intelligent. He is looking happy and healthy. You sense that he is devoted to his weyrmate, Ranilth.
+
+Holding:
+
+An enormous Valentine for Renth
+
+Kahlua comes down the trail from the west.
+
+Kahlua has arrived.
+
+Dilettante comes down the trail from the west.
+
+Dilettante has arrived.
+
+Huh? (Type "help" for help.)
+
+R'nice says "Is everyone here?"
+
+Kahlua says "More or less. :)"
+
+DAB says "I'm here"
+
+Michel comes down the trail from the west.
+
+Michel has arrived.
+
+You say "Quick question: Are we going to move around a lot tonight?"
+
+KhaOS comes down the trail from the west.
+
+KhaOS has arrived.
+
+Unlocked.
+
+R'nice says "A bit, perhaps. Not too much."
+
+You say "Well. Someone grab me anyway, cause I'm going to idle! :)"
+
+R'nice says "Toad."
+
+Kahlua takes you in hand.
+
+From atop the tall bottle,
+
+From deep inside the smoky bottle,
+
+Also here:
+
+Ring
+
+Kahlua's Paint Blaster
+
+From atop the tall bottle,
+
+West Bank
+
+You are standing on a grassy clearing, with woods to the north and south. A trail runs from the west, and ends here. To the east your way is blocked by a wide river.
+
+Contents:
+
+KhaOS
+
+Michel
+
+Dilettante(#58543PXec)
+
+Kahlua(#35157PMSLXeonZc)
+
+Squeaky
+
+Empedocles
+
+Sydney
+
+Farward
+
+DAB
+
+R'nice
+
+Renth(#4096PLeTc)
+
+a jet pack
+
+a bathing suit
+
+a heavy diving suit
+
+R'nice gives Reo an F.
+
+Locked.
+
+Kahlua#> Reo sniffs.
+
+R'nice says "Ok, gang, here is tonight's problem:"
+
+R'nice says "We're going to build a small piece of a puzzle adventure thingy."
+
+R'nice says "Here's how the puzzle should work: The player's goal is to get across the river."
+
+R'nice says "If he's wearing the jet pack, he can fly across."
+
+KhaOS grabs Empedocles.
+
+R'nice says "If he's wearing the bathing suit, he can swim across."
+
+R'nice says "If he's wearing the diving suit, he can walk across the bottom."
+
+Michel says "Dude. That's cool."
+
+R'nice says "If he's not wearing any of these, he can't crose the river."
+
+DAB says "perhaps he/she can drown?"
+
+R'nice says "That's phase 1. If you get that far, we'll make it a little tougher: If he's wearing the jet pack AND in any way has the diving suit, he can't fly because the diving suit is too heavy."
+
+R'nice says "And if he's wearing the diving suit but carrying the jet pack, he can't go because going underwater will ruin the jet pack."
+
+R'nice says "And finally, for extra credit, Renth should be able to fly without needing the jet pack, and carrying anything he wants."
+
+R'nice says "And *all* ofthis should happen just by the player typing 'east'."
+
+Michel grabs his pencil in his fist and starts scribbling in his notepad.
+
+DAB ditto
+
+R'nice says "Now, to start with, we don't want a zillion 'east' exits, so you're gonna name your east exit '<your name>_east'"
+
+R'nice says "I have made 100 unlinked exits here, named 'exit_<number>' for you to make your own."
+
+R'nice says "Step one is to think about the problem. How would you do it? Sometimes you need to understand the problem before you can understand the solution."
+
+DAB says "I'm just going to watch if thats ok?"
+
+R'nice says "That's ok, DAB"
+
+Squeaky sighs and can't get hers to open.
+
+Farward thinks out loud. "I've got all the pieces, but I don't know enough about the lock language to put them together."
+
+R'nice dropped SIGN: Destinations.
+
+R'nice will be right back
+
+R'nice has left.
+
+Kahlua has right.
+
+R'nice arrives in a flash of wizardly brilliance!
+
+R'nice has arrived.
+
+Renth is very happy to see R'nice!
+
+Michel paths Renth.
+
+Michel blinks.
+
+Kahlua /dev/nulls Michel
+
+R'nice says "Ok, there are three different paths across the river. The sign gives you the destination room numbers. I just set them LINK_OK"
+
+Squeaky sighs and will watch, being unable to open it right
+
+R'nice says "Reminder: In order to make somebody else's exit your own, you have to @link it"
+
+Michel says "Gar."
+
+Farward says "And in order to @open an exit, you have to own the room you're in, right?"
+
+Michel says "Oh, now we get interesting."
+
+R'nice says "RIght, which is why I the 100 exits for you guys to @link"
+
+Michel says "Oh, I get it."
+
+There's only ONE Empedocles says "So you don't @open the exits! You @link them"
+
+R'nice says "You can't @open an exit here, but you can @link one of the ones I made and rename it and all."
+
+Squeaky says "What number are the ones you made?"
+
+R'nice says "exit_1 to exit_100"
+
+Michel says "He made exit_1, exit_2, exit_3 and so on."
+
+Squeaky says "Okay"
+
+Sydney says "This can be done without the use of @installed exits, right/"
+
+R'nice says "And of course, all the right messages should happen. If the person flys across, everybody else should see an osucc about them flying away. If they go diving, they should see the message about diving"
+
+Ransom comes down the trail from the west.
+
+Ransom has arrived.
+
+R'nice says "I don't recall anybody promising that, Sydney"
+
+Michel says "I took 90, 91 and 92, for your information."
+
+Farward isn't getting it. "The HELP for @LINK does not help me."
+
+Sydney says "Okay. I'm just checking."
+
+Michel says "s/your/y'alls/"
+
+Squeaky can't do the @link right..
+
+R'nice says "@link <name of exit> = #XXXXX (where XXXXX is the number of the place you ar linking it to)"
+
+Squeaky says "I did that"
+
+R'nice says "And what happened?"
+
+R'nice says "First off, show me exactly wha tyou typed"
+
+Squeaky says "I typed > @link Squeaky_east = #43182 and it said " don't see that here"
+
+There's only ONE Empedocles says "That's not the name of the exit. Yet."
+
+Michel says "he speaks sooth."
+
+R'nice says "As I said, the exits I made for you to link are named exit_1, exit_2, exit_3, etc"
+
+Squeaky says "Er, which exit numbers should I take?"
+
+R'nice says "Any one that isn't taken"
+
+R'nice says "Just try one. Pick a random number. Try 53."
+
+Squeaky says "I'm taking 69, 70, 71"
+
+Michel has 90-92. Don't take those. Nyah.
+
+R'nice says "once you @link it, you own it, and can use @name to change its name to Squeaky_est"
+
+Dilettante says "What are the DB#'s of the 3 objects?"
+
+Squeaky says "Okay..Thanks :>"
+
+Dilettante is taking 47-49
+
+Michel has left.
+
+Michel has arrived.
+
+R'nice just set the objects xcamine_ok so you can see the #'s
+
+Michel has left.
+
+Michel has arrived.
+
+R'nice says "While you're all pondering this, I'm gonna go put a couple quick desc's on the other rooms."
+
+R'nice has left.
+
+Farward says "Oh, we have to go to one of three different places based on what we're carrying (or are), based on typing one command? That's not as easy as I thought."
+
+Michel grins.
+
+Sydney says "If we set the name of each exit to have the 'east' name as well as its other name (like Sydney_jet_exit;east;e), will it send the player through the one he can pass, or will it go belly-up?"
+
+Farward has left.
+
+Michel
+
+Contents:
+
+spynet
+
+Notepad
+
+Metallic-blue-colored gumball
+
+Test Object
+
+Mathematical puzzle-box
+
+Missive for Michel
+
+Descs and Functions
+
+Khaki-colored gumball
+
+Kahlua gave you to Michel.
+
+Michel takes you in hand.
+
+You are sitting high atop Michel's shell.
+
+Looking around, you can see:
+
+West Bank
+
+You are standing on a grassy clearing, with woods to the north and south. A trail runs from the west, and ends here. To the east your way is blocked by a wide river.
+
+Contents:
+
+Michel
+
+Ransom
+
+SIGN: Destinations
+
+KhaOS
+
+Dilettante(#58543PXec)
+
+Kahlua(#35157PMSLXeonZc)
+
+Squeaky
+
+Sydney
+
+DAB
+
+Renth(#4096PLeTc)
+
+a jet pack(#29006XI)
+
+a bathing suit(#29309XI)
+
+a heavy diving suit(#29007XI)
+
+Obvious exits:
+
+Squeaky_on Squeaky_under Squeaky_over
+
+R'nice has arrived.
+
+Renth is very happy to see R'nice!
+
+R'nice says "How's everybody doing?"
+
+Farward comes down the trail from the west.
+
+Farward has arrived.
+
+Squeaky says "Better than I should, I guess"
+
+Michel is almost done.
+
+Dilettante says "How do we link them together to be activated by "east"?"
+
+R'nice says "Yes, Dilettante :) How, indeed! :)"
+
+R'nice says "That is, of course, the point of this exercise :)"
+
+Dilettante says "I set all the @locks, but... I don't know how :)"
+
+Michel grins.
+
+Sydney says "If we set the name of each exit to have the 'east' name as well as its other name (like Sydney_jet_exit;east;e), will it send the player through the one he can pass, or will it go belly-up?"
+
+There's only ONE Empedocles says "Using just the locks COULD work; it was how it used to be done in old MUD...but that won't work with all of you, they'd interfere."
+
+There's only ONE Empedocles says "But TIM can do it much niftierly."
+
+R'nice says "It willl randomly select an one of the exits, and pass or fail it."
+
+R'nice says "In short, that's not a good enough solution."
+
+Sydney says "Buh. That's not what I want."
+
+Michel says "Oh, this is rather difficult."
+
+There's only ONE Empedocles recalls that when only one was passable, it would ALWAYS pick the passing one, R'nice. But again, in the class setting that is unacceptable.
+
+R'nice says "Well, the random slection thing is how I *remember* it working, and if I have to I'll go and recode TIM so that it *does* work that way, just to prove the point. For this class, that solution isn't good enough :)"
+
+There's only ONE Empedocles says "Random selection is when there's more than one that's passable, I think. And it's not even good random; you can't use it for randomness."
+
+There's only ONE Empedocles says "It's like 50% for the first, 25% for the second, etc."
+
+R'nice nods
+
+Michel says "Oh, I think I know how to do this."
+
+Dilettante says "What if you booleaned your @locks so that there are no overlaping successes?"
+
+Michel says "No, wait. Damn you, R'nice. :)"
+
+There's only ONE Empedocles says "Then it would FAIL one randomly,"
+
+Michel says "So it's clear we can't name the exits the same name and expect the @Locks to figure out which one to go through, right?"
+
+There's only ONE Empedocles says "Just forget that option."
+
+R'nice says "Right. Even if that actually works, for this class, you can't do that."
+
+Michel says "Fair enough."
+
+R'nice says "Because I designed the class on the premise that that doesn't work."
+
+R'nice says "Ok, I expect that everybody is currenlty making/has made three different exits to the three different places, with appropriate locks. Is this so?"
+
+Sydney's aren't locked.
+
+Sydney will fix that.
+
+Michel is almost done.
+
+R'nice says "And appropriate succ,osucc,fail,ofail,odrop, of course"
+
+Sydney says "Fer Pete's Sake."
+
+Squeaky says "I, uh, can't do locks :?"
+
+R'nice says "What do you mean, you can't do locks?"
+
+Squeaky never learned how :/
+
+R'nice could've sworn locks had been covered in previous classes. This is supposed to be the advanced course, isn't it?
+
+DAB says "gtg"
+
+DAB says "good bye everyone"
+
+DAB waves
+
+Squeaky says "Yeah..but, I've been hoping to learn by coming here, too. I couldn't understand the @lock class."
+
+R'nice says "Emp, would you please quietly help Squeaky with logs?"
+
+DAB goes home.
+
+DAB has left.
+
+R'nice s/logs/locks
+
+R'nice says "Oh yay, he decided to idle on me."
+
+Squeaky says "If someone pages me the syntax, I'll keep trying."
+
+Michel will help Squeaky.
+
+Squeaky hugs Michel.
+
+R'nice says "Thanks, Michel."
+
+R'nice says "Oh, one more think, everyone please set your exits !dark, so I can have an easier time seeing what they are."
+
+There's only ONE Empedocles is moving tomorrow; was packing and also emptying out some of the most heinous containers of spoiled food in history.
+
+R'nice says "Raise yoru hand if you think you have reached this first milestone."
+
+R'nice says "That is, when you have reached it."
+
+Michel raises his hand.
+
+Sydney has set all her @succ and @osucc but what to put for @fail and @ofail? Buh.
+
+R'nice says "Actually, don't worry about fail and ofail right now."
+
+Dilettante raises his hand, he thinks...
+
+Kahlua goes home.
+
+Kahlua has left.
+
+Farward raises his hand with reckless confidence.
+
+Michel glares at Farward sullenly.
+
+R'nice says "Ok, some of you have the wrong lock. + is the lock for carrying. I said the person has to be *wearing* the diving suit or jet pack, etc"
+
+Dilettante says "Ah."
+
+There's only ONE Empedocles peers at help files to remember THAT one.
+
+Sydney taps her fingers on her keyboard, muttering. "holding, wearing... buh."
+
+Squeaky thinks she's got the exits locked.
+
+There's only ONE Empedocles says "HELP @LOCK LANGUAGE"
+
+R'nice says "It's <, I belive"
+
+Michel nods.
+
+Farward says "HELP @LOCK LANGUAGE comes damned close to overflowing my scrollback buffer."
+
+Sydney printed it out.
+
+R'nice says "Squeaky, you've got the same problem. You used + in the locks, which means it checks for the preson carrying the thing. We want to chec if the person is *wearing* the thing. For that, you use the < lock"
+
+Bockward has arrived.
+
+Farward says "Good, none of my exits succeed yet. :)"
+
+Michel says "Also called the wocka locka."
+
+Michel ducks
+
+Squeaky says "Wearing jetpack, too?"
+
+Michel nods to Squeaky. Same for the bathing suit.
+
+Squeaky says "And diving suit..must be < for all, okay"
+
+R'nice was gonna mek you have to hold something, but couldn't think of anything that made sense :)
+
+Mechano-Whatzit Mark I has arrived.
+
+Sydney yanks her 'bot butler out of her bag and chucks it onto the floor.
+
+Mechano-Whatzit Mark I clanks loudly, wobbling precariously, then slowly rights itself.
+
+Mechano-Whatzit Mark I buzzes, "You rang?"
+
+There's only ONE Empedocles holds his breath,
+
+Dilettante says "Ish it right now?"
+
+Farward says "A crow feather for flying."
+
+Michel says "Oars in a rowboat. ;)"
+
+Michel says "ooh, good one, Farward."
+
+R'nice says "Looks good, Dilettante"
+
+Sydney raises her hand, sans fail messages. ;)
+
+Michel needs to go to bed. Is someone logging this?
+
+Squeaky is.
+
+R'nice says "You're gonna go to bed right when we're about to do the magic part? :)"
+
+Michel says "Well, I'll stay up for a few more minutes, but get on with it."
+
+Sydney says "There's an advantage to being unemployed. I can stay up late. :)"
+
+R'nice says "Ok. Some of you don't have the messages quite right, but that can be fixed as we go."
+
+Farward says "I'm being lazy and not checking for wearing/holding the jetpack to fail the dive. I don't feel like doing the deMorgan transformation."
+
+There's only ONE Empedocles transforms into DeMorgan. Ewww.
+
+R'nice says "For instace, sydney's swim exit's succ talks about putting on the bathing suit, but in fact the lock requires (correctly) that the person *already* be wearing the bathing suit"
+
+Michel transforms into fourier. Ow, that's gotta hurt.
+
+R'nice says "So the question is, now, how do we tie all this together, and end up with just one 'east' exit that does the right thing?"
+
+There's only ONE Empedocles muahahahas, knowing what's coming.
+
+R'nice says "What we essentially want is to be able to go through multiple exits at once, to proceed from one exit to the next"
+
+Farward mumbles "@installed exits succ"
+
+Michel says "Whatchoo talkin' 'bout, Willis?"
+
+R'nice says "We'd like to check if the person can fly across, and if they can, let them. If not, go on to check if they can dive across. If not, try swiming. And then, only if swiming fails, should the whole thing fail."
+
+There's only ONE Empedocles bahahahas. R'nice is not content to teach an "advanced" class. Going all the way to "insanely powerful" class.
+
+R'nice says "And here is where @installed exits come in. :)"
+
+Michel waves his magic wand around. He needs bigger sparkles.
+
+There's only ONE Empedocles says "@installed exits do NOT succ. The rool.!"
+
+Sydney oohs. "Insanely powerful".
+
+Michel says "@install me/coding_skills=isanely_powerful"
+
+R'nice says "What we really want is an 'east' exit, which checks for the jet pack, and flies you across if you can, and if NOT: go on to the swim exit"
+
+R'nice says "So since we're gonna start with the jet pack, more or less arbitrarily, everybody name your flying exit to <your name>_east"
+
+There's only ONE Empedocles says "There ARE problems in the world that can't be solved with @installed exits, you know, R'nice. Not many though. Perhaps three."
+
+R'nice says "Now comes the magic. If the fly succeeds, they'll fly, we're all set. But if the fly fails, we want to now go on to the swim exit"
+
+R'nice says "For the purposes of discussion, I'm just gonna call it 'swim', even though yours is named Sydney_swim or Squeaky_on or whaatever"
+
+Michel says "oops, I did mine backwards, but hey, life sucks. I'm off to bed, R'nice. Thanks for the lesson!"
+
+R'nice says "So you want to do this: @install east/fail = swim"
+
+R'nice says "For east, of course, use your east exit"
+
+R'nice says "What this tells the game is: Take the east exit, and hook up the swim exit as its FAIL exit. That is, when east fails, go on to try swim."
+
+R'nice says "This actually will take the swim exit *out of the room* and hang it on the east exit instead."
+
+Farward says "Um. Shouldn't we have set the swim's fail exit first?"
+
+R'nice says "Well yeah, but let it go."
+
+Farward says "Okay."
+
+R'nice says "Now when you have done that, examine your east exit."
+
+Shrooms comes down the trail from the west.
+
+Shrooms has arrived.
+
+Michel will idle through the rest of class. :)
+
+R'nice says "Ok, Michel :)"
+
+Shrooms bounces, dragging his books behind him.
+
+Shrooms says "Am I late? Am I late?"
+
+R'nice says "Extremely late :)"
+
+R'nice says "See how the game reports that you have a fail exit installed"
+
+Shrooms runs to his table and pretends nothing has happened.
+
+R'nice says "Notice that the *name* of the exit no longer matters. Nobody is ever gonna type the name to go through the exit, they're gonna go through the exit by going through the east exit first"
+
+R'nice says "Now, then the next thing is we want *that* exit, the swim exit, to in turn fail by trying the dive exit"
+
+R'nice says "now, I don't know if this works, but we're gonna try it and find out. We can't just type: @install swim/fail = dive, because it won't find the swim exit, now that it's not in the room anymore"
+
+Farward says "It works."
+
+Squeaky says "It worked when I used db #s"
+
+Shrooms snickers.
+
+R'nice says "But it might work if we use the db #. Try doing @install #XXXXX/fail = dive (where XXXXX is the number of your swim exit"
+
+Squeaky always uses db #'s after a building accident :/
+
+R'nice says "looking good, gang"
+
+R'nice says "Now you see why I said we can not owrry about the fail/ofail yet. Because actually, we only need them on the last one in the chain. Set a fail/ofail on your dive exit if you haven' talready"
+
+There's only ONE Empedocles woos; found the letter I got from Armin Shimerman.
+
+R'nice says "Raise your hand when you're done."
+
+Squeaky raises her hand
+
+Shrooms raises his hand. "Uh... can I go to the bathroom?"
+
+R'nice points Shrooms to the woods
+
+There's only ONE Empedocles says "Not here, please."
+
+R'nice says "Ok, Squeaky, you wanna be the guinea pig? :)"
+
+Squeaky says "Yeah, because I set them wrong"
+
+R'nice will be the player
+
+R'nice says "Ok, all I got was: You can't go that way."
+
+Sydney raises her hand.
+
+R'nice tries Sydney's
+
+R'nice walks up to the riverbank as if to cross, but stops.
+
+Farward raises his hand.
+
+Squeaky says "I made it seast, just in case it got confused with all the easts"
+
+KhaOS goes for a nap.
+
+KhaOS merges his consciousness with that of his tway, and the monarch, Empedocles, emerges.
+
+Dilettante is confused with where to stop. He doesn't know @install.
+
+Dilettante says "Er, start."
+
+KhaOS goes home.
+
+KhaOS has left.
+
+R'nice picks up a jet pack.
+
+R'nice puts on his jet pack.
+
+R'nice fires up his jetpack and zooms across the river.
+
+R'nice has left.
+
+R'nice has arrived.
+
+Renth is very happy to see R'nice!
+
+R'nice takes off his jet pack.
+
+R'nice dropped a jet pack.
+
+R'nice picks up a heavy diving suit.
+
+R'nice puts on his heavy diving suit.
+
+Shrooms says "@install <exit db>/<type of exit you want to install on>=<exit you just created>, if I remember well. But nevermind. :)"
+
+R'nice puts on the diving suit and jumps into the river. A few minutes later you see him climb up onto the opposite bank.
+
+R'nice has left.
+
+R'nice has arrived.
+
+Renth is very happy to see R'nice!
+
+R'nice takes off his heavy diving suit.
+
+R'nice picks up a bathing suit.
+
+R'nice puts on his bathing suit.
+
+R'nice ducks out of sight briefly and reappears wearing a cute little bathing suit. He dives into the river and swims across.
+
+R'nice has left.
+
+R'nice has arrived.
+
+Renth is very happy to see R'nice!
+
+R'nice takes off his bathing suit.
+
+R'nice dropped a bathing suit.
+
+Squeaky woo
+
+R'nice says "Looks good!"
+
+Dilettante says "I get "You can't install on that!""
+
+R'nice says "What did you type, Dilettante?"
+
+Sydney's messages, as you said, are off. But that can be fix-ed.
+
+R'nice says "proeceed to do so, Sydney :)"
+
+Dilettante says "@install #31285/fail = dilettante_under"
+
+Squeaky says "Use the db # for Dil_under"
+
+Dilettante says "Same message."
+
+R'nice says "#31285 is the room for on the river. You want to install on your exit, not on that room"
+
+Squeaky says "Hrmm"
+
+Dilettante says "Oops..."
+
+Dilettante slaps himself. hard.
+
+Sydney says "Are the destinations on the other side of the river?"
+
+Farward says "Nope. They're in the middle of the river."
+
+Sydney says "Okay."
+
+R'nice says "Try them, Sydney."
+
+Sydney picks up a bathing suit.
+
+Sydney puts on her bathing suit.
+
+Sydney ducks out of sight briefly and reappears wearing a cute little bathing suit. She dives into the river and swims across.
+
+Sydney has left.
+
+Sydney has arrived.
+
+Sydney takes off her bathing suit.
+
+Sydney dropped a bathing suit.
+
+R'nice says "WHo's still not done?"
+
+Dilettante Dilettante gets thrown for a loop by the raging river.
+
+Dilettante Dilettante gets thrown for a loop by the raging river.
+
+Dilettante says "I screwed up somewhere. I got my @fail echoed."
+
+Squeaky picks up a bathing suit.
+
+Shrooms says "And you put a %n in there somewhere."
+
+Squeaky puts on her bathing suit.
+
+Squeaky swims over the river, wearing the bathing suit, doing the best darned dog-paddle you ever saw!
+
+Squeaky has left.
+
+Farward tries to cross the river, but he isn't wearing a swimsuit, or a jetpack, or a diving suit. Or maybe he is wearing a jetpack, but the diving suit he has is too heavey. Or maybe he is wearing a diving suit, but he can't go into the water without ruining the jetpack.
+
+Squeaky has arrived.
+
+R'nice says "Yes, you know why, Dilettante? Because both of the exits have the same @fial message, and each one fails, so each one gets printed"
+
+Squeaky takes off her bathing suit.
+
+Squeaky dropped a bathing suit.
+
+R'nice says "If you made the fail on your 'east' exit be: You don't have a jet pack, so you can't fly across"
+
+R'nice says "And the fail on the installed 'swim' be: You can't go swimming without a bathing suit"
+
+Dilettante says "Am I supposed to remove all @fail and @ofail on all the exterior exits?"
+
+R'nice says "You can remove them, or set them to something that says more clearly why it fails, like I just described"
+
+Dilettante says "And only keep those on the deepest level?"
+
+Squeaky woo
+
+R'nice says "Now, when you're done up to this level, the next level to take it to is this: If the person is *carrying* or *holding* the jet pack but not wearing it, it should say something like 'You could fly over if you were wearing that jet pack.'"
+
+Farward flips the switch on his jet-pack and flies over the river but he is carrying the diving suit! He crashes to a horrible death.
+
+Farward walks into the river wearing the underwater diving suit but he is carrying the jet pack. He ruined it, the big goof!
+
+Farward picks up a bathing suit.
+
+Farward puts on his bathing suit.
+
+Farward splashes into the river and starts swimming.
+
+Farward has left.
+
+Farward has arrived.
+
+Dilettante picks up a jet pack.
+
+Farward takes off his bathing suit.
+
+Farward dropped a bathing suit.
+
+Sydney forgot about the mulit-level thingy.
+
+Dilettante says "I screwed up..."
+
+Dilettante says "Oops... I set the layering wrong :\"
+
+R'nice tries to figure out what dilettante did...
+
+Dilettante says "I made a loop... I think..."
+
+R'nice says "I can't find where your fly one went to"
+
+Dilettante says "The "on" exit doesn't seem to exist."
+
+Dilettante says "Er, fly one"
+
+R'nice says "oh my! You installed it on itself! Even *I* didn't know you could do that! That's a bug!"
+
+Dilettante says "Oh dear..."
+
+Dilettante says "I thought I didn't :\"
+
+R'nice says "Shit. That's a real problem. Don't do anything with it, it actually could screw up the database."
+
+Dilettante nods.
+
+Shrooms applauds Dil.
+
+Farward says "Wow. A *big* bug."
+
+R'nice says "Yes, a big one. I *never* thought of that."
+
+Dilettante gets out a REALLY BIG MARTEL DE FIR and SMACKS himself with it.
+
+R'nice says "Just make a new exit."
+
+Shrooms says "Nobody ever thought of installing exits on themselves?"
+
+Farward says "It would be useful only for making useless loops."
+
+R'nice says "If anybody did, they never told me about it"
+
+Dilettante says "Which could... if used..."
+
+Dilettante says "Crash TIM?"
+
+R'nice says "Possibly. So don't do that."
+
+Dilettante nods.
+
+Squeaky says "Couldn't Dil just @destroy it?"
+
+R'nice says "No!"
+
+Farward says "I envy you, Dil. The bug *I* found the other day is much more benign."
+
+Farward says "Clock, roll a 0. :)"
+
+Sydney says "What's it do?"
+
+R'nice just chowned it to himself, so that nobody can fuck with it.
+
+Shrooms says "Hmph. Only bug I found out was that you could command the Old Man if you used +aside and square brackets."
+
+Dilettante says "Oh dear..."
+
+Shrooms says "Or was it curly brackets? One of those."
+
+Farward says "My pet bug lets you see poses when TIM is set globally dark."
+
+R'nice says "So has anybody done the last thing I said? A separate message if you are holding but not wearing the appropriate item?"
+
+Squeaky sighs and can't figure it out :/
+
+Farward says "I'm holding at this level, thanks."
+
+R'nice says "The solution, squeaky, is you need more exits in the chain. :) Have the first exit check if they have the jet pack in any way. If not, the FAIL exit goes on to check about swimming. If so, you install a SUCC exit to check if they are actually 8wearing* the thing"
+
+R'nice says "That way the fail on that exit can tell them to wear it."
+
+R'nice says "in other words, for each different kind of success or failure you might want to print a special message for, you have a separate exit with a separate lock and separate @fail/@ofail and/or @succ/@osucc."
+
+R'nice says "you can build up a whole tree of these things, and the game walks through the tree and checks the locks and goes through the right exits, all automatically"
+
+Squeaky says "Oh man. How do I add exits to already existing exits?"
+
+Farward says "The flow gets very complicated at that level. You still want to go ahead and check for the swimsuit if you're merely carrying the jetpack."
+
+Sydney's brain hurts.
+
+Dilettante dropped a jet pack.
+
+Squeaky wishes Territan were here :<
+
+R'nice says "So it's midnight, we should wrap up, at least formally. But I hope that this gives you some glimmer of the power of @installed exits and what they can be used for"
+
+Dilettante flies like a mosquito on No-Doz.
+
+Dilettante has left.
+
+Farward picks up a jet pack.
+
+Farward tries to cross the river, but he isn't wearing a swimsuit, or a jetpack, or a diving suit. Or maybe he is wearing a jetpack, but the diving suit he has is too heavy. Or maybe he is wearing a diving suit, but he can't go into the water without ruining the jetpack.
+
+Farward puts on his jet pack.
+
+Farward takes off and soars over the river.
+
+Farward has left.
+
+Squeaky says "Thanks R'nice. You explained it well, considering I shouldn't understand it :)"
+
+Farward has arrived.
+
+Farward takes off his jet pack.
+
+Farward dropped a jet pack.
+
+Dilettante comes down the trail from the west.
+
+Dilettante has arrived.
+
+R'nice smiles. "Thanks, Squeaky :)"
+
+Squeaky says "I like these classes, even if they're hard :>"
+
+Sydney thanks R'nice for the @installed exit lesson.
+
+R'nice says "When you get right down to it, that's really what installed exits are all about: You hang an exit off of something else (a person, a thing, another exit), just to give you a holding place for succ/fail messages and locks"
+
+Territan comes down the trail from the west.
+
+Territan has arrived.
+
+Dilettante picks up a jet pack.
+
+Squeaky SqUeAk!
+
+R'nice says "I don't expect that everybody has it down 100 percent. We will do another one similar to this sometime so that people get more practice with it."
+
+Squeaky says "That'd be good :>"
+
+Dilettante gets tossed by the river into a convenient mud hole.
+
+Dilettante puts on his jet pack.
+
+Dilettante flies like a mosquito on No-Doz.
+
+Dilettante has left.
+
+Dilettante has arrived.
+
+Squeaky picks up a bathing suit.
+
+Dilettante takes off his jet pack.
+
+Dilettante dropped a jet pack.
+
+Farward @oldfogeys. "Back in my day, we didn't have poses. We had to use @fail messages. And we liked it!"
+
+Squeaky says "Hey! My @fail works!"
+
+Dilettante says "Is my @ofail working?"
+
+Squeaky puts on her bathing suit.
+
+Squeaky swims over the river, wearing the bathing suit, doing the best darned dog-paddle you ever saw!
+
+Squeaky has left.
+
+Farward says "You got tossed into the mud."
+
+Squeaky has arrived.
+
+Dilettante says "Thanks."
+
+Squeaky takes off her bathing suit.
+
+Squeaky dropped a bathing suit.
+
+Shrooms woo hoos
+
+Dilettante picks up a bathing suit.
+
+Dilettante puts on his bathing suit.
+
+Dilettante gets tossed by the river into a convenient mud hole.
+
+Dilettante Dilettante hops into the water and tries to ford it.
+
+Dilettante has left.
+
+Shrooms says "That sounds a little bit too kinky, Squeaky."
+
+Squeaky says "Well, I'm halfway there. I can't do the complex @fail, but the simple ones work."
+
+Dilettante has arrived.
+
+Dilettante says "Hmmm..."
+
+Dilettante says "I hit a fail barrier, apparently..."
+
+Dilettante takes off his bathing suit.
+
+Dilettante dropped a bathing suit.
+
+Bockward flips the switch on its jet-pack and flies over the river but it is carrying the diving suit! It crashes to a horrible death.
+
+Bockward walks into the river wearing the underwater diving suit but it is carrying the jet pack. It ruined it, the big goof!
+
+Sydney says "I have a question which at this time of night may be an obvious thing. How do you make it say '<player> puts on <his/her/its> bathing suit'?"
+
+Squeaky says "Isn't that = puts on Squeaky suit?"
+
+Farward says "Substitution variables. %p for <his/her/its>"
+
+Squeaky says "percent n"
+
+Sydney says "Yeah, but when you wear it?"
+
+Squeaky says "Oh p..."
+
+Dilettante says "Type help subs for the whole list."
+
+R'nice says "I think that's the default message"
+
+Farward says "Aha. To change it, use an @installed exit. :)"
+
+Shrooms says "As usual. :)"
+
+Sydney says "A wear exit?"
+
+Farward says "I must release the modem line. Catch you all later."
+
+From Farward's hand, hi ho waves goodbye.
+
+Farward goes home.
+
+Farward has left.
+
+Sydney says "You can set the @succ/@osucc for the thingy getting picked up, but there's n othing for wearing it."
+
+Squeaky says "Aigh. The help @install is huge!"
+
+R'nice says "There's actually an installed exit for that, Sydney :) Then you set the @succ/@osucc on the installed exit"
+
+Sydney says "Okay ... I think I can compute that. :)"
+
+R'nice says "it's probably @install bathing suit/WEAR = <exit>"
+
+Sydney says "You would set the wear exit on the thingy?"
+
+R'nice says "Right"
+
+Sydney says "And the @osucc on the <exit> in what you just typed."
+
+R'nice says "Right"
+
+Territan says "Ah, the Installed Exits class. I'm sorry I missed it."
+
+Sydney says "Geez-O-Pete."
+
+R'nice says "No, Territan. The *first* installed exits class :) We barely scratched the sruface :)"
+
+Sydney says "Have an exit or eight thousand. :)"
+
+Territan says "And I heard you had some PROBLEMS too..."
+
+R'nice says "And yes, 'puts on her bathing suit' is the default message."
+
+R'nice says "The code actually cleverly transforms the name of the suit into the proper possessive automatically. Sometimes I impress even myself :)"
+
+Sydney says "With the addition of a wear exit."
+
+R'nice says "No, even without a wear exit. THat's the default message, without a wear exit"
+
+Sydney says "I'm sure I've never seen that before."
+
+R'nice says "I'm sure the name of the thing has to start with 'a' or 'an' for it to work"
+
+Sydney says "Does it have to do with the fact that it's called 'a bathing suit' instead of just 'bathing suit'? Yeah."
+
+Sydney says "But dat's tres cool!"
+
+R'nice says "Thanks!"
+
+R'nice says "It has to have a or an, because you might not want it to say, for instance: R'nice puts on his Sydney"
+
+Sydney laughs. "Well, no."
+
+Territan says "Still, it looks like the transcripts will be important to me. All I need to do is try to recreate the Handcuffs of Love, and find someplace to link to in Emp's House of Ill Repute."
+
+Territan now suspects he has a natural talent for killing conversation.
+
+Territan goes home.
+
+Territan twiddles something on his clothing and metamorphoses into something that's not there anymore. It's not a teleport, he just changed into something that was located elsewhere.
+
+Territan has left.
+
+R'nice says "heh, there are actually a couple more installed exit types than it says in the help file :)"
+
+Dilettante says "Night. Thanks!"
+
+R'nice says "No probl!"
+
+R'nice says "Anybody have any other questions? Otherwise, class is dismissed."
+
+Sydney says "I'm good. Thanks tons, R'nice!"
+
+R'nice says "No problem! HOpe it was helpful!"
+

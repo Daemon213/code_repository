@@ -1,0 +1,610 @@
+ 12/5/00
+
+Logfile from Online Gaming Resource_Siobhan
+
+Announcement: Siobhan announces "<interruption> Just a quick little reminder that the "Building Basics" class starts in just a few minutes. Please feel free to come to the Discussion Area if you're interested. It is for building beginners (i.e. anyone who's never built anything on a MUSH before or who feels they need a bit of refreshing). </interruption>"
+
+Mierin enters through the wooden door. It closes behind her with a soft 'click'.
+Mierin has arrived.
+
+Mierin wavies. :)
+
+Siobhan waves, "Hi Mierin. :)"
+
+You say "how are you?"
+
+Raziah enters through the wooden door. It closes behind her with a soft 'click'.
+Raziah has arrived.
+
+Siobhan waves to Raziah, "Hi there. :)"
+
+Raziah wavies, and figures she'll stop by, since she's always looking at help files whenever building =)
+
+Mierin is pretty good, thanks. How are you doing? :)
+
+Siobhan chuckles, "Well, I'll warn that this lecture starts right from the beginning... if I go too slowly or too quickly, please let me know, guys. :) /// Oh, I'm doing alright. I just have to slip afk for a moment for some headache meds... brb."
+
+Raziah grins... Oh... It's about the beginning part I always forget...
+
+Siobhan returns.
+Siobhan grins.
+
+You say "Well, it might be just us, but that's ok. Sometimes a smaller group works really well. :)"
+You say "Okay... I think I'm going to start."
+You say "If that's good with you two? :)"
+
+Raziah nodnods
+
+You say "Disclaimer: I'm logging this for the webpage, folks, so if you would like your name to be editted out, please let me know via page. I want to take this moment to thank you for showing up for the Building Basics class. So, let's get started... :)"
+You say "Okay, here's a quick run-down of the topics and concepts I'll be trying to cover tonight:"
+You say "1. A MU* is made up of Rooms which are connected by Exits. These are different from Things."
+You say "2. All exits are one-way streets. To be able to enter a room and go back to the original room, you need two exits: one leaving the original room that leads to the second room and one leaving that second room back to the original room."
+You say "3. When building, there are several commands, attributes and flags that you will use and set. We will cover some commands and attributes today. A command actively does something on the MU*. An attribute is something you set on an object which holds information (either plain text or code/commands). A flag is a setting you place on an object which tells the MU* how to react to the object in question or how to treat it. Tonight, we will look at some commands and attributes."
+You say "4. There are a few components which are important to building in regards to how much one can build. If these components weren't set, there would be no stopping how much you built. We will talk about @quota and money in this regard."
+You say "Okay, these aren't necessarily in order, however.. Heh. I might fix this in the log. So, any questions before I move on?"
+
+Raziah nopes
+
+You say "Okie... I'll move on then. :)"
+
+Mierin has disconnected.
+
+You say "1. THING, ROOM, EXIT - what's the difference between these objects? This is where we'll begin."
+
+Announcement: Moth announces "Good Evenin' Everybody... Just a last invite and offering for the building class tonight. For anyone interested, it's taking place in the Lecture Room -- just got started actually. You're all welcome to pop in and check it out!"
+
+You say "Ultimately, the MUSH (I will use this term as a generic one) classifies all of these as Objects. Characters are Objects, too. How it tells them apart is by the Type of Object. Type 'ex me'. In the second line or so, you should see a field called Type. You should see Player in that field. If you type 'ex here', you should see in the Type field: Room. This Type field tells the MUSH how to treat the Object. Those Objects with a Type: Player set can move around the MUSH once a person logs in under that name."
+You say "Think of Things, Rooms and Exits in this manner, if you will:
+
+- A Thing is an object which can usually be carried around by a player.
+
+- A Room is a more stationary object which composes the virtual space a player can move through. Imagine that it is like a room in your own home with a floor, ceiling and walls.
+
+- An Exit is an object which links the Rooms together on a MUSH which allows a player to move from one Room to another. Without Exits, it would be difficult to get to other rooms in a logical manner."
+
+You say "Does this make sense so far? :)"
+
+Raziah nods
+
+You say "Okay. :) Stop me at any time if I don't make sense, please. :)"
+Siobhan continues.
+
+Raziah nods
+
+You say "In a MUSH, a Room can portray an actual indoor room, or an area of outdoor space (or even outer/inner space, depending on the theme of the game). This is where where the concrete definition for a room and the VR definition of a Room on a MUSH might start to pull apart from each other. IRL, people do not usually refer to their backyard as a room. In a MUSH, a person's backyard would be described in a room, if they used it to RP in. In other MUSHes, sometimes entire forests are created by a series of Rooms, or even just one Room that's described in such a way as to emphasize the expanse of the space."
+
+Raziah nods
+
+You say "Exits are slightly different, too. All Exits are one-way only. One Exit leads from one Room to another, but not back again. Think of a door on a wall that opens into another room. You step through the opening into the new room, then look back at the wall and there is no door. That is, in effect, how an Exit works. To have a way back into that first room, you must create another Exit from the new room which leads back to the original room. Think of a pair of them as a doorway in your own home, where you pass through from the old room to the new room, look back and you can see into the old room and even walk back into it. That is how a pair of Exits work."
+You say "If exits, things and rooms are clear, I can move onto quota and money. :) If not, feel free to ask what questions you have. :)"
+
+Raziah is fine
+
+You say "Okay then... :) 2. QUOTA & Money"
+You say "Every Object (Thing, Player, Room, Exit, etc.) is assigned a DBREF# (or DataBase Reference number). Think of DBREF# as one of those numbers you pull out of the 'Please Take a Number' gizmos at the supermarket meat counter. Every time an Object is created, it takes one of those numbers and slaps it on its forehead, so to speak. That's the number it keeps until it is destroyed."
+
+Moth drops through a circular opening in the ceiling. With a sudden gust of air, the opening closes shortly after it arrives.
+Moth has arrived.
+Moth smiles, waves, don't mind me;)
+
+Siobhan waves to Moth
+You say "Everything with a DBREF costs quota and money. Quota is like building materials IRL: when you run out of it, you can't build anything else. You need to get more, or stop the project. Some MUSHes don't limit the quota given, while others only allow a small amount or you must request it as you need it."
+You say "Whatever the case may be, quota is usually needed when you are building. To see how much quota you currently have, type: @quota"
+
+Moth smiles, checks her @quota.
+
+Raziah okies... and has a question here
+
+Siobhan pauses. :)
+You say "Yes ma'am? :)"
+
+Raziah just curious on this Game, cause it says Quot - Lim and under it says 4 - 10... but under everything else the limit says 20... Just wondering it that's a mistake or something?
+
+Siobhan actually sees a different reading than non-wizzes, so let me call up yours.
+
+Name : Quot - Lim Room - Lim Exit - Lim Thin - Lim Play - Lim
+Raziah : 4 - 10 0 - 20 0 - 20 0 - 20 0 - 20
+
+You say "Hmm... good question. You know what? I really can't answer your question. :) I will admit this fully. I just logged onto another MUSH and typed @quota and got the same thing, so I'm not really sure how that's supposed to work. I've only ever paid attention to Quot - Lim."
+Siobhan can look into this, however, and try to get back to you with something on this. :)
+
+Raziah nods... Okie... Doesn't matter.. it was just curious, cause I've seen it work right elseMU
+
+Siobhan smiles, "Heh. My first class and I get stumped. *laugh* I love it. Oh, well, it might not matter, but you have me curious now. :) I will try to find out for you. :)
+You say "Alrighty... sorry about not really having an answer. Did you have any other questions about this, or should I move onward?"
+
+Moth says "That is weird..."
+
+Raziah is okie...
+
+You say "Yeah. I will look into this and get back to folks. If I find an answer, I'll tack on an after-class addition to the log. :)"
+You say "Okie, then... onward! :)"
+You say "Certain actions cost "money" on a MUSH, such as @digging an actual Room. Type 'i' to bring up your inventory list and look for "pennies" in it. It will tell you how many pennies you have accumulated and currently carry. These "pennies" are the "money" you spend to @dig, @create, etc."
+
+Raziah nods
+
+You say "Then type "help money" and take a peek at that.."
+
+Topic: MONEY
+
+You need money to build within the game, to run programmed objects or use certain other commands, or to buy things from vendors set up by other players. You can get money via one or more of these methods:
+
+You receive a daily allowance for each day you connect.
+You have a chance of finding money as you wander around areas that other people have built.
+Some MUSHes may implement a place where you can sell valuable objects for money.
+
+See also: @list costs, COSTS.
+
+You say "Basically, OGR doesn't have an IC economy system, but you do get the daily allowance for whenever you connect. To see what actions cost how many pennies, type: @list costs"
+
+Digging a room costs 10 Pennies and 1 quota.
+Opening a new exit costs 1 Penny and 1 quota.
+Linking an exit, home, or dropto costs 1 Penny.
+Creating a new thing costs between 10 and 505 Pennies and 1 quota.
+Creating a robot costs 1000 Pennies and 1 quota.
+Killing costs between 10 and 100 Pennies.
+You must spend 100 Pennies to guarantee success.
+Computationally expensive commands and functions (ie: @entrances, @find, @search, @stats (with an argument or switch), search(), and stats()) cost 100 Pennies.
+Each command run from the queue costs 1/64 Penny.
+A 10 Penny deposit is charged for putting a command on the queue.
+The deposit is refunded when the command is run or canceled.
+The value of an object is (<create cost> / 5) - 1.
+The default value of cloned objects is 10 Pennies.
+
+You say "So, as you can see, you need 10 pennies to create a room and 1 quota, then 1 penny and 1 quota per exit. So, if you wanted to create a room off of this room, with an exit entering it and an exit leaving it to come back here, it would cost you 12 pennies and 3 quota."
+
+You are carrying:
+You have 150 Pennies.
+
+You say "Any questions before I move on again? :)"
+
+Raziah nopes
+
+You say "Otay then... :) 3. DBREF"
+You say "I already touched briefly on what a DBREF# is in the Quota explanation. Type 'l me'. You should see your name, followed by a series of numbers and letters in round ( ) brackets. There should be a # sign and then some numbers after it like #123 or #1234 or something. Ignore the letters for now. That number is your PC's dbref#."
+
+Raziah nodnods
+
+You say "Every object on a MUSH gets a different number, so yours is unique. It's the database's way of keeping track of all the objects stored on it. Each number is a place holder in the database. This dbref# can be used when setting attributes such as @desc, @succ, @osucc, etc, but you must be careful when you own many objects that you type the correct number."
+You say "Example:
+
+Crossroads is dbref#0.
+
+If I wanted to @desc Crossroads, even from here, I could do so because I own it. So, intead of standing it the room itself and typing:
+
+@desc here=<Description>
+
+I could type instead:
+
+@desc #0=<Description>
+
+I could use #0 with such attributes whether I am in that room or not because the database knows I'm looking to @desc (describe) Room #0 (crossroads) with the <Description> I provided. It searches the listing, finds #0 and slaps that description on it. Make sense?"
+You say "If there's no questions about dbref#'s, I'll move onto the next topic which is where we start talking about the actual @dig command. :)"
+
+Raziah nods
+
+You say "Okie then... 4. Creating a Room. (Yay!)"
+You say "Creating a Room is different from creating a Thing. To create a bouquet of flowers (an Object), you'd just need to type:
+
+@create Bouquet of flowers
+
+WHAM! The flowers object has been created and it's sitting in my inventory (if I actually typed this command out)."
+You say "Creating a room is not as simple as that, unfortunately. Although you can technically create an object, enter it and use it as a 'room', it really isn't a widely accepted practice, not to mention that a series of objects don't connect like rooms do on a mush. It's much better to use the @dig command to create an actual Room instead of using @create to make a Thing which masquerades as a Room. (Why have a fake when you can have the real thing? *wink*)"
+You say "I will just start to go into how the @dig command works now. However, if there's something I'm not explaining well or if I'm going to fast, please stop me and ask questions. :)"
+
+Raziah modnods
+
+You say "er, too fast or too slow"
+You say "In its most basic format, the command to dig a room (from here) named "Sio's Abode" would be:
+
+@dig Sio's Abode
+
+However, this will only create a room named Sio's Abode, but it will not be attached to anything (not even this room). At this stage, it's considered a "floating" room."
+
+Raziah oohs... Neither
+
+You say "What's that? :)"
+
+Raziah laughs... Neither to fast nor too slow
+
+You say "Fab! :)"
+Sobhan continues then. :)
+You say "It is possible to slap exits on this floating room and link it to the grid appropriately, but I'll leave that for another class. Instead, I'm going to walk you through the easier, one-command way of digging. :)"
+
+Maelgwn enters through the wooden door. It closes behind him with a soft 'click'.
+Maelgwn has arrived.
+
+You say "So, if I wanted to dig a room which was called "Sio's Abode", with an entrance called "Sio's" and an exit leading back out from Sio's Abode to this room called "Out" (remember all exits are one-way, so you must create two), I can incorporate all this into one command line because the @dig command allows the following structure:
+
+Sio's Abode=Sio's,Out
+
+I just told the MUSH to @dig a room called "Sio's Abode", to open an exit from this room to "Sio's Abode" called "Sio's", and to open an exit in "Sio's Abode" which leads back here called "Out". The comma between the two signifies that they are two separate exits. The first one from this room and the second one leading back."
+Siobhan waves to Mael. :)
+
+Sio's Abode created with room number 2130.
+
+Opened.
+Linked.
+Opened.
+Linked.
+
+Discussion Area(#47RMSs)
+
+Many tables of varying sizes and shapes scatter the room, offering 'places' for people to sit and chat about whatever they so choose. Topics can range in here and this is not like the lecture room. This is a place for open discussion, not classes or lectures. Feel free to use this room as much as needed.
+
+Contents:
+Maelgwn
+Moth
+Raziah
+Obvious exits:
+Sio's Crossroads (S)
+
+Siobhan actually does this so you can see what I'm doing. :)
+
+Maelgwn bounds in, cause he forgot. *sheepish grin* Sorry! That and I had to vacuum my room, and I sucked up a spider with the vac, and... That's my day. ;)
+Maelgwn watches with intrest.
+
+Siobhan grins at Mael.
+You say "So, if you look at the room now, you'll see: Sio's Crossroads (S)"
+You say "Now, there's something missing from the exit called "Sio's" that "Crossroads (S)" has, right?"
+
+Maelgwn perks up? The Little (Sio). :)
+
+Siobhan grins, "Right. Well, I won't use 'Sio' as the shortform for the exit. I'll use 'sa' for "Sio's Abode" so that it doesn't conflict with me in the room or the 's' exit here that leads to the Crossroads."
+You say "I can add this to the existing edit, or when I'm typing the first @dig commandline, I can include the shortform.."
+You say "Say I wanted to have it so you could just type an 'sa' for the Sio's exit... and an 'o' for the out exit. Instead of typing the previous command line, I could type this now:
+
+@dig Sio's Abode=Sio's;sa,Out;o
+
+Maelgwn chuckles. That makes sense. :)
+Maelgwn didn't think that Sio made much sense, usually, but this... This is a revelation. ;) *thinks* wouldn't you want to have
+
+@dig Sio's Abode=Sio's (SA);sa,Out;o
+
+Maelgwn says "To get int he (SA) part?"
+Maelgwn apologises for typing, Eating lunch.
+
+You say "Okay, what does this mean now? I've added a ; to each exit and a shortform. The ; tells the MUSH that there are more 'aliases' that can be typed to successfully allow a person access through that exit. However, it still won't have the (SA) in the exit name yet. If you'd like to prettify it so that it shows the (S) and (O), I could just type:
+
+@dig Sio's Abode=Sio's (SA);sa,Out (O);o
+
+Siobhan was actually getting to that part. ;)
+
+Maelgwn winces and apologises for pre-empting, too. :)
+
+You say "It's ok Mael... I'm just trying to show the progression, that's all. :)"
+
+Discussion Area(#47RMSs) Many tables of varying sizes and shapes scatter the room, offering 'places' for people to sit and chat about whatever they so choose. Topics can range in here and this is not like the lecture room. This is a place for open discussion, not classes or lectures. Feel free to use this room as much as needed.
+
+Contents:
+Maelgwn
+Moth
+Raziah
+Obvious exits:
+Sio's (SA) Crossroads (S)
+
+Maelgwn snugglies Sio. I won't interrupt again. :)
+
+You say "So, if you look in this room now, you'll see the shortform has been added."
+
+Sio's (SA);sa(#2131EV)
+Type: EXIT Flags: VISUAL
+Owner: Siobhan Key: *UNLOCKED* Pennies: 0
+Source: Discussion Area
+Destination: Sio's Abode(#2130R)
+
+Siobhan patpats Mael. :)
+
+Maelgwn tests, using the alias 'sa'.
+Maelgwn has left.
+Maelgwn has arrived.
+
+You say "Type 'ex sa' if you'd like to see what the exit looks like. I've set it VISUAL so others can look."
+
+Maelgwn grins. "Works! :)
+
+Siobhan smiles. Thanks for testing it.
+
+Maelgwn didn't doubt it. :)
+Maelgwn wonders... You can have more that one alias, no?
+Maelgwn is pretty sure you can, but asks for the benefit of the log.
+
+Siobhan nods. If I wanted, I could do: @dig Sio's Abode=Sio's (SA);sa;sio's;sio's abode,Out (O);out;o
+
+Siobhan just often prefers the more direct approach sometimes. ;) But it's all about preference and what you're building at the time. But that's another class. ;)
+
+Maelgwn smiles and nods serenly. "Continue, Oh Wise one."
+
+Siobhan chuckles.
+
+Raziah grins
+
+You say "Any other questions before I move on?"
+
+Raziah nopes
+
+Maelgwn shakes his head and gets the gist. :)
+
+You say "Okay, I'm going to leave @dig for now and move on to @succ and @osucc, two attributes that most MUSHes insist you set on all exits."
+You say "5. @succ and @osucc on rooms vs exits"
+
+Maelgwn coos and peers at Sio... @succ... Sounds like my vacuum cleaner.
+
+You say "The attributes @succ and @osucc can be set on Objects. These attributes return messages to the player(s) when something successfully happens to that Object. If it's on a Thing, the message is returned if the Thing is picked up. If it's on an Exit, it returns the message when someone passes through the Exit successfully. And if it's on a Room, the message is returned when someone looks at the room."
+Siobhan grins at Mael.
+You say "The @succ message is shown to the player who affects the object. The @osucc message is shown to the players who are in the same room as the player who affects the object."
+
+Maelgwn winces a little. If a @osucc and @succ was on a room, and I looked at it 5 times in quick succession... That's not a pretty thought.
+
+You say "Make sense so far? I tend to remember that the 'o' in @osucc means 'other', which helps me remember that it's 'other' people who will see the message rather than the person affecting the object in question."
+Siobhan nods to Mael, "I'm getting to why this could be painful. ;)"
+You say "If you set a @succ message on a room, every time you look at it, you will get that message returned to you."
+
+Maelgwn bows down to the great Sio and puts a sock in his own mouth.
+
+Raziah ahhs
+
+You say "On the same note, if you set a @osucc message on a room, every time you look at the room, -others- in the room would get the osucc message. So, if someone comes into the room, that triggers the 'look' command which triggers the '@succ' and the '@osucc'. If 30 people enter the room, one person gets spammed 30 times (at least) that so-and-so just looked at the room carefully or whatever."
+Siobhan grins at Mael.
+You say "However, the @succ and @osucc are only triggered on an exit when someone passes successfully through an exit."
+
+Maelgwn just idly thinks that it might be like having a @emit in you @adesc... Whenever someone looks at your desc, the room gets, "<Person> shivers under <Otherperson>'s gaze", or words to that effect. *nods at Sio*.
+Maelgwn likes exits. They're do sweet and cuddly.
+
+You say "So, on the same note, that one person would see that 30 times... but only 30 times as folks leave the room. Whereas, if it's on the room, everytime someone typed 'look' to see the room desc or listing of folks in the room... that's 30+however many times people get curious about who's in the room or can't remember the room desc."
+You say "So, for the "Sio's (S)" exit, I'd set the two following attributes:
+
+@succ sa=You enter Sio's Abode.
+
+
+@osucc sa=enters Sio's Abode, leaving the discussion room.
+
+See how they work for exits?"
+
+Discussion Area
+
+Many tables of varying sizes and shapes scatter the room, offering 'places' for people to sit and chat about whatever they so choose. Topics can range in here and this is not like the lecture room. This is a place for open discussion, not classes or lectures. Feel free to use this room as much as needed.
+
+Contents:
+Maelgwn
+Moth
+Raziah
+Obvious exits:
+Sio's (SA) Crossroads (S)
+
+You say "So.. I'll pass through the exit so you can see what @osucc I just set."
+You enter Sio's Abode.
+
+Sio's Abode(#2130R)
+Obvious exits:
+Out
+
+Discussion Area
+
+Many tables of varying sizes and shapes scatter the room, offering 'places' for people to sit and chat about whatever they so choose. Topics can range in here and this is not like the lecture room. This is a place for open discussion, not classes or lectures. Feel free to use this room as much as needed.
+
+Contents:
+Maelgwn
+Moth
+Raziah
+Obvious exits:
+Sio's (SA) Crossroads (S)
+
+Maelgwn thinks - So, the @osucc automatically assign in your name?
+
+You say "Ah, right, thank you for bringing that up. That's right... when setting an @osucc, it automatically places the person's name at the beginning, as though it's a pose. You don't need the :, however, as it's assumed."
+You say "Any questions?"
+
+Raziah nopes
+
+Maelgwn sits to meditate on that. Nooooooooooo Questionssssssss... :)
+
+You say "Well, I can keep going or stop here. I don't have any prepared material, but I can talk about anything folks want to, if they want to. :)"
+
+Maelgwn grins. @drops and @odrops! ;)
+Maelgwn winks.
+Maelgwn continually gets then mixed up...
+
+Command: @drop <object> = <message>
+
+Attribute: Drop
+
+Sets the message that a player sees when he drops the object, or after he goes through the exit.
+
+Function references and %-substitutions are allowed in drop messages, and are evaluated when someone drops the object. In function references, 'me' refers to the object being dropped, while %-substitutions that refer to the enactor (such as %n, %#, %p, etc) refer to the dropper.
+
+This attribute is only meaningful for players and things, and will never be automatically triggered on other object types.
+
+Examples: <object> @drop vase = You gently put down the delicate vase.
+<exit> @drop elevator = The elevator doors close behind you.
+
+See also: drop, @adrop, @odrop, DROP-TO, EXITS.
+
+You say "That's technically for the next class... but... I can cover it if folks want to go further?"
+Siobhan doesn't mind. :)
+Siobhan honestly has never used @drop before.
+Siobhan will say this.
+You say "Ah, I see. Right. I know what it does now. I had forgotten about that. Mmm... folks up to talking about @drop and @odrop?"
+
+Maelgwn is... I always get them and @succs mixed up...
+Maelgwn munches on a pastie.
+
+You say "Okay, @drop emits a message to you once you've passed an exit successfully. Say the door leading into Sio's Abode has a spring on it. It's one of those screen doors that closes behind you so that you don't accidentally leave it open to let all the bugs in and such. A @drop and @odrop would work really well in this case. Most places insist you use @odrop on every exit, but it seems @drop is optional (since I've never had to use it until now). @odrop tosses a message to folks in the room where you're -going- to as you enter that room. This is where folks often get confused... let me try to explain."
+
+Maelgwn gets confused just listening. :) So an @drop is like a @succ, but after, not before? If you understand what I mean...
+
+You say "Okay... let me back up and go step by step."
+
+Maelgwn noddles. Good idea.
+
+You say "@succ is a message -you- see when you pass an exit, right?"
+
+Maelgwn nods. Yep. And an @osucc is what others see in the room when you pass the exit?"
+
+You say "So is @drop. You see the message stored in the @drop attribute when you pass an exit. (The details of where and when, I will get to.)"
+You say "You're jumping ahead of me, Mael. :)"
+
+Maelgwn jumps back. @drop is essentially the same as @succ.
+
+You say "No."
+You say "Not quite."
+
+Maelgwn means, in that they both @pemit to the person...
+
+You say "They are the same in that they both contain messages that -you- see when -you- pass through an exit."
+You say "They are different in that they @pemit that message to you in two different locations. :)"
+
+Maelgwn noddles. Leaving out when and where.
+Maelgwn tickles Sio. Jumping ahead of me. Bah. ;P
+
+You say "Hm?"
+
+Maelgwn chuckles and thinks about it. Right. So, we have @succ before we leave the room through the exit and @drop after?
+
+You say "Yes, exactly. The @succ and @drop are set on the -same- exit, but the @succ is shown just prior to you stepping through the exit, while the @drop is shown just after you step through the exit into the next room."
+
+Maelgwn says "Thus why @drop is optional - you can say the same in a @succ, pretty much."
+
+You say "Well, you can, but most places want you to have @succs set, too. It's pretty standard, in my experience, that places will ask for the @desc, @succ, @osucc and @odrop to be set on all exits."
+You say "So, @succ and @drop are clear?"
+
+Maelgwn nods. Finally! I used to just do it trial and error, and hope I got it right.
+
+Siobhan smiles.
+You say "Okay, next part..."
+
+Raziah has to run away.. bbl
+Raziah has disconnected.
+
+You say "@osucc gives the message to the others in the room you're leaving."
+You say "Right?"
+
+Saeran enters through the wooden door. It closes behind her with a soft 'click'.
+Saeran has arrived.
+
+Siobhan waves to Saeran. :)
+
+Maelgwn hankers down to do some learning. I'm going to jump ahead here... ;) If @osucc is an @emit to others in the room, then @odrp will be in the destination room. :)
+Maelgwn wavels.
+
+Saeran waves. :)
+
+You say "@odrop gives the message to the others in the room you're entering."
+Siobhan nods to Mael.
+
+Maelgwn noddles. @odrop! Typo.
+
+You say "So, let me set a @drop and an @odrop on Sio's..."
+
+Maelgwn notes that for us to see it, you'd set it on Out (O)?
+Maelgwn says "Cause it's a drop?"
+
+You say "Pardon?"
+You say "Set what on Out (O)?"
+
+Maelgwn says "If you were to go though Sio's, and come back, we'd see the @odrop that was set on Out (O)? Or am I just confused?"
+
+You say "Actually.."
+
+Maelgwn thinks we'd see the @osucc for Sio's as well...
+
+You say "I was only dealing with this exit, so I was going to suggest going into Sio's for a moment, then I'd pop into that room to show you what I set... but whatever works."
+
+Maelgwn chuckles. "Less work for us dear. :)
+
+Siobhan peers and tickles Mael, "And what happened to classes being interactive? :)"
+You say "Hang on. I'll go set that"
+
+You enter Sio's Abode.
+Sio's Abode(#2130R)
+Obvious exits:
+Out (O)
+Set.
+Set.
+
+Discussion Area Many tables of varying sizes and shapes scatter the room, offering 'places' for people to sit and chat about whatever they so choose. Topics can range in here and this is not like the lecture room. This is a place for open discussion, not classes or lectures. Feel free to use this room as much as needed.
+
+Contents:
+Saeran
+Maelgwn
+Moth
+Obvious exits:
+Sio's (SA) Crossroads (S)
+
+You enter the discussion area.
+Siobhan waves.
+
+Saeran points to "enters Sio's Abode, leaving the discussion room." That's the Osucc.
+
+Maelgwn is an advocate for getting others to do things for him. "So I don't practice what I preach. Don't hold it against me." ;)
+
+Maelgwn noddles at Sae.
+
+You say "Hm? What did I miss?"
+
+Maelgwn chuckles. I was responding to the 'What happened to interactive'. ;)
+
+You say "No, I meant Sae's comment? :) Sorry."
+
+Maelgwn thinks that the "Siobhan enters the room from Sio's abode." is the @odrop
+Maelgwn says "From Out (O)?"
+
+Siobhan nods, "That it is."
+
+Moth pardons and has to head out, kiddos... dinner's on the stove...
+Moth opens the wooden door to the south, exiting the discussion area. It closes with a soft 'click' behind it.
+Moth has left.
+
+Maelgwn says "Ooo! That was an @osucc!! ;)"
+Maelgwn says "Moth opens..."
+
+You say "Yep, that it was. :)"
+
+Maelgwn dances and grins.
+Maelgwn wants to try out his newfound knowledge. ;)
+
+Siobhan smiles...
+
+Maelgwn watches the '...' with apprehension.
+
+You say "Well, if you follow me, I'll let you build off of Sio's Abode for now. We can relocate your home later, if you so wish."
+
+Maelgwn gasps. Wowee... ;) I think I can do that. I just want to get the @odrops and things right, first go. *crosses fingers*
+
+You say "Follow me, young grasshopper..."
+You enter Sio's Abode.
+Sio's Abode(#2130R)
+Obvious exits:
+Out (O)
+
+The door closes behind you with a soft click.
+
+Maelgwn enters Sio's comfy abode from the discussion area.
+Maelgwn has arrived.
+Maelgwn uses chopsticks to catch a fly.
+"Beginner Luck."
+Maelgwn pouts.
+
+Siobhan grins, "Alrighty. Now, on this mush, I normally have to open a room, chown it and the exits to you, then you can build from there. For now, I will just @chown this room to you and that way we don't have to worry about it. (@chown just means to change the ownership.)
+You say "Alrighty. Go to it. Let's see what you can do. :)"
+
+Maelgwn noddles. Got that. :) Okies...
+Maelgwn makes the room...
+
+You say "Very good... :)"
+
+Maelgwn tests he percently things.
+Maelgwn tests his percently things.
+Maelgwn tests him percently things.
+
+You say "You're getting into substitutions?"
+
+Maelgwn grins a little. Just testing %o, %p, and %s for the @odrop.
+
+Siobhan nods and will be covering them in a later class.
+
+Maelgwn says "The pronouns, as you know. Yup. I just didn't want it to say 'him' for everyone. :)"
+Maelgwn finishes with this exit, and so goes to the next.
+Maelgwn parts the veil of vines, slipping between them and into Maelgwn's Room.
+Maelgwn has left.
+

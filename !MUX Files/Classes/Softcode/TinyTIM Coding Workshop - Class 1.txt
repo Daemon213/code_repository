@@ -1,0 +1,4442 @@
+ Thursday Nights, 10pm TDT, we're having a coding workshop at TIM University. The lecturer this time is Sketch the Cow, and the project is The Shuttle Bus To Take You To The Lecture Hall. Of course, having not built it, you have to walk there. Go to plane 18 (18), go North to the Quad (N), North to the Academic Buildings (N) and then to the Abe Vigoda Lecture Hall (ABE). All are welcome, many will enter, all will win. Skill Level: Beginning Coder.
+
+-------------------------------------------------------------------------------
+
+You hop a bus to TIM U., and jump off at the Campus Center.
+
+TIM University - Campus Center
+
+You're in the lobby of the Campus Center of TIM U., TinyTIM's official neo-liberal-arts-science-tech-business school. Around you pass by hundreds of zonked-out college students wearing baggy, underwashed clothing over their undernourished, underfed frames, babbling about inane things that they think matter, but in the grand scheme of things really don't. Across the back wall is a giant logo of the school's mascot, the "Fightin' Amish".
+
+Through the quintuple glass doors north lies the main Quad of the campus, to the other buildings. The bus route back to the Nexus is south.
+
+Obvious exits:
+
+Student Store<SS> Nexus<out> Quad<N>
+
+You push open the glass doors and stroll out onto the campus.
+
+TIM University - the Quad
+
+Across the pleasant green rectangle of the campus Quad stroll a number of alternately bookish and slacker-looking students. In the center of the Quad stands a large bronze statue of TIM gazing sternly off into the horizon. Rough path-like brown patches run across the ordinarily-green grass marking common student routes.
+
+From here, the Academic Complex is north. The Administration tower leers off to the east, with the Campus Center south. The large foofball field lies to the east, while the dorm complex is southwest. Fraternity Row runs off to the northwest.
+
+Contents:
+
+Statue of TIM
+
+Obvious exits:
+
+Fraternity Row<NW> Dorms<SW> Foofball Field<W> Administration<E> Academic Complex<N> Campus Center<S>
+
+You found a penny!
+
+You head east to the Admin building.
+
+Admin Building
+
+The Administration building is filled with middle-aged men and women who all live for their next cup of coffee. In the background you can hear the whirring of innumerous copiers all helping to add to the paper chase found at any University. The smell of toner and the sight of too many people wearing ties gives you little urge to venture beyond the outer lobby.
+
+Contents:
+
+INFO SIGN
+
+Obvious exits:
+
+Quad<W>
+
+You return to the Quad.
+
+TIM University - the Quad
+
+Across the pleasant green rectangle of the campus Quad stroll a number of alternately bookish and slacker-looking students. In the center of the Quad stands a large bronze statue of TIM gazing sternly off into the horizon. Rough path-like brown patches run across the ordinarily-green grass marking common student routes.
+
+From here, the Academic Complex is north. The Administration tower leers off to the east, with the Campus Center south. The large foofball field lies to the east, while the dorm complex is southwest. Fraternity Row runs off to the northwest.
+
+Contents:
+
+Statue of TIM
+
+Obvious exits:
+
+Fraternity Row<NW> Dorms<SW> Foofball Field<W> Administration<E> Academic Complex<N> Campus Center<S>
+
+You walk up the stone steps, in through the mighty archway, and enter the Academic Complex.
+
+Academic Complex
+
+You're standing in the mammoth lobby of TIM U's Academic Complex. Wide, tall hallways lead off in numerous directions, to allow both students and faculty to shift back and forth from wing to wing and classroom to classroom. Embedded in the floor is the University seal.
+
+Contents:
+
+Enjoy
+
+World Map
+
+SIGN: CLASSES LIST
+
+Obvious exits:
+
+Abe Vigoda Memorial Lecture Hall<Abe> Lots of classrooms Quad<S>
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+JoeyLemur
+
+Sketch
+
+Radioactive
+
+Obvious exits:
+
+Lobby
+
+Sketch 00:32 8m D: Coding Workshop at 10pm TDT.
+
+Academic Complex
+
+You're standing in the mammoth lobby of TIM U's Academic Complex. Wide, tall hallways lead off in numerous directions, to allow both students and faculty to shift back and forth from wing to wing and classroom to classroom. Embedded in the floor is the University seal.
+
+Contents:
+
+Enjoy
+
+World Map
+
+SIGN: CLASSES LIST
+
+Obvious exits:
+
+Abe Vigoda Memorial Lecture Hall<Abe> Lots of classrooms Quad<S>
+
+This is a big bulletin-board like structure against one wall, listing the names and locations of the various classes. PLEASE NOTE this list is constantly evolving, and new classes will crop up from time to time! (To view the list, type 'list'.)
+
+--TIM University - CLASS OFFERINGS--
+
+ENGLISH 104.....History of Foof..........................Room 105
+
+ARCHIT 205......Building a Better Building...............Room 156
+
+BIOLOGY 314.....Understanding Sketch.....................Room 134
+
+ENGINEER 122....The Workings of the Clock................Room 119
+
+Academic Complex
+
+You're standing in the mammoth lobby of TIM U's Academic Complex. Wide, tall hallways lead off in numerous directions, to allow both students and faculty to shift back and forth from wing to wing and classroom to classroom. Embedded in the floor is the University seal.
+
+Contents:
+
+Enjoy
+
+World Map
+
+SIGN: CLASSES LIST
+
+Obvious exits:
+
+Abe Vigoda Memorial Lecture Hall<Abe> Lots of classrooms Quad<S>
+
+Territan enters from the Quad.
+
+Territan has arrived.
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+Malady
+
+Br'fin
+
+Squeaky
+
+Coal
+
+JoeyLemur
+
+Sketch
+
+Radioactive
+
+Obvious exits:
+
+Lobby
+
+Territan has arrived.
+
+Territan sits down. With a bucket of popcorn.
+
+Reo throws a pencil into the ceiling tiles.
+
+Malady sits down, and promptly nods off.
+
+Sketch ignores everyone talking about how much this class cost and how they intend to switch after the trial period.
+
+JoeyLemur takes a frilled sandwich toothpick and a plastic straw, and shoots the toothpick into the tiles.
+
+Br'fin slips pennies to bribe the TA
+
+You say "Finding a parking spot was hell. I had to park way out by the stadium!"
+
+Coal carves her name in the goofy little flip-up desk.
+
+Territan says "I just took the bus that we're going to build tonight."
+
+JoeyLemur says "Should've used the buses."
+
+JoeyLemur dohs.
+
+You say "That's what everyone says. But it's so *undignified!*"
+
+Br'fin says "Stop time tripping Territan :)"
+
+You say "Coal, no fair. You're dating the professor for your grade!"
+
+Territan says "But it's so fun!"
+
+JoeyLemur whips a rifle out of his overcoat, and shoots the apple on the lecturn. Apple bits go flying. JoeyLemur quietly puts the rifle back under his overcoat.
+
+Malady snores and drools a bit on his fold-out desk.
+
+Coal says "Nah, Reo. I'm MARRYING him for my grade. I'm dating him to find out the answers for the tests."
+
+Malady holds up a sign (without waking up): HATE TO SEE WHAT SHE DOES FOR THE FINAL
+
+JoeyLemur laughs.
+
+Coal grins.
+
+Malady puts the sign down, and snores.
+
+Br'fin says "And Badger pipes up that that's what the Honeymoon is for""
+
+JoeyLemur says "You know, I could have gone my life without the mental images that created."
+
+Sketch likes those mental images, actually.
+
+Malady waves to Badger, mumbles something about football practice, then falls asleep again.
+
+JoeyLemur says "Well, you would."
+
+You say "I can only imagine the sexiness of a cow making love to a piece of coal."
+
+Sketch says "DAMNED Sexy, man."
+
+Coal says "Woowoo."
+
+Territan says "That's because you're a PARTICIPANT, Sketch. That might have something to do with it."
+
+Sketch can't help who he is.
+
+Br'fin snickers from his portable game system.
+
+Elsinore has arrived.
+
+Br'fin says "Heya sis"
+
+Elsinore says "Anyone got a pen I could borrow? ;)"
+
+Drool runs from Malady's desk top to the floor.
+
+Sketch is going to wait 5 minutes after 10:00 because some people are into being fashionably late.
+
+Farward has arrived.
+
+Br'fin laughs "Of course, Elsi
+
+Created: #37312
+
+Br'fin slips a purple pen to Elsinore.
+
+Locked.
+
+Name set: Ballpoint pen
+
+Set.
+
+Natalie has arrived.
+
+Natalie hugs around.
+
+XA: @wait 500=:runs out of ink.
+
+Sketch has connected.
+
+Farward nods at everyone, just so he doesn't appear antisocial.
+
+Given.
+
+Triggered.
+
+Sketch says "let's cover that right now."
+
+Flag set.
+
+Sketch says "This is not the Nexus. All rules are off."
+
+Malady stirs...
+
+Elsinore glances around and slips a note to the person next to her.
+
+JoeyLemur says "BANAL CONVERSATION, AHOY!"
+
+Sketch says "All suggestions, all stuff we've been going into for the whole week."
+
+Ballpoint pen(#37312D) halted by being destroyed.
+
+You get your 10 penny deposit back for Ballpoint pen.
+
+Destroyed.
+
+Dilettante has arrived.
+
+Reo shrugs.
+
+Dilettante Waves.
+
+Coal makes random remarks about boring things you couldn't possibly know about or want to understand.
+
+Elsinore says "Hiya Dil"
+
+Dilettante says "Hello, Castle..."
+
+Natalie excludes Coal!
+
+Br'fin waves to Dilettante
+
+JoeyLemur mutters about damnable Bostonians.
+
+Reo just acts normally.
+
+Elsinore makes a paper airplane and tosses it toward the front of the hall.
+
+Malady yawns, then readies his pen and notebook.
+
+Natalie says "Anyone mind being logged?"
+
+Elsinore whistles.
+
+Reo coughs pointedly and gives Elsi that "Honor student" look.
+
+Sketch says "I don't care about context or hugs or whatever. The whole point is to improve the Nexus, not stop people from acting however they want in every room on the game."
+
+Dilettante waves to Br'fin...
+
+Sketch has encouraged logging.
+
+Sketch is doubling up his
+
+Sketch ...connection.
+
+Natalie nods. I just got here, so I didn't know.
+
+Malady says "Say it! Say it!"
+
+sam has arrived.
+
+Elsinore runs around hugging everybody!
+
+Coal is logging.
+
+Natalie gives Sketch an apple.
+
+Elsinore hugs Sketch twice even.
+
+Natalie neeners at the rest of you.
+
+R'nice arrives in a flash of wizardly brilliance!
+
+R'nice has arrived.
+
+Coal hugs Elsi-poop-i-licious-i-snuggly-nore.
+
+You say "Already been done, Nat. Now you're just a copycat!"
+
+Elsinore giggles.
+
+JoeyLemur says "Oh, SHIT. It's the DEAN!"
+
+Territan shuts up. But you can page him with questions in case Sketch is busy.
+
+Coal quietly retches after typing that.
+
+Sketch says "And like I said, my problem with hugs was when it represents the only thing you do on TIM all day."
+
+Natalie smirks.
+
+Sketch says "That makes you like the fat guy in the diner who nurses the same cup of coffee for 8 hours."
+
+Natalie gives Reo an.. apple.
+
+Elsinore says "ew."
+
+Natalie suppresses a giggle.
+
+Sketch eats grass.
+
+Reo eats it, worm and all.
+
+Coal says "Careful Reo. Look where that led Adam."
+
+R'nice says "My problem with hugs is when you forget to put down those two big cactuses your'e holding before you hug me."
+
+You say "Cacti."
+
+Reo slaps himself.
+
+Sketch says "CACTUS HUGS" and runs towards R'nice.
+
+Natalie holds three cacti and hugs R'nice.
+
+Elsinore only has a toothy gator, but she puts it down to hug R'nice.
+
+R'nice is the fat guy in the diner who doesn't drink coffee.
+
+Elsinore laughs.
+
+Sketch says "It's time for the old SAGGARRO SNUGGLE"
+
+You say "Qapla'?"
+
+JoeyLemur attaches hedgehogs to himself and then chases R'Nice.
+
+Malady chuckles.
+
+Elsinore says "Hey R'Nice did your Daily Show already go by? Did I miss it?"
+
+R'nice says "You missed it."
+
+Elsinore says "oh wait, i don't get the comedy channel anyway."
+
+Coal is bringing her tape of it to the KhaOS BBQ tomorrow.
+
+Elsinore says "oh cool."
+
+Sketch shouts "Coding Workshop, starting within a minute or two. First and Final announcement."
+
+Br'fin says "Neat"
+
+Natalie hopes there's enough KhaOS to go around.
+
+Br'fin says "Been watching Battlebots on Comedy Central myself"
+
+Squeaky gets out her datapad
+
+Sketch says "Most workshops don't have true beginners mixed up with rembrandt level coders. This will be interesting."
+
+Malady whoops! "Battlebots!!"
+
+Reo doesn't understand WHY battlebots is on CC now. On PBS/TLC was just fine.
+
+R'nice is just auditing the course.
+
+Territan says "I'm here primarily for support."
+
+Coal has never seen Battlebots?
+
+Squeaky says "My boyfriend is in those"
+
+Sydney has arrived.
+
+Jenn has arrived.
+
+Coal says "Hey Jenn!"
+
+Natalie sits next to R'nice and copies from his mind. :)
+
+Jenn says "Hello!"
+
+Coal saved Jenn a seat at the back with the cool kids.
+
+R'nice is actually mostly watching Win Ben Stein's Money, but he'll want to read the transcript afterwords.
+
+JoeyLemur enjoys Scrapheap Challenge / Junkyard Wars himself.
+
+Jenn steals Natalie's notes.
+
+You say "People build robots to compete/fight."
+
+Elsinore wonders if Br'fin and R'Nice are the TA's.
+
+Mara has arrived.
+
+Reo nods at JL. That's very popular too.
+
+Sketch heard R'nice was a hellish TA.
+
+Natalie will photocopy 'em for you, Jenn!
+
+Xarisa has arrived.
+
+Empedocles has arrived.
+
+Dilettante says "It's brand new, Coal... only ast 2 weeks"
+
+R'nice says "Only hellish if you sucked. :)"
+
+JoeyLemur says "Blonde British chick in shiny clothing... mmm..."
+
+Sketch says "Woo, 2 minutes."
+
+Br'fin says "Copying from me is it's own punishment, you'll be challenged to explain what it does :)"
+
+Coal says "2 minutes to start?"
+
+Dilettante says "I wish I had a video if when we did something like battlebots in HS... all I have is a few pics that I found online ofus"
+
+You say "Kegger in the quad after lecture!"
+
+Dilettante says "With flame throwers..."
+
+Dilettante says "Of, not if"
+
+Territan says "Kegger with flamethrowers? OOOOH!"
+
+Farward says "My grasp of MUSH coding comes from a more recent variety of MUSH and doesn't quite mesh with what works well here. That's why I'm going to sit in on this session."
+
+Dilettante says "No, Territan... we have flamethrower equipped robots :)"
+
+JoeyLemur yells "CAN I GET A FOOF?"
+
+Xarisa says "And there was much rejoicing. yay."
+
+Territan says "yay -- damn, got it backwards again!"
+
+You say "Aya. Surrender your mitochondria."
+
+Malady jumps up in the air and yells "YAY!"
+
+From JoeyLemur's overcoat, Programming Test Box Thingy attempts to laser "Yay!" into everyone's eyes simultaneously, causing a wicked light show.
+
+Coal has the same problem, Farward.
+
+Elsinore says "Take it outta the classroom, that's all I say!"
+
+Malady is clueless and stupid as far as @HELP goes. That's why he's here.
+
+Jenn says "Yay!"
+
+Sydney yays.
+
+Br'fin says "yay"
+
+JoeyLemur yells "THAT'S THE TIM SPIRIT! GOOOO FIGHTIN' AMISH!"
+
+Elsinore says "Um, er, yay!~"
+
+sam says "Yay!"
+
+Xarisa goes home.
+
+Xarisa says, "Listen, I'd love to chat, but I've gotta climb a drainpipe right now. Why? Because I ran out of faery dust and I don't know how to fly." She repeats to herself, "Why?" and, giggling, climbs her own drainpipe.
+
+Xarisa has left.
+
+Farward gives Malady a clue. "It's just HELP, not @HELP." He winks.
+
+Dilettante yells a late "yay".
+
+Territan says "ATM at the Amish Market."
+
+Sketch says "OKAY!"
+
+Elsinore falls asleep now. zzz
+
+JoeyLemur removes the dissected chicken from his workbench to make room for tonight's project.
+
+R'nice wakes up. Commercial.
+
+Sketch says "This is the first of these things, so not all the rules and the paradigms and other fun stuff is firmly established. Format and approach may completely change, and the lecturer/workshop leader will DEFINITELY rotate out."
+
+sam remove his dissected pizza.
+
+Sketch says "Already thinking about this whole thing, I do have a few ground rules though."
+
+Br'fin nods
+
+Sketch says "First of all, this is response to, but is not to be tainted with our little renaissance/revolution/complete destruction of TinyTIM that is going on out in the Nexus. Bring that in here, I bring you out of here."
+
+Sketch says "Second of all, I'm uncomfortable with lecture. I'm going to show you how I would approach a problem, focusing on the easy, using basic code approach, not the full-bore-on Sketch approach, because that will kill you."
+
+Sketch says "But I encourage you to build your own with you. You can feel free to build carrying the objects or to drop them and build them."
+
+Br'fin snickers.
+
+Sketch says "if you do drop them or build them, I want them examinable. I'll explain that in a moment."
+
+Br'fin hides the spatula to scrape up folks after their brain explodes.
+
+Elsinore pokes Br'fin. Shh!
+
+R'nice raises his hand.
+
+Sketch says "yes, R'nice?"
+
+R'nice says "Are we allowed to heckle?"
+
+Sketch says "Of course."
+
+R'nice says "Thank you."
+
+Farward says "Oh, good. I'd hate to see R'nice explode."
+
+Sketch says "Few profs/leaders are in the position of discussing a subject next to the person who caused it."
+
+R'nice smiles
+
+JoeyLemur heckles. "Your mother was a carton of Ben and Jerry's!"
+
+Natalie is, in that case, eating your mother. EW!
+
+Natalie @ptuis.
+
+Territan says "And your father smelled of Absolut Citron!"
+
+Sketch says "Another thing, the companion to the mention I just had about the Nexus stuff, is that I WILL say that one of the basic things I was indicating in my letter is that there's NO such attention to subject matter/context/intelligent discourse in any other room in the game, so I'm not going to be sitting here making mention of context/grammar/flow. Etc."
+
+Sketch says "I'm here to teach. Let me get on with that."
+
+Elsinore says "here here"
+
+Territan sits back and shuts up.
+
+Coal says "Yeah, get on with it!"
+
+Sketch says "I'm going to take advantage of TIM's ability to do pages and whispers. So we don't have to worry about people not admitting to understanding something in front of the group."
+
+Sketch says "If you want to ask a question that you're embarassed to ask for some strange reason, you whisper it, and it'll spontaneously get answered while I'm doing stuff."
+
+Sketch says "The first such question. Does everyone here understand the concept of the @create command?"
+
+Malady does.
+
+JoeyLemur says "Yup."
+
+Kahlua has arrived.
+
+Biff the Wonder Parrot has arrived.
+
+Sketch says "Just page me no if you don't."
+
+Jenn says "Mostly."
+
+Squeaky nods
+
+Natalie nods.
+
+sam nods.
+
+Kahlua says "biff, go away"
+
+Biff the Wonder Parrot says "Okay, seeya."
+
+You say "Should we answer in the affirmative, or just keep quiet unless we don't?"
+
+Biff the Wonder Parrot has left.
+
+Kahlua says "Please excuse my lateness."
+
+Sketch says "I'd prefer you keep quiet unless you don't."
+
+Sketch makes everyone point at Kahlua and @nelsonlaugh his lame late ass.
+
+Reo points at Kahlua and does the Nelson Laugh, "Ha-Ha!"
+
+Coal points at Kahlua and does the Nelson Laugh, "Ha-Ha!"
+
+Kahlua hangs his head. "Hey, that really hurts..."
+
+Sketch says "OK, we all have the create command. Do you understand the concept of flags as they apply to programming?"
+
+JoeyLemur points at Kahula, and burps.
+
+Malady doesn't.
+
+Territan points at Kahlua and tries to do the Nelson Laugh, but his finger falls off. "Ow."
+
+Squeaky is not quite sure. Has only found some flags
+
+JoeyLemur doesn't have a clear idea.
+
+Natalie could use further explanation of flags.
+
+Sketch says "And finally, who here has never done coding on TIM beyond the setting of your attributes?"
+
+Mara raises her hnand
+
+Elsinore has done very minimal.
+
+Malady raises a tentacle.
+
+Br'fin raises several hands.
+
+JoeyLemur has attempted to code... really...
+
+Sketch sets Br'fin on fire.
+
+Jenn raises her hand
+
+Natalie hasn't done much.
+
+Br'fin gets confused by grammar
+
+Empedocles raises some of Br'fin's hands.
+
+Coal has done some but not particularly successfully. Does that count?
+
+RedEVIL has arrived.
+
+Sketch says "Someone mentioned how the location of this lecture was in a somewhat odd place. As a result, tonight's project is a basic vehicle."
+
+Sketch says "I'm building The TinyTIM Short Bus."
+
+Sketch says "I rate this at the level of Beginner."
+
+Sketch says "For the benefit of the more advanced coders in the audience, I am building the version that simply uses the inventory of the object to hold people."
+
+Sketch says "And for those of you new to this, we are building a version of vehicles that are simple and functional, but of course there are much more advanced ways to build vehicles that can be covered in other lecturers or outside this workshop."
+
+Biff the Wonder Parrot has arrived.
+
+rainy has arrived.
+
+Biff the Wonder Parrot perches happily on Elsinore's shoulder.
+
+JoeyLemur gets out a parrot rifle...
+
+Sketch says "Suffice to say, that like all basically interesting ideas in TIM code, you can go absolutely bugfuck on adding features."
+
+Sketch says "Also, I will apologize ahead of time for my occasional pauses as I answer questions in whispers or generally have net weirdness."
+
+Biff the Wonder Parrot goes home.
+
+Biff the Wonder Parrot has left.
+
+Territan says "'Bugfuck' will be covered in a later class, I hope. My technique only runs up as far as 'apeshit.'"
+
+Sketch says "In TIM, there are 5 types of objects. Players, Things, Exits, Rooms, and generally garbage. But that's kind of a "sometimes y" situation, because you never really come into contact with garbage."
+
+Sketch says "In the usual TIM way, you generally do programming on Things."
+
+Sketch says "Programming can exist on Rooms and exits, but we're going to be building a thing."
+
+Sketch says "it's generally good to have a clear idea of what you want to add to TIM, and whether it's worth building."
+
+Sketch says "Here, I see a need to have a neat object that takes people to the Lecture hall because that sign won't always be out there."
+
+Sketch says "So I think about what I want it to be; I want it to be fun, I want it to do what it says, and I want it to be somewhat flexible."
+
+Sketch says "So hence the name, The TinyTIM Short Bus."
+
+Sketch says "I create an object, like this: @create The TinyTIM Short Bus"
+
+Sketch says "if you make one, name it something different."
+
+Territan says "Or for the politically correct in the class, the TinyTIM Horizontally Challenged Bus."
+
+JoeyLemur dropped PCIBus.
+
+Sketch dropped The TinyTIM Short Bus.
+
+R'nice says "I suggest you put your name on the object name."
+
+R'nice says "That way we can easily see whose is shose"
+
+Sketch says "R'nice has a good idea there."
+
+Natalie dropped Natalie's Boots.
+
+Sketch says "The @create command pulls out a garbage object from the database and declares it a thing, and makes you the owner, and puts it in your inventory with the name you gave it."
+
+Coal dropped Coal's Bus Of DOOM!.
+
+Sydney dropped SydneyvaD lupwI'.
+
+Squeaky says "Ack too late"
+
+Elsinore dropped Elsinore's Carry-a-Castle.
+
+Kahlua dropped Kahlua's Moving Roadblock.
+
+Sketch says "This costs you some pennies, but pennies are cheap and we reward builders."
+
+Farward dropped lupDuj / Farward's Shuttlecraft.
+
+Created: #69756
+
+I don't know which one you mean!
+
+Flag set.
+
+Squeaky dropped Squeaky's TinyTMI longbus..
+
+You don't have that!
+
+Dropped.
+
+Jenn dropped Jenn's Bus to Hell.
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+Jenn's Bus to Hell Reo's Schoolbus of much Pain
+
+Squeaky's TinyTMI longbus. lupDuj / Farward's Shuttlecraft
+
+Kahlua's Moving Roadblock Elsinore's Carry-a-Castle
+
+SydneyvaD lupwI' Coal's Bus Of DOOM!
+
+Natalie's Boots The TinyTIM Short Bus
+
+JoeyLemur's PCIBus rainy RedEVIL
+
+Kahlua Empedocles Mara
+
+Jenn Sydney R'nice
+
+sam Dilettante Natalie
+
+Farward Elsinore Territan
+
+Malady Br'fin Squeaky
+
+Coal JoeyLemur Sketch
+
+Radioactive
+
+Obvious exits:
+
+Lobby
+
+Sketch says "A quick aside about pennies. The economy here has gone completely nuts. We most work off pride and self-reliance here. We give pennies freely to coders who sue them."
+
+Territan dropped Territan's Micro-Bus.
+
+Sketch says "Use, ahem."
+
+JoeyLemur sues his wallet.
+
+Farward sues Sketch for 50 pennies.
+
+RedEVIL dropped RedEVIL's dislocated subway car.
+
+Coal says "Or just to cute girls."
+
+I don't know which one you want to lock!
+
+JoeyLemur says "TIM had an economy?"
+
+Natalie checks Coal's pocketbook.
+
+Sketch says "We're going to skip ahead to a small but important thing about making it so others can see your work."
+
+sam dropped The Sam Heap of Rusted Bus.
+
+Elsinore grins @ Coal.
+
+Name set: Reo's Doubledecker Bus
+
+You see nothing special.
+
+sam says "X_OK?"
+
+Sketch says "You can set flags on yourself or something you own to change how the thing or you behave."
+
+Sketch says "yes, X_OK."
+
+I can't help you with that.
+
+Sketch says "There are flags that handle how your object will function, or, for example, whether you can recieve pages."
+
+I don't recognize that flag.
+
+Sketch says "We won't go too much into flags here except to mention two: XAMINE_OK and ENTER_OK."
+
+Elsinore is failing already. No wonder. She spell examine with an E.
+
+Sketch says "As you might remember from your newbie days when you were told to just type "@LOCK ME = #0" and be done with it, I'll ask you to type @SET YourObject=XAMINE_OK"
+
+Sketch says "Well, Elsinore, there's a reason for that."
+
+Elsinore says "what's that?"
+
+Coal recommends not trying to type '@set bus=Xamine_OK'. There are too many buses here!
+
+Sketch says "The "E" flag name was already taken with some other, previously created types of flags."
+
+Elsinore ahs.
+
+Sketch says "When we needed the ability to make something examinable, we had X open, so we used that."
+
+Elsinore says "makes sense."
+
+JoeyLemur says "The X(amine) Files. Ooo wee oooo...""
+
+Sketch says "There's a number of examples like that."
+
+Sketch says "Now, the reason you all did that is so that you call could EXAMINE each others' work."
+
+Elsinore's Carry-a-Castle(#18604X)
+
+Owner: Elsinore Key: *UNLOCKED* Money: 2
+
+Home: A Grassy Knoll(#54553RLXA)
+
+Reo's Doubledecker Bus(#69756X)
+
+Owner: Reo Key: *UNLOCKED* Money: 2
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Sketch says "If you type LOOK, you can choose among the buses and type EXAMINE <Name of Bus> and you'll see the "innards" of that bus."
+
+Sketch says "Does everyone understand the EXAMINE command?"
+
+Squeaky nods
+
+Sketch says "OK, then. So the EXAMINE command shows you the "programming" side of something on TIM, separate from what people usually see when they interact with this stuff. You can ALWAYS examine your own stuff."
+
+Sketch says "Let's set a second flag: ENTER_OK. @SET <Your Bus> = ENTER_OK."
+
+Sketch says "We all understand I have the habit of putting something you fill in the blank for in <>'s, right? you don't type those."
+
+Sketch says "Most of you caught all that at the welcome screen, so I figured."
+
+Flag set.
+
+Sketch says "OK, what you just did is make it so anyone can ENTER your bus."
+
+Sketch says "Normally, only you can enter your own bus."
+
+Natalie raises her hand.
+
+Sketch says "yes?"
+
+Malady dropped Malady's Rocket.
+
+Natalie says "How would @locking the bus affect enter_ok?"
+
+Elsinore gives Natalie the bathroom pass.
+
+Natalie says "Or effect it. Whichever."
+
+Sketch says "It doesn't affect it."
+
+Natalie nods. Okay.
+
+Sketch says "But there are ways to affect it, using an ENTER LOCK."
+
+Elsinore locks the bathroom.
+
+Territan says "The regular lock on the bus means people can't pick it up and walk off with it."
+
+Sketch says "But that's out of the scope of this class. Locks are going to be awhole different thing."
+
+Natalie says "Is that covered next semester?"
+
+Sketch says "Right."
+
+Natalie :)
+
+Natalie nods. Got it. Thanks.
+
+Coolman has arrived.
+
+Sketch says "For now, we're making buses that are amazingly insecure and can be manipulated in many ways. That will explain in later classes why we added such unusual variations to the commands."
+
+Coolman waves.
+
+Mara says "Is there any way to look at an object to see what code you've already put to it?"
+
+Br'fin giggles
+
+Sketch says "Yes, you type EXAMINE OBJECT."
+
+Coolman frowns at missing the coding lecture
+
+You say "Mara... just fyi, The only coding we've done so far are flags, which show up as letters next to the object's name."
+
+Kahlua says "You haven't missed much. :)"
+
+Mara says "ahh... right, thanks Reo"
+
+Coolman sits in a desk, and wonders what he missed.
+
+JoeyLemur says "Transcripts will be made available."
+
+Mara whispers "that's what the 'Xe' is after the numbers?"
+
+Sketch says "OK, just so our little buses matter to us, let's flesh them out. Set the Description and Senses of these buses. Does everyone understand how you do that?"
+
+Sketch says "This is the "Workshop" portion. :)"
+
+Mara says "Nope\"
+
+Sketch says "OK. Let's focus just on the description and senses of the buses."
+
+Sketch says "Are you aware how to set a description?"
+
+I don't know which one you mean!
+
+Set.
+
+I don't see that here.
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+Coolman Malady's Rocket
+
+The Sam Heap of Rusted Bus RedEVIL's Dislocated Subway Car
+
+Territan's Micro-Bus Jenn's Bus to Hell
+
+Reo's Doubledecker Bus Squeaky's TinyTMI longbus.
+
+lupDuj / Farward's Shuttlecraft Kahlua's Moving Roadblock
+
+Elsinore's Carry-a-Castle SydneyvaD lupwI'
+
+Coal's Bus Of DOOM! Natalie's Boots
+
+The TinyTIM Short Bus JoeyLemur's PCIBus rainy
+
+RedEVIL Kahlua Empedocles
+
+Mara Jenn Sydney
+
+R'nice sam Dilettante
+
+Natalie Farward Elsinore
+
+Territan Malady Br'fin
+
+Squeaky Coal JoeyLemur
+
+Sketch Radioactive
+
+Obvious exits:
+
+Lobby
+
+I don't see that here.
+
+You see nothing special.
+
+Coolman dropped Coolman's Red ShuttleBus.
+
+Huh? (Type "help" for help.)
+
+Set.
+
+You say "Sketch?"
+
+You say "Whoops, nevermind."
+
+Sketch says "Yes?"
+
+Sydney wonders what a bus smells like.
+
+You say "I think I'm skipping ahead, so I'll just wait."
+
+Sydney :)
+
+Coal says "Smells like teen spirit!"
+
+You say "Hell, I'll ask now. What is the command for setting a smell again? @smell doesn't do it."
+
+Elsinore sets the taste of her bus.
+
+Coal says "@scent."
+
+Set.
+
+JoeyLemur :licks the PCIBus. Freak.
+
+Sketch says "OK, some people can set the description (@DESC BUS = <Description>) but are missing the senses."
+
+Natalie says "HELP SENSES"
+
+Natalie says "Ooops."
+
+Set.
+
+TinyTIM Help Topic:
+
+CONCEPT: THE SENSES ON TINYTIM
+
+Most all TinyGames have the convention of being able to LOOK, and to LOOK
+
+at stuff that's in the same Location. And like these other Tinygames, TIM
+
+lets you set the "Description" of Rooms, Players, Exits and Object with the
+
+@DESC Command. This lets you create the text that is displayed when you
+
+LOOK at that Thing.
+
+Well, TinyTIM has gone a step farther than that, and we now have ALL FIVE
+
+Senses active on the game. This means that in addition to being able to
+
+LOOK at everything, it is also theoretically possible to SMELL, TASTE,
+
+LISTEN, and TOUCH everything as well. For instance, in the Nexus, you can
+
+say TASTE OLD MAN, or TOUCH CLOCK, and you'll get an interesting response.
+
+Here are the commands you should know to be able to use Senses properly on
+
+TIM. Simply type HELP <TOPIC> for information on that command.
+
+LOOK TASTE TOUCH SMELL LISTEN
+
+@DESC @TASTE @TOUCH @SCENT @SOUND
+
+@ATOUCH @OTOUCH @ATASTE @OTASTE
+
+Use your senses!
+
+Sketch says "HELP SENSES work, but I'll also mention the commands. @scent for smell, @sound for the sound, @taste for the taste, and @touch for the feel of it."
+
+Jenn's Bus to Hell grows ears and can now hear.
+
+Malady's Rocket grows ears and can now hear.
+
+Sketch says "In each case, you want to build an object such that all the different senses combine to really flesh out the object."
+
+Set.
+
+Sketch says "Some people are typing @LISTEN instead of @SOUND. I do that all the time."
+
+Territan says "Get creative with them, folks."
+
+The Micro-Bus has the Travis Turntables logo on it, much like everything else about the MicroBrewery (hence the name). And much like everything else around the MicroBrewery, someone did a slapdash job of painting over it, using the oversized T---T-- to spell 'TinyTIM.' Naturally, this bus runs on alcohol. And so does its driver.
+
+Sketch says "@LISTEN is a separate command that does a whole other set of things. To remove it, type @LISTEN"
+
+Sketch says "Sorry, type @LISTEN <BUS> = and then nothing."
+
+Malady's Rocket loses its ears and becomes deaf.
+
+Mara says "Silly question, we've set them so they can be entered, does that mean that we should have two sets of senses for it?"
+
+JoeyLemur licks the PCIBus. Freak.
+
+Sketch says "We'll cover that a different time."
+
+Malady says "Thanks, Sketch."
+
+Sketch says "That'll be the best part, Mara."
+
+Jenn says "Sketch, can you rename an object the same way you can rename your character?"
+
+JoeyLemur runs his/her hand/tentacle/whatever across the PCIBus.
+
+Elsinore ews.
+
+Sketch says "You rename an object by typing @NAME OBJECT = <New Name>"
+
+Coal says "Should we be setting @otouch, etc?"
+
+Set.
+
+Coal says "Or am I jumping ahead?"
+
+You feel clammy cool stone, gritty with dirt and old moss.
+
+Elsinore laughs at Reo, sending an earthquake through the room.
+
+Elsinore grins.
+
+You feel nothing special.
+
+Sketch says "I'd say jumping ahead, but I will get to taht."
+
+You run a finger across it. Oh look, it's dirty.
+
+You taste nothing special.
+
+Set.
+
+Good thinking.
+
+It's running quite smoothly and quietly.
+
+Don't try and TOUCH a moving vehicle! You'll get your hand torn off!
+
+Diesel... actually makes you kind of lightheaded.
+
+One of those that you often see in London in the media. Go watch Spice World. However, this one actually comes out of Denver, Colorado.
+
+Jenn's Party Bus to Hell loses its ears and becomes deaf.
+
+"The crackling of fire, screams of torment, and a loud party all at the same time.
+
+Sketch says "If you need to, steal other people's ideas."
+
+Warm metal, as if heated from within.
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+Coolman's Red ShuttleBus Coolman
+
+Malady's Rocket The Sam Heap of Rusted Bus
+
+RedEVIL's Dislocated Subway Car Territan's Micro-Bus
+
+Jenn's Party Bus to Hell Reo's Doubledecker Bus
+
+Squeaky's TinyTMI longbus. lupDuj / Farward's Shuttlecraft
+
+Kahlua's Moving Roadblock Elsinore's Carry-a-Castle
+
+Sydney's jitney Coal's Bus Of DOOM!
+
+Natalie's Boots The TinyTIM Short Bus
+
+JoeyLemur's PCIBus rainy RedEVIL
+
+Kahlua Empedocles Mara
+
+Jenn Sydney R'nice
+
+sam Dilettante Natalie
+
+Farward Elsinore Territan
+
+Malady Br'fin Squeaky
+
+Coal JoeyLemur Sketch
+
+Radioactive
+
+Obvious exits:
+
+Lobby
+
+You see a big old fashion Shuttle Bus. It is kind of like the ones you see in old movies.
+
+Something large and black blots out the ambient light ahead of you. Little lights dance up and down vertically, on what appears to be the corners of a large rectangular object.
+
+Doq Dujvam 'ej Hurgh 'ej boch. 'Iwmo' yIQbogh 'etlh rur. / It's a shiny dark red. Like a blood-stained sword.
+
+R'nice says "May I suggest that if you know how to do something, like otouches or whatever, don't ask, just do it. Nobody is gonna take points off for doing extra stuff."
+
+Sketch says "See, the whole thing about building an object on TIM is it's your big opportunity to be really creative about adding yourself into them. It comes back in rewards, because people aren't afraid to use senses other than looking to learn about your objects."
+
+Territan tastes My Last Pony. For the 14th time.
+
+Sketch will cover extra stuff, but yes, I'm not here to keep you from going nuts if nuts is what you want.
+
+One of those that you often see in London in the media. Go watch Spice World. However, this one actually comes out of Denver, Colorado.
+
+Elsinore likes to set senses on mail she gives people.
+
+Sketch says "Additionally, the more detail you put into an object, the more people visualize what you want them to."
+
+Territan hms. "Touch, taste, scent, sound, @desc... I'm set. (Sorry!)"
+
+Territan The TMI longbus seems to get longer as Territan strokes it.
+
+The Micro-Bus has the Travis Turntables logo on it, much like everything else about the MicroBrewery (hence the name). And much like everything else around the MicroBrewery, someone did a slapdash job of painting over it, using the oversized T---T-- to spell 'TinyTIM.' Naturally, this bus runs on alcohol. And so does its driver.
+
+I don't see that here.
+
+Here is a bus that is long and narrow from the back to almost the front. The driver's part is bigger, though and sort of a rounded conical shape. The exterior of the bus is painted a sort of dark peach-pink that gets darker towards the front The front is a deeper reddish pink.
+
+Squeaky says "Hrm.."
+
+JoeyLemur The TMI longbus seems to get longer as JoeyLemur strokes it.
+
+Squeaky's TinyTMI longbus.(#26997Xe)
+
+Owner: Squeaky Key: *UNLOCKED* Money: 2
+
+Here is a bus that is long and narrow from the back to almost the front. The driver's part is bigger, though and sort of a rounded conical shape. The exterior of the bus is painted a sort of dark peach-pink that gets darker towards the front The front is a deeper reddish pink.
+
+Touch: It has an interesting texture..kind of ridged and bumpy, yet elastic feeling..and warm.
+
+Otouch: The TMI longbus seems to get longer as %n strokes it.
+
+Atouch: The TMI longbus seems to get longer as %n strokes it.
+
+Home: Limbo(#0RSDlLHA)
+
+Sketch says "I think, just to be completists, and because I think we're going to keep these here as showcases, you should type the following: @LOCK <Your Bus> = #0."
+
+You say "Squeaky... might I congratulate you on making me uncomfortable with your bus. :)"
+
+JoeyLemur says "Territan, you're disturbed."
+
+JoeyLemur says "Er, Squeaky even."
+
+Territan says "Nope, Joey... the TinyTMI bus is Squeaky..."
+
+Squeaky says "Thanks, but I have to tighten up the code..it's a bit off"
+
+Locked.
+
+JoeyLemur says "You're disturbed, too."
+
+You say "Wha does locking it o #0 do?"
+
+Territan says "Thanks! Have you touched MY bus?"
+
+Natalie says "#0?"
+
+JoeyLemur runs a finger across the Micro-Bus and inspects it critically. His finger, that is ...not the bus.
+
+Coal says "No one passes it then, I think."
+
+You say "to. As opposed to locking it to 'me'?"
+
+sam says "Limbo, right?"
+
+Elsinore feels up Coal's Bus of DOOM! and is fortunate not to lose a hand.
+
+Dilettante dropped Horse of Burden.
+
+sam tastes Coal's Bus of DOOM! So weird.
+
+Sketch says "OK, locking is where you're protecting certain uses of your object without your permission."
+
+Squeaky :strokes the TMI bus. The TMI longbus seems to get longer as Squeaky strokes it.
+
+Territan is NOT tasting the TMI bus.
+
+Sydney says "What senses have 'other' thingys on them?"
+
+Elsinore giggles.
+
+JoeyLemur says "Drop the : in the otouch and otaste."
+
+Set.
+
+Sketch says "#0 is a room, Limbo. By typing @LOCK <BUS> = #0, you're saying 'The Only Thing that can pick up this bus is Limbo"."
+
+Kahlua reaches out to touch Kahlua's Bus, which screeches to a halt, causing a EAT ME car accident.
+
+Coal tastes Coal's Bus of DOOM! So weird.
+
+Sketch says "Apparently we're going to have to go to Osenses. :)"
+
+Territan says "And Limbo isn't greedy."
+
+Set.
+
+Kahlua says "Whoops"
+
+Sketch says "Who here is new to the idea of the Osenses?"
+
+Coolman can't type this fast!!
+
+Coolman is new.
+
+Mara says "new"
+
+Malady is new. Humor him.
+
+JoeyLemur considers licking JoeyLemur, but then thinks better of it.
+
+Natalie has difficulty remembering the difference between Osenses and Asenses.
+
+Set.
+
+Sketch says "it's OK, Coolman. We're still working on fleshing out our buses, especially, apparently, our Flesh Buses."
+
+Territan says "O=Other, A=Action."
+
+One of those that you often see in London in the media. Go watch Spice World. However, this one actually comes out of Denver, Colorado.
+
+Territan says "That's the mnemonic I use, anyway."
+
+Kahlua reaches out to touch Kahlua's Bus, which screeches to a halt, causing a pick(2,3,4) car accident.
+
+Elsinore always has to look at her exits to remember.
+
+Natalie hugs Territan for the mnemonic!
+
+Kahlua says "I give up :)"
+
+Elsinore says "That's good Terr. thanks."
+
+Coolman says "Ok, I'm still setting the @taste, and @touch"
+
+Sketch says "Yes, besides the senses we have set (@DESC, @SCENT, @TASTE, etc.), some of these senses have companion settings."
+
+Kahlua says "Why can I never remember how to make PICK work."
+
+set: One of those that you often see in London in the media. Go watch Spice World.
+
+Sketch says "R'nice made a decision some time ago that some senses are passive, and some are active."
+
+JoeyLemur clonks Kahlua over the head with PCIBus. Too far ahead, lad.
+
+Sketch says "LOOKing, LISTENing, and SMELLing were considered passive, that is, you could do them without drawing attention to yourself or others."
+
+Sketch says "TOUCHing and TASTEing, however, were you doing something to someone."
+
+JoeyLemur runs his/her hand/tentacle/whatever across the PCIBus.
+
+JoeyLemur's PCIBus rubs up against JoeyLemur and coos.
+
+Sketch says "So we created two commands, @OTASTE and @OTOUCH."
+
+Set.
+
+This is the doubledecker bus of fluffiness. Its cuteness is foretold by the baby blue plush exterior and Nerf seats.
+
+Name set: Reo's Double-decker bus of fluffiness
+
+Kahlua says "Thanks Joey, I know how this works"
+
+Squeaky :licks the TMI longbus and immediately regrets it.
+
+Elsinore says "Is it just those two senses or do they all have o and a?"
+
+Sydney reaches out toward Sydney's jitney, which plows right over her. Pancakesville.
+
+Sketch says "That's what you're seeing Joey's bus have. When he touches it, it will take his name (the TOUCHer), and prepend it before the contents of the @OTOUCH attribute."
+
+Sketch says "Only TOUCHing and TASTEing do."
+
+JoeyLemur licks the PCIBus. Freak.
+
+Elsinore nods.
+
+Coal says "Do the other senses have the a attributes?"
+
+Jenn says "How do you make it know whether the person touching it is a him or a her?"
+
+Sketch says "@OTASTE Short bus = takes this special moment during the third reel to suck on the Short Bus."
+
+Sydney says "Does my @otouch do the right pronoun? I canna see it."
+
+Set.
+
+Natalie laughs. Pancakesville. :)
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plush exterior and Nerf bumper.
+
+Sketch says "Oh, yes, pronouns."
+
+Sydney bows.
+
+Set.
+
+Sketch says "This was one of the first things in MUD. Pronoun substitutions."
+
+Sketch says "I can't think of an easy way to describe it, but they're %p, %o, %s."
+
+Coal says "Possessive, Objective and Subjective."
+
+Natalie says "Possessive, objective, and subjective?"
+
+Natalie nods to Coal.
+
+Sketch says "Everyone say or think this: %p %o %s."
+
+Farward says "possession (his, hers, its), object (him, her, it) and subject (he, she, it)."
+
+Huh? (Type "help" for help.)
+
+Set.
+
+You say "say his him he"
+
+Kahlua yanks his hand away. Ouch! This bus is hot!
+
+Farward says "his him he"
+
+You say "Reo Reo"
+
+JoeyLemur runs his hand/tentacle/whatever across the PCIBus.
+
+JoeyLemur's PCIBus rubs up against JoeyLemur's hand and coos.
+
+Sydney says "If you capitalize the pronoun thingy, TIM will capitalize the pronoun when it comes out."
+
+Squeaky licks the TMI longbus and immediately regrets it.
+
+Squeaky's TinyTMI longbus. begins leaking a thick white fluid out of the radiator grille..ech!
+
+Territan says "What Coal said."
+
+Sketch says "What you're seeing is a reaction to whatever your SEX attribute is."
+
+Elsinore blushes.
+
+Damien has arrived.
+
+Damien waves.
+
+You say "I can't wait to ride the longbus."
+
+Sketch says "Hi, Damien. Want to buy a bus?"
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plush exterior and Nerf bumper.
+
+Elsinore laughs.
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+Damien Dilettante's Horse of Burden
+
+Coolman's Red ShuttleBus Coolman
+
+Malady's Rocket The Sam Heap of Rusted Bus
+
+RedEVIL's Dislocated Subway Car Territan's Micro-Bus
+
+Jenn's Party Bus to Hell Reo's Double-decker bus of fluffiness
+
+Squeaky's TinyTMI longbus. lupDuj / Farward's Shuttlecraft
+
+Kahlua's Moving Roadblock Elsinore's Carry-a-Castle
+
+Sydney's jitney Coal's Bus Of DOOM!
+
+Natalie's Boots The TinyTIM Short Bus
+
+JoeyLemur's PCIBus rainy
+
+RedEVIL Kahlua
+
+Empedocles Mara
+
+Jenn Sydney
+
+R'nice sam
+
+Dilettante Natalie
+
+Farward Elsinore
+
+Territan Malady
+
+Br'fin Squeaky
+
+Coal JoeyLemur
+
+Sketch Radioactive
+
+Obvious exits:
+
+Lobby
+
+Reo's Double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plush exterior and Nerf bumper.
+
+Sound: It's running quite smoothly and quietly.
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Otaste: licks the doubledecker bus, not giving a whit where it's been.
+
+Touch: Don't try and TOUCH a moving vehicle! You'll get your hand torn off!
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Farward watches Squeaky's TMI bus react to his SEX attribute. Yecch.
+
+Sydney says "Ack! Squeaky!"
+
+Sydney bleahs!
+
+Dilettante headbuts you hard.
+
+RedEVIL RedEVIL pokes the subway car, knocking a think cloud of rust to the ground.
+
+JoeyLemur says "SOMEBODY isn't getting any.."
+
+Malady runs an appendage along the smooth rocket. And cuts it self on a fin. That looks painful.
+
+Damien grins, "Rather make my own. Sure I can probally figure it out."
+
+Set.
+
+Natalie now sees that 'TMIbus' was NOT a typo. ;)
+
+Elsinore reaches out to touch Kahlua's Bus, which screeches to a halt, causing a 17-car pileup.
+
+Coolman will be right back, contact fell out.
+
+Kahlua says "hee. Thanks"
+
+Territan licks the grey jitney. Why, I have no idea.
+
+Kahlua reaches out to touch the Party bus and quickly yanks his hand away. Ouch! This bus is hot!
+
+Sketch says "OK, obviously as we get into this, commands that are worth telling you now to make your lives easier come to mind."
+
+Squeaky says "Yep..It's TMI.."
+
+Sketch says "Who here doesn't understand the @edit command?"
+
+JoeyLemur says "Yo."
+
+Set.
+
+Squeaky says "I never heard of that one"
+
+Malady says "Me."
+
+Territan says "I can't wait to see the TinyTMI bus's IDESC. >:)"
+
+Jenn says "I don't"
+
+Elsinore says "It's very helpful."
+
+Sketch says "OK."
+
+Sydney is fuzzy on @edit. 'Splain it to me again, O Cow? ;)
+
+Set.
+
+Mara says "Can you have multiple otouch>"
+
+Sketch says "I'm going to give you the @edit command, but it's a little above this class, if you don't get it, just write it down and deal later."
+
+Elsinore touches Mara. Twice.
+
+Lick a snozberry! It tastes like a snozberry!
+
+Sketch says "You can have multiple otouch with additional programming. We won't go there tonight."
+
+Don't try and TOUCH a moving vehicle! You'll get your hand torn off!
+
+Mara says "Ok"
+
+Territan says "That gets into the realm of 'apeshit.'"
+
+Elsinore nodnods.
+
+Sydney says "Would you use @switch for that?"
+
+Damien enters Jenn's Party Bus to Hell.
+
+Damien has left.
+
+Sketch says "Basically, say you look at your bus, and you see RIGHT in the middle, this: 'The bus is vrey easy to drive.'"
+
+Damien has arrived.
+
+Set.
+
+Sketch says "Now, you COULD use your client, if you have one, to edit that text, assuming it was in your buffer."
+
+You squoosh the soft, spongy exterior of the bus. You feel like a kid again.
+
+Reo's Double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plush exterior and Nerf bumper.
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Sound: The tinkling of tiny bells, and children's laughter.
+
+Otaste: scrapes off a lovely layer of cotton candy from the side of the bus, and munches on it happily.
+
+Touch: You squoosh the soft, spongy exterior of the bus. You feel like a kid again.
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Sketch says "But you might not, and you might not notice until later."
+
+Sketch says "So, you use the @edit command, like this: @edit bus/desc = vrey"
+
+Sketch says "So, you use the @edit command, like this: @edit bus/desc = vrey"
+
+Sketch says "Wait."
+
+Sketch says "So, you use the @edit command, like this: @edit bus/desc = {vrey},{very}"
+
+Reo's Double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plush exterior and Nerf bumper.
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Sound: The tinkling of tiny bells, and children's laughter.
+
+Otaste: scrapes off a lovely layer of cotton candy from the side of the bus, and munches on it happily.
+
+Touch: You squoosh the soft, spongy exterior of the bus. You feel like a kid again.
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Sketch says "Sorry, parser tricks. You'll learn THOSE soon enough."
+
+set: This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plushy exterior and Nerf bumper.
+
+Malady ahhhs...
+
+Sketch says "Basically, you want to put your text in those curly brackets."
+
+Coal has always wondered why /grab doesn't work here. I use it and SimpleMU on other games and it works fine.
+
+set: scrapes off a lovely layer of cotton candy from the side of Reo's doubledecker bus of fluffiness, and munches on it happily.
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+Damien Dilettante's Horse of Burden
+
+Coolman's Red ShuttleBus Coolman
+
+Malady's Rocket The Sam Heap of Rusted Bus
+
+RedEVIL's Dislocated Subway Car Territan's Micro-Bus
+
+Jenn's Party Bus to Hell Reo's Double-decker bus of fluffiness
+
+Squeaky's TinyTMI longbus. lupDuj / Farward's Shuttlecraft
+
+Kahlua's Moving Roadblock Elsinore's Trojan Alligator
+
+Sydney's jitney Coal's Bus Of DOOM!
+
+Natalie's Boots The TinyTIM Short Bus
+
+JoeyLemur's PCIBus rainy
+
+RedEVIL Kahlua
+
+Empedocles Mara
+
+Jenn Sydney
+
+R'nice sam
+
+Dilettante Natalie
+
+Farward Elsinore
+
+Territan Malady
+
+Br'fin Squeaky
+
+Coal JoeyLemur
+
+Sketch Radioactive
+
+Obvious exits:
+
+Lobby
+
+Sketch says "The DESC is the name of your description attribute, you see in the EXAMINE when you do that."
+
+set: scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Reo's Double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plushy exterior and Nerf bumper.
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Sound: The tinkling of tiny bells, and children's laughter.
+
+Otaste: scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Touch: You squoosh the soft, spongy exterior of the bus. You feel like a kid again.
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+JoeyLemur says "Oooh, handy."
+
+I don't see that here.
+
+Sketch says "The other attribute names can be substituted: SCENT/SOUND/TASTE/OTASTE/etc. Notice there's no @ when naming the attribute."
+
+Just like a mouthful of exhaust pipe!
+
+sam feels up Coal's Bus of DOOM! and is fortunate not to lose a hand.
+
+I don't know which one you mean!
+
+If you're close enough to taste it, it means you weren't paying attention, and just ran into it. Smooth move.
+
+Lick a snozberry! It tastes like a snozberry!
+
+Jenn tastes Coal's Bus of DOOM! So weird.
+
+Malady says "Sketch, what's the best way to test if an @otouch or @otaste is working properly? You can't see the results if you touch or taste the object yourself..."
+
+Kahlua scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Empedocles quickly dials a destination on his teleportation device. Nothing Happens. Empedocles looks disgusted and hits the thing a few times until it works.
+
+Empedocles has left.
+
+sam says "I second that question."
+
+Sketch says "The best way is to either ask a friend, log in twice, or make a puppet."
+
+Malady says "Gotcha. Thanks."
+
+Sketch says "puppets are out of the scope of this lecture, but that's where you would look; HELP PUPPETS."
+
+Kahlua says "Asking a friend makes it a team event."
+
+Kahlua says "Which can be cool"
+
+Coal says "Is there a help file for friends? ;)"
+
+Elsinore feels up Elsinore's Trojan Alligator and grins sheepishly.
+
+Kahlua says "If you're typing HELP FRIENDS, you need more friends."
+
+Kahlua grins
+
+Sketch says "OK! Pretty much everyone now has a built object, which has a name, a description, senses, and which will let others know if you're tasting or touching it."
+
+JoeyLemur humps the PCIBus
+
+sam sam pokes the subway car, knocking a cloud of rust to the ground.
+
+Set.
+
+Kahlua says "Sketch, can I raise a point/question?"
+
+Sketch says "If I didn't mention before, some people make the mistake of putting a : in the otouch or otaste. That is not necessary. In fact, in any of TIM's O-attributes, and there are a number, you don't need a :."
+
+Coal Coal pokes the subway car, knocking a cloud of rust to the ground.
+
+Sketch says "Sure."
+
+You whisper "would you touch my bus?" to Kahlua.
+
+Kahlua says "Nope, you just got it. never mind. :)"
+
+Kahlua squooshes Reo's double-decker bus of fluffiness in his hands. It slowly reexpands to its original shape.
+
+You say "Thanks!"
+
+Kahlua says "You just nailed my point. Cool"
+
+Sketch points to his little professor hat thing.
+
+Malady scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Touch: You squoosh the soft, spongy exterior of the bus. You feel like a kid again.
+
+Kahlua says "Sorry teacher."
+
+You squoosh the soft, spongy exterior of the bus. You feel like a kid again.
+
+sam licks the rocket once. And again. And again. Must be a good tasting rocket. Just wait until the tongue cancer sets in, though...
+
+Sketch says "OK, and we're going to go into two other attributes that occur on the outside of the bus."
+
+Sketch says "They are.... ATASTE and ATOUCH."
+
+Reo's Double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plushy exterior and Nerf bumper.
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Sound: The tinkling of tiny bells, and children's laughter.
+
+Otaste: scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Touch: You squoosh the soft, spongy exterior of the bus. You feel like a kid again.
+
+Otouch: squooshes Reo's double-decker bus of fluffiness in %p hands. It slowly reexpands to its original shape.
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Sketch says "They were mentioned before, and I'd be cheating not to mention them."
+
+Territan licks the rocket once. And again. And again. Must be a good tasting rocket. Just wait until the tongue cancer sets in, though...
+
+Elsinore drools dazedly on the side of Elsinore's Trojan Alligator.
+
+Coal says "There isn't an ASCENT or ASOUND?"
+
+Sketch says "No."
+
+Squeaky is tasted by Territan. She smiles.
+
+JoeyLemur feels up JoeyLemur.
+
+Sketch says "Again, passive versus active senses."
+
+Coolman says "Is thee oscent and osound?"
+
+Sketch says "No."
+
+Coal feels up Coal's Bus of DOOM! and is fortunate not to lose a hand.
+
+Coal's Bus Of DOOM! rocks back and forth.
+
+Sketch says "ATASTE will define THE ACTION THE BUS WILL TAKE WHEN YOU OR SOMEONE TASTES IT."
+
+set: This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plushy exterior and Nerf bumper. All along the sides are pictures of Care Bears, Rainbow Brites, Strawberry Shortcakes, Shirt Tales, Monchhichis, Paw-Paw Bears, etc. You squeal at the mere sight of it!
+
+Coolman feels especially touchy-feely today, and leans up against Coolman's Red Shuttlebus.
+
+JoeyLemur runs his hand/tentacle/whatever across the PCIBus.
+
+JoeyLemur's PCIBus rubs up against JoeyLemur's hand and coos.
+
+sam says "Does everybody see it?"
+
+Kahlua leans over and licks the Party bus. He pulls back quickly with a horrified look on his face. Eeeew, road dirt.
+
+Sketch says "However, this action is as if the bus is doing the action, and it has to be a real command, like :waves."
+
+You say "Aha."
+
+Reo's Double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plushy exterior and Nerf bumper. All along the sides are pictures of Care Bears, Rainbow Brites, Strawberry Shortcakes, Shirt Tales, Monchhichis, Paw-Paw Bears, etc. You squeal at the mere sight of it!
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Sound: The tinkling of tiny bells, and children's laughter.
+
+Otaste: scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Touch: You squoosh the soft, spongy exterior of the bus. You feel like a kid again.
+
+Otouch: squooshes Reo's double-decker bus of fluffiness in %p hands. It slowly reexpands to its original shape.
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Elsinore drools dazedly on the side of Elsinore's Trojan Alligator.
+
+Elsinore's Trojan Alligator takes a bite at Elsinore.
+
+Kahlua pages: Taste my bus!
+
+Coal says "How are %p, etc. evaluated in ATASTE and ATOUCH?"
+
+Set.
+
+Sketch says "It's therefore easy to mix @ATASTE and @OTASTE, for example, and give @OTASTE a :. It's a common mistake."
+
+Territan says "Which is why the A-attributes need colons and things, and the O-attributes don't."
+
+Sketch says "They are evaluated normally."
+
+Set.
+
+Coal says "But on which object. The person tasting, or the bus?"
+
+Set.
+
+Sketch says "The motivator. The person tasting."
+
+sam says "The actor."
+
+You squoosh the soft, spongy bus within your hands.
+
+Reo's Double-decker bus of fluffiness slowly reexpands to its original size.
+
+Name set: Reo's double-decker bus of fluffiness
+
+Kahlua reaches out to touch the Party bus and quickly yanks his hand away. Ouch! This bus is hot!
+
+Jenn's Party Bus to Hell morphs and looks as if it's growing a hand to try and keep Kahlua attached to it.
+
+Squeaky licks the TMI longbus and immediately regrets it.
+
+Squeaky's TinyTMI longbus. begins leaking a thick white fluid out of the radiator grille..ech!
+
+Sketch says "if you're trying to make it work and it's not, make sure your @ATASTE has a :."
+
+Coal tastes Coal's Bus of DOOM! So weird.
+
+Coal's Bus Of DOOM! looks shinier where she licked it.
+
+Squeaky strokes the TMI bus. The TMI longbus seems to get longer as Squeaky strokes it.
+
+Reo's double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plushy exterior and Nerf bumper. All along the sides are pictures of Care Bears, Rainbow Brites, Strawberry Shortcakes, Shirt Tales, Monchhichis, Paw-Paw Bears, etc. You squeal at the mere sight of it!
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Sound: The tinkling of tiny bells, and children's laughter.
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Otaste: scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Touch: You squoosh the soft, spongy bus within your hands.
+
+Otouch: squooshes Reo's double-decker bus of fluffiness in %p hands.
+
+Atouch: :slowly reexpands to its original size.
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Kahlua pages: Come on, taste it!
+
+If you're close enough to taste it, it means you weren't paying attention, and just ran into it. Smooth move.
+
+Kahlua's Moving Roadblock vibrates a little more quickly under the pressure of Reo's tongue bath
+
+R'nice says "Of course, it can be *any* command, not just :. You could have it "say" or "yell" or anything you like."
+
+Kahlua says "Oh YUCK Squeaky! :)"
+
+It tastes like a penis..That's what you get for licking it.
+
+Squeaky's TinyTMI longbus. begins leaking a thick white fluid out of the radiator grille..ech!
+
+Sketch says "That's correct, R'nice. It could just as easily be SAY Hands Off!"
+
+Malady kisses Natalie's boots! Ew! Sick! You pervert!
+
+Natalie's Boots are kissed by Malady! Ew! Sick! That pervert!
+
+Kahlua says "Oh Ewwwwww...."
+
+Coolman says "Sketch, Did I do it correctly?"
+
+Natalie arghs.
+
+Natalie says "Close, no cigar."
+
+You rub the Bus, and some paint chips off the bus.
+
+Coolman's Red ShuttleBus purrs in approval.
+
+Coal licks Coal's Bus of DOOM! So weird.
+
+Coal's Bus Of DOOM! yells "HONK! HONK!"
+
+You say "Looks like you did."
+
+Dilettante gets charged and headbutted by the horse. You see them go flying, with the ground breaking their fall.
+
+Dilettante's Horse of Burden stares at Dilettante with firey eyes.
+
+Malady fondles Natalie's boots, revelling in the texture of rich Corinthian leather.
+
+Elsinore reaches out to touch Kahlua's Bus, which screeches to a halt, causing a 17-car pileup.
+
+Kahlua's Moving Roadblock slows down to allow more folks to lay hands on its sides.
+
+Malady runs an appendage along the smooth rocket. And cuts it self on a fin. That looks painful.
+
+Malady's Rocket opens up a hatch and sends out a robot arm to wipe up the fingerprints and blood.
+
+It's a curious smell of diesel gasoline and the RAGE of all the folks trapped behind it.
+
+Elsinore places her hand against the hull of Farward's Shuttlecraft. She stands, mesmerized for a moment, then reluctantly breaks the connection.
+
+Sydney licks the grey jitney. Why, I have no idea.
+
+Sydney's jitney downshifts and shoots out an especially acrid cloud of exhaust, leaving Sydney choking in its wake.
+
+Sketch says "looks good, Coolman."
+
+Kahlua drools dazedly on the side of Elsinore's Trojan Alligator.
+
+Elsinore's Trojan Alligator takes a bite at Kahlua.
+
+Squeaky enters Squeaky's TinyTMI longbus..
+
+Squeaky has left.
+
+Territan says "Malady, try himself instead of him self."
+
+Jenn shrieks and recoils in horror as the Party Bus seems to try and grab her back.
+
+Jenn's Party Bus to Hell morphs and looks as if it's growing a hand to try and keep Jenn attached to it.
+
+Squeaky has arrived.
+
+Kahlua feels up Elsinore's Trojan Alligator and grins sheepishly.
+
+Elsinore's Trojan Alligator chuckles and grins at Kahlua toothily. "Touch me again and I'll invite you for dinner."
+
+Territan says "Or rather, %oself instead of %o self."
+
+Coolman says "Ok, I need to put more detail into it, but it is too late to think :)"
+
+Sketch says "OK, we have some damned fine buses."
+
+You say "his him he hisself himself heself"
+
+Squeaky sQuEaK!
+
+Kahlua says "Hisself. :)"
+
+Coal licks Coal's Bus of DOOM! So weird.
+
+Coal's Bus Of DOOM! yells "Backoff Coal!"
+
+Malady runs an appendage along the smooth rocket. And cuts on a fin. That looks painful.
+
+Malady's Rocket opens up a hatch and sends out a robot arm to wipe up the fingerprints and blood.
+
+You say "I was just checking that you could tack on 'self' without a space and have it work"
+
+Sketch says "It was pointed out to me that besides %o and %p and %s, there's %N."
+
+sam Runs his's body along the rusty heap of sam's bus, grooving to it's finky curves.
+
+The Sam Heap of Rusted Bus gets another rusted chunk taken out by sam.
+
+Sketch says "Basically, %n will give the person's name. %N will capitalize it."
+
+Coolman says "Coolman=Ok"
+
+Coolman says "OOps :)"
+
+Sketch says "These substitutions are mentioned in... HELP SUBSTITUTIONS."
+
+R'nice says "I don't think so."
+
+Elsinore pats Coolman. Yes you are.
+
+Coal says "No, both give the name how it is."
+
+You say "Reo Reo"
+
+R'nice heckles over %N
+
+You say "That's because your name is capitalized. It doesn't UNcapitalize it."
+
+Mara dropped MaraBus.
+
+R'nice says "Here, I *think* is the true poop on %N"
+
+You say "At least, I think."
+
+Coolman Coolman
+
+Coal says "Capital %S gives capitalized, %s gives with a small s. She she"
+
+Coolman Coolman
+
+Sketch says "I yield the floor."
+
+R'nice says "FOr *players*, it does NOT capitalize it, on the premise that if your name is sabu, it should never say Sabu"
+
+Natalie says "But what about people who don't capitalize their character names, like neko or sabu or nails..? Yeah."
+
+Coolman heHe
+
+Coal says "sabu, lowercase..."
+
+Coolman he He
+
+R'nice says "For objects, it *does* capitalize it, so that "the big bus" becomes "The big bus""
+
+Coolman he h
+
+You say "No, sabu, lowercase... oh well, Coal beat me to it but screw her! I'm doing it anyway!"
+
+Coolman he ha
+
+R'nice releases teh floor.
+
+Coal's Bus Of DOOM! shrieks and recoils in horror as the Party Bus seems to try and grab it back.
+
+Jenn's Party Bus to Hell morphs and looks as if it's growing a hand to try and keep Coal's Bus Of DOOM! attached to it.
+
+Elsinore yawns.
+
+Kahlua says "hey now. Bus wars"
+
+Reo's double-decker bus of fluffiness licks the TMI longbus and immediately regrets it.
+
+Squeaky's TinyTMI longbus begins leaking a thick white fluid out of the radiator grille..ech!
+
+Elsinore says "oo, that's good Jenn!"
+
+Malady "Ew Sick! Malady is a pervert!
+
+Natalie's Boots are kissed by Malady!
+
+Sketch says "Now, you may think we've described every aspect of these buses."
+
+Sketch says "But, of course, we haven't."
+
+Squeaky says "Uh Uh"
+
+Natalie hmms.
+
+Malady runs an appendage along the smooth rocket. And cuts itself on a fin. That looks painful.
+
+Malady's Rocket opens up a hatch and sends out a robot arm to wipe up the fingerprints and blood.
+
+Coal's Bus Of DOOM! "Ew Sick! Coal's Bus Of DOOM! is a pervert!
+
+Sketch enters The TinyTIM Short Bus.
+
+Sketch has left.
+
+Natalie's Boots are kissed by Coal's Bus Of DOOM!!
+
+Sketch has arrived.
+
+Coolman says "There is ALWAYS more :)"
+
+Sketch says "There are... INTERNAL SENSES."
+
+Kahlua's Moving Roadblock licks Coal's Bus of DOOM! So weird.
+
+Coal's Bus Of DOOM! yells "Backoff Kahlua's Moving Roadblock!"
+
+Jenn says "Coal, how'd you do that?"
+
+Kahlua says "hee hee"
+
+Squeaky points, "@idesced!!"
+
+Coal says "@force."
+
+Sketch says "They are: IDESC, ISCENT, ITASTE, ITOUCH, ISOUND."
+
+Kahlua's Moving Roadblock runs a finger across the Micro-Bus and inspects it critically. Its finger, that is ...not the bus.
+
+JoeyLemur's PCIBus tries to make a SketchBurger. Sketch politely moves out of the way.
+
+Coal is being an obnoxious show-off. :P
+
+Sketch will go into @force soon.
+
+Kahlua is helping.
+
+Coal hi-5s Kahlua.
+
+Jenn says "Okay =)"
+
+I don't see that here.
+
+Kahlua hi5's back. :)
+
+This is the TinyTIM Short Bus, which takes its passengers to various TinyTIM-related Lectures at TIM University. Just type ENTER SHORT BUS, and in a short time you'll be taken off to class! The Bus is a bright, sickly orange-yellow and has black lettering on the side which says "SPECIAL TIM EDUCATION". Oh, you're cruising in style now.
+
+Sketch says "So, if we go INSIDE our buses and type LOOK, we just see the name."
+
+Mmm, exhaust! Better move to the front. Mmm, exhaust! (Must be a leak).
+
+Coal says "@force is for people without friends."
+
+JoeyLemur's PCIBus runs its hand/tentacle/whatever across the PCIBus.
+
+JoeyLemur's PCIBus rubs up against JoeyLemur's PCIBus's hand and coos.
+
+STOP SUCKING ON THE SHORT BUS
+
+The TinyTIM Short Bus spurts some exhaust into Reo's face.
+
+sam says "How do we make exits back out? Oer are they already there?"
+
+Kahlua enters Kahlua's Moving Roadblock.
+
+Kahlua has left.
+
+Coal enters Coal's Bus Of DOOM!.
+
+Coal has left.
+
+Kahlua has arrived.
+
+Damien picks up Kahlua and takes a swig.
+
+Jenn enters Jenn's Party Bus to Hell.
+
+Jenn has left.
+
+sam says "'Or', even."
+
+Elsinore enters Elsinore's Trojan Alligator.
+
+Elsinore has left.
+
+JoeyLemur enters JoeyLemur's PCIBus.
+
+JoeyLemur has left.
+
+The bus feels cool, metallic, and somewhat sticky from the people inside drooling on the way to the lecture. Ewww.
+
+Mara enters MaraBus.
+
+Mara has left.
+
+Jenn has arrived.
+
+Jenn has left.
+
+Kahlua picks up Jenn.
+
+Kahlua takes out Jenn.
+
+Kahlua tickles Jenn wildly. Hiya Hon...
+
+sam enters The Sam Heap of Rusted Bus.
+
+sam has left.
+
+Coolman enters Coolman's Red ShuttleBus.
+
+Coolman has left.
+
+The bus is idling noisily. Nobody wants to do engine work on the short bus.
+
+Malady enters Malady's Rocket.
+
+Malady has left.
+
+Elsinore has arrived.
+
+Squeaky enters Squeaky's TinyTMI longbus.
+
+Squeaky has left.
+
+sam has arrived.
+
+Kahlua dropped Jenn.
+
+Coal has arrived.
+
+Mara has arrived.
+
+Malady has arrived.
+
+Reo's double-decker bus of fluffiness
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+Coolman Malady
+
+Mara Coal
+
+Jenn sam
+
+Elsinore Kahlua
+
+Sketch MaraBus
+
+Damien Dilettante's Horse of Burden
+
+Coolman's Red ShuttleBus Malady's Rocket
+
+The Sam Heap of Rusted Bus RedEVIL's Dislocated Subway Car
+
+Territan's Micro-Bus Jenn's Party Bus to Hell
+
+Reo's double-decker bus of fluffiness Squeaky's TinyTMI longbus
+
+lupDuj / Farward's Shuttlecraft Kahlua's Moving Roadblock
+
+Elsinore's Trojan Alligator Sydney's jitney
+
+Coal's Bus Of DOOM! Natalie's Boots
+
+The TinyTIM Short Bus JoeyLemur's PCIBus
+
+rainy RedEVIL
+
+Sydney R'nice
+
+Dilettante Natalie
+
+Farward Territan
+
+Br'fin Radioactive
+
+Obvious exits:
+
+Lobby
+
+Coolman says "Yippee"
+
+sam says "Okay... that's answered."
+
+JoeyLemur has arrived.
+
+JoeyLemur says "Oh. There we go."
+
+Jenn says "And, once we are inside the bus, we can no longer hear conversation in the room?"
+
+Sketch says "I should have mentioned the LEAVE command as well as ENTER."
+
+Territan enters Squeaky's TinyTMI longbus.
+
+Territan has left.
+
+Territan has arrived.
+
+Kahlua says "heh heh"
+
+Br'fin giggles
+
+Elsinore grins.
+
+Sketch says "Yes, once you're inside the bus, you can no longer leave."
+
+Kahlua says "Hear"
+
+Coal says "You can't hear the lecture anymore inside the buses."
+
+Kahlua says "Not leave. :)"
+
+Squeaky has arrived.
+
+JoeyLemur says "Sketch taught us to build deathtraps! COOL!"
+
+Coolman says "leave=listen?"
+
+Sketch says "hear."
+
+Sketch says "Sorry."
+
+Coolman says "That too :)"
+
+Squeaky says "I can't get the helps on iscent, etc"
+
+Jenn nods.
+
+Sketch says "We're going to have to mention @LISTEN now, I suppose."
+
+Sydney says "Can you set the exit so you can hear through it? Though it's not really an exit, is it? Hmm."
+
+sam says "How do we make them transparent, give them wondows so we can see what's going on outside?"
+
+Elsinore supposes that will coming next,
+
+Sketch says "For the short term, we type @LISTEN <Your Bus> = *"
+
+sam says "Windows even..."
+
+Coal's Bus Of DOOM! grows ears and can now hear.
+
+Natalie's Boots grows ears and can now hear.
+
+JoeyLemur's PCIBus grows ears and can now hear.
+
+Malady's Rocket grows ears and can now hear.
+
+Coolman's Red ShuttleBus grows ears and can now hear.
+
+Sydney's jitney grows ears and can now hear.
+
+The Sam Heap of Rusted Bus grows ears and can now hear.
+
+Elsinore's Trojan Alligator grows ears and can now hear.
+
+Jenn's Party Bus to Hell grows ears and can now hear.
+
+Squeaky's TinyTMI longbus grows ears and can now hear.
+
+Kahlua's Moving Roadblock grows ears and can now hear.
+
+Coolman says "Spam!"
+
+Set.
+
+Sketch says "That command you did made it so your bus can now hear things."
+
+Coal enters Coal's Bus Of DOOM!.
+
+Coal has left.
+
+Reo's double-decker bus of fluffiness grows ears and can now hear.
+
+Set.
+
+Elsinore grows ears and can now hear.
+
+Squeaky's TinyTMI longbus says "I can hear!"
+
+Natalie enters Natalie's Boots.
+
+Natalie has left.
+
+MaraBus grows ears and can now hear.
+
+Idesc: Oh. My. GAWD! You never knew a bus could be this precious! The seats are stuffed sofas
+
+Jenn enters Jenn's Party Bus to Hell.
+
+Jenn has left.
+
+Sydney enters Sydney's jitney.
+
+Sydney has left.
+
+JoeyLemur enters JoeyLemur's PCIBus.
+
+JoeyLemur has left.
+
+Sydney has arrived.
+
+Sketch says "You can all hear me now."
+
+Malady enters Malady's Rocket.
+
+Malady has left.
+
+Coolman enters Coolman's Red ShuttleBus.
+
+Coolman has left.
+
+Reo has left.
+
+Reo's double-decker bus of fluffiness
+
+Oh. My. GAWD! You never knew a bus could be this precious! The seats are stuffed sofas
+
+Sketch enters The TinyTIM Short Bus.
+
+Sketch has left.
+
+Elsinore's Trojan Alligator is hungry.
+
+Squeaky enters Squeaky's TinyTMI longbus.
+
+Squeaky has left.
+
+Elsinore enters Elsinore's Trojan Alligator.
+
+Elsinore has left.
+
+You say "Can you hear us, too?"
+
+Kahlua enters Kahlua's Moving Roadblock.
+
+Kahlua has left.
+
+Sydney says "Is there a way to prefix what's coming in, like "From outside, blah blah"?"
+
+You yell "can you hear us, too?"
+
+The TinyTIM Short Bus grows ears and can now hear.
+
+Elsinore has arrived.
+
+Malady has arrived.
+
+You yell "anyone?"
+
+Jenn has arrived.
+
+Elsinore enters Kahlua's Moving Roadblock.
+
+Elsinore has left.
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+Jenn Malady
+
+Sydney Territan
+
+Mara sam
+
+MaraBus Damien
+
+Dilettante's Horse of Burden Coolman's Red ShuttleBus
+
+Malady's Rocket The Sam Heap of Rusted Bus
+
+RedEVIL's Dislocated Subway Car Territan's Micro-Bus
+
+Jenn's Party Bus to Hell Reo's double-decker bus of fluffiness
+
+Squeaky's TinyTMI longbus lupDuj / Farward's Shuttlecraft
+
+Kahlua's Moving Roadblock Elsinore's Trojan Alligator
+
+Sydney's jitney Coal's Bus Of DOOM!
+
+Natalie's Boots The TinyTIM Short Bus
+
+JoeyLemur's PCIBus rainy
+
+RedEVIL R'nice
+
+Dilettante Farward
+
+Br'fin Radioactive
+
+Obvious exits:
+
+Lobby
+
+Sketch has arrived.
+
+Coolman has arrived.
+
+Territan's Micro-Bus grows ears and can now hear.
+
+Elsinore has arrived.
+
+You say "But we can't be heard from in there."
+
+Elsinore enters Natalie's Boots.
+
+Elsinore has left.
+
+JoeyLemur has arrived.
+
+Sketch says "No, Reo."
+
+Elsinore has arrived.
+
+Mara enters Kahlua's Moving Roadblock.
+
+Mara has left.
+
+lupDuj / Farward's Shuttlecraft grows ears and can now hear.
+
+Elsinore enters Sydney's jitney.
+
+Elsinore has left.
+
+Coal has arrived.
+
+Elsinore has arrived.
+
+Mara has arrived.
+
+Mara enters MaraBus.
+
+Mara has left.
+
+Jenn enters Kahlua's Moving Roadblock.
+
+Jenn has left.
+
+Elsinore enters Elsinore's Trojan Alligator.
+
+Elsinore has left.
+
+Coal says "Can we make it so we can be heard from inside?"
+
+Coolman says "Ok, so we can hear you in the bus, but you cannot hear us"
+
+Sydney says "Is there a way to prefix what's coming in, like "From outside, blah blah"?"
+
+Jenn has arrived.
+
+Mara has arrived.
+
+Sketch says "you're seeing that some people have made it so you know they're entering their bus specifically."
+
+Squeaky's TinyTMI longbus says "Sketch can hear me."
+
+Set.
+
+Sketch says "I'm going to tell you that command, which is good to know in theory. @ENTER and @OENTER."
+
+Reo's double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plushy exterior and Nerf bumper. All along the sides are pictures of Care Bears, Rainbow Brites, Strawberry Shortcakes, Shirt Tales, Monchhichis, Paw-Paw Bears, etc. You squeal at the mere sight of it!
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Sound: The tinkling of tiny bells, and children's laughter.
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Otaste: scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Touch: You squoosh the soft, spongy bus within your hands.
+
+Otouch: squooshes Reo's double-decker bus of fluffiness in %p hands.
+
+Atouch: :slowly reexpands to its original size.
+
+Listen: *
+
+Idesc: Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+It: #26997
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Mara takes a bite of the tailfeather and turns into a frog.
+
+Elsinore has arrived.
+
+You say "I thought it automatically told you what people entered when they did?"
+
+MaraBus starts to chake all over, flips on it's end, sprouts legs and runs off yealling 'Ich nbin ein berliner!'
+
+TinyTIM Help Topic:
+
+@COMMAND: @ENTER
+
+@ENTER <Thing> = <Message>
+
+@ENTER sets your ENTER attribute, which only has meaning on Rooms, Players,
+
+and Objects. Exits can go suck on a popsicle, because the ENTER Attribute
+
+of an Exit is never displayed.
+
+In the case of a Room, the @ENTER Attribute is displayed when you FIRST
+
+ENTER a Room, before the Name of the Room, it's Description, etc. It isn't
+
+shown again, even when you LOOK, until you somehow go into that Room again.
+
+The ENTER Attribute is shown to whoever's doing the ENTERing. The OENTER
+
+Attribute is shown to others in the Room.
+
+@ENTER HERE = You stumble past the vines and leaves and come into the open.
+
+For Players and Objects, the ENTER command is printed to who or whatever
+
+ENTERs that Player/Object. Other than that, it functions the same.
+
+@ENTER Bucket = You crawl happily into the bucket, which can BARELY fit you.
+
+NOTE: The ENTER attribute is shown to you REGARDLESS of how you enter the
+
+Location, whether by @TELEPORTing, ENTERing or LEAVEing somewhere
+
+else, or going through ANY exit leading in.
+
+Sketch enters The TinyTIM Short Bus.
+
+Sketch has left.
+
+TinyTIM Help Topic:
+
+COMMAND: @OENTER
+
+
+
+@OENTER <Thing> = <Message>
+
+Sets the message that is printed when <Thing> is ENTERed.
+
+It's displayed to other people inside the <Thing>.
+
+To enter an Object or Player, type ENTER <Object/Player>.
+
+Note that going through an exit is not "Entering" that exit.
+
+There actually isn't any way to "Enter" an Exit or Room, so
+
+setting the OENTER isn't going to do much.
+
+
+
+Sketch has arrived.
+
+Coolman laughs @ Mara's and says, "I like it :)
+
+JoeyLemur enters JoeyLemur's PCIBus.
+
+JoeyLemur has left.
+
+Coal enters Coal's Bus Of DOOM!.
+
+Coal has left.
+
+Coal's Bus Of DOOM! says "Muahahahaha!"
+
+Elsinore enters Elsinore's Trojan Alligator.
+
+Elsinore has left.
+
+Coal has arrived.
+
+Elsinore has arrived.
+
+Mara says "great ... ytypos.. telnet sucks"
+
+Damien chuckles, "Glad you liked the short bus idea Sketch.
+
+Kahlua has arrived.
+
+Damien picks up Kahlua and takes a swig.
+
+Reo's double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plushy exterior and Nerf bumper. All along the sides are pictures of Care Bears, Rainbow Brites, Strawberry Shortcakes, Shirt Tales, Monchhichis, Paw-Paw Bears, etc. You squeal at the mere sight of it!
+
+Listen: *
+
+Idesc: Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Sound: The tinkling of tiny bells, and children's laughter.
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Otaste: scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Touch: You squoosh the soft, spongy bus within your hands.
+
+Otouch: squooshes Reo's double-decker bus of fluffiness in %p hands.
+
+Atouch: :slowly reexpands to its original size.
+
+It: #26997
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Sketch says "Now, how are people doing for their internal senses?"
+
+You say "I am"
+
+Coal says "Hrm. @aenter acts upon the person entering, not on the object entered."
+
+Sheila has arrived.
+
+Territan is still working on his i-senses...
+
+Biff the Wonder Parrot has arrived.
+
+Biff the Wonder Parrot perches happily on Elsinore's shoulder.
+
+Kahlua says "Internal senses?"
+
+sam says "DOes @oenter prepend anything, like the player's name?"
+
+Sketch says "@ISCENT, @IDESC, etc. Kahlua."
+
+Biff the Wonder Parrot looks slyly about the room, then produces a tiny hip flask and takes a quick drink.
+
+Malady enters Malady's Rocket.
+
+Malady has left.
+
+Sydney did @idesc, but dunno what other I-thingys to do just now.
+
+Kahlua says "Oh. Hmm"
+
+Biff the Wonder Parrot goes home.
+
+Biff the Wonder Parrot has left.
+
+Malady has arrived.
+
+Sydney enters Sydney's jitney.
+
+Sydney has left.
+
+Squeaky has arrived.
+
+Set.
+
+Squeaky enters Squeaky's TinyTMI longbus.
+
+Squeaky has left.
+
+Sketch says "OK, some people are getting tired, so let's press on. The point is, that when you go into these objects, you are in a place called "HERE"."
+
+Elsinore enters Elsinore's Trojan Alligator.
+
+Elsinore has left.
+
+Coal says "Are there @iotouch and @iotaste?"
+
+Sydney has arrived.
+
+Set.
+
+Elsinore has arrived.
+
+Territan says "Does @itaste have an action attribute associated with it...?"
+
+Sketch says "Yes, there is."
+
+Territan says "What Coal said."
+
+Coolman must depart, because he has to be at school in 8 hours.
+
+Sketch says "@IOTASTE and @IATASTE."
+
+You feel nothing special.
+
+Kahlua says "See ya, coolman"
+
+Sketch says "And you may say "Where's the help files." Well, I never did them."
+
+Sketch says "This will be fixed."
+
+Sheila cools
+
+Coolman says "Good night, and thank you Sketch and the rest of you that helped me!"
+
+Sketch moos.
+
+Malady enters Malady's Rocket.
+
+Malady has left.
+
+Set.
+
+Sketch says "Now, this is a good introduction to building a nice complicated object in terms of interacting with it."
+
+Malady has arrived.
+
+Coolman has disconnected.
+
+Sketch says "However, and I want everyone to understand this, we are building something in a way that was long ago superceded with other things on TIM."
+
+Squeaky's TinyTMI longbus says "Sketch, it won't give me the help files on @iscent, etc"
+
+Mara enters MaraBus.
+
+Mara has left.
+
+Sketch says "We are going to press on to explain CONCEPTS, not explain THE BEST WAY TO DO IT."
+
+I can't help you with that.
+
+I can't help you with that.
+
+Sketch says "HELP INTERNALS"
+
+Squeaky's TinyTMI longbus says "Thank you"
+
+Sketch says "Obviously, I need to flesh those out too."
+
+Reo has left.
+
+Reo's double-decker bus of fluffiness
+
+Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+Sheila says "That's okay, you have nothing else to do with your life"
+
+Reo's double-decker bus of fluffiness
+
+Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+Sketch says "just so the smarter cookies in the class don't wonder why I'm making the vehicles this way."
+
+You say "I'm a dumb cookie, I guess."
+
+Sketch says "In fact, many of you, just by being in the nexus, understand the basics of HOLDING and WEARING."
+
+Sketch says "I'm not going to go into that."
+
+Elsinore says "good for another day."
+
+Sketch says "That's R'nice's clever augmentation to make vehicles and things that carry people do really cool things."
+
+stobor has arrived.
+
+HerseBus has arrived.
+
+Damien dropped HerseBus.
+
+Damien enters HerseBus.
+
+Damien has left.
+
+Sketch says "The point is, you're now starting to see about making cool objects beyond @create Rose for Lover and being done with it."
+
+Abe Vigoda Memorial Lecture Hall
+
+The campus' main lecture hall is wide and spacious, with rows of uncomfortable seats inclining downward towards the wooden podium. Whiteboards, covered with indecipherable scribbles, line the back wall, and a globe (globe?) of TIM rests to the podium's right. Pieces of paper and empty drink cups litter the floor beneath the seats.
+
+Contents:
+
+HerseBus stobor
+
+Malady Elsinore
+
+Sydney Sheila
+
+Kahlua Coal
+
+Sketch Jenn
+
+Coolman Territan
+
+sam MaraBus
+
+Dilettante's Horse of Burden Coolman's Red ShuttleBus
+
+Malady's Rocket The Sam Heap of Rusted Bus
+
+RedEVIL's Dislocated Subway Car Territan's Micro-Bus
+
+Jenn's Party Bus to Hell Reo's double-decker bus of fluffiness
+
+Squeaky's TinyTMI longbus lupDuj / Farward's Shuttlecraft
+
+Kahlua's Moving Roadblock Elsinore's Trojan Alligator
+
+Sydney's jitney Coal's Bus Of DOOM!
+
+Natalie's Boots The TinyTIM Short Bus
+
+JoeyLemur's PCIBus rainy
+
+RedEVIL R'nice
+
+Dilettante Farward
+
+Br'fin Radioactive
+
+Obvious exits:
+
+Lobby
+
+Squeaky's TinyTMI longbus begins leaking a thick white fluid out of the radiator grille..ech!
+
+Sketch says "By the way, there's no such thing as @OLEAVE or like that."
+
+sam enters The TinyTIM Short Bus.
+
+sam has left.
+
+Squeaky has arrived.
+
+Coal says "What about @LEAVE?"
+
+Sketch says "That's because, again, this was superceded."
+
+Mara has arrived.
+
+Sketch says "No."
+
+Inkling has arrived.
+
+You say "By the exits?"
+
+Sydney smells Installed Exits. :)
+
+stobor blinks
+
+Territan says "Installed Exits are the Advanced Class!!"
+
+R'nice says "FOR THE RECORD: Don't get too hung up on the details of ENTER and LEAVE and all. ENTER and LEAVE are simple and appropriate for this beginner class, but ultimately they are superceded by installed exits."
+
+Sketch says "Yes, and I AM NOT GOING TO GO INTO INSTALLED EXITS."
+
+Elsinore says "thank you."
+
+Reo shudders.
+
+Damien has arrived.
+
+Territan says "Installed Exits are next semester. And I mean next SEMESTER. That's all we'll be talking about for FOUR AND A HALF MONTHS."
+
+Sydney would, eventually, like to learn how to do those. She'll bug R'nice or somebody for lessons later. :)
+
+Sketch says "Hey, R'nice, I just said that."
+
+Kahlua says "YAY installed exits"
+
+sam has arrived.
+
+Sketch says "Installed Exits are worthy of the TinyTIM Weekend Retreat."
+
+Coal has connected.
+
+Sketch says "Sorry, net delay there."
+
+Coal has partially disconnected.
+
+stobor lags
+
+You say "They're not... SO bad..."
+
+R'nice will probably do a workshop on installed exits sometime.
+
+Coal says "Bloody Verizon."
+
+Sketch would prefer that R'nice take them on, because even I have mental shortcuts.
+
+Kahlua says "There are worse things that installed exits. Like Switch"
+
+Kahlua shivers.
+
+Kahlua says "Worse THAN, I mean"
+
+Br'fin says "Try switch(), or @function, or the concept of functional programming ;)"
+
+Territan enters Territan's Micro-Bus.
+
+Territan has left.
+
+Sketch says "OK, so, for the moment, we're going to make our vehicles move."
+
+Sheila grins, remembering a time when @switch was no big deal to her....*sigh*
+
+Elsinore says "yay!"
+
+Squeaky enters Territan's Micro-Bus.
+
+Squeaky has left.
+
+Sketch enters The TinyTIM Short Bus.
+
+Sketch has left.
+
+Malady enters Malady's Rocket.
+
+Malady has left.
+
+Sydney enters Sydney's jitney.
+
+Sydney has left.
+
+The TinyTIM Short Bus has left.
+
+The TinyTIM Short Bus has arrived.
+
+Sketch has arrived.
+
+sam says "Cool."
+
+Malady has arrived.
+
+Sketch says "OK, now, realize that this is VERY VERY CHEAP AND CHINZY."
+
+Territan has arrived.
+
+Squeaky has arrived.
+
+Sketch says "But for the sake of this class, we're going to pedal with our feet instead of turning on the engine."
+
+stobor missed too much of this class for the rest to make sense.
+
+sam says "We can all troop to the Nexuss in a screaming bus horde after class, right?"
+
+Territan will write the engine in later with a @dolist. He is evil. >:)
+
+Coal says "All the buses inside one BIG bus."
+
+Kahlua parks on Atlas!
+
+Inkling snickers.
+
+Reo parks on Kahlua's ass.
+
+Territan says "The TinyTIM Mobile Parking Garage!"
+
+stobor hopes someone will share notes with him later.
+
+Coal says "Many people are logging, stobor."
+
+stobor is not.
+
+Sheila oooooos
+
+lupDuj / Farward's Shuttlecraft enters Sydney's jitney.
+
+lupDuj / Farward's Shuttlecraft has left.
+
+Kahlua passes stobor a C#
+
+Kahlua says "Hand that back when you're done"
+
+stobor :-)
+
+Sketch says "Basically, you're going to FORCE the Bus to do your bidding with the @FORCE command."
+
+JoeyLemur has arrived.
+
+Territan writes his bus' movement code in C#. It crashes into a wall in the first 5 seconds.
+
+Sketch says "Yes, there's a way to do it with programming, but we're just going to pedal with the feet."
+
+Damien enters HearseBus.
+
+Damien has left.
+
+Sketch says "basically, your vehicle is YOUR SLAVE. You can make it do anything you want."
+
+lupDuj / Farward's Shuttlecraft has arrived.
+
+Sketch says "Type @FORCE <Your Bus> = :waves."
+
+Inkling says "Within reason."
+
+Territan makes his bus write bad checks.
+
+Coal's Bus Of DOOM! has left.
+
+The TinyTIM Short Bus waves.
+
+Coal's Bus Of DOOM! has arrived.
+
+Elsinore's Trojan Alligator enters Natalie's Boots.
+
+Elsinore's Trojan Alligator has left.
+
+Territan's Micro-Bus raves.
+
+Jenn's Party Bus to Hell waves
+
+Kahlua's Moving Roadblock wavez.
+
+Malady's Rocket sneezes.
+
+Coal's Bus Of DOOM! yells "I don't wanna be a slave anymore!"
+
+Squeaky's TinyTMI longbus spooges.
+
+Sketch says "Now, this brings in an important thing to keep in mind. DATABASE NUMBERS."
+
+JoeyLemur's PCIBus humps Squeaky's TinyTMI longbus.
+
+Reo's double-decker bus of fluffiness waves.
+
+The Sam Heap of Rusted Bus breaks down. Again. Damn!
+
+lupDuj / Farward's Shuttlecraft growls menacingly.
+
+Kahlua's Moving Roadblock yells "TOO BAD BUS!"
+
+Elsinore's Trojan Alligator has arrived.
+
+Sketch says "Your bus was assigned a number when you created it."
+
+stobor sighs
+
+Sketch says "If you type EXAMINE <Your Bus> you'll see it."
+
+Malady's Rocket says "I am not a number!!"
+
+R'nice says "Actually, they'll see it if they look at it."
+
+Coal's Bus Of DOOM! says "Name, Rank and Serial Number."
+
+Sketch says "The flags of X and e are after your number, but you can see it."
+
+Inkling slaps his forehead.
+
+Sydney's jitney vrooms menacingly.
+
+Kahlua's Moving Roadblock says "Kahlua's Roadblock, #10112, SIR!"
+
+Sketch says "SO, you can type @FORCE Your Bus' Number = :waves."
+
+Kahlua's Moving Roadblock salutes
+
+Elsinore's Trojan Alligator says "Can I trade numbers with someone?"
+
+Jack_Daniels has arrived.
+
+The TinyTIM Short Bus waves.
+
+Kahlua says "Heya JD"
+
+JoeyLemur's PCIBus beeps. "Route 37312."
+
+Jack_Daniels says "WOW!"
+
+Elsinore's Trojan Alligator(#18604Xe)
+
+Owner: Elsinore Key: *UNLOCKED* Money: 2
+
+It's a very large wooden alligator. A sharp toothy grin greets you. A little card around it's neck reads: Take me, I'm yours!
+
+Listen: *
+
+Idesc: It's kinda dark in here, but don't light any matches! It's made of wood after all. There are people in armor sitting on benches here, and they're all staring at you.
+
+Alias: tro
+
+Scent: Like a herd of wooly sheep soaked with rain.
+
+Sound: You hear a gentle shhrr shhrr like silk brushing against silk. A soft chant murmurs "Light as a feather, stiff as a board."
+
+Taste: Tastes like chicken! A chicken made of rough wood, that is.
+
+Otaste: drools dazedly on the side of Elsinore's Trojan Alligator.
+
+Ataste: :takes a bite at %n%.
+
+Touch: You feel warm fuzzy love.
+
+Otouch: feels up Elsinore's Trojan Alligator and grins sheepishly.
+
+Atouch: :chuckles and grins at %n% toothily. "Touch me again and I'll invite you for dinner."
+
+Oenter: glances to the left and right and slips through a low hatch into the belly of Elsinore's Trojan Alligator.
+
+Home: A Grassy Knoll(#54553RLXA)
+
+Sketch says "But it gets even better!"
+
+Jack_Daniels says "good turnout!"
+
+Coal's Bus Of DOOM! putters around the room.
+
+Sydney has arrived.
+
+Malady's Rocket launches!
+
+Sketch says "You can drop ALL this @force #29292 = :waves crap and just type:"
+
+Territan's Micro-Bus languishes!
+
+Kahlua's Moving Roadblock pulls over in front of you and STOPS.
+
+stobor has left.
+
+Sketch says "#29292 :waves."
+
+The TinyTIM Short Bus(#85567Xe)
+
+Owner: Sketch Key: *UNLOCKED* Money: 2
+
+This is the TinyTIM Short Bus, which takes its passengers to various TinyTIM-related Lectures at TIM University. Just type ENTER SHORT BUS, and in a short time you'll be taken off to class! The Bus is a bright, sickly orange-yellow and has black lettering on the side which says "SPECIAL TIM EDUCATION". Oh, you're cruising in style now.
+
+Listen: *
+
+Enter: You enter the TinyTIM Short Bus.
+
+Oenter: slowly tromps up onto the TinyTIM Short Bus.
+
+Scent: Mmm, exhaust! Better move to the front. Mmm, exhaust! (Must be a leak).
+
+Sound: The bus is idling noisily. Nobody wants to do engine work on the short bus.
+
+Taste: STOP SUCKING ON THE SHORT BUS
+
+Otaste: Starts sucking on the TinyTIM Short bus's exhaust.
+
+Ataste: :spurts some exhaust into %N's face.
+
+Touch: The bus feels cool, metallic, and somewhat sticky from the people inside drooling on the way to the lecture. Ewww.
+
+Home: Abe Vigoda Memorial Lecture Hall
+
+JoeyLemur's PCIBus explodes. Oops.
+
+Coal's Bus Of DOOM! waves.
+
+Squeaky's TinyTMI longbus is put into gear. It goes forward..then backwards..then forwards..
+
+Sketch says "This saves you a LOT of typing."
+
+Coal's Bus Of DOOM! has left.
+
+Reo's double-decker bus of fluffiness(#69756Xe)
+
+Owner: Reo Key: Limbo(#0RSDlLHA) Money: 2
+
+This bus just bursts with squishy, squoogy feelings. Your first inkling of the depth of its cuteness is foretold by the baby blue plushy exterior and Nerf bumper. All along the sides are pictures of Care Bears, Rainbow Brites, Strawberry Shortcakes, Shirt Tales, Monchhichis, Paw-Paw Bears, etc. You squeal at the mere sight of it!
+
+Listen: *
+
+Idesc: Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+Scent: The scent of Baby Spice were she dipped in honey, then sugar cane, then coated in chocolate.
+
+Sound: The tinkling of tiny bells, and children's laughter.
+
+Taste: Lick a snozberry! It tastes like a snozberry!
+
+Otaste: scrapes off a lovely layer of cotton candy from the side of Reo's double-decker bus of fluffiness, and munches on it happily.
+
+Touch: You squoosh the soft, spongy bus within your hands.
+
+Otouch: squooshes Reo's double-decker bus of fluffiness in %p hands.
+
+Atouch: :slowly reexpands to its original size.
+
+It: #26997
+
+Iscent: It's very soapy-fresh. The bus runs on Ivory, after all.
+
+Isound: You hear the other passengers giggling to each other.
+
+Itouch: You rub your hand along the velvety seat and just enjoy it.
+
+Home: Throne Room(#38702R)
+
+Location: Abe Vigoda Memorial Lecture Hall
+
+Coal's Bus Of DOOM! has arrived.
+
+Reo's double-decker bus of fluffiness giggles.
+
+Jenn's Party Bus to Hell screeches around the room, leaving flaming tiremarks in its wake.
+
+Sketch says "If you refer to your object by its' number, you DON'T HAVE TO BE IN THE SAME LOCATION to make it do things."
+
+Sketch says "However, right now, you'd be flying pretty blind."
+
+Coal's Bus Of DOOM! wants to visit the Nexus.
+
+HearseBus wonders how Damien can make it so he is heard when he talks in the Hearse.
+
+Sheila goes home.
+
+Sheila has left.
+
+Malady's Rocket orbits Uranus. Insert joke here.
+
+Inkling wonders if puppets can use the ### <command> shorthand to pull the string of other puppets.
+
+Kahlua has partially disconnected.
+
+Coal says "You can't force something you don't own."
+
+Sketch isn't discussing puppets tonight, Inkling.
+
+Coal says "Unless you're a wizard."
+
+The Sam Heap of Rusted Bus honks it's faded horn
+
+Inkling says "D'oh."
+
+Kahlua has connected.
+
+Kahlua skids into reality, rollerblades smoking from the Velocity. Whoa...
+
+Kahlua says "Oops."
+
+Sketch says "Now, you wonder how to get heard inside the bus."
+
+Inkling says "s/puppet/any object"
+
+Kahlua says "Can I make a quick point?"
+
+Sketch says "For the purposes of this lecture and the complication factor, I'm going to say there's no easy way right now."
+
+JoeyLemur enters JoeyLemur's PCIBus.
+
+JoeyLemur has left.
+
+Sketch says "of course, this was all addressed in later code (yes, installed exits and wearing and holding)."
+
+R'nice says "There isn't?"
+
+JoeyLemur's PCIBus puts on JoeyLemur.
+
+From on JoeyLemur's PCIBus, JoeyLemur says "Beep."
+
+From on JoeyLemur's PCIBus, JoeyLemur looks around.
+
+Coal grabs Coal's Bus Of DOOM!.
+
+In lowercase, Coal's Bus Of DOOM! is not a ferret.
+
+From on JoeyLemur's PCIBus, JoeyLemur has a wacky idea.
+
+Coal dropped Coal's Bus Of DOOM!.
+
+sam says "Um, how to get heard inside of bus?"
+
+JoeyLemur enters JoeyLemur's PCIBus.
+
+JoeyLemur has left.
+
+JoeyLemur's PCIBus puts on JoeyLemur.
+
+Sketch enters The TinyTIM Short Bus.
+
+Sketch has left.
+
+Sketch says "HELOOOOOOOOOOO"
+
+R'nice says "Hello."
+
+From on JoeyLemur's PCIBus, JoeyLemur says "MOO!"
+
+Elsinore oos and aaas.
+
+Sketch has arrived.
+
+Kahlua has partially disconnected.
+
+Sketch says "Basically, set the Bus OPEN."
+
+Kahlua has connected.
+
+Kahlua skids into reality, rollerblades smoking from the Velocity. Whoa...
+
+Sketch says "@SET BUS = OPEN"
+
+Flag set.
+
+Reo has left.
+
+Reo's double-decker bus of fluffiness
+
+Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+R'nice takes a small bow. "Told you so. :-P"
+
+Sketch says "This makes it so you can hear what's going inside."
+
+You say "Whatchamacalit"
+
+Reo says "Whatchamacalit"
+
+Coal says "Is there a way to do prefixes/"
+
+Coal says "?"
+
+You say "Weird. You hear yourself."
+
+Reo says "Weird. You hear yourself."
+
+Sketch says "So yes, a third flag."
+
+sam enters The Sam Heap of Rusted Bus.
+
+sam has left.
+
+Elsinore enters Elsinore's Trojan Alligator.
+
+Elsinore has left.
+
+Elsinore says "testing, testing"
+
+Coal enters Coal's Bus Of DOOM!.
+
+Coal has left.
+
+Coal's Bus Of DOOM! says "Muahahahaha!"
+
+Jenn enters Jenn's Party Bus to Hell.
+
+Jenn has left.
+
+Malady enters Malady's Rocket.
+
+Malady has left.
+
+Elsinore has arrived.
+
+sam says "Hey, it works!"
+
+Sketch says "No, there is not. prefixes were a new addition that came with wearing and holding."
+
+Coal says "ER, you."
+
+Damien says "Is there a way to prefix and open bus?"
+
+Damien says "Okay."
+
+Jenn says "testing testing, is this mike on?"
+
+From on JoeyLemur's PCIBus, JoeyLemur just made his @aenter automatically wear anyone who entered to bus.
+
+Kahlua enters Kahlua's Moving Roadblock.
+
+Kahlua has left.
+
+Jenn has arrived.
+
+Sketch says "So what you're seeing is a lot of how we did this sort of thing in the "Old Days" that R'nice saw room for improvement to."
+
+Malady has arrived.
+
+Kahlua says "Whee."
+
+Kahlua says "Riding the slow bus"
+
+Sketch enters The TinyTIM Short Bus.
+
+Sketch has left.
+
+Malady says "Slow ride. Take it easy."
+
+Coal's Bus Of DOOM! has left.
+
+Kahlua says "Slick, Malady"
+
+Coal's Bus Of DOOM! has arrived.
+
+From on the PCIBus, JoeyLemur beeps.
+
+Elsinore is special. She rides the little bus to school.
+
+Coal's Bus Of DOOM! enters Kahlua's Moving Roadblock.
+
+Coal's Bus Of DOOM! has left.
+
+Coal's Bus Of DOOM! says "Beep beep."
+
+Kahlua says "Oops."
+
+Farward has disconnected.
+
+Coal's Bus Of DOOM! has arrived.
+
+Sketch says "OK, everyone. Now, the big test."
+
+Kahlua has arrived.
+
+Sketch says "Remember your number."
+
+Mara has to xall it a niht, thanks Sketch.
+
+Coal says "Parallel parking?"
+
+Sketch says "Get in your bus..."
+
+Elsinore enters Elsinore's Trojan Alligator.
+
+Elsinore has left.
+
+Sydney enters Sydney's jitney.
+
+Sydney has left.
+
+Squeaky enters Squeaky's TinyTMI longbus.
+
+Squeaky has left.
+
+Sketch says "And let's go terrorize the Nexus."
+
+Mara enters MaraBus.
+
+Mara has left.
+
+Kahlua says "See ya Mara!"
+
+Coal says "Whee!"
+
+Malady enters Malady's Rocket.
+
+Malady has left.
+
+Coal's Bus Of DOOM! has left.
+
+Kahlua enters Kahlua's Moving Roadblock.
+
+Kahlua has left.
+
+HearseBus has left.
+
+Academic Complex
+
+You're standing in the mammoth lobby of TIM U's Academic Complex. Wide, tall hallways lead off in numerous directions, to allow both students and faculty to shift back and forth from wing to wing and classroom to classroom. Embedded in the floor is the University seal.
+
+Contents:
+
+HearseBus(#69242Xeo)
+
+Coal's Bus Of DOOM!(#65857Xeo)
+
+Enjoy
+
+World Map
+
+SIGN: CLASSES LIST
+
+Obvious exits:
+
+Abe Vigoda Memorial Lecture Hall<Abe> Lots of classrooms Quad<S>
+
+Coal's Bus Of DOOM! has left.
+
+Malady's Rocket has arrived.
+
+The TinyTIM Short Bus has arrived.
+
+TIM University - the Quad
+
+Across the pleasant green rectangle of the campus Quad stroll a number of alternately bookish and slacker-looking students. In the center of the Quad stands a large bronze statue of TIM gazing sternly off into the horizon. Rough path-like brown patches run across the ordinarily-green grass marking common student routes.
+
+From here, the Academic Complex is north. The Administration tower leers off to the east, with the Campus Center south. The large foofball field lies to the east, while the dorm complex is southwest. Fraternity Row runs off to the northwest.
+
+Contents:
+
+Statue of TIM
+
+Obvious exits:
+
+Fraternity Row<NW> Dorms<SW> Foofball Field<W> Administration<E> Academic Complex<N> Campus Center<S>
+
+You say "Aya. Surrender your mitochondria."
+
+Reo says "Aya. Surrender your mitochondria."
+
+You say "Aya. Surrender your mitochondria."
+
+Reo says "Aya. Surrender your mitochondria."
+
+Malady's Rocket has arrived.
+
+HearseBus has arrived.
+
+The TinyTIM Short Bus has arrived.
+
+You push open one of the many glass doors and enter the Campus Center.
+
+TIM University - Campus Center(#2701RA)
+
+You're in the lobby of the Campus Center of TIM U., TinyTIM's official neo-liberal-arts-science-tech-business school. Around you pass by hundreds of zonked-out college students wearing baggy, underwashed clothing over their undernourished, underfed frames, babbling about inane things that they think matter, but in the grand scheme of things really don't. Across the back wall is a giant logo of the school's mascot, the "Fightin' Amish".
+
+Through the quintuple glass doors north lies the main Quad of the campus, to the other buildings. The bus route back to the Nexus is south.
+
+Obvious exits:
+
+Student Store<SS> Nexus<out> Quad<N>
+
+Malady's Rocket enters from the Quad.
+
+Malady's Rocket has arrived.
+
+The TinyTIM Short Bus enters from the Quad.
+
+The TinyTIM Short Bus has arrived.
+
+HearseBus enters from the Quad.
+
+HearseBus has arrived.
+
+The TinyTIM Short Bus drops its books and heads to the Nexus.
+
+The TinyTIM Short Bus has left.
+
+HearseBus drops its books and heads to the Nexus.
+
+HearseBus has left.
+
+You drop your books and head back to the Nexus.
+
+The TinyTIM Main Area Place(#270RLHtoNA)
+
+This is the nexus from which the realm of TinyTIM extends. As you look around the room, you see numerous doors that lead to various planes. Check the Directory Machine to see what leads where. Do things. See places. Have fun. Babylon and the Number Seven are the Same Color. Go soak. You know...
+
+Contents:
+
+Natalie's Boots(#56076Xeo)
+
+HearseBus(#69242Xeo)
+
+The TinyTIM Short Bus(#85567Xeo)
+
+Coal's Bus Of DOOM!(#65857Xeo)
+
+Nimdok
+
+SIGN: TinyTIM First Coding Workshop
+
+The Clock on the Wall
+
+The Old Man of the Nexus
+
+The Statue of TIM
+
+The Directory Machine
+
+Obvious exits:
+
+North Side Contest Chat Checklist Ad Mail Library Junk MUSHroom
+
+Malady's Rocket arrives from TIM University (plane 18) with its head over-full with useless classroom trivia.
+
+Malady's Rocket has arrived.
+
+The TinyTIM Short Bus beeps at Nimdok!
+
+Coal's Bus Of DOOM! says "There's nobody here but Nimdok!"
+
+You say "BEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP."
+
+Squeaky's TinyTMI longbus arrives from TIM University (plane 18) with its head over-full with useless classroom trivia.
+
+Squeaky's TinyTMI longbus has arrived.
+
+Sketch says "Wake up, Oldy!"
+
+Squeaky's TinyTMI longbus beeps
+
+Malady's Rocket rushes into the room, circling high above.
+
+Natalie's Boots clomp around the Nexus.
+
+HearseBus aims for the old man and tries to run him down.
+
+Jenn's Party Bus to Hell has arrived.
+
+Coal's Bus Of DOOM! says "Idle for 10 hours!"
+
+Sketch shouts "The First Annual TinyTIM Short Bus Rally is going on in the Nexus!"
+
+The TinyTIM Short Bus walks over to the North Side of the Nexus.
+
+The TinyTIM Short Bus has left.
+
+The TinyTIM Short Bus walks over from the North Side of the Nexus.
+
+The TinyTIM Short Bus has arrived.
+
+Huh? (Type "help" for help.)
+
+Natalie's Boots will outrun you all!
+
+Kahlua's Moving Roadblock has arrived.
+
+Territan's Micro-Bus arrives from TIM University (plane 18) with its head over-full with useless classroom trivia.
+
+Territan's Micro-Bus has arrived.
+
+Coal's Bus Of DOOM! walks over to the Directory Machine and climbs on top of it, sitting on the screen.
+
+Jenn's Party Bus to Hell drives around around making huge doughnut.
+
+You say "Clock, pick a card!"
+
+Malady's Rocket circles Atlas, who is, as usual, too busy.
+
+Atlas is too busy holding up the world to pay attention to Malady's Rocket.
+
+The Clock on the Wall says "I pick the Queen of Hearts."
+
+Kahlua says "BUS ATTACK!"
+
+Sydney's jitney arrives from TIM University (plane 18) with its head over-full with useless classroom trivia.
+
+Sydney's jitney has arrived.
+
+Mara has arrived.
+
+Atop the Directory Machine, Coal's Bus Of DOOM! beeps.
+
+Territan's Micro-Bus putters around the Statue of TIM once or twice...
+
+Kahlua's Moving Roadblock says "We da Busses. Fear Us."
+
+Parallax comes in from Limbo, letting some of the mist in.
+
+Parallax has arrived.
+
+Natalie's Boots leans forward and licks the old man.
+
+rainy is suddenly here.
+
+rainy has arrived.
+
+The Old Man of the Nexus yells "ARGH! Natalie's Boots germs! You undulating pervert!". He grabs his folding card-table chair and smashes Natalie's Boots right in the big ugly face with it, knocking it clean out of the room.
+
+Natalie's Boots decides to hoist up and see how work is continuing on the TinyTIM Brewery. (20)
+
+Natalie's Boots has left.
+
+The TinyTIM Short Bus jumps on Kahlua's roadblock. BUS CHICKEN FIGHT!
+
+Elsinore's Trojan Alligator has arrived.
+
+JoeyLemur's PCIBus has arrived.
+
+Mara has left.
+
+Sydney's jitney revvs.
+
+The TinyTIM Short Bus runs over Rainy.
+
+Squeaky's TinyTMI longbus SqUeAk!
+
+Natalie's Boots has arrived.
+
+From on the PCIBus, JoeyLemur says "Helps if you type the right commands."
+
+You say "I was about to do that, Natalie"
+
+Reo says "I was about to do that, Natalie"
+
+Nimdok has disconnected.
+
+Kahlua's Moving Roadblock says "Battle Busses!"
+
+The Old Man of the Nexus grabs Nimdok by the scruff of his vest and throws him back to his harem.
+
+Nimdok goes home.
+
+Reo grins
+
+Jenn's Party Bus to Hell screeches to a halt and opens its doors wide. "Anyone want on?"
+
+Malady's Rocket sails toward The Church.
+
+JoeyLemur's PCIBus yells "BEEP!"
+
+HearseBus chases the Old Man around the room again and again.
+
+The TinyTIM Short Bus yells "BEEEEEEEEEP"
+
+Coal's Bus Of DOOM! has left.
+
+Elsinore says "Anyone order an alligator to go?"
+
+Parallax has left.
+
+R'nice arrives from TIM University (plane 18) with his head over-full with useless classroom trivia.
+
+R'nice has arrived.
+
+Reo's double-decker bus of fluffiness has left.
+
+Jenn's Party Bus to Hell(#69747Xeo)
+
+You wipe your brow almost immediately upon entering. Damn, it's *hot* in here. All around you are lots of folks having a grand old time. Except those people chained up in the back, but you can probably ignore them to enjoy the party.
+
+Contents:
+
+Coal's Bus Of DOOM!(#65857Xeo)
+
+Jenn
+
+Malady's Rocket loops back around and enters standard orbit.
+
+Mara has arrived.
+
+Mara Args
+
+The TinyTIM Short Bus says "THIS CONCLUDES THE FIRST WORKSHOP. THANK YOU FOR ATTENDING"
+
+Coal's Bus Of DOOM! is on its way to Hell, baybee.
+
+Jenn's Party Bus to Hell
+
+You wipe your brow almost immediately upon entering. Damn, it's *hot* in here. All around you are lots of folks having a grand old time. Except those people chained up in the back, but you can probably ignore them to enjoy the party.
+
+Contents:
+
+Reo's double-decker bus of fluffiness
+
+Coal's Bus Of DOOM!
+
+Jenn
+
+You found a penny!
+
+Mara hops a bus to the campus center of TIM University (plane 18).
+
+Mara has left.
+
+Territan's Micro-Bus drives into the Directory Machine gently. You hear airbags go off inside.
+
+The Sam Heap of Rusted Bus has arrived.
+
+Strangely enough, it smells kind of like a barbeque.
+
+Malady has arrived.
+
+HearseBus enters Jenn's Party Bus to Hell.
+
+HearseBus has left.
+
+HearseBus has arrived.
+
+JoeyLemur's PCIBus tries to shimmy up the Statue of TIM, but keeps sliding down. You laugh callously and mock it mercilessly. Really, you do. Do it now. Please. Thank you.
+
+Natalie's Boots applauds! Thanks, Sketch!
+
+Malady says "thanks, Sketch!!"
+
+From on the PCIBus, JoeyLemur says "Thank you, Lord Sketch!"
+
+Jenn laughs. You're coming to hell with meeee!
+
+Elsinore says "Thank you Sketch!"
+
+Squeaky's TinyTMI longbus says "Thanks, Sketch"
+
+Sydney says "Thank you, O Cow!"
+
+Reo has left.
+
+Reo's double-decker bus of fluffiness
+
+Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+I don't see that here.
+
+Sorry.
+
+HearseBus enters Reo's double-decker bus of fluffiness.
+
+HearseBus has left.
+
+HearseBus has arrived.
+
+The TinyTIM Main Area Place(#270RLHtoNA)
+
+This is the nexus from which the realm of TinyTIM extends. As you look around the room, you see numerous doors that lead to various planes. Check the Directory Machine to see what leads where. Do things. See places. Have fun. Babylon and the Number Seven are the Same Color. Go soak. You know...
+
+Contents:
+
+Malady
+
+The Sam Heap of Rusted Bus(#69556Xeo)
+
+R'nice
+
+Natalie's Boots(#56076Xeo)
+
+JoeyLemur's PCIBus(#37312Xeo)
+
+Elsinore's Trojan Alligator(#18604Xeo)
+
+rainy
+
+Sydney's jitney(#13109Xeo)
+
+Territan's Micro-Bus(#69569Xeo)
+
+Kahlua's Moving Roadblock(#10112Xeo)
+
+The TinyTIM Short Bus(#85567Xeo)
+
+Jenn's Party Bus to Hell(#69747Xeo)
+
+Squeaky's TinyTMI longbus(#26997pXeo)
+
+Malady's Rocket(#39311Xeo)
+
+SIGN: TinyTIM First Coding Workshop
+
+The Clock on the Wall
+
+The Old Man of the Nexus
+
+The Statue of TIM
+
+The Directory Machine
+
+Obvious exits:
+
+North Side Contest Chat Checklist Ad Mail Library Junk MUSHroom
+
+Jenn says "Thank you Sketch, it was a great class!"
+
+The Sam Heap of Rusted Bus says "Hey, thanks, cow!"
+
+Malady's Rocket has left.
+
+Malady picks up Malady's Rocket.
+
+You are holding:
+
+sofa
+
+Lightsaber
+
+Paint Gun
+
+Tiny TinyTIM (tm) Figure Collection
+
+Wearing:
+
+Black and white and red outfit
+
+BUTTON: Jost the Baptist was here
+
+BUTTON: Mr. Froozoid
+
+Elf shoe
+
+Red Mark
+
+You have 8735 pennies.
+
+Reo's double-decker bus of fluffiness
+
+Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+Contents:
+
+HearseBus
+
+Sydney has arrived.
+
+Elsinore has arrived.
+
+Territan says "What's up for next week?"
+
+Reo's double-decker bus of fluffiness
+
+Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+Contents:
+
+HearseBus
+
+Reo has left.
+
+HearseBus
+
+The inside of the herse is spacious. The back three rowse of seats have been removed to allow space for the coffin. The walls are decked in black and from each window hangs a set of minature grey curtains. There are speakers spread through out the bus, and all the seats are upholstered in black leather.
+
+Contents:
+
+Damien
+
+Reo's double-decker bus of fluffiness
+
+Oh. My. GAWD! You never knew a bus could be this precious! The seats are overstuffed pastel sofas! The windows are framed in fluorescent colors! Did Lisa Frank explode in here?
+
+Contents:
+
+HearseBus
+
+Elsinore gets her alligator lovingly.
+
+Elsinore's Trojan Alligator has left.
+
+Elsinore picks up Elsinore's Trojan Alligator.
+
+Natalie says "26 commands, 3 flags, and 8 substitutions. *whew*"
+
+HearseBus has left.
+
+HearseBus has arrived.
+
+Dropped.
+
+Jack_Daniels falls from the sky, landing with a THUD!!!
+
+Jack_Daniels has arrived.
+
+Jenn has arrived.
+
+Sydney's jitney has left.
+
+Sydney picks up Sydney's jitney.
+
+Coal's Bus Of DOOM! has arrived.
+
+Kahlua's Moving Roadblock says "Clock, what time is it?"
+
+Jack_Daniels eeps
+
+The TinyTIM Main Area Place
+
+This is the nexus from which the realm of TinyTIM extends. As you look around the room, you see numerous doors that lead to various planes. Check the Directory Machine to see what leads where. Do things. See places. Have fun. Babylon and the Number Seven are the Same Color. Go soak. You know...
+
+Contents:
+
+Coal's Bus Of DOOM!
+
+Jenn
+
+Jack_Daniels
+
+HearseBus
+
+Elsinore
+
+Sydney
+
+Reo's double-decker bus of fluffiness
+
+Malady
+
+The Sam Heap of Rusted Bus
+
+R'nice
+
+Natalie's Boots
+
+JoeyLemur's PCIBus
+
+rainy
+
+Territan's Micro-Bus
+
+Kahlua's Moving Roadblock
+
+The TinyTIM Short Bus
+
+Jenn's Party Bus to Hell
+
+Squeaky's TinyTMI longbus
+
+SIGN: TinyTIM First Coding Workshop
+
+The Clock on the Wall
+
+The Old Man of the Nexus
+
+The Statue of TIM
+
+The Directory Machine
+
+Obvious exits:
+
+North Side Contest Chat Checklist Ad Mail Library Junk MUSHroom
+
+The Clock on the Wall says "The time is ten-till midnight TDT. Whalesnot. "
+
+You can't pick that up.
+
+Coal has arrived.
+
+Elsinore says "Feel enlightened, Natalie?"
+
+Locked.
+
+Reo's double-decker bus of fluffiness has left.
+
+Reo's double-decker bus of fluffiness has arrived.
+
+Taken.
+
+Malady sings, "Sketch is great! Gives us the chocolate code! Sketch is great!..."
+
+Territan's Micro-Bus decides to hoist up and see how work is continuing on the TinyTIM Brewery. (20)
+
+Territan's Micro-Bus has left.
+
+Natalie has arrived.
+
+You say "That was really fun, Sketch."
+
+Natalie says "I'm exhausted!"
+
+The TinyTIM Short Bus says "The next class will be determined probably by next Monday or Tuesday."
+
+Elsinore grins.
+
+Kahlua's Moving Roadblock putters around and parks in poor places.
+
+Elsinore signs up.
+
+Reo has left.
+
+You enter the TinyTIM Short Bus.
+
+The TinyTIM Short Bus
+
+Inside the TinyTIM Short bus, you drool in your seat and patiently wait to be taken to class. You look out the window and see if anyone else thinks you look as confused as you are.
+
+Contents:
+
+Sketch
+
+Natalie's Boots has left.
+
+Natalie picks up Natalie's Boots.
+
+The Sam Heap of Rusted Bus says "Hey, how can I go through exits?"
+
+Huh? (Type "help" for help.)
+
+Mmm, exhaust! Better move to the front. Mmm, exhaust! (Must be a leak).
+
+Mmm, exhaust! Better move to the front. Mmm, exhaust! (Must be a leak).
+
+Coal's Bus Of DOOM! has left.
+
+Coal picks up Coal's Bus Of DOOM!.
+
+You say "it's up in the air what it'll be."
+
+JoeyLemur's PCIBus goes home.
+
+JoeyLemur's PCIBus has left.
+
+Kahlua says "Force it to the exit."
+
+STOP SUCKING ON THE SHORT BUS
+
+The TinyTIM Short Bus spurts some exhaust into Reo's face.
+
+Sketch fooom.
+
+Jack_Daniels hrms @ sketch... did anyone log the event?
+
+Elsinore logged it.
+
+Jenn's Party Bus to Hell has left.
+
+Jenn picks up Jenn's Party Bus to Hell.
+
+Sketch says "Yes."
+
+Sketch says "Yes."
+
+JoeyLemur is just improvising. Don't ask him.
+
+JoeyLemur has arrived.
+
+Kahlua says "Everyone did."
+
+The TinyTIM Main Area Place
+
+This is the nexus from which the realm of TinyTIM extends. As you look around the room, you see numerous doors that lead to various planes. Check the Directory Machine to see what leads where. Do things. See places. Have fun. Babylon and the Number Seven are the Same Color. Go soak. You know...
+
+Contents:
+
+JoeyLemur
+
+Natalie
+
+Coal
+
+Jenn
+
+Jack_Daniels
+
+HearseBus
+
+Elsinore
+
+Sydney
+
+Malady
+
+The Sam Heap of Rusted Bus
+
+R'nice
+
+rainy
+
+Kahlua's Moving Roadblock
+
+The TinyTIM Short Bus
+
+Squeaky's TinyTMI longbus
+
+SIGN: TinyTIM First Coding Workshop
+
+The Clock on the Wall
+
+The Old Man of the Nexus
+
+The Statue of TIM
+
+The Directory Machine
+
+Obvious exits:
+
+North Side Contest Chat Checklist Ad Mail Library Junk MUSHroom
+
+Elsinore says "First time I eve rlogged anything too."
+
+Jack_Daniels got off work just in time to be really late to the event
+
+Kahlua says "Anyone can send me the log, please?"
+
+Malady says "Everyone but Atlas. He's too busy."
+
+Atlas is too busy holding up the world to pay attention to Malady.
+
+Kahlua says "Elsi? Can you send it to me?"
+
+Coal guesses now she should stop logging, hmm?
+
+Jack_Daniels would appreciate a log as well
+
+Sketch has arrived.
+
+The TinyTIM Short Bus has left.
+
+Sketch picks up The TinyTIM Short Bus.
+
+Elsinore says "I'll give it a shot.."
+
+<PRE>
+
+You say "Lua, I can."
+
+Kahlua pages: zx3@bellatlantic.net
+
+Jack_Daniels hrms... maybe someone could post a log somewhere
+
+Kahlua says "Thanks Reo"
+
+sam has arrived.
+
+You say "It'll be full of my own examinings, though"
+
+Sketch says "I'd like it very much if everyone left their Buses in the Lecture hall for others to see."
+
+Sketch hops a bus to the campus center of TIM University (plane 18).
+
+Sketch has left.
+
+Kahlua says "I can put it online."
+
+[And so he did.....]
+

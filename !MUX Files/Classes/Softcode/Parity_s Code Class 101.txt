@@ -1,0 +1,401 @@
+ ©2000 Parity@OGR. You may copy and redistribute this document provided that it remains
+complete, with credits intact, and is used only for non-profit purposes.*
+*****
+Parity begins logging. "If anyone does not want to appear in the log, let me
+know now, and I'll edit you out before I turn it over to OGR staff."
+Gorgo has no problem with that.
+Parity bangs its gavel on the podium and calls the class to order. "First I want
+to get a feel for how 'beginning' we are. Does everyone know what an object, an
+attribute, and a lock are, or should we start there?"
+Parity means, also, really know what they are, not just have heard the terms. ;)
+Gorgo does.
+Parity is pretty sure Roswind does too. "Okee. So, to make sure everyone is
+clear, here, there are, essentially, two kinds of attributes. System attributes
+which have special meanings, and user attributes, which are just storage space.
+'desc' is a system attribute, and 'my-blue-ball-gown-desc' is a user attribute."
+Roswind says "Okay. When you say desc, you mean @desc and not the &various descs
+for the @desc, yes?"
+You say "We probably all already knew that, but it's important because we're
+going to play with some system attributes. If everyone can type 'help
+commands2', you'll see a list of all the system attributes. Everything on the
+commands2 page is just a command to set an attribute, not a 'real' command like
+@emit and such.""
+
+Help available for MUSH Commands (continued):
+
+@aahear @aclone @aconnect @adescribe @adfail @adisconnect
+@adrop @aefail @aenter @afail @agfail @ahear
+@akill @aleave @alfail @alias @amhear @amove
+@apay @arfail @asuccess @atfail @atport @aufail
+@ause @away @charges @conformat @cost @describe
+@dfail @drop @ealias @efail @enter @exitformat
+@fail @filter @forwardlist @gfail @idesc @idle
+@infilter @inprefix @kill @lalias @leave @lfail
+@listen @move @odescribe @odfail @odrop @oefail
+@oenter @ofail @ogfail @okill @oleave @olfail
+@omove @opay @orfail @osuccess @otfail @otport
+@oufail @ouse @oxenter @oxleave @oxtport @pay
+@prefix @reject @rfail @runout @sex @startup
+@success @tfail @tport @ufail @use
+
+Parity nods to Roswind.
+You say "@desc, or &desc... it doesn't matter."
+You say "The system attributes all have a 'command' (starting with an '@') to
+set the attribute, but the trick is... it's just an attribute."
+You say "So, you can '&desc me=A fine figure of a bit' and it'll set your desc.
+Or you can '@desc me=A fine figure of a bit' and then exa me/desc and you'll see
+an attributee with a description in it."
+Roswind nods
+Gorgo nods.
+You say "Then, my-red-dress-desc is just an attribute too... but it doesn't have
+special meaning, so if you set '&my-red-dress-desc me=A fine figure in a red
+dress.' people won't see the dress when they look at you, but exa
+me/my-red-dress-desc will show you the value of 'my-red-dress-desc' as an
+attribute on you."
+You say "So. To get things rolling, I want everyone to pick a simple noun, and
+we're each going to make an object to work with."
+You say "I am going to make a ball, for example, with '@create Rubber Ball'; I
+take it everyone has made an object before now?"
+Rubber Ball created as object #1039
+You say "Once you've created your object, Do, '@lock/uselock <object>=me' and
+'@set <object>=commands' (where you replace <object> with the name of your
+object.)"
+Roswind nods. "Got it."
+Gorgo nods.
+You say "Now, back to system attributes; There's bunches and bunches of them,
+and most of them work the same way. Type in '@drop <object>=You drop <object>'
+and '@odrop object=drops <object>' ... or some more complex message if you like,
+where @drop is what you'll see and @odrop is what everyone else sees."
+You say "Once you've done that, drop your object."
+You drop the ball, which bounces a few times before coming to a rest.
+Gorgo drops the chewtoy, making it SQUEAK as it hits the floor.
+Parity grins. "You might already have known about the drop attributes, but I
+wanted to make a point... MUSHcode has system attributes for all kinds of
+events. Always check help commands2 before coding some complex thing that can be
+made simple by just setting the right attribute.
+Parity checks if Roswind is with us still?
+Parity hmmms, and hopes she'll catch up. "Anyway. If you've done any building,
+the system attributes are all just like the ones that you use when building.
+Message for the actor, message for everyone else, message for actor on failure,
+message everyone else on failure. Make sense?
+Roswind :pats the dragon's shoulder and moves away from it.
+Gorgo nods.
+You say "Roswind, the ':' is unnecessary in @o___ attributes like @odrop."
+Roswind says "Fixed. And I understand. Force of habit. :)"
+Parity nods.
+You say "Okay, so odrop is kinda boring, though it'd be nice if everyone that
+made object toys set some of the basic get/drop/give messages, because otherwise
+people only see '<object> has arrived' and '<object> has left' and don't know
+who acted on the object."
+Gorgo says "Yah."
+You say "However, there's another set of attributes, the @a___ attributes, which
+are the action the object performs when something happens, like @adrop when you
+drop an object. THat's starting to look like actually -coding-, and not just
+building-with-objects. ;)"
+Taken.
+Chewtoy has left.
+Parity picks up its ball, and sets, '@adrop ball=@wait 10=@emit The rubber ball
+rolls across the floor.'
+You drop the ball, which bounces a few times before coming to a rest.
+The rubber ball rolls across the floor.
+You say "The @wait command, in its simple form, just waits a certain number of
+seconds before doing something."
+Gorgo drops the chewtoy, making it SQUEAK as it hits the floor.
+Dragon has left.
+The chewtoy starts to decompose.
+You say "@wait can also be used with 'semaphores', which are generally used to
+make sure some piece of code is only running once, but we won't get into
+semaphores today except to say that they exist and not to be confused that help
+@wait has a bunch of stuff besides seconds listed in it."
+Roswind pats the dragon's shoulder and moves away from it.
+The big inflated dragon starts drifting across the room.
+Roswind decides not to even look at it right now. ;)
+Parity grins. "help is a good thing. Really. :)"
+You say "Okay. So we have an object. It can do things when we drop it, and if we
+wanted we could repeat that for get and give and being looked at, and all sorts
+of things."
+You say "Instead, we're going to assume that we want the object to do something
+else, when we want it to, by issuing a command."
+You say "To make a command is really very simple; You just use a $ and a : in an
+attribute. '$<command name>:<action>' ... Like, '&bounce-ball-cmd ball=$bounce
+ball:@emit %N bounces the rubber ball.'"
+Parity bounces the rubber ball.
+You say "Easy enough?"
+Chewtoy is kicked across the room in a nice arc. Wheeeee!
+Gorgo says "Gotcha."
+You say "Does everyone understand the % substitutions?"
+Gorgo does.
+Roswind grabs the dragons tail and pulls it back.
+Roswind nods. "Yes"
+You say "'kay."
+You say "Now, what I just showed you is the wrong way to do an emitting command.
+Or at least, the sloppy way."
+You say "We can put more than one action into a command, and then, @pemit will
+emit to one specific player, and @oemit will emit to everyone -except- that
+player."
+You say "&bounce-ball-cmd ball=$bounce ball:@pemit %#=You bounce the rubber
+ball. ; @oemit %#=%N bounces the rubber ball."
+You bounce the rubber ball.
+You say "It looks the same to you, of course, but not to me, and it's much nicer
+to have commands act that way; people expect it, because of the way exits and
+such work."
+Roswind nods.
+Gorgo nod.s
+You say "Note that I use %# for the emit commands; %# uses the players dbref; %n
+will work, and beginning coders often use it, but it will break as soon as there
+is an object with a similar name in the room... You've all seen the 'I don't
+know which one you mean!' message, I'm sure, when you have an object like
+'Parity's Car' around?"
+Gorgo says "Yah."
+Parity nods.
+Roswind understands.
+You say "Are you all familiar with functions?"
+Roswind says "Such as"
+You say "time(), loc(), iter() ..."
+Gorgo is familliar with some of them. I know the basics behind them.
+You say "Functions are pieces of softcode, that when evaluated, are replaced
+with some string; like the % substitutions, except more general."
+You say "(This is no longer strictly true with the introduction of 'side-effect
+functions' but we'll pretend it's true for now.)"
+Roswind nods. "Yes, the time(), loc(), name(), owner() ... those are the ownly
+ones I know.
+You say "Okee."
+You say "If you type 'say time()' you should see yourself saying the current
+mush-time. ("time will not work.)"
+You say "Sun Aug 20 14:05:16 2000"
+Gorgo says "Sun Aug 20 14:05:32 2000"
+Roswind says "Sun Aug 20 14:06:04 2000"
+You say "Now if you try 'say lwho()' you should get a list of dbrefs."
+Roswind says "#-1"
+Roswind says "#552 #1038 #384"
+Roswind says "I see them"
+Parity nods.
+You say "Now if you say num(parity), you should see my dbref... which is one of
+the ones in the lwho() list. lwho() is a list of who's online."
+Roswind says "#384"
+Roswind nods
+Parity nods. "And of course, name(#384) would give my name, ... but name(#552
+#1038 #384) won't give much of anything."
+You say "This is where 'iter' comes in."
+You say "iter() does some function evaluation repeatedly for different values."
+You say "If you say iter(1 2 3,##), it's the same as saying '1 2 3' ; if you say
+'iter(1 2 3,Number ##)' the same as saying 'Number 1 Number 2 Number 3'"
+You say "'Number' of course, is a boring thing to evaluate, because it's just a
+string, it's not a function."
+You say "But, 'iter(1 2 3,add(##,1))' will add 1 to each element, so it's the
+same as saying '2 3 4'."
+You say "Is this making sense?"
+Roswind nods. "Actually it is." :)
+You say "Okee. Now, the first part of iter can be a function, too. Try 'say
+lnum(3)' for example. This will give you a list of numbers."
+Gorgo says "Why the ##? What are their function in the string?"
+0 1 2
+Gorgo says "0 1 2"
+You say "The first argument to iter is a list of elements separated by a space."
+You say "The second argument of iter is a string that gets evaluated like any
+other string in mush, with the special exception that '##' is replaced by each
+element of the first argument in turn."
+Roswind says "0 1 2 3 4"
+You say "So, when I 'say iter(1 2 3,##)' iter (which is short for 'iterate' by
+the by) will evaluate ## as '1' and then as '2' and then as '3', take each of
+those results and stuff them together in one long string."
+Gorgo hmms. ok
+You say "Okay. So. 'iter(lnum(3),## ...)' will go through 0, 1, and 2 and put '
+...' after each number. Everybody try iterating an lnum (of a -small- number,
+please!) with some other text added around the ##."
+Gorgo says "0 Feh 1 Feh 2 Feh"
+Parity hopes it makes sense now that you've tried a concrete example?
+Roswind says "0 thousand 1 thousand 2 thousand"
+Roswind nods. "Yeppers"
+You say "Cool. Now, you've probably noticed that lnum starts with 0..."
+Gorgo nods.
+You say "One thing we often want is to start with 1. Easy enough. Whatever our
+code is, we just replace '##' with 'add(##,1)'."
+You say "Like, 'iter(lnum(3),add(##,1))'"
+You say "1 2 3"
+You say "Time to mention a tricky part of evaluations; this is not just for
+iter, but for any time your code is evaluating a string, from just when you're
+saying some line of code to the most complicated command you've ever written."
+You say "When mush evaluates, if the first thing it sees is not a function, it
+'decides' that what you're saying is just text. That's why I can 'say For
+example, iter(), ' and not get an error."
+You say "For example, iter()"
+You say "#-1 FUNCTION (ITER) EXPECTS BETWEEN 2 AND 4 ARGUMENTS"
+You say "If I start with 'say iter()' I get a really obnoxious error message.
+;o"
+Gorgo says "Yah. Whoever made those, were really offensive. :)"
+You say "Now. If I -want- my iter to run, so I can do, 'For example, iter(1 2
+3,##) shows you iter(1 2 3,##)' and get '...shows you 1 2 3', I just wrap my
+function in [] square brackets."
+You say "The [] square brackets tell the mush, '-this- part is not plain text.'"
+You say "If I say, 'For example, iter(1 2 3,##) shows you [iter(1 2 3)]', I
+get..."
+You say "For example, iter(1 2 3,##) shows you #-1 FUNCTION (ITER) EXPECTS
+BETWEEN 2 AND 4 ARGUMENTS"
+You say "Err."
+You say "If I say, 'For example, iter(1 2 3,##) shows you [iter(1 2 3,##)]', I
+get..."
+You say "For example, iter(1 2 3,##) shows you 1 2 3"
+Parity notes that it helps to write your code correctly. ;)
+Gorgo grins. Yeah. Typoes in code = hours of extra work. :)
+Roswind grins and nods.
+You say "Now, for us this matters, because when we do 'iter(1 2 3,Number
+add(##,1))' mush is going to see 'Number' ... which isn't a function... and
+decide the whole thing is text; it'll still do ## and % substitutions, but it
+won't evaluate functions."
+You say "Number add(1,1) Number add(2,1) Number add(3,1)"
+You say "So, I put in some [] square brackets, and use 'iter(1 2 3,Number
+[add(##,1)])'"
+You say "Number [add(1,1)] Number [add(2,1)] Number [add(3,1)]"
+You say "Number 2 Number 3 Number 4"
+Parity notes that it has been allowing you to see the square brackets by putting
+a % in front of the square brackets, which just like % in front of a % stops the
+mush from evaluating it specially.
+You say "Of course it makes me look silly when I forget to remove the % before
+running the code. ;o"
+Gorgo grins.
+You say "Anyway, to bring it back around to our original problem,"
+You say "We wanted someting like, 'say iter(lnum(3),Number [add(##,1)])"
+You say "Number 1 Number 2 Number 3"
+Parity invites everybody to try their lnum example again with an add() in it.
+Roswind says "Number 1 Number 2 Number 3 Number 4"
+Gorgo says "Number 1 Number 2 Number 3 Number 4 Number 5"
+You say "Okee."
+You say "Now that we all understand how functions work, and how iter works... we
+can try something almost useful."
+You say "Try, 'say iter(lwho(),name(##))'"
+Gorgo says "Gorgo Roswind Parity"
+You say "If you look at the WHO list, you'll see an uncanny similarity to what
+you just said. ;)"
+Player Name On For Idle Doing
+Gorgo 01:12 3m Formerly Capricorn
+Roswind 02:07 4m
+Parity 2d 02:18 0s CodeClass: 2PM EST
+3 Players logged in.
+Gorgo nods.
+You say "If we were writing a +who command, we'd want it to appear on separate
+lines. This comes up a lot."
+Roswind says "Gorgo Roswind Parity"
+You say "We'll want to switch to @pemit now, so the 'You say' text isn't
+confusing the issue. Try, '@pemit me=iter(lwho(),name(##)
+'"
+You say "Err."
+You say "Try, '@pemit me=iter(lwho(),name(##)
+)'"
+You say "Try, '@pemit me=iter(lwho(),name(##)%r)'"
+Gorgo says "Gorgo
+Roswind
+Parity
+"
+Parity finally escapes everything and includes -all- the () parentheses.
+Gorgo
+Roswind
+Parity
+
+Gorgo mumbles and is fighting with a new clietn.
+Parity nods.
+Gorgo says "Gorgo
+Roswind
+Parity
+"
+You say "Let me know when you've tried it with @pemit; assuming your client
+doesn't pretty it up for you, you should find that you see 'Gorgo' at the
+beginning of the line, and 'Roswind' and 'Parity' are each indented one space."
+Gorgo nods.
+You say "This is because, by default, iter() puts a space -between- each entry."
+You say "That's why our lnum() examples didn't run together as '012345'"
+You say "But when doing a +who type command it's frustrating."
+You say "There's two ways around it. 1) Use TinyMUSH 3.0 or PennMUSH which each
+allows a 'null' separator. or 2) Write our iter differently."
+You say "Since the space appears between entries, by putting our '%r' at the
+-beginning- of the entry, the extra spaces appear at the end of the line where
+they don't hurt anything."
+You say "Now, try: @pemit me=iter(lwho(),%r[name(##)])"
+
+Gorgo
+Roswind
+Parity
+Parity can't see what you're doing with @pemit, so please let it know when
+you're caught up.
+Roswind says "Got it. Why are they in that order? Time connected?"
+Parity nods to Roswind. "Yes."
+You say "SInce that's the default order that MUSH puts the lwho() in, that's why
+almost every +who puts people in that order."
+You say "Try, @pemit me=iter(sort(lwho()),%r[name(##)])"
+
+Parity
+Gorgo
+Roswind
+You say "sort(), when given a list of dbrefs, will sort them in numerical
+order."
+You say "Try saying lwho() and sort(lwho()) if you're not clear on what's going
+on with this."
+Parity is a big advocater of experimenting to learn. :)
+Roswind says "That's the only way I do learn. Reading the mush manual does
+nothing for me. As long as someone can explain in plain english, and I fiddle
+with it, I'll learn. :)"
+Parity nods, "Yes, I don't feel that I really understand something until I've
+had some 'hands on' experience.
+Gorgo nods.
+You say "Okay. Now, to tie everything back together, let's try an exercise. Take
+what I've explained about commands and about functions, and make a 'mywho'
+command on your object that will tell you who's online. Please set your object
+visual with @set <object>=visual ; that will let me see the attributes you're
+working on."
+Gorgo says "Tadah."
+
+CMD.MYWHO:$mywho:@pemit %#=%r*** Gorgo's Private WHO
+***%r[iter(sort(lwho()),%r[name(##)])]%r%r*** Gorgo's Private WHO ***
+
+Parity nods. "If everyone can look at Gorgo's mywho with 'exa chewtoy/cmd.mywho'
+...."
+You say "One of the little nuisances of that preceding %r is that it gives us a
+leading, extra return that we don't -really- want. When we bracket our who list,
+we can take care of that easily."
+You say "If we do something like, '@pemit
+me=-Header-[iter(lwho(),%r[name(##)])]%r-Footer-' everything lines up nice and
+snug. (In Gorgo's case, that means just removing the '%r' at the end of her
+header line.)"
+-Header-
+Gorgo
+Roswind
+Parity
+-Footer-
+Roswind says "Got it... finally"
+You say "This is, I think, the real reason that +who lists and the like are
+always bracketed by border designs... to hide the extra %r :)"
+LWHO:$lwho:@pemit me=iter(sort(lwho()),%r[name(##)])
+DWHO:$dwho:@pemit %#=%rYour private who
+list%r[iter(sort(lwho()),%r[name(##)])]%r
+Parity nods, "Looks good, Roswind! :)"
+You say "So does yours, Gorgo. ;) I just got distracted giving more tips. ;o"
+Parity whews.
+You say "Anyway."
+You say "That's 2 hours, and you've learned how to write your own +who command.
+So, let me just close by saying that you'll find more math functions like add()
+under 'help math functions' and more useful information-source functions in
+places like 'help database functions' and 'help misc functions'."
+Parity opens the floor to questions.
+Roswind raises a hand. "When's the next class?" and ducks. ;)
+Parity grins. "In two weeks, probably?"
+Gorgo says "Sounds good. :)"
+Parity may move the day if lots of people can't make this time.
+You say "Personally, I thought sunday afternoon was a nice lazy do-nothing time
+for a code-class..."
+Parity obviously doesn't want to have it friday or saturday evening. ;)
+Gorgo says "People are usually very hard to plan for."
+You say "Oh, a comment about naming conventions."
+You say "I like to name my attributes 'blah-cmd', 'blah-fn', 'blah-data' etc."
+You say "Gorgo apparently prefers 'cmd.blah' 'fn.blah' etc."
+You say "Either way is fine, but you do want -some- prefix or suffix, so you can
+quickly exa your object with '*' and find particular groups of attributes. Just
+be consistent, and you'll be fine."
+Parity discourages people from using '_' though.
+You say "_ requires a shift-key to type, which makes typos more frequent, and is
+harder on the wrists of people that are constantly typing attribute names. '.'
+and '-' are both good separators."
+Parity thinks that's all for today, then, and will close the log unless there's
+any more questions.
+Gorgo doesn't have more. Thanks for your time. :)
+Roswind says "Nope. None now. Thanks. :)"
+You say "Thank you!" 

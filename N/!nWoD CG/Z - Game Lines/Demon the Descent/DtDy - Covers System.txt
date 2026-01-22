@@ -1,0 +1,249 @@
+/*
+You paged Typhon with ‘Oh fuck me yes, Covers need Aspirations.’
+
+
+
+cover system
+
+a system for Demon covers
+
+--
+
+A small set of sheets
+1 sheet per cover
+Use a 'shift'-like system to swap them in and out.
+
+--
+
+Cover Object:
+	@create Cover: <cover name>=10
+	&d.owner <cover object>=<objid>
+	&_<statpath> <cover object>=<value>
+	&_merit.*
+	&_bio.full_name
+
+-- 
+
+d.valid.statpaths ::
+	_bio.full_name
+	_merit.* 
+
+--
+
+0: Player dbref
+1: Stat to Get
+2: Sheet Loc
+3: [p]ermanent, [o]ffset, [b]oth, [t]otal, if any
+
+f.getstat ::
+	u( v( d.sfp )/f.getstat.workhorse, )
+
+--
+
+cover/new <target>/<cover name>
+cover/wear <cover name>
+cover/set [[<target>:]<cover>/]<stat>=<value>
+cover/view [<target>/]<cover>
+
+cover/chown [<target>/]<cover name>=<new owner>
+cover/cleanup :: deletes covers belonging to deleted objects
+
+
+
+================================================================================
+== SETUP =======================================================================
+*/
+
+@create Demon Covers <dc>
+@set Demon Covers <dc>=inherit safe
+
+@parent Demon Covers <dc>=codp
+
+
+/*
+--------------------------------------------------------------------------------
+-- Data ------------------------------------------------------------------------
+*/
+
+@fo me=&d.sfp dc=[search( name=Stat Functions Prototype <sfp> )]
+
+/*
+--------------------------------------------------------------------------------
+-- Dot Functions ---------------------------------------------------------------
+*/
+
+&.msg dc=ansi( h, <%0>, n, %b%1 )
+
+&.objid dc=
+	if( not( isdbref( %0 )), 
+		#-1, 
+		strcat( %0, :, convtime( get( %0/created )))
+	)
+
+
+
+/*
+================================================================================
+== FUNCTIONS ===================================================================
+
+
+--------------------------------------------------------------------------------
+-- Function: Find Cover Dbref(s) -----------------------------------------------
+
+0: target dbref
+1: cover full name (or partial match)
+
+*/
+
+&f.find-cover dc=
+	filter( filter.find-covers, lcon( %! ), , , %0, %1* )
+
+/*
+--------------------------------------------------------------------------------
+-- Function: Validate: New Cover Name ------------------------------------------
+
+0: target dbref
+1: cover full name
+return: 1, or #-1 <error reason>
+
+*/
+
+&f.validate.new-cover-name dc=
+	strcat( 
+		setq( 0, u( v( d.sfp )/f.find-sheet, %0 )), 
+		setq( 1, edit( %1, %b, _ )), 
+		setq( 2, edit( %1, _, %b )), 
+		case( 0, 
+			hasattr( %q0, _advantage.cover_%(%q1%) ), 
+			#-1 No dots in that Cover, 
+
+			validate( Cover: %q2, name ), 
+			#-1 Cover name not valid, 
+
+			1 
+		), 
+	)
+
+
+
+/*
+================================================================================
+== FILTERS =====================================================================
+
+
+--------------------------------------------------------------------------------
+-- Filter: Find Cover Dbref(s) -------------------------------------------------
+
+0: target dbref
+1: cover full name (or partial match)
+
+*/
+
+&filter.find-cover dc=
+	cand( 
+		strmatch( get( %0/d.owner ), u( .objid, %1 )), 
+		strmatch( get( %0/_bio.full_name ), %2 )
+	)
+
+/*
+================================================================================
+== COMMANDS ====================================================================
+
+
+--------------------------------------------------------------------------------
+-- Mistress Code ---------------------------------------------------------------
+
+	cover[s][/<switch>] [<target>/][<action>][=<value>]
+
+s: <switch>
+t: <target>
+a: <action>
+v: <value>
+
+d: target dbref
+l: list of switches
+m: matched switch, if any
+
+*/
+
+&c.cover dc=$(?s)^\+?covers?(.+)?$:
+	think strcat( 
+		parsing:, %b, u( f.parse.command, trim( %0 )), %r, 
+		iter( s t a v, - %i0: [r( %i0 )], , %r ), 
+		if( not( %qt ), t: [setr( t, %# )]), %r, 
+		l:, %b, lcstr( edit( lattr( %!/c.cover/* ), C.COVER/, )), %r, 
+	); 
+
+	@assert cor( not( %qs ), setr( m, grab( %ql, %qs* )))={ 
+		@pemit %#=u( .msg, cover, 
+			No match on switch '%qs'%; 
+			options are: [itemize( %ql )]
+		) 
+	}; 
+
+// .. check other things for 'cover' 
+
+	@assert isdbref( setr( d, pmatch( %qt )))={ 
+		@pemit %#=u( .msg, cover, Can't find target '%qt' ) 
+	}; 
+
+	@assert cor( isstaff( %# ), strmatch( %#, %qp ))={ 
+		@pemit %#=u( .msg, cover, Target must be yourself ) 
+	}; 
+
+	@assert strlen( %qa )={ 
+		@pemit %#=u( .msg, cover, No action given ) 
+	}; 
+
+	@pemit %#=case( 1, 
+		t( %qs ), u( c.cover/%qm, %qp, %#, %qa, %qv ), 
+		t( %qa ), u( c.cover.action, %qp, %#, %qa, %qv ), 
+		u( c.cover.general, %qp, %# )
+	); 
+
+// --
+
+@set dc/c.cover=regex
+
+// --
+
+&f.parse.command dc=regmatchi( %0, v( d.parse.regexp ), -1 -1 s -1 t a -1 v )
+&d.parse.regexp dc=(?s)^(/(\w+))? ?((\w+)/)?(\w+)?(=([\w\s]+))?
+
+
+/* 
+--------------------------------------------------------------------------------
+-- cover (no action) -----------------------------------------------------------
+*/
+
+&c.cover.general dc=* There is no plain 'cover' command. *
+
+
+/* 
+--------------------------------------------------------------------------------
+-- cover (w/action) ------------------------------------------------------------
+
+*/
+
+&c.cover.action dc=
+	xxx
+
+
+
+/*
+================================================================================
+== COVER/SWITCHES ==============================================================
+*/
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- cover/new -------------------------------------------------------------------
+
+The name of a new cover sheet must match a '_advantage.cover_(<name>)' on the 
+character's sheet. Done by 'f.validate.new-cover-name'.
+
+
+*/
+

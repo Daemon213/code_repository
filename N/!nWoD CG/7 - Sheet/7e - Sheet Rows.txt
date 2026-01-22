@@ -1,0 +1,458 @@
+
+@create Sheet: Rows
+@set Sheet: Rows=inherit safe
+@fo me=@parent Sheet: Rows=[v( d.nsc )]
+
+/* 
+-=-=-=-=-=-=
+
+I am vastly unsatisfied with how this isn't going as elegantly as I'd like,
+but I'll take it for now.
+
+-=-=-=-=-=-=
+
+Sheet layout: Rows
+
+(This is the other usual WoD sheet format)
+
+header( <full name> (<template>) )
+
+xxx:yyy|xxx:yyy|xxx:yyy
+
+
+think u( v( d.nsc )/bio.default, %# )
+
+--=-=-=-==-
+*/
+
+&block.bio Sheet: Rows=
+	strcat( 
+		setq( o, ulocal( bio.default, %0, %1 )), 
+		setq( w, 39 ), 
+		setq( t, 12 ), 
+		divider( Bio ), %r, 
+		setq( b, 
+			iter( %qo, 
+				u( display.trait-and-value, %i0, %qt, %qw, string ), 
+				|, | 
+			)
+		), 
+		setq( r, floor( fdiv( setr( c, words( %qb, | )), 2 ))), 
+		vcolumns( 
+			%qw:[elements( %qb, lnum( 1, %qr ), |, | )], 
+			%qw:[elements( %qb, lnum( inc( %qr ), %qc ), |, | )], 
+			|, 
+			%b 
+		)
+	)
+
+// --
+
+think u( sheet: rows/block.bio, %#, get( %#/_bio.template ))
+
+
+/*
+-==-=--=-=-=-==-=-=--=-==--=-=-=-=-=-==--=-=-=-=-=-=-=-=-=-=-=-==--=-=-=-==--==-
+
+0: <trait>:<the.value>
+1: width for <trait>
+2: width for column
+3: numeric, list, flag, string (default)
+4: padding
+5: <permanent.pool.value>
+
+v: value
+s: spacing (normally space)
+
+output:
+	----- <sub-header> ----
+	<trait>       : <value>
+	* <sub-trait>
+
+*/
+
+&display.trait-and-value [v( d.nsc )]=
+	strcat( 
+		setq( v, rest( %0, : )), 
+		setq( s, ansi( xh, if( strmatch( %4, ), %b, %4 ))), 
+		case( strtrunc( %0, 1 ), 
+
+// .. sub-trait
+			*, %b [trim( rest( %0, * ))], 
+
+// .. sub-header
+			#, u( display.subheader, %2, trim( rest( %0, # ))), 
+
+// .. display them normal thangs
+			strcat( 
+				ljust( cat( first( %0, : ), ), %1, %qs ), 
+				if( 
+					not( strmatch( %qs, ansi( xh, %b ))), 
+					%qs, : 
+				), 
+				%b, 
+				udefault( display.value.%3, %qv, %qv, %5 )
+			)
+		)
+	)
+
+// --
+
+&display.value.numeric [v( d.nsc )]=
+	if( eq( words( %0, . ), 1 ), 
+		u( display.check-zero, %0 ), 
+		[u( display.check-zero, ladd( %0, . ))] 
+		([u( display.check-zero, first( %0, . ))])
+	)
+
+/*
+-=-=-=-=-=-=-=-=-=-=-=-=-=-==--==--=-==--==--==-=--==--=-=-=-=-==--==--=-=-=-=-=
+
+0: current.values
+1: permanent.values
+
+c: current total
+o: 'out of' total
+m: normal 'max' for pool
+
+*/
+
+&display.value.pool [v( d.nsc )]=
+	localize( strcat( 
+		setq( c, ladd( %0, . )), 
+		setq( o, ladd( %1, . )), 
+		setq( m, first( %1, . )), 
+		ladd( %0, . ), 
+		if( cor( neq( %qc, %qo ), neq( %qo, %qm )), 
+			edit( 
+				strcat( 
+					%b%(, 
+					if( neq( %qc, %qo ), out of %qo%b ), 
+					if( neq( %qo, %qm ), %, max %qm ), 
+					%) 
+				), 
+				%b%,, %,, 
+				%(%,%b, , 
+				%b%), %) 
+			)
+		)
+	))
+
+// --
+
+&display.check-zero [v( d.nsc )]=if( eq( %0, 0 ), -, %0 )
+
+
+/*
+=-=--=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=
+
+display the trait name only; takes in the same inputs as above
+
+*/
+
+&display.trait-name-only [v( d.nsc )]=
+	strcat( 
+		setq( v, rest( %0, : )), 
+		setq( s, ansi( xh, if( strmatch( %4, ), %b, %4 ))), 
+		case( strtrunc( %0, 1 ), 
+
+// .. sub-trait
+			*, %b [trim( rest( %0, * ))], 
+
+// .. sub-header
+			#, u( display.subheader, %2, trim( rest( %0, # ))), 
+
+// .. display them normal thangs
+			strcat( 
+				ljust( cat( first( %0, : ), ), %1, %qs ), 
+				if( 
+					not( strmatch( %qs, ansi( xh, %b ))), 
+					%qs,  
+				)
+			)
+		)
+	)
+
+
+/*
+-==--=-=-=-=-=-==--=-=-=-=-=-=-=-=-=-=-=-==--=-=-=-=-=-=--=-=-=-=-==--=--=-=-=-=
+*/
+
+&block.attributes sheet: rows=
+	strcat( 
+		setq( w, 26 ), 
+		setq( t, 17 ), 
+		setq( m, 
+			iter( #Mental|[ulocal( attributes.mental.default, %0 )], 
+				u( display.trait-and-value, %i0, %qt, %qw, numeric ), 
+				|, | 
+			)
+		), 
+		setq( p, 
+			iter( #Physical|[ulocal( attributes.physical.default, %0 )], 
+				u( display.trait-and-value, %i0, %qt, dec( %qw ), numeric ), 
+				|, | 
+			)
+		), 
+		setq( s, 
+			iter( #Social|[ulocal( attributes.social.default, %0 )], 
+				u( display.trait-and-value, %i0, %qt, %qw, numeric ), 
+				|, | 
+			)
+		), 
+		divider( Attributes ), %r, 
+		vcolumns( 
+			%qw:%qm, 
+			[dec( %qw )]:%qp, 
+			%qw:%qs, 
+			|, 
+			%b 
+		)
+	)
+
+// --
+
+think u( sheet: rows/block.attributes, %# )
+
+// =--=-=-=-=-=-=-=
+
+&display.subheader [v( d.nsc )]=center( %b%1%b, %0, %xh%xx.%xn )
+
+// -==--=-=-=-==-=-=-
+
+&block.skills sheet: rows=
+	strcat( 
+		setq( w, 26 ), 
+		setq( t, 17 ), 
+		setq( m, 
+			iter( #Mental|[ulocal( skills.mental.default, %0 )], 
+				u( display.trait-and-value, %i0, %qt, %qw, numeric ), 
+				|, | 
+			)
+		), 
+		setq( p, 
+			iter( #Physical|[ulocal( skills.physical.default, %0 )], 
+				u( display.trait-and-value, %i0, %qt, dec( %qw ), numeric ), 
+				|, | 
+			)
+		), 
+		setq( s, 
+			iter( #Social|[ulocal( skills.social.default, %0 )], 
+				u( display.trait-and-value, %i0, %qt, %qw, numeric ), 
+				|, | 
+			)
+		), 
+		divider( Skills ), %r, 
+		vcolumns( 
+			%qw:%qm, 
+			[dec( %qw )]:%qp, 
+			%qw:%qs, 
+			|, 
+			%b 
+		)
+	)
+
+// --
+
+think u( sheet: rows/block.skills, %# )
+
+
+/*
+-=-=-=-=-=-=-=-=-=-=-==--=-=-=-=-=-=-=-=-=-=-=-=-=-==--=-==-=-=-=-=-=-=-=-=-=-==
+
+oooo...##
+
+0: pool.values
+1: pool_max.values
+
+*/
+
+&display.value.pool [v( d.nsc )]=
+	strcat( 
+		repeat( o, ladd( %0, . )), 
+		ansi( xh, repeat( ., mul( -1, ladd( rest( %0, . ), . )))), 
+		ansi( xh, repeat( #, mul( -1, ladd( rest( %1, . ), . ))))
+	)
+
+// --
+
+think u( v( d.nsc )/display.value.pool, 4.-2, 5.-1)
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+&block.traits sheet: rows=
+	strcat( 
+		setq( w, 38 ), 
+		setq( t, 10 ), 
+
+// .. willpower
+		setq( x, ulocal( traits.willpower.default, %0 )), 
+		setq( c, rest( setr( y, first( %qx, | )), : )), 
+		setq( p, last( %qx, : )), 
+
+// .. integrity
+		setq( z, 
+			iter( 
+				udefault( 
+					traits.morality.[get( %0/_bio.template )], 
+					u( traits.morality.default, %0 ), 
+					%0 
+				), 
+				u( display.trait-and-value, %i0, %qt, %qw, string ), 
+				|, | 
+			)
+		), 
+
+// .. display
+		divider( Traits ), %r, 
+		vcolumns( 
+			%qw:[u( display.trait-and-value, %qy, %qt, %qw, pool, %b, %qp )], 
+			%qw:%qz, 
+
+			|, 
+			%b 
+		)
+	)
+
+// --
+
+&_ADVANTAGE.WILLPOWER me=derived
+&_ADVANTAGE.WILLPOWER_MAXIMUM me=derived
+
+think u( sheet: rows/block.traits, %# )
+
+&_ADVANTAGE.WILLPOWER me=derived.-2
+&_ADVANTAGE.WILLPOWER_MAXIMUM me=derived.-1
+
+think u( sheet: rows/block.traits, %# )
+
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+&block.merits sheet: rows=
+	strcat( 
+		setq( w, 79 ), 
+		setq( t, 70 ), 
+		setq( d, u( merits.default, %0 )), 
+		setq( b, 
+			iter( %qd, 
+				u( display.trait-and-value, %i0, %qt, %qw, numeric, . ), 
+				|, | 
+			)
+		), 
+
+		divider( Merits ), %r, 
+		iter( %qb, 
+			%i0, 
+			|, %r 
+		)
+	)
+
+// --
+
+think u( sheet: rows/block.merits, %# )
+
+
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+&block.advantages sheet: rows=
+	strcat( 
+		setq( w, 26 ), 
+		setq( t, 17 ), 
+		setq( d, filter( filter.out-zeros, u( advantages.default, %0 ), |, | )), 
+		setq( a, 
+			iter( %qd, 
+				u( display.trait-and-value, %i0, %qt, %qw, numeric ), 
+				|, | 
+			)
+		), 
+		divider( Advantages ), %r, 
+		columns( 
+			%qa, 
+			%qw, 
+			|
+		)
+	)
+
+// --
+
+think u( sheet: rows/block.advantages, %# )
+
+// -=-=-=-=-=-==-=--=-=-=-=-=-=
+
+&filter.out-zeros [v( d.nsc )]=
+	cand( 
+		neq( rest( %0, : ), 0 ), 
+		not( strmatch( rest( %0, : ), ))
+	)
+
+// -==--=-=-=-=-=-=-=-=-=-=-=-=-
+
+&block.health sheet: rows=
+	strcat( 
+		setq( w, 80 ), 
+		setq( t, 7 ), 
+		setq( c, first( setr( h, u( health.default, %0 )), | )), 
+		setq( p, rest( %qh, | )), 
+		if( neq( last( %qp, : ), 0 ), 
+			setq( p, 
+				strcat( 
+					%b%(, 
+					u( display.trait-and-value, %qp, %qt, %qw, numeric ), 
+					%) 
+				)
+			), 
+			setq( p, )
+		), 
+
+		divider( Health ), %r,
+		vcolumns( 
+			%qw:%b %qc%qp, 
+			|
+		)
+	)
+
+// --
+
+think u( sheet: rows/block.health, %# )
+
+
+/*
+-==--==--=-=-=-=-=-=-==-=-=-=-=-=-=-==--=-=-=--=-==--=-=-=-=-==--==--=-=--==--=-
+
+FINAL SHEET:
+
+0: dbref of sheet
+1: dbref of target
+2: template of sheet
+
+*/
+
+&display.sheet sheet: rows=
+	strcat( 
+		header( 
+			cat( 
+				name( %1 ), 
+				%(%0%) 
+			)
+		), %r, 
+		u( block.bio, %0, %2 ), %r, 
+		u( block.attributes, %0, %2 ), %r, 
+		u( block.skills, %0, %2 ), %r, 
+		u( block.merits, %0, %2 ), %r, 
+		udefault( block.powers.[get( %0/_bio.template )], , %0, %2 ), 
+		u( block.advantages, %0, %2 ), 
+		u( block.traits, %0, %2 ), %r, 
+		udefault( block.traits.[get( %0/_bio.template )], , %0, %2 ), 
+		u( block.health, %0, %2 ), %r, 
+		footer( )
+	)
+
+// --
+
+think u( sheet: rows/display.sheet, %#, %#, get( %#/_bio.template ))
+
+// =--=-==--==-=-=--==-=-
+
+@tel sheet: rows=[v( d.nsc )]

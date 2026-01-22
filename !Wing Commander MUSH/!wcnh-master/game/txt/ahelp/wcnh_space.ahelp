@@ -1,0 +1,92 @@
+& +SPACE
+Admin stuff for GhettoSpace.
+ 
+Functions are on #208.  #208/startup will be used in most instances, but if a
+full reboot of the system is needed (including wiping active ships),
+#208/subfn.restart can be used.
+ 
+#367 has admin commands.  Consoles interact with the system by directly using
+these admin commands and referencing their ship object which is stored in an
+attribute on the console.  The ship object stores all other data about the
+ship. 
+ 
+Because most commands are used by consoles, using them directly typically
+results in a queue being placed on the ship followed by the action on the
+following space cycle.  To force an action immediately, either @notify
+<ship>/any after using one of the commands, or use one of the functions from
+#208.
+ 
++space/active        +space/addcon          +space/addtracker
++space/audit         +space/classes         +space/class
++space/cloak         +space/deltracker      +space/load/ship
++space/ships         +space/taxi            +space/trackers
++space/unload/ship
+
+& +SPACE/CLOAK 
+Syntax: +space/cloak <ship dbref>
+ 
+Toggle the cloak of a ship on or off.  No emit or indication is given.
+
+& +SPACE/ADDCON
+Syntax: +space/addcon <ship>=<object>
+ 
+Add a console to a ship.  This will do all the parenting and whatnot.
+
+& +SPACE/CLASSES
+Syntax: +space/classes
+ 
+See a list of classes.
+
+& +SPACE/SHIPS
+Syntax: +space/ships <player>
+ 
+List ships captained by a player.
+ 
+& +SPACE/CLASS
+Syntax: +space/class <class dbref or name>
+ 
+List ships of class <class>. 
+
+& +SPACE/TAXI
+Syntax: +space/taxi <ship>=<exit>
+ 
+Taxis a ship through an exit. Exit can be a name or dbref.
+ 
+Capital ships cannot taxi. Taxiways are indicated by &DATA.TAXIWAY=1 on the exit.
+
+& +SPACE/LOAD/SHIP
+Syntax: +space/load/ship <ship>=<victim ship>
+ 
+Loads a victim ship aboard another ship, if it passes all checks and is 
+in the same location.
+
+& +SPACE/UNLOAD/SHIP
+Syntax: +space/unload/ship <ship>=<victim ship>
+ 
+Unloads a victim ship from a ship, if it passes all checks and is in 
+the ship's landing bay.
+ 
+& +SPACE/ACTIVE
+Syntax: +space/active
+ 
+Lists ships marked as active.
+ 
+& +SPACE/AUDIT
+Syntax: +space/audit
+ 
+Lists all ships with audit data.
+ 
+& +SPACE/ADDTRACKER
+Syntax: +space/addtracker <ship dbref>=<player>
+ 
+Adds a player-accessible tracking device to a ship.
+ 
+& +SPACE/DELTRACKER
+Syntax: +space/deltracker <ship dbref>=<player>
+ 
+Removes a player-accessible tracking device from a ship.
+
+& +SPACE/TRACKERS
+Syntax: +space/trackers
+ 
+Lists trackers currently installed.
