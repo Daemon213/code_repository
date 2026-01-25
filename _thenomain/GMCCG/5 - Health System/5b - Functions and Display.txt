@@ -1,0 +1,372 @@
+/*
+Functions and Display (prettification)
+
+
+
+================================================================================
+== FUNCTIONS ===================================================================
+
+
+--------------------------------------------------------------------------------
+-- Function: Health Type Name <-> Value ----------------------------------------
+
+0: rank-value or type name, partial-matched but not error-checked
+returns: if %0 is a value, return name. If %0 is name, return value
+
+*/
+
+&f.conv-type [v( d.whs )]=
+	if( 
+		isnum( %0 ), 
+		extract( u( d.health-types ), %0, 1 ), 
+		match( u( d.health-types ), %0* )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Function: Lowest "Type" of Damage -------------------------------------------
+
+0: bashing
+1: lethal
+2: aggravated
+returns: value (place on `health.types`) of min type of health
+
+We use this to control the damage loop, determining PUSH or WRAP.
+
+*/
+
+&f.min-dmg [v( d.whs )]=
+	localize( 
+		[setq( z, )]
+		[iter( 
+			u( d.health-types ), 
+			if( 
+// .. passed damage of that type > 0, and we don't already have a min type
+				cand( t( v( dec( inum( 0 )))), not( t( %qz ))), 
+// .. .. set the min type
+				setq( z, inum( 0 ))
+			), , @@ 
+		)]
+// return min type
+		%qz 
+	)
+
+
+
+/*
+================================================================================
+== DISPLAYS ====================================================================
+
+The prettifiers. 
+"Health Bar" will probably be the most used.
+
+
+--------------------------------------------------------------------------------
+-- Display: Health Bar ---------------------------------------------------------
+
+Stolen from +sheet, no lookups, in "proper" nWoD order.
+
+0: <bashing> <lethal> <agg>
+1: max health
+Output: [X][/][/][/][/][ ][ ]
+
+*/
+
+&display.health-bar [v( d.whs )]=
+	[setq( w, inc( words( %0 )))]
+// .. * X / inversely related to <b> <l> <a>
+	[iter( 
+		* X /, 
+		iter( 
+// .. .. count the wound levels represented by which outer loop we're on
+// .. .. (here's where we invert, too)
+			lnum( elements( %0, sub( %qw, inum( 0 )))), 
+// .. .. output the symbol on the outer loop we're on
+			ansi( xh, %[, nh, %i1, xh, %] ), 
+			, 
+			@@ 
+		), 
+		, 
+		@@ 
+	)]
+
+// .. undamaged (max - damage)
+	[iter( 
+		lnum( sub( %1, ladd( %0 ))), 
+		ansi( xh, %[%b%] ), , @@ 
+	)]
+
+// -- test --
+
+think u( v( d.whs )/display.health-bar, 0 3 2, 7 )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Display: Health Description -------------------------------------------------
+
+damage dealt/healed: some (1-2), significant (3-4), extreme (5-6)
+total damage: lightly (25%), noticibly (50%), badly (75%), severely (100%), critical (full at lethal or agg)
+
+"Bob takes some bashing and is now badly bruised and cut."
+
+Chcked by the heal/hurt code above, at least one point of damage dealt/healed.
+
+--
+
+0: dbref of victim
+1: dmg type or "healing" for healing
+2: amt hurt. if negative, amt healed
+3: final dmg: <bash> <lethal> <agg>
+4: max health of victim
+
+qh: 0 if hurting, 1 if healing
+
+qm: takes/recieves message
+qd: "damage dealt/healed" descriptor chart
+qn: is now/still
+qt: "total damage" descriptors
+qi: inventory of wound types
+
+*/
+
+&display.health-descr [v( d.whs )]=
+	strcat( 
+		setq( h, strmatch( %2, -* )), 
+
+// -- player...
+// "takes"
+		setq( m, if( %qh, receives, takes )), 
+
+// "some"
+		setq( d, 
+			switch( 
+				abs( %2 ), 
+				>6, ungodly, 
+				>4, extreme, 
+				>2, significant, 
+				>0, some, 
+				no 
+			)
+		), 
+
+// -- and is... 
+// "now"
+		setq( n, if( comp( %qd, no ), now, still )), 
+
+// "badly"
+		setq( t, lightly.noticeably.badly.severely ), 
+		setq( t, 
+			case( 1, 
+// .. full health and min dmg type !bashing: critically
+				cand( 
+					gte( ladd( %3 ), %4 ), 
+					comp( 
+						u( f.min-dmg, 
+							first( %3 ), elements( %3, 2 ), last( %3 )
+						), 
+						1 
+					)
+				), 
+				critically, 
+// .. no dmg : fine
+				eq( ladd( %3 ), 0 ), 
+				fine, 
+// .. else check the chart
+				elements( 
+					%qt, 
+					round( mul( fdiv( ladd( %3 ), %4 ), words( %qt, . )), 0 ), 
+					., 
+					. 
+				)
+			)
+		), 
+
+// "bruised"
+		setq(i, bruised.bleeding.mangled), 
+		setq( i, 
+			itemize( 
+				trim( 
+					iter( %3, 
+						if( gt( %i0, 0 ), [elements( %qi, inum( 0 ), ., .)]. ), 
+						, @@ 
+					), 
+					b, . 
+				), 
+				. 
+			)
+		), 
+
+// <name> takes <amt> <type> %q2 and is now/still <dmg type> <damages-itemized> 
+		name( %0 ), %b, %qm %qd, %b, if( %qh, healing for %1, %1 ), %b, 
+		and is %qn, %b, trim( %qt %qi ), . 
+	)
+
+// -- test --
+
+think u( v( d.whs )/display.health-descr, %#, bashing, 1, 3 0 0, 7 )
+think u( v( d.whs )/display.health-descr, %#, bashing, 2, 0 5 3, 7 )
+think u( v( d.whs )/display.health-descr, %#, bashing, -3, 0 0 0, 7 )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Display: Health Detail ------------------------------------------------------
+
+detail-level output of a hurt or heal, does grab wound penalty from sheet
+** remember to convert "victim" to "sheet" for looking up the penalty! **
+
+0: dbref of victim
+1: dmg type or "healing" for healing
+2: amt hurt. if negative, amt healed
+3: max health of victim
+4: Initial <bash> <lethal> <agg>
+5: Final <bash> <lethal> <agg>
+6: dbref of person who did this
+
+*/
+
+&display.health-detail [v( d.whs )]=
+	strcat( 
+		if( 
+			strmatch( %2, -* ), 
+			header( [name(%0)] receives healing for [abs(%2)] [capstr(%1)] ), 
+			header( [name(%0)] takes %2 [capstr(%1)] )
+		), %r, 
+		%b, ansi( h, Initial Health ), :, 
+			%b, u( display.health-bar, %4, %3 ), %b-%b, ladd( %4 ), %b, of %3, 
+		%r, 
+		%b, ansi( h, Final Health ), :, 
+			%b%b%b, u( display.health-bar, %5, %3 ), 
+			%b-%b, ladd( %5 ), %b, of %3, %b, 
+			if( neq( u( %0/_health.penalty ), 0 ), 
+				%([u(%0/_health.penalty)] dice%) 
+			), 
+		%r%b %r, 
+		trim( wrap( 
+			ulocal( display.health-descr, %0, %1, %2, %5, %3 ), 
+			78, left, %b 
+		), r ), 
+		%r, 
+// .. if someone else did this to you, you both get to see it
+		footer( 
+			if( t( comp( %0, %6 )), 
+				[if( strmatch(%2, -*), healed, dealt )] by [name( %6 )]
+			)
+		)
+	)
+
+// -- test --
+
+think u( v( d.whs )/display.health-detail, %#, bashing, 2, 7, 3 0 0, 5 0 0, %# )
+
+think u( v( d.whs )/display.health-detail, %#, lethal, 2, 7, 5 0 0, 5 2 0, #1 )
+
+think u( v( d.whs )/display.health-detail, %#, lethal, -2, 7, 5 2 0, 5 0 0, #1 )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Display: Current Health Description -----------------------------------------
+
+The "pretty description" of someone's current health condition. It's the other "descriptive" health, without the 'takes xxx and is now'
+
+0: dbref of victim
+1: current dmg: <bash> <lethal> <agg>
+2: max health of victim
+
+qt: "total damage" descriptors
+qi: inventory of wound types
+
+*/
+
+&display.current-health-descr [v( d.whs )]=
+	strcat(
+// -- player is...
+// -- "badly"
+		setq( t, lightly.noticeably.badly.severely ), 
+		setq( t, 
+			case( 1, 
+// .. full health and min dmg type !bashing: critically
+				cand( 
+					gte( ladd( %1 ), %2 ), 
+					comp( u( f.min-dmg, first( %1 ), extract( %1, 2, 1 ), last( %1 )), 1 )
+				), 
+				critically, 
+// .. no dmg : fine
+				eq( ladd( %1 ), 0 ), 
+				fine, 
+// .. else check the chart
+				elements( 
+					%qt, 
+					round( mul( fdiv( ladd( %1 ), %2 ), words( %qt, . )), 0 ), 
+					., .
+				)
+			)
+		), 
+
+// -- "bruised"
+		setq( i, bruised.bleeding.mangled ), 
+		setq( i, 
+			itemize( 
+				trim( 
+					iter( %1, 
+						if( gt( %i0, 0 ), 
+							[elements( %qi, inum( 0 ), ., . )]. 
+						), 
+						, @@
+					), 
+					b, . 
+				), 
+				. 
+			)
+		), 
+
+// -- <name> is <damages-itemized> 
+		name(%0), %b, is, %b, trim(%qt %qi), .
+	)
+
+// -- test --
+
+think u( v( d.whs )/display.current-health-descr, %#, 4 1 0, 7 )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Function: Shrink Max-Health -------------------------------------------------
+
+if wounds > max health, remove wounds until wounds = max health and re-apply them as, you know, wounds.
+	
+0: (New) Max health
+1: <bashing> <lethal> <agg>
+Returns: New: <bashing> <lethal> <agg>
+
+qi: Points we have to strip, works as a counter.
+qd: Points we add back on, or original counter value.
+qh: <bashing> <lethal> <agg> stripped down from %1
+
+--> Calls Do-Some-Dmg for each dmg type it needs to re-apply
+
+*/
+
+&f.reverse-max-health [v( d.whs )]=
+	localize( strcat( 
+// Prime the counter
+		setq( d, setr( i, sub( ladd( %1 ), %0 ))), 
+
+// Strip down from health the number of points we're now over.
+// .. for each type of damage
+		setq( h, 
+			iter( %1, 
+// .. .. from that type of dmg, subtract less of counter or remains of that dmg
+				[sub( %i0, min( %qi, %i0 ))]
+// .. .. then reduce from the counter 
+				[setq( i, sub( %qi, min( %qi, %i0 )))]
+			)
+		), 
+
+// Now do that damage back on the person and return their new value
+// (we won't be here if we're not WRAPPING damage, so bashing is fine)
+		u( f.do-some-dmg, %0, %qh, %qd, bashing )
+	))

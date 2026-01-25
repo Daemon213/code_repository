@@ -1,0 +1,43 @@
+================================================================================
+== SETUP =======================================================================
+
+@create Stat Functions Prototype <sfp>
+@set sfp=inherit safe
+
+
+================================================================================
+== DATA ========================================================================
+
+@fo me=&d.data-dictionary sfp=[num( data dictionary <dd> )]
+@fo me=&d.sfp dd=[num( stat functions prototype <sfp> )]
+
+&d.chargen sfp=<< location of character generation, may be obsolete >>
+
+================================================================================
+== SEARCH ORDER ================================================================
+
+d.type-search-order: 
+	When name matching, go through the various stat classes in this order. 
+	Therefore, "str" will match "strength" before "strength of the lion".
+
+	core: attribute skill merit advantage bio
+	changeling: contract goblin_contract
+	skinchangers: aspect
+	werewolf: gift rite renown
+
+d.type-specials:
+	These are stat classes that are not rollable nor settable via softcode.
+
+--------------------------------------------------------------------------------
+	
+&d.type-search-order sfp=attribute skill merit advantage contract renown gift aspect goblin_contract rite bio
+
+&d.type-specials sfp=special health
+
+&sortby.types sfp=[comp(match(v(d.type-search-order), first(%0, .)), match(v(d.type-search-order), first(%1, .)))]
+
+&filter.search-types sfp=t(match(v(d.type-search-order), first(%0, .)))
+
+--------------------------------------------------------------------------------
+
+think sortby(sfp/sortby.types, filter(sfp/filter.search-types, sort(lattr(dd/*.s*))))

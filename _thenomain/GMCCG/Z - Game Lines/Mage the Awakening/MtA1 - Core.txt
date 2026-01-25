@@ -1,0 +1,3928 @@
+/*
+################################################################################
+## MAGE: THE AWAKENING #########################################################
+
+This file includes all additions to the system for Mage: The Awakening 
+core rules.
+
+CREDITS
+First and foremost: This file would not have been possible without the insane 
+amount of work of Skew and DosBot for Fallen World (with a nod to Tennyson for 
+debugging). I may forget to out which code comes from them specifically, but 
+assume their input is all over this file.
+
+ARCANE XP
+This system does not use Arcane XP. These XP rules have caused enough work that 
+for now, we are skipping it. Sorry.
+
+SLEEPWALKERS
+Sleepwalkers are a merit in the core book and therefore we're keeping it that 
+way here. If you want them to be a template, add them to the @fo that adds 
+`.Mage.Proximus`, remove &merit.sleepwalker, and remove checks for 
+`u( .value_full, %0, merit.sleepwalker )` to add `.sleepwalker` to that items 
+&tags.<statpath> attribute.
+
+
+
+
+################################################################################
+## MAGE: STAT FUNCTIONS ########################################################
+
+--------------------------------------------------------------------------------
+-- SFP: Search Order -----------------------------------------------------------
+
+Level 2 for powers 
+Level 3 for very minor items
+*/
+
+&d.search-order-02-mage [v( d.sfp )]=arcanum
+&d.search-order-03-mage [v( d.sfp )]=rote
+
+
+
+
+/*
+################################################################################
+## MAGE: DATA DICTIONARY #######################################################
+
+
+
+================================================================================
+== DD: SETUP ===================================================================
+
+Stuff we need to put on the Data Dictionary
+
+*/
+
+// CODP prefixes
+&prefix.mage_-_arcana [v( d.dd )]=arcanum.
+&prefix.mage_-_arcana [v( d.dt )]=tags.arcanum.
+
+&prefix.mage_-_rotes [v( d.dd )]=rote.
+&prefix.mage_-_rotes [v( d.dt )]=tags.rote.
+
+// add to templates
+@edit v( d.dd )/bio.template=$, .Mage.Proximus
+
+// register "max trait" statpath
+&.max_trait.mage [v( d.dd )]=advantage.gnosis
+
+// register "sphere"'s templates (could this be folded into 'templates'?)
+&.sphere.mage [v( d.dd )]=Mage Proximus
+
+
+// -- Integrity: Tags for Proximi ----------------------------------------------
+
+@edit v( d.dt )/tags.advantage.integrity=$, .proximus
+
+
+/*
+================================================================================
+== CHECK ARCANUM VS. GNOSIS ====================================================
+
+There's no easy way around this: We need to know the max Arcanum level and 
+other Arcanum levels.
+
+0: sheet dbref
+1: arcanum being raised
+2: amt being raised by
+
+m: max sphere values by gnosis: <max sphere> <other spheres>
+a: arcana values, sorted high->low
+
+returns: 1 if the sphere is allowed by Gnosis, 0 otherwise
+
+*/
+
+&.arcanum_check [v( d.dd )]=
+	localize( strcat( 
+		setq( m, u( .arcanum_check.max, %0 )), 
+
+		setq( a, 
+			revwords( sort( 
+				iter( lattr( %!/arcanum.* ), 
+					add( 
+						u( .value, %0, %i0 ), 
+						if( strmatch( %1, %i0 ), 
+							%2, 
+							0 
+						)
+					)
+				)
+			))
+		),
+
+// check highest to first number in %qm, others to the rest
+		cand( 
+			lte( first( %qa ), first( %qm )), 
+			land( iter( rest( %qa ), lte( %i0, rest( %qm ))))
+		)
+	))
+
+
+&.arcanum_check.max [v( d.dd )]=
+	case( u( .value, %0, advantage.gnosis ), 
+		1,  3 2, 
+		2,  3 3, 
+		3,  4 3, 
+		4,  4 4, 
+		5,  5 4, 
+		6,  5 5, 
+		7,  5 5, 
+		8,  5 5, 
+		9,  5 5, 
+		10, 5 5, 
+		#-1
+	)
+
+
+/*
+================================================================================
+== ROTE PREREQ TEXT ============================================================
+
+Because it's boring to enter the same information one million times.
+
+0: rote name (not statpath, for some reason)
+
+*** I am pretty sure this won't work for Proximus and may check some day ***
+
+*/
+
+&.rote.prereq-text [v( d.dd )]=
+	strcat( 
+// .. pull required arcana from the 'prerequisite' attribute
+		edit( 
+			trim( trim( last( v( prerequisite.rote.%0_() ), %, ), b, %) )), 
+			%b, %b&%b, 
+			:, %b 
+		), 
+
+		%, or Proximus taking a Blessing 
+	)
+	
+
+/*
+================================================================================
+== CHECK ROTE FOR MAGE VS. PROXIMUS ============================================
+
+	u( .rote.prereq-check, %0, %1, Ectoplasmic Shaping, Death 1 )
+
+The fun of Proximi taking spells as 'Blessings'.
+
+0: sheet dbref
+1: rote's instance/type
+2: name of this rote (for the Proximus' Dynasty check)
+3: <sphere> <min level> (for Mage the check)
+
+*/
+
+// &.rote_check [v( d.dd )]=
+&.rote.prereq-check [v( d.dd )]=
+	case( u( .value_full, %0, bio.template ), 
+
+// Mage: has proper arcana; can't take as blessing, silly
+		Mage, 
+		cand( 
+			u( .at_least_all, %0, 
+				iter( %3, arcanum.%i0 )
+			), 
+			not( strmatch( %1, blessing ))
+		), 
+
+// Proximus: belongs to a dynasty that can take this; taking as blessing
+		Proximus, 
+		cand( 
+			u( v( d.sfp )/f.hastag?.workhorse, 
+				rote.[edit( %3, %b, _ )]_(), 
+				u( .value_full, %0, bio.dynasty )
+			), 
+			strmatch( %1, blessing )
+		)
+	)
+
+
+/*
+================================================================================
+== MAGE BIO ====================================================================
+
+*** If you want Seers of the Throne, add it to &bio.order ***
+
+*/
+
+&bio.cabal [v( d.dd )]=*
+&tags.bio.cabal [v( d.dt )]=mage.clique
+
+&bio.path [v( d.dd )]=Acanthus.Mastigos.Moros.Obrimos.Thyrsus
+&tags.bio.path [v( d.dt )]=mage
+
+&bio.order [v( d.dd )]=
+	Adamantine Arrow.Guardians of the Veil.Mysterium.Silver Ladder.
+	Free Council.Apostate.Nameless
+&default.bio.order [v( d.dd )]=Apostate
+&tags.bio.order [v( d.dt )]=mage.proximus
+
+&bio.legacy [v( d.dd )]=x.x.x.x.x.x.x.x
+&tags.bio.legacy [v( d.dt )]=mage
+&class.bio.legacy [v( d.dd )]=string
+// restrict this stat to staff only, so players can't mess with it in chargen
+// -- why?
+
+&bio.dynasty [v( d.dd )]=Sisters of the Mountain
+&tags.bio.dynasty [v( d.dt )]=proximus
+
+
+
+/*
+================================================================================
+== MAGE ADVANTAGES =============================================================
+
+&advantage.xxx [v( d.dd )]=
+&tags.advantage.xxx [v( d.dt )]=mage
+*/
+
+// 'Wisdom' is now 'Integrity'
+@edit [v( d.dt )]/tags.advantage.integrity=$, .mage
+
+&advantage.gnosis [v( d.dd )]=1.2.3.4.5.6.7.8.9.10
+&default.advantage.gnosis [v( d.dd )]=1
+&tags.advantage.gnosis [v( d.dt )]=power.mage
+
+&advantage.mana [v( d.dd )]=
+	ladd( u( .value_full, %0, advantage.mana_maximum ), . )
+&default.advantage.mana [v( d.dd )]=derived
+&tags.advantage.mana [v( d.dt )]=derived.mage.proximus
+
+&advantage.mana_maximum [v( d.dd )]=
+	case( u( .value_full, %0, bio.template ), 
+		Mage, 
+		elements( 
+			10 11 12 13 14 15 20 25 30 75, 
+				u( .value, %0, advantage.gnosis )
+		), 
+		Proximus, 
+		5, 
+		0 
+	)
+&default.advantage.mana_maximum [v( d.dd )]=derived
+&tags.advantage.mana_maximum [v( d.dt )]=derived.mage.proximus
+
+
+
+
+/*
+================================================================================
+== MAGE MERITS =================================================================
+*/
+
+&merit.order_status [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.order_status [v( d.dd )]=
+	cand( 
+		u( .has, %0, bio.order ), 
+		u( .is_not, %0, bio.order, Apostate )
+	)
+&prereq-text.merit.order_status [v( d.dd )]=Belongs to an Order
+&tags.merit.order_status [v( d.dt )]=mage.social
+
+&merit.consilium_status [v( d.dd )]=1.2.3.4.5
+// &prerequisite.merit.consilium_status [v( d.dd )]=u( .has, %0, bio.consilium )
+// &prereq-text.merit.consilium_status [v( d.dd )]=Belongs to a Consilium
+&tags.merit.consilium_status [v( d.dt )]=mage.social
+&notes.merit.consilium_status [v( d.dt )]=Use the honor system on this one.
+
+&merit.adamant_hand_() [v( d.dd )]=2|Athletics.Brawl.Weaponry
+&prerequisite.merit.adamant_hand_() [v( d.dd )]=
+	cand( 
+		u( .is, %0, bio.order, Adamantine Arrow ), 
+		u( .at_least, %0, skill.%1, 3 )
+	)
+&prereq-text.merit.adamant_hand_() [v( d.dd )]=
+	Belongs to the Adamantine Arrow; 
+	Athletics, Brawl, or Weaponry (as taken) 3+
+&tags.merit.adamant_hand_() [v( d.dt )]=mage.supernatural
+
+&merit.artifact_() [v( d.dd )]=3.4.5.6.7.8.9.10|*
+&tags.merit.artifact_() [v( d.dt )]=mage.supernatural
+
+&merit.astral_adept [v( d.dd )]=3
+&prerequisite.merit.astral_adept [v( d.dd )]=u( .has, %0, merit.sleepwalker )
+&prereq-text.merit.astral_adept [v( d.dd )]=Sleepwalker merit
+&tags.merit.astral_adept [v( d.dt )]=mage.supernatural
+
+&merit.between_the_ticks [v( d.dd )]=
+&default.merit.between_the_ticks [v( d.dd )]=
+&prerequisite.merit.between_the_ticks [v( d.dd )]=
+	u( .at_least_all, %0, attribute.wits:3 arcanum.time:1 )
+&prereq-text.merit.between_the_ticks [v( d.dd )]=Wits 3+, Time 1+
+&tags.merit.between_the_ticks [v( d.dt )]=mage.supernatural
+
+&merit.cabal_theme [v( d.dd )]=1
+&prerequisite.merit.cabal_theme [v( d.dd )]=u( .has, %0, bio.cabal )
+&prereq-text.merit.cabal_theme [v( d.dd )]=Belongs in a Cabal
+&tags.merit.cabal_theme [v( d.dt )]=mage.social
+
+&merit.destiny [v( d.dd )]=1.2.3.4.5
+&tags.merit.destiny [v( d.dt )]=mage.supernatural
+
+&merit.egregore [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.egregore [v( d.dd )]=u( .is, %0, bio.order, Mysterium )
+&prereq-text.merit.egregore [v( d.dd )]=Mysterium
+&tags.merit.egregore [v( d.dt )]=mage.social.style
+
+&merit.enchanted_item_() [v( d.dd )]=#|*
+&tags.merit.enchanted_item_() [v( d.dt )]=mage.supernatural
+
+&merit.familiar_() [v( d.dd )]=2.4|*
+&tags.merit.familiar_() [v( d.dt )]=mage.supernatural
+
+&merit.fast_spells [v( d.dd )]=2
+&prerequisite.merit.fast_spells [v( d.dd )]=
+	u( .at_least_all, %0, skill.firearms:2 arcanum.time:1 )
+&prereq-text.merit.fast_spells [v( d.dd )]=Firearms 2+, Time 1+
+&tags.merit.fast_spells [v( d.dt )]=mage.supernatural
+
+&merit.grimoire_() [v( d.dd )]=1.2.3.4.5|*
+&tags.merit.grimoire_() [v( d.dt )]=mage.supernatural
+
+&merit.hallow_() [v( d.dd )]=1.2.3.4.5|*
+&tags.merit.hallow_() [v( d.dt )]=mage.location
+
+&merit.imbued_item_() [v( d.dd )]=#|*
+&tags.merit.imbued_item_() [v( d.dt )]=mage
+
+&merit.infamous_mentor_() [v( d.dd )]=1.2.3.4.5|*
+&prerequisite.merit.infamous_mentor_() [v( d.dd )]=
+	u( .at_least_stat, %0, merit.infamous_mentor_(%1), merit.mentor_(%1), %2 )
+&prereq-text.merit.infamous_mentor_() [v( d.dd )]=
+	Mentor (<mentor name>) at equal or higher level
+&tags.merit.infamous_mentor_() [v( d.dt )]=mage.social
+
+&merit.high_speech [v( d.dd )]=1
+&tags.merit.high_speech [v( d.dt )]=mage.supernatural
+
+&merit.lex_magica [v( d.dd )]=2
+&prerequisite.merit.lex_magica [v( d.dd )]=
+	u( .is, %0, bio.order, Silver Ladder )
+&prereq-text.merit.lex_magica [v( d.dd )]=Belongs to Silver Ladder
+&tags.merit.lex_magica [v( d.dt )]=mage.supernatural
+
+&merit.mana_sensitivity [v( d.dd )]=1
+&prerequisite.merit.mana_sensitivity [v( d.dd )]=
+	u( .at_least_all, %0, attribute.wits:3 arcanum.prime:1 )
+&prereq-text.merit.mana_sensitivity [v( d.dd )]=Wits 3+, Prime 1+
+&tags.merit.mana_sensitivity [v( d.dt )]=mage.supernatural
+
+&merit.masque [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.masque [v( d.dd )]=
+	u( .is, %0, bio.order, Guardians of the Veil )
+&prereq-text.merit.masque [v( d.dd )]=Belongs to Guardians of the Veil
+&tags.merit.masque [v( d.dt )]=mage.social.style
+
+&merit.mystery_cult_influence_() [v( d.dd )]=3.4.5|*
+&tags.merit.mystery_cult_influence_() [v( d.dt )]=mage.social
+
+&merit.occultation [v( d.dd )]=1.2.3
+&prerequisite.merit.occultation [v( d.dd )]=not( lattr( %0/_merit.fame_(*) ))
+&prereq-text.merit.occultation [v( d.dd )]=Lose if gains the 'Fame' merit
+&tags.merit.occultation [v( d.dt )]=mage.supernatural
+
+&merit.potent_nimbus [v( d.dd )]=1.2
+&tags.merit.potent_nimbus [v( d.dt )]=mage.supernatural
+
+&merit.potent_resonance [v( d.dd )]=2
+&prerequisite.merit.potent_resonance [v( d.dd )]=
+	u( .at_least, %0, advantage.gnosis, 3 )
+&prereq-text.merit.potent_resonance [v( d.dd )]=Gnosis 3+
+&tags.merit.potent_resonance [v( d.dt )]=mage.supernatural
+
+/* 
+***** Un-comment this if you have Seers of the Throne in &bio.order *****
+&merit.prelacy [v( d.dd )]=1.2.3.4
+&prerequisite.merit.prelacy [v( d.dd )]=u( .is, bio.order, Seers of the Throne )
+&prereq-text.merit.prelacy [v( d.dd )]=Belongs to Seers of the Throne
+&tags.merit.prelacy [v( d.dt )]=mage.supernatural.style
+*/
+
+&merit.sanctum_() [v( d.dd )]=1.2.3.4.5|*
+&prerequisite.merit.sanctum_() [v( d.dd )]=u( .has, %0, merit.safe_place_(%1) )
+&prereq-text.merit.sanctum_() [v( d.dd )]=
+	Safe Place (<place name>) 1+ 
+	(may be connected without being the same place)
+&tags.merit.sanctum_() [v( d.dt )]=mage.supernatural.location
+
+// making the 'demesne' option for 'sanctum' a separate merit; easier to track
+&merit.demesne_() [v( d.dd )]=3|*
+&prerequisite.merit.demesne_() [v( d.dd )]=u( .has, %0, merit.sanctum_(%1) )
+&prereq-text.merit.demesne_() [v( d.dd )]=Sanctum (<place name>) 1+
+&tags.merit.demesne_() [v( d.dt )]=mage.supernatural.location
+
+&merit.techne_() [v( d.dd )]=2|*
+&prerequisite.merit.techne_() [v( d.dd )]=u( .is, %0, bio.order, Free Council )
+&prereq-text.merit.techne_() [v( d.dd )]=
+	Belongs to Free Council, Order of Study must be reasonable
+&tags.merit.techne_() [v( d.dt )]=mage
+
+&merit.shadow_name_() [v( d.dd )]=1.2.3|*
+&prerequisite.merit.shadow_name_() [v( d.dd )]=
+	not( 
+		setdiff( 
+			lattr( %0/_merit.shadow_name_(*) ), 
+			ucstr( _merit.shadow_name_(%1) )
+		)
+	) 
+&prereq-text.merit.shadow_name_() [v( d.dd )]=May have only one Shadow Name
+&tags.merit.shadow_name_() [v( d.dt )]=mage.supernatural
+
+// see 'BtP1 - Core.txt' for frustrations about "Library (Advanced)" as a merit
+&merit.library_advanced_() [v( d.dd )]=1.2.3.4.5|*|*
+&prereq-text.merit.library_advanced_() [v( d.dd )]=
+	Library (any) at 3, 
+	Safe Place (<location>) equal to dots rating, 
+	Can only be taken once
+&prerequisite.merit.library_advanced_() [v( d.dd )]=
+	cand( 
+// .. any library at 3
+		lor( 
+			iter( 
+				lattr( %0/_merit.library_(*) ), 
+				gte( u( .value, %0, rest( %i0, _ )), 3 )
+			)
+		), 
+// .. has 'lair', or 'safe place (<type>)' greater than what we're setting to
+		cor( 
+			u( .has, %0, advantage.lair ), 
+// .. if safe place isn't set, then 'library advanced' is limited to 0
+			u( .at_most_stat, %0, 
+				merit.library_advanced_(%1), 
+				merit.safe_place_(%1), 
+				%2 
+			)
+		), 
+// .. may only be taken once, but allow us to raise it
+		not( 
+			setdiff( 
+				lattr( %0/_merit.library_advanced_(*) ), 
+				_merit.library_advanced_(%1) 
+			)
+		) 
+	)
+&tags.merit.library_advanced_() [v( d.dt )]=location.mental
+&notes.merit.library_advanced_() [v( d.dt )]=
+	The location from Library Advanced (<location>) and Safe Place (<location>) 
+	must match
+	|
+	For each level of Library Advanced: stat/set <target>/Library Advanced 
+	(<location>).<specialty>=<anything here, really>
+
+
+/*
+--------------------------------------------------------------------------------
+-- Sleepwalker Merits ----------------------------------------------------------
+*/
+
+&merit.banner-bearer [v( d.dd )]=1.2.3
+&prerequisite.merit.banner-bearer [v( d.dd )]=u( .has, %0, merit.sleepwalker )
+&prereq-text.merit.banner-bearer [v( d.dd )]=Sleepwalker merit
+&tags.merit.banner-bearer [v( d.dt )]=sleepwalker
+
+&merit.deadpan [v( d.dd )]=3
+&prerequisite.merit.deadpan [v( d.dd )]=u( .has, %0, merit.sleepwalker )
+&prereq-text.merit.deadpan [v( d.dd )]=Sleepwalker merit
+&tags.merit.deadpan [v( d.dt )]=sleepwalker
+
+&merit.fitful_slumber [v( d.dd )]=1
+&prerequisite.merit.fitful_slumber [v( d.dd )]=0
+&prereq-text.merit.fitful_slumber [v( d.dd )]=
+	Suffered three or more breaking points due to exposure to the 
+	Supernal or Abyss
+// &tags.merit.fitful_slumber [v( d.dt )]=@@( none )
+
+&merit.loved [v( d.dd )]=3
+&prerequisite.merit.loved [v( d.dd )]=u( .has, %0, merit.sleepwalker )
+&prereq-text.merit.loved [v( d.dd )]=Sleepwalker merit
+&tags.merit.loved [v( d.dt )]=sleepwalker
+
+&merit.proxy_voice_() [v( d.dd )]=1.2.3|*
+&prerequisite.merit.proxy_voice_() [v( d.dd )]=
+	cand( 
+		u( .has, %0, merit.sleepwalker ), 
+		u( .at_least, %0, merit.mentor_(%1), 1 )
+	)
+&prereq-text.merit.proxy_voice_() [v( d.dd )]=
+	Sleepwalker merit, 
+	Mentor (<mentor name>) 1+, 
+	Mentor must be active in Supernal politics
+&tags.merit.proxy_voice_() [v( d.dt )]=sleepwalker
+
+&merit.relic_attuned [v( d.dd )]=3
+&prerequisite.merit.relic_attuned [v( d.dd )]=u( .has, %0, merit.sleepwalker )
+&prereq-text.merit.relic_attuned [v( d.dd )]=Sleepwalker merit
+&tags.merit.relic_attuned [v( d.dt )]=sleepwalker
+
+&merit.ritual_savvy [v( d.dd )]=3
+&prerequisite.merit.ritual_savvy [v( d.dd )]=
+	cand( 
+		u( .has, %0, merit.sleepwalker ), 
+		u( .at_least, %0, skill.occult, 2 )
+	)
+&prereq-text.merit.ritual_savvy [v( d.dd )]=Sleepwalker merit, Occult 2+
+&tags.merit.ritual_savvy [v( d.dt )]=sleepwalker
+
+&merit.sleepwalker [v( d.dd )]=1
+&tags.merit.sleepwalker [v( d.dt )]=human
+
+&merit.slippery [v( d.dd )]=3
+&prerequisite.merit.slippery [v( d.dd )]=u( .has, %0, merit.sleepwalker )
+&prereq-text.merit.slippery [v( d.dd )]=Sleepwalker merit
+&tags.merit.slippery [v( d.dt )]=sleepwalker
+
+
+
+/*
+================================================================================
+== MAGE ARCANA =================================================================
+
+There is a distinction in the book between "trained" and "untrained" arcana 
+for XP spending. We don't do that here. Should be looked into.
+
+*/
+
+&arcanum.death [v( d.dd )]=1.2.3.4.5
+&arcanum.fate [v( d.dd )]=1.2.3.4.5
+&arcanum.forces [v( d.dd )]=1.2.3.4.5
+&arcanum.life [v( d.dd )]=1.2.3.4.5
+&arcanum.matter [v( d.dd )]=1.2.3.4.5
+&arcanum.mind [v( d.dd )]=1.2.3.4.5
+&arcanum.prime [v( d.dd )]=1.2.3.4.5
+&arcanum.space [v( d.dd )]=1.2.3.4.5
+&arcanum.spirit [v( d.dd )]=1.2.3.4.5
+&arcanum.time [v( d.dd )]=1.2.3.4.5
+
+
+&prerequisite.arcanum.death [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.death, %2 )
+&prerequisite.arcanum.fate [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.fate, %2 )
+&prerequisite.arcanum.forces [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.forces, %2 )
+&prerequisite.arcanum.life [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.life, %2 )
+&prerequisite.arcanum.matter [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.matter, %2 )
+&prerequisite.arcanum.mind [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.mind, %2 )
+&prerequisite.arcanum.prime [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.prime, %2 )
+&prerequisite.arcanum.space [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.space, %2 )
+&prerequisite.arcanum.spirit [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.spirit, %2 )
+&prerequisite.arcanum.time [v( d.dd )]=
+	u( .arcanum_check, %0, arcanum.time, %2 )
+
+
+&prereq-text.arcanum.death [v( d.dd )]=
+	Gnosis limits all Arcana levels 
+	(max 
+		[localize( strcat( 
+			setq( m, u( .arcanum_check.max, %0 )), 
+			setq( f, first( %qm )), 
+			case( 1, 
+				cand( t( %qf ), eq( %qf, rest( %qm ))), 
+				%qf on all, 
+
+				t( %qf ), 
+				edit( %qm, %b, %, others%b ), 
+
+				n/a 
+			)
+		))]
+	)
+&prereq-text.arcanum.fate [v( d.dd )]=u( prereq-text.arcanum.death, %0 )
+&prereq-text.arcanum.forces [v( d.dd )]=u( prereq-text.arcanum.death, %0 )
+&prereq-text.arcanum.life [v( d.dd )]=u( prereq-text.arcanum.death, %0 )
+&prereq-text.arcanum.matter [v( d.dd )]=u( prereq-text.arcanum.death, %0 )
+&prereq-text.arcanum.mind [v( d.dd )]=u( prereq-text.arcanum.death, %0 )
+&prereq-text.arcanum.prime [v( d.dd )]=u( prereq-text.arcanum.death, %0 )
+&prereq-text.arcanum.space [v( d.dd )]=u( prereq-text.arcanum.death, %0 )
+&prereq-text.arcanum.spirit [v( d.dd )]=u( prereq-text.arcanum.death, %0 )
+&prereq-text.arcanum.time [v( d.dd )]=u( prereq-text.arcanum.death, %0 )
+
+// the ruling path is listed in the tags because why not
+&tags.arcanum.death [v( d.dt )]=mage.moros
+&tags.arcanum.fate [v( d.dt )]=mage.acanthus
+&tags.arcanum.forces [v( d.dt )]=mage.obrimos
+&tags.arcanum.life [v( d.dt )]=mage.thyrsus
+&tags.arcanum.matter [v( d.dt )]=mage.moros
+&tags.arcanum.mind [v( d.dt )]=mage.mastigos
+&tags.arcanum.prime [v( d.dt )]=mage.obrimos
+&tags.arcanum.space [v( d.dt )]=mage.mastigos
+&tags.arcanum.spirit [v( d.dt )]=mage.thyrsus
+&tags.arcanum.time [v( d.dt )]=mage.acanthus
+
+
+
+/*
+================================================================================
+== MAGE ROTES & PRAXIS  ========================================================
+
+Skew has designed a perfectly working system for Fallen World Mux, so we'll be 
+using that.
+
+The premise is that if it's '<rote name> (Praxis)', then it's a Praxis. 
+If it's '<rote name> (<skill>)', then it's a Rote.
+
+*/
+
+
+
+// -- Death Rotes --------------------------------------------------------------
+
+&rote.ectoplasmic_shaping_() [v( d.dd )]=
+	1|Crafts.Occult.Larceny.Praxis.Blessing
+&prerequisite.rote.ectoplasmic_shaping_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ectoplasmic_shaping, Death:1 )
+&prereq-text.rote.ectoplasmic_shaping_() [v( d.dd )]=
+	u( .rote.prereq-text, ectoplasmic_shaping )
+&tags.rote.ectoplasmic_shaping_() [v( d.dt )]=mage.proximus.death
+
+&rote.deepen_shadows_() [v( d.dd )]=
+	1|Occult.Intimidation.Expression.Praxis.Blessing
+&prerequisite.rote.deepen_shadows_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, deepen_shadows, Death:1 )
+&prereq-text.rote.deepen_shadows_() [v( d.dd )]=
+	u( .rote.prereq-text, deepen_shadows )
+&tags.rote.deepen_shadows_() [v( d.dt )]=mage.proximus.death
+
+&rote.forensic_gaze_() [v( d.dd )]=
+	1|Medicine.Investigation.Expression.Praxis.Blessing
+&prerequisite.rote.forensic_gaze_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, forensic_gaze, Death:1 )
+&prereq-text.rote.forensic_gaze_() [v( d.dd )]=
+	u( .rote.prereq-text, forensic_gaze )
+&tags.rote.forensic_gaze_() [v( d.dt )]=mage.proximus.death
+
+&rote.shadow_sculpting_() [v( d.dd )]=
+	1|Crafts.Science.Expression.Praxis.Blessing
+&prerequisite.rote.shadow_sculpting_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shadow_sculpting, Death:1 )
+&prereq-text.rote.shadow_sculpting_() [v( d.dd )]=
+	u( .rote.prereq-text, shadow_sculpting )
+&tags.rote.shadow_sculpting_() [v( d.dt )]=mage.proximus.death
+
+&rote.soul_marks_() [v( d.dd )]=
+	1|Medicine.Occult.Empathy.Praxis.Blessing
+&prerequisite.rote.soul_marks_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, soul_marks, Death:1 )
+&prereq-text.rote.soul_marks_() [v( d.dd )]=
+	u( .rote.prereq-text, soul_marks )
+&tags.rote.soul_marks_() [v( d.dt )]=mage.proximus.death
+
+&rote.speak_with_the_dead_() [v( d.dd )]=
+	1|Socialize.Expression.Investigation.Praxis.Blessing
+&prerequisite.rote.speak_with_the_dead_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, speak_with_the_dead, Death:1 )
+&prereq-text.rote.speak_with_the_dead_() [v( d.dd )]=
+	u( .rote.prereq-text, speak_with_the_dead )
+&tags.rote.speak_with_the_dead_() [v( d.dt )]=mage.proximus.death
+
+&rote.corpse_mask_() [v( d.dd )]=
+	2|Subterfuge.Crafts.Medicine.Praxis.Blessing
+&prerequisite.rote.corpse_mask_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, corpse_mask, Death:2 )
+&prereq-text.rote.corpse_mask_() [v( d.dd )]=
+	u( .rote.prereq-text, corpse_mask )
+&tags.rote.corpse_mask_() [v( d.dt )]=mage.proximus.death
+
+&rote.decay_() [v( d.dd )]=
+	2|Subterfuge.Science.Occult.Praxis.Blessing
+&prerequisite.rote.decay_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, decay, Death:2 )
+&prereq-text.rote.decay_() [v( d.dd )]=
+	u( .rote.prereq-text, decay )
+&tags.rote.decay_() [v( d.dt )]=mage.proximus.death
+
+&rote.ectoplasm_() [v( d.dd )]=
+	2|Occult.Expression.Academics.Praxis.Blessing
+&prerequisite.rote.ectoplasm_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ectoplasm, Death:2 )
+&prereq-text.rote.ectoplasm_() [v( d.dd )]=
+	u( .rote.prereq-text, ectoplasm )
+&tags.rote.ectoplasm_() [v( d.dt )]=mage.proximus.death
+
+&rote.ghost_shield_() [v( d.dd )]=
+	2|Streetwise.Subterfuge.Survival.Praxis.Blessing
+&prerequisite.rote.ghost_shield_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ghost_shield, Death:2 )
+&prereq-text.rote.ghost_shield_() [v( d.dd )]=
+	u( .rote.prereq-text, ghost_shield )
+&tags.rote.ghost_shield_() [v( d.dt )]=mage.proximus.death
+
+&rote.shape_emphera_() [v( d.dd )]=
+	2|Crafts.Expression.Science.Praxis.Blessing
+&prerequisite.rote.shape_emphera_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shape_emphera, Death:2 )
+&prereq-text.rote.shape_emphera_() [v( d.dd )]=
+	u( .rote.prereq-text, shape_emphera )
+&tags.rote.shape_emphera_() [v( d.dt )]=mage.proximus.death
+
+&rote.soul_armor_() [v( d.dd )]=
+	2|Academics.Occult.Survival.Praxis.Blessing
+&prerequisite.rote.soul_armor_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, soul_armor, Death:2 )
+&prereq-text.rote.soul_armor_() [v( d.dd )]=
+	u( .rote.prereq-text, soul_armor )
+&tags.rote.soul_armor_() [v( d.dt )]=mage.proximus.death
+
+&rote.soul_jar_() [v( d.dd )]=
+	2|Crafts.Occult.persuasion.Praxis.Blessing
+&prerequisite.rote.soul_jar_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, soul_jar, Death:2 )
+&prereq-text.rote.soul_jar_() [v( d.dd )]=
+	u( .rote.prereq-text, soul_jar )
+&tags.rote.soul_jar_() [v( d.dt )]=mage.proximus.death
+
+&rote.suppress_aura_() [v( d.dd )]=
+	2|Subterfuge.Intimidation.Medicine.Praxis.Blessing
+&prerequisite.rote.suppress_aura_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, suppress_aura, Death:2 )
+&prereq-text.rote.suppress_aura_() [v( d.dd )]=
+	u( .rote.prereq-text, suppress_aura )
+&tags.rote.suppress_aura_() [v( d.dt )]=mage.proximus.death
+
+&rote.suppress_life_() [v( d.dd )]=
+	2|Subterfuge.Medicine.Academics.Praxis.Blessing
+&prerequisite.rote.suppress_life_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, suppress_life, Death:2 )
+&prereq-text.rote.suppress_life_() [v( d.dd )]=
+	u( .rote.prereq-text, suppress_life )
+&tags.rote.suppress_life_() [v( d.dt )]=mage.proximus.death
+
+&rote.touch_of_the_grave_() [v( d.dd )]=
+	2|Survival.Crafts.persuasion.Praxis.Blessing
+&prerequisite.rote.touch_of_the_grave_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, touch_of_the_grave, Death:2 )
+&prereq-text.rote.touch_of_the_grave_() [v( d.dd )]=
+	u( .rote.prereq-text, touch_of_the_grave )
+&tags.rote.touch_of_the_grave_() [v( d.dt )]=mage.proximus.death
+
+&rote.without_a_trace_() [v( d.dd )]=
+	2|Science.Stealth.Subterfuge.Praxis.Blessing
+&prerequisite.rote.without_a_trace_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, without_a_trace, Death:2 )
+&prereq-text.rote.without_a_trace_() [v( d.dd )]=
+	u( .rote.prereq-text, without_a_trace )
+&tags.rote.without_a_trace_() [v( d.dt )]=mage.proximus.death
+
+&rote.cold_snap_() [v( d.dd )]=
+	3|Survival.Intimidation.Science.Praxis.Blessing
+&prerequisite.rote.cold_snap_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, cold_snap, Death:3 )
+&prereq-text.rote.cold_snap_() [v( d.dd )]=
+	u( .rote.prereq-text, cold_snap )
+&tags.rote.cold_snap_() [v( d.dt )]=mage.proximus.death
+
+&rote.damage_ghost_() [v( d.dd )]=
+	3|Occult.Intimidation.Brawl.Praxis.Blessing
+&prerequisite.rote.damage_ghost_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, damage_ghost, Death:3 )
+&prereq-text.rote.damage_ghost_() [v( d.dd )]=
+	u( .rote.prereq-text, damage_ghost )
+&tags.rote.damage_ghost_() [v( d.dt )]=mage.proximus.death
+
+&rote.devouring_the_slain_() [v( d.dd )]=
+	3|Intimidation.Medicine.persuasion.Praxis.Blessing
+&prerequisite.rote.devouring_the_slain_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, devouring_the_slain, Death:3 )
+&prereq-text.rote.devouring_the_slain_() [v( d.dd )]=
+	u( .rote.prereq-text, devouring_the_slain )
+&tags.rote.devouring_the_slain_() [v( d.dt )]=mage.proximus.death
+
+&rote.ghost_gate_() [v( d.dd )]=
+	3|Occult.Academics.Expression.Praxis.Blessing
+&prerequisite.rote.ghost_gate_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ghost_gate, Death:3 )
+&prereq-text.rote.ghost_gate_() [v( d.dd )]=
+	u( .rote.prereq-text, ghost_gate )
+&tags.rote.ghost_gate_() [v( d.dt )]=mage.proximus.death
+
+&rote.ghost_summons_() [v( d.dd )]=
+	3|persuasion.Socialize.Occult.Praxis.Blessing
+&prerequisite.rote.ghost_summons_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ghost_summons, Death:3 )
+&prereq-text.rote.ghost_summons_() [v( d.dd )]=
+	u( .rote.prereq-text, ghost_summons )
+&tags.rote.ghost_summons_() [v( d.dt )]=mage.proximus.death
+
+&rote.quicken_corpse_() [v( d.dd )]=
+	3|Medicine.Crafts.persuasion.Praxis.Blessing
+&prerequisite.rote.quicken_corpse_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, quicken_corpse, Death:3 )
+&prereq-text.rote.quicken_corpse_() [v( d.dd )]=
+	u( .rote.prereq-text, quicken_corpse )
+&tags.rote.quicken_corpse_() [v( d.dt )]=mage.proximus.death
+
+&rote.quicken_ghost_() [v( d.dd )]=
+	3|persuasion.Socialize.Medicine.Praxis.Blessing
+&prerequisite.rote.quicken_ghost_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, quicken_ghost, Death:3 )
+&prereq-text.rote.quicken_ghost_() [v( d.dd )]=
+	u( .rote.prereq-text, quicken_ghost )
+&tags.rote.quicken_ghost_() [v( d.dt )]=mage.proximus.death
+
+&rote.rotting_flesh_() [v( d.dd )]=
+	3|Intimidation.Occult.Empathy.Praxis.Blessing
+&prerequisite.rote.rotting_flesh_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, rotting_flesh, Death:3 )
+&prereq-text.rote.rotting_flesh_() [v( d.dd )]=
+	u( .rote.prereq-text, rotting_flesh )
+&tags.rote.rotting_flesh_() [v( d.dt )]=mage.proximus.death
+
+&rote.sever_soul_() [v( d.dd )]=
+	3|Intimidation.Athletics.Expression.Praxis.Blessing
+&prerequisite.rote.sever_soul_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, sever_soul, Death:3 )
+&prereq-text.rote.sever_soul_() [v( d.dd )]=
+	u( .rote.prereq-text, sever_soul )
+&tags.rote.sever_soul_() [v( d.dt )]=mage.proximus.death
+
+&rote.shadow_crafting_() [v( d.dd )]=
+	3|Academics.Intimidation.Occult.Praxis.Blessing
+&prerequisite.rote.shadow_crafting_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shadow_crafting, Death:3 )
+&prereq-text.rote.shadow_crafting_() [v( d.dd )]=
+	u( .rote.prereq-text, shadow_crafting )
+&tags.rote.shadow_crafting_() [v( d.dt )]=mage.proximus.death
+
+&rote.enervation_() [v( d.dd )]=
+	4|Occult.Intimidation.Subterfuge.Praxis.Blessing
+&prerequisite.rote.enervation_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, enervation, Death:4 )
+&prereq-text.rote.enervation_() [v( d.dd )]=
+	u( .rote.prereq-text, enervation )
+&tags.rote.enervation_() [v( d.dt )]=mage.proximus.death
+
+&rote.exorcism_() [v( d.dd )]=
+	4|Brawl.Expression.Occult.Praxis.Blessing
+&prerequisite.rote.exorcism_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, exorcism, Death:4 )
+&prereq-text.rote.exorcism_() [v( d.dd )]=
+	u( .rote.prereq-text, exorcism )
+&tags.rote.exorcism_() [v( d.dt )]=mage.proximus.death
+
+&rote.revenant_() [v( d.dd )]=
+	4|Crafts.Brawl.Intimidation.Praxis.Blessing
+&prerequisite.rote.revenant_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, revenant, Death:4 )
+&prereq-text.rote.revenant_() [v( d.dd )]=
+	u( .rote.prereq-text, revenant )
+&tags.rote.revenant_() [v( d.dt )]=mage.proximus.death
+
+&rote.shadow_flesh_() [v( d.dd )]=
+	4|Occult.Medicine.Subterfuge.Praxis.Blessing
+&prerequisite.rote.shadow_flesh_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shadow_flesh, Death:4 )
+&prereq-text.rote.shadow_flesh_() [v( d.dd )]=
+	u( .rote.prereq-text, shadow_flesh )
+&tags.rote.shadow_flesh_() [v( d.dt )]=mage.proximus.death
+
+&rote.withering_() [v( d.dd )]=
+	4|Intimidation.Medicine.Science.Praxis.Blessing
+&prerequisite.rote.withering_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, withering, Death:4 )
+&prereq-text.rote.withering_() [v( d.dd )]=
+	u( .rote.prereq-text, withering )
+&tags.rote.withering_() [v( d.dt )]=mage.proximus.death
+
+&rote.create_anchor_() [v( d.dd )]=
+	5|Crafts.Occult.persuasion.Praxis.Blessing
+&prerequisite.rote.create_anchor_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, create_anchor, Death:5 )
+&prereq-text.rote.create_anchor_() [v( d.dd )]=
+	u( .rote.prereq-text, create_anchor )
+&tags.rote.create_anchor_() [v( d.dt )]=mage.proximus.death
+
+&rote.create_ghost_() [v( d.dd )]=
+	5|Occult.Expression.Academics.Praxis.Blessing
+&prerequisite.rote.create_ghost_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, create_ghost, Death:5 )
+&prereq-text.rote.create_ghost_() [v( d.dd )]=
+	u( .rote.prereq-text, create_ghost )
+&tags.rote.create_ghost_() [v( d.dt )]=mage.proximus.death
+
+&rote.deny_the_reaper_() [v( d.dd )]=
+	5|Medicine.Occult.Subterfuge.Praxis.Blessing
+&prerequisite.rote.deny_the_reaper_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, deny_the_reaper, Death:5 )
+&prereq-text.rote.deny_the_reaper_() [v( d.dd )]=
+	u( .rote.prereq-text, deny_the_reaper )
+&tags.rote.deny_the_reaper_() [v( d.dt )]=mage.proximus.death
+
+&rote.empty_presence_() [v( d.dd )]=
+	5|Subterfuge.persuasion.Stealth.Praxis.Blessing
+&prerequisite.rote.empty_presence_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, empty_presence, Death:5 )
+&prereq-text.rote.empty_presence_() [v( d.dd )]=
+	u( .rote.prereq-text, empty_presence )
+&tags.rote.empty_presence_() [v( d.dt )]=mage.proximus.death
+
+&rote.open_avernian_gate_() [v( d.dd )]=
+	5|Occult.Crafts.persuasion.Praxis.Blessing
+&prerequisite.rote.open_avernian_gate_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, open_avernian_gate, Death:5 )
+&prereq-text.rote.open_avernian_gate_() [v( d.dd )]=
+	u( .rote.prereq-text, open_avernian_gate )
+&tags.rote.open_avernian_gate_() [v( d.dt )]=mage.proximus.death
+
+&rote.sever_the_awakened_soul_() [v( d.dd )]=
+	5|Crafts.Intimidation.Medicine.Praxis.Blessing
+&prerequisite.rote.sever_the_awakened_soul_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, sever_the_awakened_soul, Death:5 )
+&prereq-text.rote.sever_the_awakened_soul_() [v( d.dd )]=
+	u( .rote.prereq-text, sever_the_awakened_soul )
+&tags.rote.sever_the_awakened_soul_() [v( d.dt )]=mage.proximus.death
+
+
+// -- Fate Rotes ---------------------------------------------------------------
+
+&rote.interconnections_() [v( d.dd )]=
+	1|Empathy.Investigation.Medicine.Praxis.Blessing
+&prerequisite.rote.interconnections_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, interconnections, Fate:1 )
+&prereq-text.rote.interconnections_() [v( d.dd )]=
+	u( .rote.prereq-text, interconnections )
+&tags.rote.interconnections_() [v( d.dt )]=mage.proximus.fate
+
+&rote.oaths_fulfilled_() [v( d.dd )]=
+	1|Occult.Politics.Investigation.Praxis.Blessing
+&prerequisite.rote.oaths_fulfilled_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, oaths_fulfilled, Fate:1 )
+&prereq-text.rote.oaths_fulfilled_() [v( d.dd )]=
+	u( .rote.prereq-text, oaths_fulfilled )
+&tags.rote.oaths_fulfilled_() [v( d.dt )]=mage.proximus.fate
+
+&rote.quantum_flux_() [v( d.dd )]=
+	1|Crafts.Firearms.Occult.Praxis.Blessing
+&prerequisite.rote.quantum_flux_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, quantum_flux, Fate:1 )
+&prereq-text.rote.quantum_flux_() [v( d.dd )]=
+	u( .rote.prereq-text, quantum_flux )
+&tags.rote.quantum_flux_() [v( d.dt )]=mage.proximus.fate
+
+&rote.reading_the_outmost_eddies_() [v( d.dd )]=
+	1|Computers.persuasion.Subterfuge.Praxis.Blessing
+&prerequisite.rote.reading_the_outmost_eddies_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, reading_the_outmost_eddies, Fate:1 )
+&prereq-text.rote.reading_the_outmost_eddies_() [v( d.dd )]=
+	u( .rote.prereq-text, reading_the_outmost_eddies )
+&tags.rote.reading_the_outmost_eddies_() [v( d.dt )]=mage.proximus.fate
+
+&rote.serendipity_() [v( d.dd )]=
+	1|Academics.Crafts.Survival.Praxis.Blessing
+&prerequisite.rote.serendipity_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, serendipity, Fate:1 )
+&prereq-text.rote.serendipity_() [v( d.dd )]=
+	u( .rote.prereq-text, serendipity )
+&tags.rote.serendipity_() [v( d.dt )]=mage.proximus.fate
+
+&rote.exceptional_luck_() [v( d.dd )]=
+	2|Intimidation.Occult.Socialize.Praxis.Blessing
+&prerequisite.rote.exceptional_luck_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, exceptional_luck, Fate:2 )
+&prereq-text.rote.exceptional_luck_() [v( d.dd )]=
+	u( .rote.prereq-text, exceptional_luck )
+&tags.rote.exceptional_luck_() [v( d.dt )]=mage.proximus.fate
+
+&rote.fabricate_fortune_() [v( d.dd )]=
+	2|Larceny.Occult.Subterfuge.Praxis.Blessing
+&prerequisite.rote.fabricate_fortune_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, fabricate_fortune, Fate:2 )
+&prereq-text.rote.fabricate_fortune_() [v( d.dd )]=
+	u( .rote.prereq-text, fabricate_fortune )
+&tags.rote.fabricate_fortune_() [v( d.dt )]=mage.proximus.fate
+
+&rote.fools_rush_in_() [v( d.dd )]=
+	2|Athletics.Socialize.Streetwise.Praxis.Blessing
+&prerequisite.rote.fools_rush_in_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, fools_rush_in, Fate:2 )
+&prereq-text.rote.fools_rush_in_() [v( d.dd )]=
+	u( .rote.prereq-text, fools_rush_in )
+&tags.rote.fools_rush_in_() [v( d.dt )]=mage.proximus.fate
+
+&rote.lucky_number_() [v( d.dd )]=
+	2|Investigation.Larceny.Science.Praxis.Blessing
+&prerequisite.rote.lucky_number_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, lucky_number, Fate:2 )
+&prereq-text.rote.lucky_number_() [v( d.dd )]=
+	u( .rote.prereq-text, lucky_number )
+&tags.rote.lucky_number_() [v( d.dt )]=mage.proximus.fate
+
+&rote.shifting_the_odds_() [v( d.dd )]=
+	2|Investigation.Politics.Subterfuge.Praxis.Blessing
+&prerequisite.rote.shifting_the_odds_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shifting_the_odds, Fate:2 )
+&prereq-text.rote.shifting_the_odds_() [v( d.dd )]=
+	u( .rote.prereq-text, shifting_the_odds )
+&tags.rote.shifting_the_odds_() [v( d.dt )]=mage.proximus.fate
+
+&rote.warding_gesture_() [v( d.dd )]=
+	2|Brawl.Occult.Subterfuge.Praxis.Blessing
+&prerequisite.rote.warding_gesture_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, warding_gesture, Fate:2 )
+&prereq-text.rote.warding_gesture_() [v( d.dd )]=
+	u( .rote.prereq-text, warding_gesture )
+&tags.rote.warding_gesture_() [v( d.dt )]=mage.proximus.fate
+
+&rote.grave_misfortune_() [v( d.dd )]=
+	3|Intimidation.Occult.Weaponry.Praxis.Blessing
+&prerequisite.rote.grave_misfortune_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, grave_misfortune, Fate:3 )
+&prereq-text.rote.grave_misfortune_() [v( d.dd )]=
+	u( .rote.prereq-text, grave_misfortune )
+&tags.rote.grave_misfortune_() [v( d.dt )]=mage.proximus.fate
+
+&rote.monkey's_paw_() [v( d.dd )]=
+	3|Drive.Crafts.Science.Praxis.Blessing
+&prerequisite.rote.monkey's_paw_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, monkey's_paw, Fate:3 )
+&prereq-text.rote.monkey's_paw_() [v( d.dd )]=
+	u( .rote.prereq-text, monkey's_paw )
+&tags.rote.monkey's_paw_() [v( d.dt )]=mage.proximus.fate
+
+&rote.shared_fate_() [v( d.dd )]=
+	3|Medicine.persuasion.Politics.Praxis.Blessing
+&prerequisite.rote.shared_fate_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shared_fate, Fate:3 )
+&prereq-text.rote.shared_fate_() [v( d.dd )]=
+	u( .rote.prereq-text, shared_fate )
+&tags.rote.shared_fate_() [v( d.dt )]=mage.proximus.fate
+
+&rote.superlative_luck_() [v( d.dd )]=
+	3|Athletics.Crafts.Occult.Praxis.Blessing
+&prerequisite.rote.superlative_luck_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, superlative_luck, Fate:3 )
+&prereq-text.rote.superlative_luck_() [v( d.dd )]=
+	u( .rote.prereq-text, superlative_luck )
+&tags.rote.superlative_luck_() [v( d.dt )]=mage.proximus.fate
+
+&rote.sworn_oaths_() [v( d.dd )]=
+	3|Expression.Occult.Politics.Praxis.Blessing
+&prerequisite.rote.sworn_oaths_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, sworn_oaths, Fate:3 )
+&prereq-text.rote.sworn_oaths_() [v( d.dd )]=
+	u( .rote.prereq-text, sworn_oaths )
+&tags.rote.sworn_oaths_() [v( d.dt )]=mage.proximus.fate
+
+&rote.atonement_() [v( d.dd )]=
+	4|Academics.Empathy.Survival.Praxis.Blessing
+&prerequisite.rote.atonement_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, atonement, Fate:4 )
+&prereq-text.rote.atonement_() [v( d.dd )]=
+	u( .rote.prereq-text, atonement )
+&tags.rote.atonement_() [v( d.dt )]=mage.proximus.fate
+
+&rote.chaos_mastery_() [v( d.dd )]=
+	4|Empathy.Occult.Science.Praxis.Blessing
+&prerequisite.rote.chaos_mastery_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, chaos_mastery, Fate:4 )
+&prereq-text.rote.chaos_mastery_() [v( d.dd )]=
+	u( .rote.prereq-text, chaos_mastery )
+&tags.rote.chaos_mastery_() [v( d.dt )]=mage.proximus.fate
+
+&rote.divine_intervention_() [v( d.dd )]=
+	4|Intimidation.Occult.Subterfuge.Praxis.Blessing
+&prerequisite.rote.divine_intervention_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, divine_intervention, Fate:4 )
+&prereq-text.rote.divine_intervention_() [v( d.dd )]=
+	u( .rote.prereq-text, divine_intervention )
+&tags.rote.divine_intervention_() [v( d.dt )]=mage.proximus.fate
+
+&rote.strings_of_fate_() [v( d.dd )]=
+	4|Academics.persuasion.Stealth.Praxis.Blessing
+&prerequisite.rote.strings_of_fate_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, strings_of_fate, Fate:4 )
+&prereq-text.rote.strings_of_fate_() [v( d.dd )]=
+	u( .rote.prereq-text, strings_of_fate )
+&tags.rote.strings_of_fate_() [v( d.dt )]=mage.proximus.fate
+
+&rote.sever_oaths_() [v( d.dd )]=
+	4|Occult.Subterfuge.Weaponry.Praxis.Blessing
+&prerequisite.rote.sever_oaths_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, sever_oaths, Fate:4 )
+&prereq-text.rote.sever_oaths_() [v( d.dd )]=
+	u( .rote.prereq-text, sever_oaths )
+&tags.rote.sever_oaths_() [v( d.dt )]=mage.proximus.fate
+
+&rote.forge_destiny_() [v( d.dd )]=
+	5|Intimidation.Occult.persuasion.Praxis.Blessing
+&prerequisite.rote.forge_destiny_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, forge_destiny, Fate:5 )
+&prereq-text.rote.forge_destiny_() [v( d.dd )]=
+	u( .rote.prereq-text, forge_destiny )
+&tags.rote.forge_destiny_() [v( d.dt )]=mage.proximus.fate
+
+&rote.pariah_() [v( d.dd )]=
+	5|Investigation.Medicine.Politics.Praxis.Blessing
+&prerequisite.rote.pariah_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, pariah, Fate:5 )
+&prereq-text.rote.pariah_() [v( d.dd )]=
+	u( .rote.prereq-text, pariah )
+&tags.rote.pariah_() [v( d.dt )]=mage.proximus.fate
+
+&rote.miracle_() [v( d.dd )]=
+	5|Academics.persuasion.Subterfuge.Praxis.Blessing
+&prerequisite.rote.miracle_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, miracle, Fate:5 )
+&prereq-text.rote.miracle_() [v( d.dd )]=
+	u( .rote.prereq-text, miracle )
+&tags.rote.miracle_() [v( d.dt )]=mage.proximus.fate
+
+&rote.swarm_of_locusts_() [v( d.dd )]=
+	5|Intimidation.Occult.Science.Praxis.Blessing
+&prerequisite.rote.swarm_of_locusts_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, swarm_of_locusts, Fate:5 )
+&prereq-text.rote.swarm_of_locusts_() [v( d.dd )]=
+	u( .rote.prereq-text, swarm_of_locusts )
+&tags.rote.swarm_of_locusts_() [v( d.dt )]=mage.proximus.fate
+
+
+// -- Forces Rotes -------------------------------------------------------------
+
+&rote.influence_electricity_() [v( d.dd )]=
+	1|Computers.Crafts.Science.Praxis.Blessing
+&prerequisite.rote.influence_electricity_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, influence_electricity, Forces:1 )
+&prereq-text.rote.influence_electricity_() [v( d.dd )]=
+	u( .rote.prereq-text, influence_electricity )
+&tags.rote.influence_electricity_() [v( d.dt )]=mage.proximus.forces
+
+&rote.influence_fire_() [v( d.dd )]=
+	1|Crafts.Science.Survival.Praxis.Blessing
+&prerequisite.rote.influence_fire_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, influence_fire, Forces:1 )
+&prereq-text.rote.influence_fire_() [v( d.dd )]=
+	u( .rote.prereq-text, influence_fire )
+&tags.rote.influence_fire_() [v( d.dt )]=mage.proximus.forces
+
+&rote.kinetic_efficiency_() [v( d.dd )]=
+	1|Athletics.Science.Survival.Praxis.Blessing
+&prerequisite.rote.kinetic_efficiency_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, kinetic_efficiency, Forces:1 )
+&prereq-text.rote.kinetic_efficiency_() [v( d.dd )]=
+	u( .rote.prereq-text, kinetic_efficiency )
+&tags.rote.kinetic_efficiency_() [v( d.dt )]=mage.proximus.forces
+
+&rote.influence_heat_() [v( d.dd )]=
+	1|Occult.Science.Survival.Praxis.Blessing
+&prerequisite.rote.influence_heat_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, influence_heat, Forces:1 )
+&prereq-text.rote.influence_heat_() [v( d.dd )]=
+	u( .rote.prereq-text, influence_heat )
+&tags.rote.influence_heat_() [v( d.dt )]=mage.proximus.forces
+
+&rote.nightvision_() [v( d.dd )]=
+	1|Investigation.Science.Stealth.Praxis.Blessing
+&prerequisite.rote.nightvision_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, nightvision, Forces:1 )
+&prereq-text.rote.nightvision_() [v( d.dd )]=
+	u( .rote.prereq-text, nightvision )
+&tags.rote.nightvision_() [v( d.dt )]=mage.proximus.forces
+
+&rote.receiver_() [v( d.dd )]=
+	1|Empathy.Investigation.Science.Praxis.Blessing
+&prerequisite.rote.receiver_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, receiver, Forces:1 )
+&prereq-text.rote.receiver_() [v( d.dd )]=
+	u( .rote.prereq-text, receiver )
+&tags.rote.receiver_() [v( d.dt )]=mage.proximus.forces
+
+&rote.tune_in_() [v( d.dd )]=
+	1|Computers.Empathy.Science.Praxis.Blessing
+&prerequisite.rote.tune_in_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, tune_in, Forces:1 )
+&prereq-text.rote.tune_in_() [v( d.dd )]=
+	u( .rote.prereq-text, tune_in )
+&tags.rote.tune_in_() [v( d.dt )]=mage.proximus.forces
+
+&rote.control_electricity_() [v( d.dd )]=
+	2|Crafts.Computers.Science.Praxis.Blessing
+&prerequisite.rote.control_electricity_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, control_electricity, Forces:2 )
+&prereq-text.rote.control_electricity_() [v( d.dd )]=
+	u( .rote.prereq-text, control_electricity )
+&tags.rote.control_electricity_() [v( d.dt )]=mage.proximus.forces
+
+&rote.control_fire_() [v( d.dd )]=
+	2|Crafts.Science.Survival.Praxis.Blessing
+&prerequisite.rote.control_fire_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, control_fire, Forces:2 )
+&prereq-text.rote.control_fire_() [v( d.dd )]=
+	u( .rote.prereq-text, control_fire )
+&tags.rote.control_fire_() [v( d.dt )]=mage.proximus.forces
+
+&rote.control_gravity_() [v( d.dd )]=
+	2|Athletics.Occult.Science.Praxis.Blessing
+&prerequisite.rote.control_gravity_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, control_gravity, Forces:2 )
+&prereq-text.rote.control_gravity_() [v( d.dd )]=
+	u( .rote.prereq-text, control_gravity )
+&tags.rote.control_gravity_() [v( d.dt )]=mage.proximus.forces
+
+&rote.control_heat_() [v( d.dd )]=
+	2|Athletics.Science.Survival.Praxis.Blessing
+&prerequisite.rote.control_heat_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, control_heat, Forces:2 )
+&prereq-text.rote.control_heat_() [v( d.dd )]=
+	u( .rote.prereq-text, control_heat )
+&tags.rote.control_heat_() [v( d.dt )]=mage.proximus.forces
+
+&rote.control_light_() [v( d.dd )]=
+	2|Crafts.Investigation.Science.Praxis.Blessing
+&prerequisite.rote.control_light_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, control_light, Forces:2 )
+&prereq-text.rote.control_light_() [v( d.dd )]=
+	u( .rote.prereq-text, control_light )
+&tags.rote.control_light_() [v( d.dt )]=mage.proximus.forces
+
+&rote.control_sound_() [v( d.dd )]=
+	2|Expression.Stealth.Science.Praxis.Blessing
+&prerequisite.rote.control_sound_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, control_sound, Forces:2 )
+&prereq-text.rote.control_sound_() [v( d.dd )]=
+	u( .rote.prereq-text, control_sound )
+&tags.rote.control_sound_() [v( d.dt )]=mage.proximus.forces
+
+&rote.control_weather_() [v( d.dd )]=
+	2|Academics.Science.Survival.Praxis.Blessing
+&prerequisite.rote.control_weather_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, control_weather, Forces:2 )
+&prereq-text.rote.control_weather_() [v( d.dd )]=
+	u( .rote.prereq-text, control_weather )
+&tags.rote.control_weather_() [v( d.dt )]=mage.proximus.forces
+
+&rote.environmental_shield_() [v( d.dd )]=
+	2|Occult.Science.Survival.Praxis.Blessing
+&prerequisite.rote.environmental_shield_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, environmental_shield, Forces:2 )
+&prereq-text.rote.environmental_shield_() [v( d.dd )]=
+	u( .rote.prereq-text, environmental_shield )
+&tags.rote.environmental_shield_() [v( d.dt )]=mage.proximus.forces
+
+&rote.invisibility_() [v( d.dd )]=
+	2|Larceny.Science.Stealth.Praxis.Blessing
+&prerequisite.rote.invisibility_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, invisibility, Forces:2 )
+&prereq-text.rote.invisibility_() [v( d.dd )]=
+	u( .rote.prereq-text, invisibility )
+&tags.rote.invisibility_() [v( d.dt )]=mage.proximus.forces
+
+&rote.kinetic_blow_() [v( d.dd )]=
+	2|Athletics.Brawl.Science.Praxis.Blessing
+&prerequisite.rote.kinetic_blow_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, kinetic_blow, Forces:2 )
+&prereq-text.rote.kinetic_blow_() [v( d.dd )]=
+	u( .rote.prereq-text, kinetic_blow )
+&tags.rote.kinetic_blow_() [v( d.dt )]=mage.proximus.forces
+
+&rote.zoom_in_() [v( d.dd )]=
+	2|Investigation.Science.Survival.Praxis.Blessing
+&prerequisite.rote.zoom_in_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, zoom_in, Forces:2 )
+&prereq-text.rote.zoom_in_() [v( d.dd )]=
+	u( .rote.prereq-text, zoom_in )
+&tags.rote.zoom_in_() [v( d.dt )]=mage.proximus.forces
+
+&rote.call_lightning_() [v( d.dd )]=
+	3|Athletics.Firearms.Science.Praxis.Blessing
+&prerequisite.rote.call_lightning_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, call_lightning, Forces:3 )
+&prereq-text.rote.call_lightning_() [v( d.dd )]=
+	u( .rote.prereq-text, call_lightning )
+&tags.rote.call_lightning_() [v( d.dt )]=mage.proximus.forces
+
+&rote.gravitic_supremacy_() [v( d.dd )]=
+	3|Athletics.Science.Survival.Praxis.Blessing
+&prerequisite.rote.gravitic_supremacy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, gravitic_supremacy, Forces:3 )
+&prereq-text.rote.gravitic_supremacy_() [v( d.dd )]=
+	u( .rote.prereq-text, gravitic_supremacy )
+&tags.rote.gravitic_supremacy_() [v( d.dt )]=mage.proximus.forces
+
+&rote.telekinesis_() [v( d.dd )]=
+	3|Athletics.Brawl.Science.Praxis.Blessing
+&prerequisite.rote.telekinesis_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, telekinesis, Forces:3 )
+&prereq-text.rote.telekinesis_() [v( d.dd )]=
+	u( .rote.prereq-text, telekinesis )
+&tags.rote.telekinesis_() [v( d.dt )]=mage.proximus.forces
+
+&rote.telekinetic_strike_() [v( d.dd )]=
+	3|Athletics.Firearms.Science.Praxis.Blessing
+&prerequisite.rote.telekinetic_strike_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, telekinetic_strike, Forces:3 )
+&prereq-text.rote.telekinetic_strike_() [v( d.dd )]=
+	u( .rote.prereq-text, telekinetic_strike )
+&tags.rote.telekinetic_strike_() [v( d.dt )]=mage.proximus.forces
+
+&rote.turn_momentum_() [v( d.dd )]=
+	3|Athletics.Firearms.Science.Praxis.Blessing
+&prerequisite.rote.turn_momentum_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, turn_momentum, Forces:3 )
+&prereq-text.rote.turn_momentum_() [v( d.dd )]=
+	u( .rote.prereq-text, turn_momentum )
+&tags.rote.turn_momentum_() [v( d.dt )]=mage.proximus.forces
+
+&rote.velocity_control_() [v( d.dd )]=
+	3|Athletics.Drive.Science.Praxis.Blessing
+&prerequisite.rote.velocity_control_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, velocity_control, Forces:3 )
+&prereq-text.rote.velocity_control_() [v( d.dd )]=
+	u( .rote.prereq-text, velocity_control )
+&tags.rote.velocity_control_() [v( d.dt )]=mage.proximus.forces
+
+&rote.electromagnetic_pulse_() [v( d.dd )]=
+	4|Crafts.Computers.Science.Praxis.Blessing
+&prerequisite.rote.electromagnetic_pulse_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, electromagnetic_pulse, Forces:4 )
+&prereq-text.rote.electromagnetic_pulse_() [v( d.dd )]=
+	u( .rote.prereq-text, electromagnetic_pulse )
+&tags.rote.electromagnetic_pulse_() [v( d.dt )]=mage.proximus.forces
+
+&rote.levitation_() [v( d.dd )]=
+	4|Athletics.Science.Survival.Praxis.Blessing
+&prerequisite.rote.levitation_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, levitation, Forces:4 )
+&prereq-text.rote.levitation_() [v( d.dd )]=
+	u( .rote.prereq-text, levitation )
+&tags.rote.levitation_() [v( d.dt )]=mage.proximus.forces
+
+&rote.rend_friction_() [v( d.dd )]=
+	4|Crafts.Drive.Science.Praxis.Blessing
+&prerequisite.rote.rend_friction_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, rend_friction, Forces:4 )
+&prereq-text.rote.rend_friction_() [v( d.dd )]=
+	u( .rote.prereq-text, rend_friction )
+&tags.rote.rend_friction_() [v( d.dt )]=mage.proximus.forces
+
+&rote.thunderbolt_() [v( d.dd )]=
+	4|Athletics.Firearms.Science.Praxis.Blessing
+&prerequisite.rote.thunderbolt_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, thunderbolt, Forces:4 )
+&prereq-text.rote.thunderbolt_() [v( d.dd )]=
+	u( .rote.prereq-text, thunderbolt )
+&tags.rote.thunderbolt_() [v( d.dt )]=mage.proximus.forces
+
+&rote.transform_energy_() [v( d.dd )]=
+	4|Crafts.Occult.Science.Praxis.Blessing
+&prerequisite.rote.transform_energy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, transform_energy, Forces:4 )
+&prereq-text.rote.transform_energy_() [v( d.dd )]=
+	u( .rote.prereq-text, transform_energy )
+&tags.rote.transform_energy_() [v( d.dt )]=mage.proximus.forces
+
+&rote.adverse_weather_() [v( d.dd )]=
+	5|Crafts.Occult.Science.Praxis.Blessing
+&prerequisite.rote.adverse_weather_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, adverse_weather, Forces:5 )
+&prereq-text.rote.adverse_weather_() [v( d.dd )]=
+	u( .rote.prereq-text, adverse_weather )
+&tags.rote.adverse_weather_() [v( d.dt )]=mage.proximus.forces
+
+&rote.create_energy_() [v( d.dd )]=
+	5|Crafts.Occult.Science.Praxis.Blessing
+&prerequisite.rote.create_energy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, create_energy, Forces:5 )
+&prereq-text.rote.create_energy_() [v( d.dd )]=
+	u( .rote.prereq-text, create_energy )
+&tags.rote.create_energy_() [v( d.dt )]=mage.proximus.forces
+
+&rote.eradicate_energy_() [v( d.dd )]=
+	5|Intimidation.Science.Survival.Praxis.Blessing
+&prerequisite.rote.eradicate_energy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, eradicate_energy, Forces:5 )
+&prereq-text.rote.eradicate_energy_() [v( d.dd )]=
+	u( .rote.prereq-text, eradicate_energy )
+&tags.rote.eradicate_energy_() [v( d.dt )]=mage.proximus.forces
+
+&rote.earthquake_() [v( d.dd )]=
+	5|Crafts.Science.Survival.Praxis.Blessing
+&prerequisite.rote.earthquake_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, earthquake, Forces:5 )
+&prereq-text.rote.earthquake_() [v( d.dd )]=
+	u( .rote.prereq-text, earthquake )
+&tags.rote.earthquake_() [v( d.dt )]=mage.proximus.forces
+
+// -- Life Rotes ---------------------------------------------------------------
+
+&rote.analyze_life_() [v( d.dd )]=
+	1|Animal Ken.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.analyze_life_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, analyze_life, Life:1 )
+&prereq-text.rote.analyze_life_() [v( d.dd )]=
+	u( .rote.prereq-text, analyze_life )
+&tags.rote.analyze_life_() [v( d.dt )]=mage.proximus.life
+
+&rote.cleanse_the_body_() [v( d.dd )]=
+	1|Athletics.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.cleanse_the_body_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, cleanse_the_body, Life:1 )
+&prereq-text.rote.cleanse_the_body_() [v( d.dd )]=
+	u( .rote.prereq-text, cleanse_the_body )
+&tags.rote.cleanse_the_body_() [v( d.dt )]=mage.proximus.life
+
+&rote.speak_with_beasts_() [v( d.dd )]=
+	1|Animal Ken.Empathy.Survival.Praxis.Blessing
+&prerequisite.rote.speak_with_beasts_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, speak_with_beasts, Life:1 )
+&prereq-text.rote.speak_with_beasts_() [v( d.dd )]=
+	u( .rote.prereq-text, speak_with_beasts )
+&tags.rote.speak_with_beasts_() [v( d.dt )]=mage.proximus.life
+
+&rote.web_of_life_() [v( d.dd )]=
+	1|Investigation.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.web_of_life_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, web_of_life, Life:1 )
+&prereq-text.rote.web_of_life_() [v( d.dd )]=
+	u( .rote.prereq-text, web_of_life )
+&tags.rote.web_of_life_() [v( d.dt )]=mage.proximus.life
+
+&rote.body_control_() [v( d.dd )]=
+	2|Athletics.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.body_control_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, body_control, Life:2 )
+&prereq-text.rote.body_control_() [v( d.dd )]=
+	u( .rote.prereq-text, body_control )
+&tags.rote.body_control_() [v( d.dt )]=mage.proximus.life
+
+&rote.control_instincts_() [v( d.dd )]=
+	2|Animal Ken.Intimidation.persuasion.Praxis.Blessing
+&prerequisite.rote.control_instincts_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, control_instincts, Life:2 )
+&prereq-text.rote.control_instincts_() [v( d.dd )]=
+	u( .rote.prereq-text, control_instincts )
+&tags.rote.control_instincts_() [v( d.dt )]=mage.proximus.life
+
+&rote.heightened_senses_() [v( d.dd )]=
+	2|Empathy.Investigation.Survival.Praxis.Blessing
+&prerequisite.rote.heightened_senses_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, heightened_senses, Life:2 )
+&prereq-text.rote.heightened_senses_() [v( d.dd )]=
+	u( .rote.prereq-text, heightened_senses )
+&tags.rote.heightened_senses_() [v( d.dt )]=mage.proximus.life
+
+&rote.lure_and_repel_() [v( d.dd )]=
+	2|Animal Ken.persuasion.Survival.Praxis.Blessing
+&prerequisite.rote.lure_and_repel_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, lure_and_repel, Life:2 )
+&prereq-text.rote.lure_and_repel_() [v( d.dd )]=
+	u( .rote.prereq-text, lure_and_repel )
+&tags.rote.lure_and_repel_() [v( d.dt )]=mage.proximus.life
+
+&rote.mutable_mask_() [v( d.dd )]=
+	2|Medicine.Stealth.Subterfuge.Praxis.Blessing
+&prerequisite.rote.mutable_mask_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, mutable_mask, Life:2 )
+&prereq-text.rote.mutable_mask_() [v( d.dd )]=
+	u( .rote.prereq-text, mutable_mask )
+&tags.rote.mutable_mask_() [v( d.dt )]=mage.proximus.life
+
+&rote.purge_illness_() [v( d.dd )]=
+	2|Athletics.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.purge_illness_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, purge_illness, Life:2 )
+&prereq-text.rote.purge_illness_() [v( d.dd )]=
+	u( .rote.prereq-text, purge_illness )
+&tags.rote.purge_illness_() [v( d.dt )]=mage.proximus.life
+
+&rote.bruise_flesh_() [v( d.dd )]=
+	3|Brawl.Intimidation.Medicine.Praxis.Blessing
+&prerequisite.rote.bruise_flesh_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, bruise_flesh, Life:3 )
+&prereq-text.rote.bruise_flesh_() [v( d.dd )]=
+	u( .rote.prereq-text, bruise_flesh )
+&tags.rote.bruise_flesh_() [v( d.dt )]=mage.proximus.life
+
+&rote.degrading_the_form_() [v( d.dd )]=
+	3|Brawl.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.degrading_the_form_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, degrading_the_form, Life:3 )
+&prereq-text.rote.degrading_the_form_() [v( d.dd )]=
+	u( .rote.prereq-text, degrading_the_form )
+&tags.rote.degrading_the_form_() [v( d.dt )]=mage.proximus.life
+
+&rote.honing_the_form_() [v( d.dd )]=
+	3|Athletics.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.honing_the_form_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, honing_the_form, Life:3 )
+&prereq-text.rote.honing_the_form_() [v( d.dd )]=
+	u( .rote.prereq-text, honing_the_form )
+&tags.rote.honing_the_form_() [v( d.dt )]=mage.proximus.life
+
+&rote.knit_() [v( d.dd )]=
+	3|Empathy.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.knit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, knit, Life:3 )
+&prereq-text.rote.knit_() [v( d.dd )]=
+	u( .rote.prereq-text, knit )
+&tags.rote.knit_() [v( d.dt )]=mage.proximus.life
+
+&rote.many_faces_() [v( d.dd )]=
+	3|Medicine.Stealth.Subterfuge.Praxis.Blessing
+&prerequisite.rote.many_faces_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, many_faces, Life:3 )
+&prereq-text.rote.many_faces_() [v( d.dd )]=
+	u( .rote.prereq-text, many_faces )
+&tags.rote.many_faces_() [v( d.dt )]=mage.proximus.life
+
+&rote.transform_life_() [v( d.dd )]=
+	3|Animal Ken.Science.Survival.Praxis.Blessing
+&prerequisite.rote.transform_life_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, transform_life, Life:3 )
+&prereq-text.rote.transform_life_() [v( d.dd )]=
+	u( .rote.prereq-text, transform_life )
+&tags.rote.transform_life_() [v( d.dt )]=mage.proximus.life
+
+&rote.accelerate_growth_() [v( d.dd )]=
+	4|Animal Ken.Medicine.Science.Praxis.Blessing
+&prerequisite.rote.accelerate_growth_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, accelerate_growth, Life:4 )
+&prereq-text.rote.accelerate_growth_() [v( d.dd )]=
+	u( .rote.prereq-text, accelerate_growth )
+&tags.rote.accelerate_growth_() [v( d.dt )]=mage.proximus.life
+
+&rote.animal_minion_() [v( d.dd )]=
+	4|Animal Ken.Science.Survival.Praxis.Blessing
+&prerequisite.rote.animal_minion_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, animal_minion, Life:4 )
+&prereq-text.rote.animal_minion_() [v( d.dd )]=
+	u( .rote.prereq-text, animal_minion )
+&tags.rote.animal_minion_() [v( d.dt )]=mage.proximus.life
+
+&rote.life-force_assault_() [v( d.dd )]=
+	4|Brawl.Intimidation.Medicine.Praxis.Blessing
+&prerequisite.rote.life-force_assault_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, life-force_assault, Life:4 )
+&prereq-text.rote.life-force_assault_() [v( d.dd )]=
+	u( .rote.prereq-text, life-force_assault )
+&tags.rote.life-force_assault_() [v( d.dt )]=mage.proximus.life
+
+&rote.mend_() [v( d.dd )]=
+	4|Empathy.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.mend_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, mend, Life:4 )
+&prereq-text.rote.mend_() [v( d.dd )]=
+	u( .rote.prereq-text, mend )
+&tags.rote.mend_() [v( d.dt )]=mage.proximus.life
+
+&rote.regeneration_() [v( d.dd )]=
+	4|Athletics.Medicine.Survival.Praxis.Blessing
+&prerequisite.rote.regeneration_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, regeneration, Life:4 )
+&prereq-text.rote.regeneration_() [v( d.dd )]=
+	u( .rote.prereq-text, regeneration )
+&tags.rote.regeneration_() [v( d.dt )]=mage.proximus.life
+
+&rote.shapechanging_() [v( d.dd )]=
+	4|Animal Ken.Athletics.Science.Praxis.Blessing
+&prerequisite.rote.shapechanging_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shapechanging, Life:4 )
+&prereq-text.rote.shapechanging_() [v( d.dd )]=
+	u( .rote.prereq-text, shapechanging )
+&tags.rote.shapechanging_() [v( d.dt )]=mage.proximus.life
+
+&rote.create_life_() [v( d.dd )]=
+	5|Medicine.Science.Survival.Praxis.Blessing
+&prerequisite.rote.create_life_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, create_life, Life:5 )
+&prereq-text.rote.create_life_() [v( d.dd )]=
+	u( .rote.prereq-text, create_life )
+&tags.rote.create_life_() [v( d.dt )]=mage.proximus.life
+
+&rote.contagion_() [v( d.dd )]=
+	5|Medicine.Occult.Science.Praxis.Blessing
+&prerequisite.rote.contagion_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, contagion, Life:5 )
+&prereq-text.rote.contagion_() [v( d.dd )]=
+	u( .rote.prereq-text, contagion )
+&tags.rote.contagion_() [v( d.dt )]=mage.proximus.life
+
+&rote.salt_the_earth_() [v( d.dd )]=
+	5|Medicine.Science.Survival.Praxis.Blessing
+&prerequisite.rote.salt_the_earth_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, salt_the_earth, Life:5 )
+&prereq-text.rote.salt_the_earth_() [v( d.dd )]=
+	u( .rote.prereq-text, salt_the_earth )
+&tags.rote.salt_the_earth_() [v( d.dt )]=mage.proximus.life
+
+// -- Matter Rotes -------------------------------------------------------------
+
+&rote.Craftsman's_eye_() [v( d.dd )]=
+	1|Crafts.Investigation.Science.Praxis.Blessing
+&prerequisite.rote.Craftsman's_eye_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, Craftsman's_eye, Matter:1 )
+&prereq-text.rote.Craftsman's_eye_() [v( d.dd )]=
+	u( .rote.prereq-text, Craftsman's_eye )
+&tags.rote.Craftsman's_eye_() [v( d.dt )]=mage.proximus.matter
+
+&rote.detect_substance_() [v( d.dd )]=
+	1|Crafts.Investigation.Science.Praxis.Blessing
+&prerequisite.rote.detect_substance_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, detect_substance, Matter:1 )
+&prereq-text.rote.detect_substance_() [v( d.dd )]=
+	u( .rote.prereq-text, detect_substance )
+&tags.rote.detect_substance_() [v( d.dt )]=mage.proximus.matter
+
+&rote.discern_composition_() [v( d.dd )]=
+	1|Crafts.Investigation.Science.Praxis.Blessing
+&prerequisite.rote.discern_composition_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, discern_composition, Matter:1 )
+&prereq-text.rote.discern_composition_() [v( d.dd )]=
+	u( .rote.prereq-text, discern_composition )
+&tags.rote.discern_composition_() [v( d.dt )]=mage.proximus.matter
+
+&rote.lodestone_() [v( d.dd )]=
+	1|Crafts.Larceny.Science.Praxis.Blessing
+&prerequisite.rote.lodestone_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, lodestone, Matter:1 )
+&prereq-text.rote.lodestone_() [v( d.dd )]=
+	u( .rote.prereq-text, lodestone )
+&tags.rote.lodestone_() [v( d.dt )]=mage.proximus.matter
+
+&rote.remote_control_() [v( d.dd )]=
+	1|Crafts.Drive.Intimidation.Praxis.Blessing
+&prerequisite.rote.remote_control_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, remote_control, Matter:1 )
+&prereq-text.rote.remote_control_() [v( d.dd )]=
+	u( .rote.prereq-text, remote_control )
+&tags.rote.remote_control_() [v( d.dt )]=mage.proximus.matter
+
+&rote.alchemist's_touch_() [v( d.dd )]=
+	2|Crafts.Survival.persuasion.Praxis.Blessing
+&prerequisite.rote.alchemist's_touch_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, alchemist's_touch, Matter:2 )
+&prereq-text.rote.alchemist's_touch_() [v( d.dd )]=
+	u( .rote.prereq-text, alchemist's_touch )
+&tags.rote.alchemist's_touch_() [v( d.dt )]=mage.proximus.matter
+
+&rote.find_the_balance_() [v( d.dd )]=
+	2|Crafts.persuasion.Science.Praxis.Blessing
+&prerequisite.rote.find_the_balance_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, find_the_balance, Matter:2 )
+&prereq-text.rote.find_the_balance_() [v( d.dd )]=
+	u( .rote.prereq-text, find_the_balance )
+&tags.rote.find_the_balance_() [v( d.dt )]=mage.proximus.matter
+
+&rote.hidden_hoard_() [v( d.dd )]=
+	2|Larceny.Occult.Subterfuge.Praxis.Blessing
+&prerequisite.rote.hidden_hoard_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, hidden_hoard, Matter:2 )
+&prereq-text.rote.hidden_hoard_() [v( d.dd )]=
+	u( .rote.prereq-text, hidden_hoard )
+&tags.rote.hidden_hoard_() [v( d.dt )]=mage.proximus.matter
+
+&rote.machine_invisibility_() [v( d.dd )]=
+	2|Larceny.Science.Stealth.Praxis.Blessing
+&prerequisite.rote.machine_invisibility_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, machine_invisibility, Matter:2 )
+&prereq-text.rote.machine_invisibility_() [v( d.dd )]=
+	u( .rote.prereq-text, machine_invisibility )
+&tags.rote.machine_invisibility_() [v( d.dt )]=mage.proximus.matter
+
+&rote.shaping_() [v( d.dd )]=
+	2|Crafts.Expression.persuasion.Praxis.Blessing
+&prerequisite.rote.shaping_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shaping, Matter:2 )
+&prereq-text.rote.shaping_() [v( d.dd )]=
+	u( .rote.prereq-text, shaping )
+&tags.rote.shaping_() [v( d.dt )]=mage.proximus.matter
+
+&rote.alter_conductivity_() [v( d.dd )]=
+	3|Athletics.Crafts.Science.Praxis.Blessing
+&prerequisite.rote.alter_conductivity_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, alter_conductivity, Matter:3 )
+&prereq-text.rote.alter_conductivity_() [v( d.dd )]=
+	u( .rote.prereq-text, alter_conductivity )
+&tags.rote.alter_conductivity_() [v( d.dt )]=mage.proximus.matter
+
+&rote.alter_integrity_() [v( d.dd )]=
+	3|Crafts.Medicine.Subterfuge.Praxis.Blessing
+&prerequisite.rote.alter_integrity_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, alter_integrity, Matter:3 )
+&prereq-text.rote.alter_integrity_() [v( d.dd )]=
+	u( .rote.prereq-text, alter_integrity )
+&tags.rote.alter_integrity_() [v( d.dt )]=mage.proximus.matter
+
+&rote.crucible_() [v( d.dd )]=
+	3|Crafts.Occult.Science.Praxis.Blessing
+&prerequisite.rote.crucible_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, crucible, Matter:3 )
+&prereq-text.rote.crucible_() [v( d.dd )]=
+	u( .rote.prereq-text, crucible )
+&tags.rote.crucible_() [v( d.dt )]=mage.proximus.matter
+
+&rote.nigredo_and_albedo_() [v( d.dd )]=
+	3|Crafts.Brawl.Medicine.Praxis.Blessing
+&prerequisite.rote.nigredo_and_albedo_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, nigredo_and_albedo, Matter:3 )
+&prereq-text.rote.nigredo_and_albedo_() [v( d.dd )]=
+	u( .rote.prereq-text, nigredo_and_albedo )
+&tags.rote.nigredo_and_albedo_() [v( d.dt )]=mage.proximus.matter
+
+&rote.shrink_and_grow_() [v( d.dd )]=
+	3|Crafts.Expression.Science.Praxis.Blessing
+&prerequisite.rote.shrink_and_grow_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shrink_and_grow, Matter:3 )
+&prereq-text.rote.shrink_and_grow_() [v( d.dd )]=
+	u( .rote.prereq-text, shrink_and_grow )
+&tags.rote.shrink_and_grow_() [v( d.dt )]=mage.proximus.matter
+
+&rote.state_change_() [v( d.dd )]=
+	3|Crafts.persuasion.Science.Praxis.Blessing
+&prerequisite.rote.state_change_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, state_change, Matter:3 )
+&prereq-text.rote.state_change_() [v( d.dd )]=
+	u( .rote.prereq-text, state_change )
+&tags.rote.state_change_() [v( d.dt )]=mage.proximus.matter
+
+&rote.windstrike_() [v( d.dd )]=
+	3|Athletics.Brawl.Crafts.Praxis.Blessing
+&prerequisite.rote.windstrike_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, windstrike, Matter:3 )
+&prereq-text.rote.windstrike_() [v( d.dd )]=
+	u( .rote.prereq-text, windstrike )
+&tags.rote.windstrike_() [v( d.dt )]=mage.proximus.matter
+
+&rote.wonderful_machine_() [v( d.dd )]=
+	3|Crafts.Politics.Science.Praxis.Blessing
+&prerequisite.rote.wonderful_machine_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, wonderful_machine, Matter:3 )
+&prereq-text.rote.wonderful_machine_() [v( d.dd )]=
+	u( .rote.prereq-text, wonderful_machine )
+&tags.rote.wonderful_machine_() [v( d.dt )]=mage.proximus.matter
+
+&rote.ghostwall_() [v( d.dd )]=
+	4|Athletics.Occult.Stealth.Praxis.Blessing
+&prerequisite.rote.ghostwall_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ghostwall, Matter:4 )
+&prereq-text.rote.ghostwall_() [v( d.dd )]=
+	u( .rote.prereq-text, ghostwall )
+&tags.rote.ghostwall_() [v( d.dt )]=mage.proximus.matter
+
+&rote.golem_() [v( d.dd )]=
+	4|Crafts.Expression.Occult.Praxis.Blessing
+&prerequisite.rote.golem_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, golem, Matter:4 )
+&prereq-text.rote.golem_() [v( d.dd )]=
+	u( .rote.prereq-text, golem )
+&tags.rote.golem_() [v( d.dt )]=mage.proximus.matter
+
+&rote.piercing_earth_() [v( d.dd )]=
+	4|Athletics.Brawl.Crafts.Praxis.Blessing
+&prerequisite.rote.piercing_earth_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, piercing_earth, Matter:4 )
+&prereq-text.rote.piercing_earth_() [v( d.dd )]=
+	u( .rote.prereq-text, piercing_earth )
+&tags.rote.piercing_earth_() [v( d.dt )]=mage.proximus.matter
+
+&rote.transubstantiation_() [v( d.dd )]=
+	4|Crafts.Empathy.Science.Praxis.Blessing
+&prerequisite.rote.transubstantiation_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, transubstantiation, Matter:4 )
+&prereq-text.rote.transubstantiation_() [v( d.dd )]=
+	u( .rote.prereq-text, transubstantiation )
+&tags.rote.transubstantiation_() [v( d.dt )]=mage.proximus.matter
+
+&rote.annihilate_matter_() [v( d.dd )]=
+	5|Athletics.Intimidation.Science.Praxis.Blessing
+&prerequisite.rote.annihilate_matter_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, annihilate_matter, Matter:5 )
+&prereq-text.rote.annihilate_matter_() [v( d.dd )]=
+	u( .rote.prereq-text, annihilate_matter )
+&tags.rote.annihilate_matter_() [v( d.dt )]=mage.proximus.matter
+
+&rote.ex_nihilo_() [v( d.dd )]=
+	5|Crafts.Expression.Science.Praxis.Blessing
+&prerequisite.rote.ex_nihilo_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ex_nihilo, Matter:5 )
+&prereq-text.rote.ex_nihilo_() [v( d.dd )]=
+	u( .rote.prereq-text, ex_nihilo )
+&tags.rote.ex_nihilo_() [v( d.dt )]=mage.proximus.matter
+
+&rote.self-reparing_machine_() [v( d.dd )]=
+	5|Crafts.Medicine.Occult.Praxis.Blessing
+&prerequisite.rote.self-reparing_machine_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, self-reparing_machine, Matter:5 )
+&prereq-text.rote.self-reparing_machine_() [v( d.dd )]=
+	u( .rote.prereq-text, self-reparing_machine )
+&tags.rote.self-reparing_machine_() [v( d.dt )]=mage.proximus.matter
+
+// -- Mind Rotes ---------------------------------------------------------------
+
+&rote.know_nature_() [v( d.dd )]=
+	1|Empathy.Science.Subterfuge.Praxis.Blessing
+&prerequisite.rote.know_nature_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, know_nature, Mind:1 )
+&prereq-text.rote.know_nature_() [v( d.dd )]=
+	u( .rote.prereq-text, know_nature )
+&tags.rote.know_nature_() [v( d.dt )]=mage.proximus.mind
+
+&rote.mental_scan_() [v( d.dd )]=
+	1|Empathy.Investigation.Occult.Praxis.Blessing
+&prerequisite.rote.mental_scan_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, mental_scan, Mind:1 )
+&prereq-text.rote.mental_scan_() [v( d.dd )]=
+	u( .rote.prereq-text, mental_scan )
+&tags.rote.mental_scan_() [v( d.dt )]=mage.proximus.mind
+
+&rote.perfect_recall_() [v( d.dd )]=
+	1|Academics.Expression.Investigation.Praxis.Blessing
+&prerequisite.rote.perfect_recall_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, perfect_recall, Mind:1 )
+&prereq-text.rote.perfect_recall_() [v( d.dd )]=
+	u( .rote.prereq-text, perfect_recall )
+&tags.rote.perfect_recall_() [v( d.dt )]=mage.proximus.mind
+
+&rote.alter_mental_pattern_() [v( d.dd )]=
+	2|Science.Stealth.Subterfuge.Praxis.Blessing
+&prerequisite.rote.alter_mental_pattern_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, alter_mental_pattern, Mind:2 )
+&prereq-text.rote.alter_mental_pattern_() [v( d.dd )]=
+	u( .rote.prereq-text, alter_mental_pattern )
+&tags.rote.alter_mental_pattern_() [v( d.dt )]=mage.proximus.mind
+
+&rote.dream_reaching_() [v( d.dd )]=
+	2|Empathy.Medicine.persuasion.Praxis.Blessing
+&prerequisite.rote.dream_reaching_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, dream_reaching, Mind:2 )
+&prereq-text.rote.dream_reaching_() [v( d.dd )]=
+	u( .rote.prereq-text, dream_reaching )
+&tags.rote.dream_reaching_() [v( d.dt )]=mage.proximus.mind
+
+&rote.emotional_urging_() [v( d.dd )]=
+	2|Empathy.Intimidation.Subterfuge.Praxis.Blessing
+&prerequisite.rote.emotional_urging_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, emotional_urging, Mind:2 )
+&prereq-text.rote.emotional_urging_() [v( d.dd )]=
+	u( .rote.prereq-text, emotional_urging )
+&tags.rote.emotional_urging_() [v( d.dt )]=mage.proximus.mind
+
+&rote.first_impressions_() [v( d.dd )]=
+	2|Crafts.Socialize.Subterfuge.Praxis.Blessing
+&prerequisite.rote.first_impressions_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, first_impressions, Mind:2 )
+&prereq-text.rote.first_impressions_() [v( d.dd )]=
+	u( .rote.prereq-text, first_impressions )
+&tags.rote.first_impressions_() [v( d.dt )]=mage.proximus.mind
+
+&rote.incognito_presence_() [v( d.dd )]=
+	2|Empathy.Stealth.Subterfuge.Praxis.Blessing
+&prerequisite.rote.incognito_presence_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, incognito_presence, Mind:2 )
+&prereq-text.rote.incognito_presence_() [v( d.dd )]=
+	u( .rote.prereq-text, incognito_presence )
+&tags.rote.incognito_presence_() [v( d.dt )]=mage.proximus.mind
+
+&rote.memory_hole_() [v( d.dd )]=
+	2|Academics.Medicine.Subterfuge.Praxis.Blessing
+&prerequisite.rote.memory_hole_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, memory_hole, Mind:2 )
+&prereq-text.rote.memory_hole_() [v( d.dd )]=
+	u( .rote.prereq-text, memory_hole )
+&tags.rote.memory_hole_() [v( d.dt )]=mage.proximus.mind
+
+&rote.mental_shield_() [v( d.dd )]=
+	2|Academics.Intimidation.Survival.Praxis.Blessing
+&prerequisite.rote.mental_shield_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, mental_shield, Mind:2 )
+&prereq-text.rote.mental_shield_() [v( d.dd )]=
+	u( .rote.prereq-text, mental_shield )
+&tags.rote.mental_shield_() [v( d.dt )]=mage.proximus.mind
+
+&rote.psychic_domination_() [v( d.dd )]=
+	2|Expression.Intimidation.Subterfuge.Praxis.Blessing
+&prerequisite.rote.psychic_domination_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, psychic_domination, Mind:2 )
+&prereq-text.rote.psychic_domination_() [v( d.dd )]=
+	u( .rote.prereq-text, psychic_domination )
+&tags.rote.psychic_domination_() [v( d.dt )]=mage.proximus.mind
+
+&rote.telepathy_() [v( d.dd )]=
+	2|Crafts.Empathy.Socialize.Praxis.Blessing
+&prerequisite.rote.telepathy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, telepathy, Mind:2 )
+&prereq-text.rote.telepathy_() [v( d.dd )]=
+	u( .rote.prereq-text, telepathy )
+&tags.rote.telepathy_() [v( d.dt )]=mage.proximus.mind
+
+&rote.augment_mind_() [v( d.dd )]=
+	3|Academics.Expression.Survival.Praxis.Blessing
+&prerequisite.rote.augment_mind_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, augment_mind, Mind:3 )
+&prereq-text.rote.augment_mind_() [v( d.dd )]=
+	u( .rote.prereq-text, augment_mind )
+&tags.rote.augment_mind_() [v( d.dt )]=mage.proximus.mind
+
+&rote.clear_thoughts_() [v( d.dd )]=
+	3|Empathy.Intimidation.persuasion.Praxis.Blessing
+&prerequisite.rote.clear_thoughts_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, clear_thoughts, Mind:3 )
+&prereq-text.rote.clear_thoughts_() [v( d.dd )]=
+	u( .rote.prereq-text, clear_thoughts )
+&tags.rote.clear_thoughts_() [v( d.dt )]=mage.proximus.mind
+
+&rote.enhance_skill_() [v( d.dd )]=
+	3|Academics.Expression.Survival.Praxis.Blessing
+&prerequisite.rote.enhance_skill_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, enhance_skill, Mind:3 )
+&prereq-text.rote.enhance_skill_() [v( d.dd )]=
+	u( .rote.prereq-text, enhance_skill )
+&tags.rote.enhance_skill_() [v( d.dt )]=mage.proximus.mind
+
+&rote.goetic_summons_() [v( d.dd )]=
+	3|persuasion.Socialize.Occult.Praxis.Blessing
+&prerequisite.rote.goetic_summons_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, goetic_summons, Mind:3 )
+&prereq-text.rote.goetic_summons_() [v( d.dd )]=
+	u( .rote.prereq-text, goetic_summons )
+&tags.rote.goetic_summons_() [v( d.dt )]=mage.proximus.mind
+
+&rote.imposter_() [v( d.dd )]=
+	3|persuasion.Stealth.Subterfuge.Praxis.Blessing
+&prerequisite.rote.imposter_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, imposter, Mind:3 )
+&prereq-text.rote.imposter_() [v( d.dd )]=
+	u( .rote.prereq-text, imposter )
+&tags.rote.imposter_() [v( d.dt )]=mage.proximus.mind
+
+&rote.psychic_assault_() [v( d.dd )]=
+	3|Academics.Intimidation.Medicine.Praxis.Blessing
+&prerequisite.rote.psychic_assault_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, psychic_assault, Mind:3 )
+&prereq-text.rote.psychic_assault_() [v( d.dd )]=
+	u( .rote.prereq-text, psychic_assault )
+&tags.rote.psychic_assault_() [v( d.dt )]=mage.proximus.mind
+
+&rote.sleep_of_the_just_() [v( d.dd )]=
+	3|Academics.Athletics.Occult.Praxis.Blessing
+&prerequisite.rote.sleep_of_the_just_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, sleep_of_the_just, Mind:3 )
+&prereq-text.rote.sleep_of_the_just_() [v( d.dd )]=
+	u( .rote.prereq-text, sleep_of_the_just )
+&tags.rote.sleep_of_the_just_() [v( d.dt )]=mage.proximus.mind
+
+&rote.read_the_depths_() [v( d.dd )]=
+	3|Empathy.Investigation.Medicine.Praxis.Blessing
+&prerequisite.rote.read_the_depths_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, read_the_depths, Mind:3 )
+&prereq-text.rote.read_the_depths_() [v( d.dd )]=
+	u( .rote.prereq-text, read_the_depths )
+&tags.rote.read_the_depths_() [v( d.dt )]=mage.proximus.mind
+
+&rote.universal_language_() [v( d.dd )]=
+	3|Academics.Investigation.persuasion.Praxis.Blessing
+&prerequisite.rote.universal_language_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, universal_language, Mind:3 )
+&prereq-text.rote.universal_language_() [v( d.dd )]=
+	u( .rote.prereq-text, universal_language )
+&tags.rote.universal_language_() [v( d.dt )]=mage.proximus.mind
+
+&rote.befuddle_() [v( d.dd )]=
+	4|Intimidation.persuasion.Science.Praxis.Blessing
+&prerequisite.rote.befuddle_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, befuddle, Mind:4 )
+&prereq-text.rote.befuddle_() [v( d.dd )]=
+	u( .rote.prereq-text, befuddle )
+&tags.rote.befuddle_() [v( d.dt )]=mage.proximus.mind
+
+&rote.gain_skill_() [v( d.dd )]=
+	4|Crafts.Expression.Science.Praxis.Blessing
+&prerequisite.rote.gain_skill_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, gain_skill, Mind:4 )
+&prereq-text.rote.gain_skill_() [v( d.dd )]=
+	u( .rote.prereq-text, gain_skill )
+&tags.rote.gain_skill_() [v( d.dt )]=mage.proximus.mind
+
+&rote.hallucination_() [v( d.dd )]=
+	4|Academics.persuasion.Subterfuge.Praxis.Blessing
+&prerequisite.rote.hallucination_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, hallucination, Mind:4 )
+&prereq-text.rote.hallucination_() [v( d.dd )]=
+	u( .rote.prereq-text, hallucination )
+&tags.rote.hallucination_() [v( d.dt )]=mage.proximus.mind
+
+&rote.mind_flay_() [v( d.dd )]=
+	4|Expression.Intimidation.Science.Praxis.Blessing
+&prerequisite.rote.mind_flay_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, mind_flay, Mind:4 )
+&prereq-text.rote.mind_flay_() [v( d.dd )]=
+	u( .rote.prereq-text, mind_flay )
+&tags.rote.mind_flay_() [v( d.dt )]=mage.proximus.mind
+
+&rote.possession_() [v( d.dd )]=
+	4|Medicine.persuasion.Subterfuge.Praxis.Blessing
+&prerequisite.rote.possession_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, possession, Mind:4 )
+&prereq-text.rote.possession_() [v( d.dd )]=
+	u( .rote.prereq-text, possession )
+&tags.rote.possession_() [v( d.dt )]=mage.proximus.mind
+
+&rote.psychic_projection_() [v( d.dd )]=
+	4|Academics.Occult.Socialize.Praxis.Blessing
+&prerequisite.rote.psychic_projection_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, psychic_projection, Mind:4 )
+&prereq-text.rote.psychic_projection_() [v( d.dd )]=
+	u( .rote.prereq-text, psychic_projection )
+&tags.rote.psychic_projection_() [v( d.dt )]=mage.proximus.mind
+
+&rote.psychic_reprogramming_() [v( d.dd )]=
+	4|Intimidation.Medicine.persuasion.Praxis.Blessing
+&prerequisite.rote.psychic_reprogramming_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, psychic_reprogramming, Mind:4 )
+&prereq-text.rote.psychic_reprogramming_() [v( d.dd )]=
+	u( .rote.prereq-text, psychic_reprogramming )
+&tags.rote.psychic_reprogramming_() [v( d.dt )]=mage.proximus.mind
+
+&rote.terrorize_() [v( d.dd )]=
+	4|Expression.Intimidation.Medicine.Praxis.Blessing
+&prerequisite.rote.terrorize_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, terrorize, Mind:4 )
+&prereq-text.rote.terrorize_() [v( d.dd )]=
+	u( .rote.prereq-text, terrorize )
+&tags.rote.terrorize_() [v( d.dt )]=mage.proximus.mind
+
+&rote.amorality_() [v( d.dd )]=
+	5|Crafts.Empathy.Expression.Praxis.Blessing
+&prerequisite.rote.amorality_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, amorality, Mind:5 )
+&prereq-text.rote.amorality_() [v( d.dd )]=
+	u( .rote.prereq-text, amorality )
+&tags.rote.amorality_() [v( d.dt )]=mage.proximus.mind
+
+&rote.no_exit_() [v( d.dd )]=
+	5|Expression.persuasion.Science.Praxis.Blessing
+&prerequisite.rote.no_exit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, no_exit, Mind:5 )
+&prereq-text.rote.no_exit_() [v( d.dd )]=
+	u( .rote.prereq-text, no_exit )
+&tags.rote.no_exit_() [v( d.dt )]=mage.proximus.mind
+
+&rote.mind_wipe_() [v( d.dd )]=
+	5|Academics.Intimidation.Occult.Praxis.Blessing
+&prerequisite.rote.mind_wipe_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, mind_wipe, Mind:5 )
+&prereq-text.rote.mind_wipe_() [v( d.dd )]=
+	u( .rote.prereq-text, mind_wipe )
+&tags.rote.mind_wipe_() [v( d.dt )]=mage.proximus.mind
+
+&rote.psychic_genesis_() [v( d.dd )]=
+	5|Academics.Expression.Science.Praxis.Blessing
+&prerequisite.rote.psychic_genesis_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, psychic_genesis, Mind:5 )
+&prereq-text.rote.psychic_genesis_() [v( d.dd )]=
+	u( .rote.prereq-text, psychic_genesis )
+&tags.rote.psychic_genesis_() [v( d.dt )]=mage.proximus.mind
+
+&rote.social_networking_() [v( d.dd )]=
+	5|persuasion.Politics.Socialize.Praxis.Blessing
+&prerequisite.rote.social_networking_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, social_networking, Mind:5 )
+&prereq-text.rote.social_networking_() [v( d.dd )]=
+	u( .rote.prereq-text, social_networking )
+&tags.rote.social_networking_() [v( d.dt )]=mage.proximus.mind
+
+// -- Prime Rotes --------------------------------------------------------------
+
+&rote.dispel_magic_() [v( d.dd )]=
+	1|Athletics.Intimidation.Occult.Praxis.Blessing
+&prerequisite.rote.dispel_magic_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, dispel_magic, Prime:1 )
+&prereq-text.rote.dispel_magic_() [v( d.dd )]=
+	u( .rote.prereq-text, dispel_magic )
+&tags.rote.dispel_magic_() [v( d.dt )]=mage.proximus.prime
+
+&rote.pierce_deception_() [v( d.dd )]=
+	1|Investigation.Medicine.Occult.Praxis.Blessing
+&prerequisite.rote.pierce_deception_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, pierce_deception, Prime:1 )
+&prereq-text.rote.pierce_deception_() [v( d.dd )]=
+	u( .rote.prereq-text, pierce_deception )
+&tags.rote.pierce_deception_() [v( d.dt )]=mage.proximus.prime
+
+&rote.supernal_vision_() [v( d.dd )]=
+	1|Empathy.Occult.Survival.Praxis.Blessing
+&prerequisite.rote.supernal_vision_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, supernal_vision, Prime:1 )
+&prereq-text.rote.supernal_vision_() [v( d.dd )]=
+	u( .rote.prereq-text, supernal_vision )
+&tags.rote.supernal_vision_() [v( d.dt )]=mage.proximus.prime
+
+&rote.sacred_geometry_() [v( d.dd )]=
+	1|Academics.Occult.Survival.Praxis.Blessing
+&prerequisite.rote.sacred_geometry_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, sacred_geometry, Prime:1 )
+&prereq-text.rote.sacred_geometry_() [v( d.dd )]=
+	u( .rote.prereq-text, sacred_geometry )
+&tags.rote.sacred_geometry_() [v( d.dt )]=mage.proximus.prime
+
+&rote.scribe_grimoire_() [v( d.dd )]=
+	1|Crafts.Expression.Occult.Praxis.Blessing
+&prerequisite.rote.scribe_grimoire_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, scribe_grimoire, Prime:1 )
+&prereq-text.rote.scribe_grimoire_() [v( d.dd )]=
+	u( .rote.prereq-text, scribe_grimoire )
+&tags.rote.scribe_grimoire_() [v( d.dt )]=mage.proximus.prime
+
+&rote.word_of_command_() [v( d.dd )]=
+	1|Crafts.Occult.persuasion.Praxis.Blessing
+&prerequisite.rote.word_of_command_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, word_of_command, Prime:1 )
+&prereq-text.rote.word_of_command_() [v( d.dd )]=
+	u( .rote.prereq-text, word_of_command )
+&tags.rote.word_of_command_() [v( d.dt )]=mage.proximus.prime
+
+&rote.cloak_nimbus_() [v( d.dd )]=
+	2|Politics.Stealth.Subterfuge.Praxis.Blessing
+&prerequisite.rote.cloak_nimbus_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, cloak_nimbus, Prime:2 )
+&prereq-text.rote.cloak_nimbus_() [v( d.dd )]=
+	u( .rote.prereq-text, cloak_nimbus )
+&tags.rote.cloak_nimbus_() [v( d.dt )]=mage.proximus.prime
+
+&rote.invisible_runes_() [v( d.dd )]=
+	2|Expression.Intimidation.persuasion.Praxis.Blessing
+&prerequisite.rote.invisible_runes_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, invisible_runes, Prime:2 )
+&prereq-text.rote.invisible_runes_() [v( d.dd )]=
+	u( .rote.prereq-text, invisible_runes )
+&tags.rote.invisible_runes_() [v( d.dt )]=mage.proximus.prime
+
+&rote.supernal_veil_() [v( d.dd )]=
+	2|Occult.Subterfuge.Survival.Praxis.Blessing
+&prerequisite.rote.supernal_veil_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, supernal_veil, Prime:2 )
+&prereq-text.rote.supernal_veil_() [v( d.dd )]=
+	u( .rote.prereq-text, supernal_veil )
+&tags.rote.supernal_veil_() [v( d.dt )]=mage.proximus.prime
+
+&rote.wards_and_signs_() [v( d.dd )]=
+	2|Intimidation.Occult.Survival.Praxis.Blessing
+&prerequisite.rote.wards_and_signs_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, wards_and_signs, Prime:2 )
+&prereq-text.rote.wards_and_signs_() [v( d.dd )]=
+	u( .rote.prereq-text, wards_and_signs )
+&tags.rote.wards_and_signs_() [v( d.dt )]=mage.proximus.prime
+
+&rote.words_of_truth_() [v( d.dd )]=
+	2|Expression.Intimidation.persuasion.Praxis.Blessing
+&prerequisite.rote.words_of_truth_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, words_of_truth, Prime:2 )
+&prereq-text.rote.words_of_truth_() [v( d.dd )]=
+	u( .rote.prereq-text, words_of_truth )
+&tags.rote.words_of_truth_() [v( d.dt )]=mage.proximus.prime
+
+&rote.aetheric_winds_() [v( d.dd )]=
+	3|Athletics.Expression.Occult.Praxis.Blessing
+&prerequisite.rote.aetheric_winds_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, aetheric_winds, Prime:3 )
+&prereq-text.rote.aetheric_winds_() [v( d.dd )]=
+	u( .rote.prereq-text, aetheric_winds )
+&tags.rote.aetheric_winds_() [v( d.dt )]=mage.proximus.prime
+
+&rote.channel_mana_() [v( d.dd )]=
+	3|Occult.Politics.Socialize.Praxis.Blessing
+&prerequisite.rote.channel_mana_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, channel_mana, Prime:3 )
+&prereq-text.rote.channel_mana_() [v( d.dd )]=
+	u( .rote.prereq-text, channel_mana )
+&tags.rote.channel_mana_() [v( d.dt )]=mage.proximus.prime
+
+&rote.cleanse_pattern_() [v( d.dd )]=
+	3|Investigation.Occult.Stealth.Praxis.Blessing
+&prerequisite.rote.cleanse_pattern_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, cleanse_pattern, Prime:3 )
+&prereq-text.rote.cleanse_pattern_() [v( d.dd )]=
+	u( .rote.prereq-text, cleanse_pattern )
+&tags.rote.cleanse_pattern_() [v( d.dt )]=mage.proximus.prime
+
+&rote.display_of_power_() [v( d.dd )]=
+	3|Brawl.Occult.Socialize.Praxis.Blessing
+&prerequisite.rote.display_of_power_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, display_of_power, Prime:3 )
+&prereq-text.rote.display_of_power_() [v( d.dd )]=
+	u( .rote.prereq-text, display_of_power )
+&tags.rote.display_of_power_() [v( d.dt )]=mage.proximus.prime
+
+&rote.ephemeral_enhancement_() [v( d.dd )]=
+	3|Crafts.Occult.Weaponry.Praxis.Blessing
+&prerequisite.rote.ephemeral_enhancement_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ephemeral_enhancement, Prime:3 )
+&prereq-text.rote.ephemeral_enhancement_() [v( d.dd )]=
+	u( .rote.prereq-text, ephemeral_enhancement )
+&tags.rote.ephemeral_enhancement_() [v( d.dt )]=mage.proximus.prime
+
+&rote.geomancy_() [v( d.dd )]=
+	3|Academics.Expression.Occult.Praxis.Blessing
+&prerequisite.rote.geomancy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, geomancy, Prime:3 )
+&prereq-text.rote.geomancy_() [v( d.dd )]=
+	u( .rote.prereq-text, geomancy )
+&tags.rote.geomancy_() [v( d.dt )]=mage.proximus.prime
+
+&rote.platonic_form_() [v( d.dd )]=
+	3|Academics.Crafts.Expression.Praxis.Blessing
+&prerequisite.rote.platonic_form_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, platonic_form, Prime:3 )
+&prereq-text.rote.platonic_form_() [v( d.dd )]=
+	u( .rote.prereq-text, platonic_form )
+&tags.rote.platonic_form_() [v( d.dt )]=mage.proximus.prime
+
+&rote.stealing_fire_() [v( d.dd )]=
+	3|Expression.Larceny.persuasion.Praxis.Blessing
+&prerequisite.rote.stealing_fire_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, stealing_fire, Prime:3 )
+&prereq-text.rote.stealing_fire_() [v( d.dd )]=
+	u( .rote.prereq-text, stealing_fire )
+&tags.rote.stealing_fire_() [v( d.dt )]=mage.proximus.prime
+
+&rote.apocalypse_() [v( d.dd )]=
+	4|Occult.persuasion.Socialize.Praxis.Blessing
+&prerequisite.rote.apocalypse_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, apocalypse, Prime:4 )
+&prereq-text.rote.apocalypse_() [v( d.dd )]=
+	u( .rote.prereq-text, apocalypse )
+&tags.rote.apocalypse_() [v( d.dt )]=mage.proximus.prime
+
+&rote.celestial_fire_() [v( d.dd )]=
+	4|Athletics.Expression.Occult.Praxis.Blessing
+&prerequisite.rote.celestial_fire_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, celestial_fire, Prime:4 )
+&prereq-text.rote.celestial_fire_() [v( d.dd )]=
+	u( .rote.prereq-text, celestial_fire )
+&tags.rote.celestial_fire_() [v( d.dt )]=mage.proximus.prime
+
+&rote.destroy_tass_() [v( d.dd )]=
+	4|Brawl.Intimidation.Occult.Praxis.Blessing
+&prerequisite.rote.destroy_tass_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, destroy_tass, Prime:4 )
+&prereq-text.rote.destroy_tass_() [v( d.dd )]=
+	u( .rote.prereq-text, destroy_tass )
+&tags.rote.destroy_tass_() [v( d.dt )]=mage.proximus.prime
+
+&rote.hallow_dance_() [v( d.dd )]=
+	4|Expression.Occult.Survival.Praxis.Blessing
+&prerequisite.rote.hallow_dance_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, hallow_dance, Prime:4 )
+&prereq-text.rote.hallow_dance_() [v( d.dd )]=
+	u( .rote.prereq-text, hallow_dance )
+&tags.rote.hallow_dance_() [v( d.dt )]=mage.proximus.prime
+
+&rote.supernal_dispellation_() [v( d.dd )]=
+	4|Athletics.Intimidation.Occult.Praxis.Blessing
+&prerequisite.rote.supernal_dispellation_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, supernal_dispellation, Prime:4 )
+&prereq-text.rote.supernal_dispellation_() [v( d.dd )]=
+	u( .rote.prereq-text, supernal_dispellation )
+&tags.rote.supernal_dispellation_() [v( d.dt )]=mage.proximus.prime
+
+&rote.blasphemy_() [v( d.dd )]=
+	5|Athletics.Occult.Survival.Praxis.Blessing
+&prerequisite.rote.blasphemy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, blasphemy, Prime:5 )
+&prereq-text.rote.blasphemy_() [v( d.dd )]=
+	u( .rote.prereq-text, blasphemy )
+&tags.rote.blasphemy_() [v( d.dt )]=mage.proximus.prime
+
+&rote.create_truth_() [v( d.dd )]=
+	5|Expression.Occult.persuasion.Praxis.Blessing
+&prerequisite.rote.create_truth_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, create_truth, Prime:5 )
+&prereq-text.rote.create_truth_() [v( d.dd )]=
+	u( .rote.prereq-text, create_truth )
+&tags.rote.create_truth_() [v( d.dt )]=mage.proximus.prime
+
+&rote.eidolon_() [v( d.dd )]=
+	5|Academics.Crafts.Occult.Praxis.Blessing
+&prerequisite.rote.eidolon_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, eidolon, Prime:5 )
+&prereq-text.rote.eidolon_() [v( d.dd )]=
+	u( .rote.prereq-text, eidolon )
+&tags.rote.eidolon_() [v( d.dt )]=mage.proximus.prime
+
+&rote.forge_purpose_() [v( d.dd )]=
+	5|Empathy.Expression.Medicine.Praxis.Blessing
+&prerequisite.rote.forge_purpose_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, forge_purpose, Prime:5 )
+&prereq-text.rote.forge_purpose_() [v( d.dd )]=
+	u( .rote.prereq-text, forge_purpose )
+&tags.rote.forge_purpose_() [v( d.dt )]=mage.proximus.prime
+
+&rote.word_of_unmaking_() [v( d.dd )]=
+	5|Intimidation.Occult.Weaponry.Praxis.Blessing
+&prerequisite.rote.word_of_unmaking_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, word_of_unmaking, Prime:5 )
+&prereq-text.rote.word_of_unmaking_() [v( d.dd )]=
+	u( .rote.prereq-text, word_of_unmaking )
+&tags.rote.word_of_unmaking_() [v( d.dt )]=mage.proximus.prime
+
+// -- Space Rotes --------------------------------------------------------------
+
+&rote.correspondence_() [v( d.dd )]=
+	1|Academics.Empathy.Medicine.Praxis.Blessing
+&prerequisite.rote.correspondence_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, correspondence, Space:1 )
+&prereq-text.rote.correspondence_() [v( d.dd )]=
+	u( .rote.prereq-text, correspondence )
+&tags.rote.correspondence_() [v( d.dt )]=mage.proximus.space
+
+&rote.ground-eater_() [v( d.dd )]=
+	1|Athletics.Science.Survival.Praxis.Blessing
+&prerequisite.rote.ground-eater_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ground-eater, Space:1 )
+&prereq-text.rote.ground-eater_() [v( d.dd )]=
+	u( .rote.prereq-text, ground-eater )
+&tags.rote.ground-eater_() [v( d.dt )]=mage.proximus.space
+
+&rote.isolation_() [v( d.dd )]=
+	1|Academics.Intimidation.Subterfuge.Praxis.Blessing
+&prerequisite.rote.isolation_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, isolation, Space:1 )
+&prereq-text.rote.isolation_() [v( d.dd )]=
+	u( .rote.prereq-text, isolation )
+&tags.rote.isolation_() [v( d.dt )]=mage.proximus.space
+
+&rote.locate_object_() [v( d.dd )]=
+	1|Empathy.Occult.Science.Praxis.Blessing
+&prerequisite.rote.locate_object_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, locate_object, Space:1 )
+&prereq-text.rote.locate_object_() [v( d.dd )]=
+	u( .rote.prereq-text, locate_object )
+&tags.rote.locate_object_() [v( d.dt )]=mage.proximus.space
+
+&rote.the_outward_and_inward_eye_() [v( d.dd )]=
+	1|Firearms.Investigation.Occult.Praxis.Blessing
+&prerequisite.rote.the_outward_and_inward_eye_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, the_outward_and_inward_eye, Space:1 )
+&prereq-text.rote.the_outward_and_inward_eye_() [v( d.dd )]=
+	u( .rote.prereq-text, the_outward_and_inward_eye )
+&tags.rote.the_outward_and_inward_eye_() [v( d.dt )]=mage.proximus.space
+
+&rote.borrow_threads_() [v( d.dd )]=
+	2|Larceny.Occult.Subterfuge.Praxis.Blessing
+&prerequisite.rote.borrow_threads_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, borrow_threads, Space:2 )
+&prereq-text.rote.borrow_threads_() [v( d.dd )]=
+	u( .rote.prereq-text, borrow_threads )
+&tags.rote.borrow_threads_() [v( d.dt )]=mage.proximus.space
+
+&rote.break_boundary_() [v( d.dd )]=
+	2|Athletics.Larceny.persuasion.Praxis.Blessing
+&prerequisite.rote.break_boundary_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, break_boundary, Space:2 )
+&prereq-text.rote.break_boundary_() [v( d.dd )]=
+	u( .rote.prereq-text, break_boundary )
+&tags.rote.break_boundary_() [v( d.dt )]=mage.proximus.space
+
+&rote.lying_maps_() [v( d.dd )]=
+	2|Academics.Politics.Survival.Praxis.Blessing
+&prerequisite.rote.lying_maps_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, lying_maps, Space:2 )
+&prereq-text.rote.lying_maps_() [v( d.dd )]=
+	u( .rote.prereq-text, lying_maps )
+&tags.rote.lying_maps_() [v( d.dt )]=mage.proximus.space
+
+&rote.scrying_() [v( d.dd )]=
+	2|Computers.Occult.Subterfuge.Praxis.Blessing
+&prerequisite.rote.scrying_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, scrying, Space:2 )
+&prereq-text.rote.scrying_() [v( d.dd )]=
+	u( .rote.prereq-text, scrying )
+&tags.rote.scrying_() [v( d.dt )]=mage.proximus.space
+
+&rote.secret_door_() [v( d.dd )]=
+	2|Occult.Stealth.Subterfuge.Praxis.Blessing
+&prerequisite.rote.secret_door_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, secret_door, Space:2 )
+&prereq-text.rote.secret_door_() [v( d.dd )]=
+	u( .rote.prereq-text, secret_door )
+&tags.rote.secret_door_() [v( d.dt )]=mage.proximus.space
+
+&rote.veil_sympathy_() [v( d.dd )]=
+	2|Politics.Subterfuge.Survival.Praxis.Blessing
+&prerequisite.rote.veil_sympathy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, veil_sympathy, Space:2 )
+&prereq-text.rote.veil_sympathy_() [v( d.dd )]=
+	u( .rote.prereq-text, veil_sympathy )
+&tags.rote.veil_sympathy_() [v( d.dt )]=mage.proximus.space
+
+&rote.ban_() [v( d.dd )]=
+	3|Intimidation.Science.Stealth.Praxis.Blessing
+&prerequisite.rote.ban_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ban, Space:3 )
+&prereq-text.rote.ban_() [v( d.dd )]=
+	u( .rote.prereq-text, ban )
+&tags.rote.ban_() [v( d.dt )]=mage.proximus.space
+
+&rote.co-location_() [v( d.dd )]=
+	3|Athletics.Firearms.Science.Praxis.Blessing
+&prerequisite.rote.co-location_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, co-location, Space:3 )
+&prereq-text.rote.co-location_() [v( d.dd )]=
+	u( .rote.prereq-text, co-location )
+&tags.rote.co-location_() [v( d.dt )]=mage.proximus.space
+
+&rote.perfect_sympathy_() [v( d.dd )]=
+	3|Academics.Empathy.Larceny.Praxis.Blessing
+&prerequisite.rote.perfect_sympathy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, perfect_sympathy, Space:3 )
+&prereq-text.rote.perfect_sympathy_() [v( d.dd )]=
+	u( .rote.prereq-text, perfect_sympathy )
+&tags.rote.perfect_sympathy_() [v( d.dt )]=mage.proximus.space
+
+&rote.warp_() [v( d.dd )]=
+	3|Athletics.Brawl.Medicine.Praxis.Blessing
+&prerequisite.rote.warp_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, warp, Space:3 )
+&prereq-text.rote.warp_() [v( d.dd )]=
+	u( .rote.prereq-text, warp )
+&tags.rote.warp_() [v( d.dt )]=mage.proximus.space
+
+&rote.web-weaver_() [v( d.dd )]=
+	3|Crafts.Empathy.persuasion.Praxis.Blessing
+&prerequisite.rote.web-weaver_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, web-weaver, Space:3 )
+&prereq-text.rote.web-weaver_() [v( d.dd )]=
+	u( .rote.prereq-text, web-weaver )
+&tags.rote.web-weaver_() [v( d.dt )]=mage.proximus.space
+
+&rote.alter_direction_() [v( d.dd )]=
+	4|Academics.Firearms.persuasion.Praxis.Blessing
+&prerequisite.rote.alter_direction_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, alter_direction, Space:4 )
+&prereq-text.rote.alter_direction_() [v( d.dd )]=
+	u( .rote.prereq-text, alter_direction )
+&tags.rote.alter_direction_() [v( d.dt )]=mage.proximus.space
+
+&rote.collapse_() [v( d.dd )]=
+	4|Academics.Firearms.Intimidation.Praxis.Blessing
+&prerequisite.rote.collapse_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, collapse, Space:4 )
+&prereq-text.rote.collapse_() [v( d.dd )]=
+	u( .rote.prereq-text, collapse )
+&tags.rote.collapse_() [v( d.dt )]=mage.proximus.space
+
+&rote.cut_threads_() [v( d.dd )]=
+	4|persuasion.Politics.Weaponry.Praxis.Blessing
+&prerequisite.rote.cut_threads_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, cut_threads, Space:4 )
+&prereq-text.rote.cut_threads_() [v( d.dd )]=
+	u( .rote.prereq-text, cut_threads )
+&tags.rote.cut_threads_() [v( d.dt )]=mage.proximus.space
+
+&rote.secret_room_() [v( d.dd )]=
+	4|Expression.Science.Survival.Praxis.Blessing
+&prerequisite.rote.secret_room_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, secret_room, Space:4 )
+&prereq-text.rote.secret_room_() [v( d.dd )]=
+	u( .rote.prereq-text, secret_room )
+&tags.rote.secret_room_() [v( d.dt )]=mage.proximus.space
+
+&rote.teleportation_() [v( d.dd )]=
+	4|Larceny.persuasion.Science.Praxis.Blessing
+&prerequisite.rote.teleportation_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, teleportation, Space:4 )
+&prereq-text.rote.teleportation_() [v( d.dd )]=
+	u( .rote.prereq-text, teleportation )
+&tags.rote.teleportation_() [v( d.dt )]=mage.proximus.space
+
+&rote.create_sympathy_() [v( d.dd )]=
+	5|Empathy.persuasion.Politics.Praxis.Blessing
+&prerequisite.rote.create_sympathy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, create_sympathy, Space:5 )
+&prereq-text.rote.create_sympathy_() [v( d.dd )]=
+	u( .rote.prereq-text, create_sympathy )
+&tags.rote.create_sympathy_() [v( d.dt )]=mage.proximus.space
+
+&rote.forge_no_chains_() [v( d.dd )]=
+	5|Occult.Subterfuge.Survival.Praxis.Blessing
+&prerequisite.rote.forge_no_chains_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, forge_no_chains, Space:5 )
+&prereq-text.rote.forge_no_chains_() [v( d.dd )]=
+	u( .rote.prereq-text, forge_no_chains )
+&tags.rote.forge_no_chains_() [v( d.dt )]=mage.proximus.space
+
+&rote.pocket_dimension_() [v( d.dd )]=
+	5|Crafts.Expression.Survival.Praxis.Blessing
+&prerequisite.rote.pocket_dimension_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, pocket_dimension, Space:5 )
+&prereq-text.rote.pocket_dimension_() [v( d.dd )]=
+	u( .rote.prereq-text, pocket_dimension )
+&tags.rote.pocket_dimension_() [v( d.dt )]=mage.proximus.space
+
+&rote.quarantine_() [v( d.dd )]=
+	5|Academics.Larceny.Socialize.Praxis.Blessing
+&prerequisite.rote.quarantine_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, quarantine, Space:5 )
+&prereq-text.rote.quarantine_() [v( d.dd )]=
+	u( .rote.prereq-text, quarantine )
+&tags.rote.quarantine_() [v( d.dt )]=mage.proximus.space
+
+// -- Spirit Rotes -------------------------------------------------------------
+
+&rote.coaxing_the_spirit_() [v( d.dd )]=
+	1|Occult.Survival.Socialize.Praxis.Blessing
+&prerequisite.rote.coaxing_the_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, coaxing_the_spirit, Spirit:1 )
+&prereq-text.rote.coaxing_the_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, coaxing_the_spirit )
+&tags.rote.coaxing_the_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.exorcist's_eye_() [v( d.dd )]=
+	1|Occult.Survival.Socialize.Praxis.Blessing
+&prerequisite.rote.exorcist's_eye_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, exorcist's_eye, Spirit:1 )
+&prereq-text.rote.exorcist's_eye_() [v( d.dd )]=
+	u( .rote.prereq-text, exorcist's_eye )
+&tags.rote.exorcist's_eye_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.gremlins_() [v( d.dd )]=
+	1|Larceny.Politics.Subterfuge.Praxis.Blessing
+&prerequisite.rote.gremlins_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, gremlins, Spirit:1 )
+&prereq-text.rote.gremlins_() [v( d.dd )]=
+	u( .rote.prereq-text, gremlins )
+&tags.rote.gremlins_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.invoke_bane_() [v( d.dd )]=
+	1|Brawl.Intimidation.Occult.Praxis.Blessing
+&prerequisite.rote.invoke_bane_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, invoke_bane, Spirit:1 )
+&prereq-text.rote.invoke_bane_() [v( d.dd )]=
+	u( .rote.prereq-text, invoke_bane )
+&tags.rote.invoke_bane_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.know_spirit_() [v( d.dd )]=
+	1|Academics.Brawl.Socialize.Praxis.Blessing
+&prerequisite.rote.know_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, know_spirit, Spirit:1 )
+&prereq-text.rote.know_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, know_spirit )
+&tags.rote.know_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.cap_the_well_() [v( d.dd )]=
+	2|Politics.Survival.persuasion.Praxis.Blessing
+&prerequisite.rote.cap_the_well_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, cap_the_well, Spirit:2 )
+&prereq-text.rote.cap_the_well_() [v( d.dd )]=
+	u( .rote.prereq-text, cap_the_well )
+&tags.rote.cap_the_well_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.channel_essence_() [v( d.dd )]=
+	2|Occult.persuasion.Survival.Praxis.Blessing
+&prerequisite.rote.channel_essence_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, channel_essence, Spirit:2 )
+&prereq-text.rote.channel_essence_() [v( d.dd )]=
+	u( .rote.prereq-text, channel_essence )
+&tags.rote.channel_essence_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.command_spirit_() [v( d.dd )]=
+	2|Medicine.Athletics.persuasion.Praxis.Blessing
+&prerequisite.rote.command_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, command_spirit, Spirit:2 )
+&prereq-text.rote.command_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, command_spirit )
+&tags.rote.command_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.ephemeral_shield_() [v( d.dd )]=
+	2|Animal Ken.Medicine.Stealth.Praxis.Blessing
+&prerequisite.rote.ephemeral_shield_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ephemeral_shield, Spirit:2 )
+&prereq-text.rote.ephemeral_shield_() [v( d.dd )]=
+	u( .rote.prereq-text, ephemeral_shield )
+&tags.rote.ephemeral_shield_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.gossamer_touch_() [v( d.dd )]=
+	2|Brawl.Crafts.Intimidation.Praxis.Blessing
+&prerequisite.rote.gossamer_touch_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, gossamer_touch, Spirit:2 )
+&prereq-text.rote.gossamer_touch_() [v( d.dd )]=
+	u( .rote.prereq-text, gossamer_touch )
+&tags.rote.gossamer_touch_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.opener_of_the_way_() [v( d.dd )]=
+	2|Athletics.Computers.Socialize.Praxis.Blessing
+&prerequisite.rote.opener_of_the_way_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, opener_of_the_way, Spirit:2 )
+&prereq-text.rote.opener_of_the_way_() [v( d.dd )]=
+	u( .rote.prereq-text, opener_of_the_way )
+&tags.rote.opener_of_the_way_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.shadow_walk_() [v( d.dd )]=
+	2|Occult.Stealth.Streetwise.Praxis.Blessing
+&prerequisite.rote.shadow_walk_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shadow_walk, Spirit:2 )
+&prereq-text.rote.shadow_walk_() [v( d.dd )]=
+	u( .rote.prereq-text, shadow_walk )
+&tags.rote.shadow_walk_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.slumber_() [v( d.dd )]=
+	2|Expression.Occult.Weaponry.Praxis.Blessing
+&prerequisite.rote.slumber_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, slumber, Spirit:2 )
+&prereq-text.rote.slumber_() [v( d.dd )]=
+	u( .rote.prereq-text, slumber )
+&tags.rote.slumber_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.bolster_spirit_() [v( d.dd )]=
+	3|Medicine.Occult.Expression.Praxis.Blessing
+&prerequisite.rote.bolster_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, bolster_spirit, Spirit:3 )
+&prereq-text.rote.bolster_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, bolster_spirit )
+&tags.rote.bolster_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.erode_resonance_() [v( d.dd )]=
+	3|Crafts.Brawl.Intimidation.Praxis.Blessing
+&prerequisite.rote.erode_resonance_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, erode_resonance, Spirit:3 )
+&prereq-text.rote.erode_resonance_() [v( d.dd )]=
+	u( .rote.prereq-text, erode_resonance )
+&tags.rote.erode_resonance_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.howl_from_beyond_() [v( d.dd )]=
+	3|Expression.Firearms.Medicine.Praxis.Blessing
+&prerequisite.rote.howl_from_beyond_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, howl_from_beyond, Spirit:3 )
+&prereq-text.rote.howl_from_beyond_() [v( d.dd )]=
+	u( .rote.prereq-text, howl_from_beyond )
+&tags.rote.howl_from_beyond_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.place_of_power_() [v( d.dd )]=
+	3|Academics.Expression.Survival.Praxis.Blessing
+&prerequisite.rote.place_of_power_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, place_of_power, Spirit:3 )
+&prereq-text.rote.place_of_power_() [v( d.dd )]=
+	u( .rote.prereq-text, place_of_power )
+&tags.rote.place_of_power_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.reaching_() [v( d.dd )]=
+	3|Athletics.Medicine.Socialize.Praxis.Blessing
+&prerequisite.rote.reaching_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, reaching, Spirit:3 )
+&prereq-text.rote.reaching_() [v( d.dd )]=
+	u( .rote.prereq-text, reaching )
+&tags.rote.reaching_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.rouse_spirit_() [v( d.dd )]=
+	3|Athletics.Expression.Investigation.Praxis.Blessing
+&prerequisite.rote.rouse_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, rouse_spirit, Spirit:3 )
+&prereq-text.rote.rouse_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, rouse_spirit )
+&tags.rote.rouse_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.spirit_summons_() [v( d.dd )]=
+	3|persuasion.Socialize.Occult.Praxis.Blessing
+&prerequisite.rote.spirit_summons_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, spirit_summons, Spirit:3 )
+&prereq-text.rote.spirit_summons_() [v( d.dd )]=
+	u( .rote.prereq-text, spirit_summons )
+&tags.rote.spirit_summons_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.banishment_() [v( d.dd )]=
+	4|Brawl.Expression.Occult.Praxis.Blessing
+&prerequisite.rote.banishment_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, banishment, Spirit:4 )
+&prereq-text.rote.banishment_() [v( d.dd )]=
+	u( .rote.prereq-text, banishment )
+&tags.rote.banishment_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.bind_spirit_() [v( d.dd )]=
+	4|Crafts.Brawl.Intimidation.Praxis.Blessing
+&prerequisite.rote.bind_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, bind_spirit, Spirit:4 )
+&prereq-text.rote.bind_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, bind_spirit )
+&tags.rote.bind_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.craft_fetish_() [v( d.dd )]=
+	4|Crafts.Occult.persuasion.Praxis.Blessing
+&prerequisite.rote.craft_fetish_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, craft_fetish, Spirit:4 )
+&prereq-text.rote.craft_fetish_() [v( d.dd )]=
+	u( .rote.prereq-text, craft_fetish )
+&tags.rote.craft_fetish_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.shadow_scream_() [v( d.dd )]=
+	4|Expression.Firearms.Medicine.Praxis.Blessing
+&prerequisite.rote.shadow_scream_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shadow_scream, Spirit:4 )
+&prereq-text.rote.shadow_scream_() [v( d.dd )]=
+	u( .rote.prereq-text, shadow_scream )
+&tags.rote.shadow_scream_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.shape_spirit_() [v( d.dd )]=
+	4|Crafts.Medicine.persuasion.Praxis.Blessing
+&prerequisite.rote.shape_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shape_spirit, Spirit:4 )
+&prereq-text.rote.shape_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, shape_spirit )
+&tags.rote.shape_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.twilit_body_() [v( d.dd )]=
+	4|Occult.Subterfuge.Survival.Praxis.Blessing
+&prerequisite.rote.twilit_body_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, twilit_body, Spirit:4 )
+&prereq-text.rote.twilit_body_() [v( d.dd )]=
+	u( .rote.prereq-text, twilit_body )
+&tags.rote.twilit_body_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.annihilate_spirit_() [v( d.dd )]=
+	5|Intimidation.Science.Weaponry.Praxis.Blessing
+&prerequisite.rote.annihilate_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, annihilate_spirit, Spirit:5 )
+&prereq-text.rote.annihilate_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, annihilate_spirit )
+&tags.rote.annihilate_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.birth_spirit_() [v( d.dd )]=
+	5|Crafts.Medicine.Expression.Praxis.Blessing
+&prerequisite.rote.birth_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, birth_spirit, Spirit:5 )
+&prereq-text.rote.birth_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, birth_spirit )
+&tags.rote.birth_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.create_locus_() [v( d.dd )]=
+	5|Crafts.Empathy.Survival.Praxis.Blessing
+&prerequisite.rote.create_locus_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, create_locus, Spirit:5 )
+&prereq-text.rote.create_locus_() [v( d.dd )]=
+	u( .rote.prereq-text, create_locus )
+&tags.rote.create_locus_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.essence_fountain_() [v( d.dd )]=
+	5|Empathy.Expression.Occult.Praxis.Blessing
+&prerequisite.rote.essence_fountain_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, essence_fountain, Spirit:5 )
+&prereq-text.rote.essence_fountain_() [v( d.dd )]=
+	u( .rote.prereq-text, essence_fountain )
+&tags.rote.essence_fountain_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.spirit_manse_() [v( d.dd )]=
+	5|Crafts.Expression.Survival.Praxis.Blessing
+&prerequisite.rote.spirit_manse_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, spirit_manse, Spirit:5 )
+&prereq-text.rote.spirit_manse_() [v( d.dd )]=
+	u( .rote.prereq-text, spirit_manse )
+&tags.rote.spirit_manse_() [v( d.dt )]=mage.proximus.spirit
+
+&rote.world_walker_() [v( d.dd )]=
+	4|Athletics.persuasion.Survival.Praxis.Blessing
+&prerequisite.rote.world_walker_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, world_walker, Spirit:4 )
+&prereq-text.rote.world_walker_() [v( d.dd )]=
+	u( .rote.prereq-text, world_walker )
+&tags.rote.world_walker_() [v( d.dt )]=mage.proximus.spirit
+
+// -- Time Rotes ---------------------------------------------------------------
+
+&rote.divination_() [v( d.dd )]=
+	1|Academics.Empathy.Investigation.Praxis.Blessing
+&prerequisite.rote.divination_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, divination, Time:1 )
+&prereq-text.rote.divination_() [v( d.dd )]=
+	u( .rote.prereq-text, divination )
+&tags.rote.divination_() [v( d.dt )]=mage.proximus.time
+
+&rote.momentary_flux_() [v( d.dd )]=
+	1|Investigation.Streetwise.Survival.Praxis.Blessing
+&prerequisite.rote.momentary_flux_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, momentary_flux, Time:1 )
+&prereq-text.rote.momentary_flux_() [v( d.dd )]=
+	u( .rote.prereq-text, momentary_flux )
+&tags.rote.momentary_flux_() [v( d.dt )]=mage.proximus.time
+
+&rote.perfect_timing_() [v( d.dd )]=
+	1|Empathy.Socialize.Streetwise.Praxis.Blessing
+&prerequisite.rote.perfect_timing_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, perfect_timing, Time:1 )
+&prereq-text.rote.perfect_timing_() [v( d.dd )]=
+	u( .rote.prereq-text, perfect_timing )
+&tags.rote.perfect_timing_() [v( d.dt )]=mage.proximus.time
+
+&rote.postcognition_() [v( d.dd )]=
+	1|Academics.Empathy.Investigation.Praxis.Blessing
+&prerequisite.rote.postcognition_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, postcognition, Time:1 )
+&prereq-text.rote.postcognition_() [v( d.dd )]=
+	u( .rote.prereq-text, postcognition )
+&tags.rote.postcognition_() [v( d.dt )]=mage.proximus.time
+
+&rote.choose_the_thread_() [v( d.dd )]=
+	2|Occult.Science.Subterfuge.Praxis.Blessing
+&prerequisite.rote.choose_the_thread_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, choose_the_thread, Time:2 )
+&prereq-text.rote.choose_the_thread_() [v( d.dd )]=
+	u( .rote.prereq-text, choose_the_thread )
+&tags.rote.choose_the_thread_() [v( d.dt )]=mage.proximus.time
+
+&rote.constant_presence_() [v( d.dd )]=
+	2|Occult.persuasion.Survival.Praxis.Blessing
+&prerequisite.rote.constant_presence_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, constant_presence, Time:2 )
+&prereq-text.rote.constant_presence_() [v( d.dd )]=
+	u( .rote.prereq-text, constant_presence )
+&tags.rote.constant_presence_() [v( d.dt )]=mage.proximus.time
+
+&rote.hung_spell_() [v( d.dd )]=
+	2|Crafts.Occult.Expression.Praxis.Blessing
+&prerequisite.rote.hung_spell_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, hung_spell, Time:2 )
+&prereq-text.rote.hung_spell_() [v( d.dd )]=
+	u( .rote.prereq-text, hung_spell )
+&tags.rote.hung_spell_() [v( d.dt )]=mage.proximus.time
+
+&rote.shield_of_chronos_() [v( d.dd )]=
+	2|Academics.Stealth.Subterfuge.Praxis.Blessing
+&prerequisite.rote.shield_of_chronos_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shield_of_chronos, Time:2 )
+&prereq-text.rote.shield_of_chronos_() [v( d.dd )]=
+	u( .rote.prereq-text, shield_of_chronos )
+&tags.rote.shield_of_chronos_() [v( d.dt )]=mage.proximus.time
+
+&rote.tipping_the_hourglass_() [v( d.dd )]=
+	2|Athletics.Crafts.Investigation.Praxis.Blessing
+&prerequisite.rote.tipping_the_hourglass_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, tipping_the_hourglass, Time:2 )
+&prereq-text.rote.tipping_the_hourglass_() [v( d.dd )]=
+	u( .rote.prereq-text, tipping_the_hourglass )
+&tags.rote.tipping_the_hourglass_() [v( d.dt )]=mage.proximus.time
+
+&rote.veil_of_moments_() [v( d.dd )]=
+	2|Medicine.Investigation.Subterfuge.Praxis.Blessing
+&prerequisite.rote.veil_of_moments_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, veil_of_moments, Time:2 )
+&prereq-text.rote.veil_of_moments_() [v( d.dd )]=
+	u( .rote.prereq-text, veil_of_moments )
+&tags.rote.veil_of_moments_() [v( d.dt )]=mage.proximus.time
+
+&rote.acceleration_() [v( d.dd )]=
+	3|Athletics.Drive.Stealth.Praxis.Blessing
+&prerequisite.rote.acceleration_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, acceleration, Time:3 )
+&prereq-text.rote.acceleration_() [v( d.dd )]=
+	u( .rote.prereq-text, acceleration )
+&tags.rote.acceleration_() [v( d.dt )]=mage.proximus.time
+
+&rote.chronos'_curse_() [v( d.dd )]=
+	3|Academics.Occult.Intimidation.Praxis.Blessing
+&prerequisite.rote.chronos'_curse_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, chronos'_curse, Time:3 )
+&prereq-text.rote.chronos'_curse_() [v( d.dd )]=
+	u( .rote.prereq-text, chronos'_curse )
+&tags.rote.chronos'_curse_() [v( d.dt )]=mage.proximus.time
+
+&rote.shifting_sands_() [v( d.dd )]=
+	3|Academics.Occult.Survival.Praxis.Blessing
+&prerequisite.rote.shifting_sands_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, shifting_sands, Time:3 )
+&prereq-text.rote.shifting_sands_() [v( d.dd )]=
+	u( .rote.prereq-text, shifting_sands )
+&tags.rote.shifting_sands_() [v( d.dt )]=mage.proximus.time
+
+&rote.temporal_summoning_() [v( d.dd )]=
+	3|Athletics.Investigation.persuasion.Praxis.Blessing
+&prerequisite.rote.temporal_summoning_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, temporal_summoning, Time:3 )
+&prereq-text.rote.temporal_summoning_() [v( d.dd )]=
+	u( .rote.prereq-text, temporal_summoning )
+&tags.rote.temporal_summoning_() [v( d.dt )]=mage.proximus.time
+
+&rote.weight_of_years_() [v( d.dd )]=
+	3|Crafts.Intimidation.Medicine.Praxis.Blessing
+&prerequisite.rote.weight_of_years_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, weight_of_years, Time:3 )
+&prereq-text.rote.weight_of_years_() [v( d.dd )]=
+	u( .rote.prereq-text, weight_of_years )
+&tags.rote.weight_of_years_() [v( d.dt )]=mage.proximus.time
+
+&rote.present_as_past_() [v( d.dd )]=
+	4|Empathy.Investigation.Streetwise.Praxis.Blessing
+&prerequisite.rote.present_as_past_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, present_as_past, Time:4 )
+&prereq-text.rote.present_as_past_() [v( d.dd )]=
+	u( .rote.prereq-text, present_as_past )
+&tags.rote.present_as_past_() [v( d.dt )]=mage.proximus.time
+
+&rote.rend_lifespan_() [v( d.dd )]=
+	4|Athletics.Medicine.Intimidation.Praxis.Blessing
+&prerequisite.rote.rend_lifespan_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, rend_lifespan, Time:4 )
+&prereq-text.rote.rend_lifespan_() [v( d.dd )]=
+	u( .rote.prereq-text, rend_lifespan )
+&tags.rote.rend_lifespan_() [v( d.dt )]=mage.proximus.time
+
+&rote.rewrite_history_() [v( d.dd )]=
+	4|Expression.Investigation.persuasion.Praxis.Blessing
+&prerequisite.rote.rewrite_history_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, rewrite_history, Time:4 )
+&prereq-text.rote.rewrite_history_() [v( d.dd )]=
+	u( .rote.prereq-text, rewrite_history )
+&tags.rote.rewrite_history_() [v( d.dt )]=mage.proximus.time
+
+&rote.temporal_stutter_() [v( d.dd )]=
+	4|Intimidation.Science.Survival.Praxis.Blessing
+&prerequisite.rote.temporal_stutter_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, temporal_stutter, Time:4 )
+&prereq-text.rote.temporal_stutter_() [v( d.dd )]=
+	u( .rote.prereq-text, temporal_stutter )
+&tags.rote.temporal_stutter_() [v( d.dt )]=mage.proximus.time
+
+&rote.blink_of_an_eye_() [v( d.dd )]=
+	5|Academics.Crafts.Occult.Praxis.Blessing
+&prerequisite.rote.blink_of_an_eye_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, blink_of_an_eye, Time:5 )
+&prereq-text.rote.blink_of_an_eye_() [v( d.dd )]=
+	u( .rote.prereq-text, blink_of_an_eye )
+&tags.rote.blink_of_an_eye_() [v( d.dt )]=mage.proximus.time
+
+&rote.corridors_of_time_() [v( d.dd )]=
+	5|Academics.Investigation.persuasion.Praxis.Blessing
+&prerequisite.rote.corridors_of_time_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, corridors_of_time, Time:5 )
+&prereq-text.rote.corridors_of_time_() [v( d.dd )]=
+	u( .rote.prereq-text, corridors_of_time )
+&tags.rote.corridors_of_time_() [v( d.dt )]=mage.proximus.time
+
+&rote.temporal_pocket_() [v( d.dd )]=
+	5|Occult.Science.Stealth.Praxis.Blessing
+&prerequisite.rote.temporal_pocket_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, temporal_pocket, Time:5 )
+&prereq-text.rote.temporal_pocket_() [v( d.dd )]=
+	u( .rote.prereq-text, temporal_pocket )
+&tags.rote.temporal_pocket_() [v( d.dt )]=mage.proximus.time
+
+&rote.prophecy_() [v( d.dd )]=
+	4|Academics.Expression.Investigation.Praxis.Blessing
+&prerequisite.rote.prophecy_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, prophecy, Time:4 )
+&prereq-text.rote.prophecy_() [v( d.dd )]=
+	u( .rote.prereq-text, prophecy )
+&tags.rote.prophecy_() [v( d.dt )]=mage.proximus.time
+
+// -- Rotes That Collided With Other Stats & Were Re-Named, etc. ---------------
+
+&rote.as_above_so_below_() [v( d.dd )]=
+	2|Academics.Occult.Politics.Praxis.Blessing
+&prerequisite.rote.as_above_so_below_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, as_above_so_below, Prime:2 )
+&prereq-text.rote.as_above_so_below_() [v( d.dd )]=
+	u( .rote.prereq-text, as_above_so_below )
+&tags.rote.as_above_so_below_() [v( d.dt )]=mage.proximus.prime
+
+&rote.one_mind_two_thoughts_() [v( d.dd )]=
+	1|Academics.Expression.Science.Praxis.Blessing
+&prerequisite.rote.one_mind_two_thoughts_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, one_mind_two_thoughts, Mind:1 )
+&prereq-text.rote.one_mind_two_thoughts_() [v( d.dd )]=
+	u( .rote.prereq-text, one_mind_two_thoughts )
+&tags.rote.one_mind_two_thoughts_() [v( d.dt )]=mage.proximus.mind
+
+&rote.aegis_() [v( d.dd )]=
+	3|Athletics.Crafts.Science.Praxis.Blessing
+&prerequisite.rote.aegis_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, aegis, Matter:3 )
+&prereq-text.rote.aegis_() [v( d.dd )]=
+	u( .rote.prereq-text, aegis )
+&tags.rote.aegis_() [v( d.dt )]=mage.proximus.matter
+
+&rote.green_light_red_light_() [v( d.dd )]=
+	1|Computers.Larceny.Subterfuge.Praxis.Blessing
+&prerequisite.rote.green_light_red_light_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, green_light_red_light, Time:1 )
+&prereq-text.rote.green_light_red_light_() [v( d.dd )]=
+	u( .rote.prereq-text, green_light_red_light )
+&tags.rote.green_light_red_light_() [v( d.dt )]=mage.proximus.time
+
+&rote.ward_space_() [v( d.dd )]=
+	2|Athletics.Subterfuge.Weaponry.Praxis.Blessing
+&prerequisite.rote.ward_space_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, ward_space, Space:2 )
+&prereq-text.rote.ward_space_() [v( d.dd )]=
+	u( .rote.prereq-text, ward_space )
+&tags.rote.ward_space_() [v( d.dt )]=mage.proximus.space
+
+&rote.transmission_() [v( d.dd )]=
+	2|Crafts.Expression.Science.Praxis.Blessing
+&prerequisite.rote.transmission_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, transmission, Forces:2 )
+&prereq-text.rote.transmission_() [v( d.dd )]=
+	u( .rote.prereq-text, transmission )
+&tags.rote.transmission_() [v( d.dt )]=mage.proximus.forces
+
+&rote.familiar_spirit_() [v( d.dd )]=
+	4|Athletics.Expression.Intimidation.Praxis.Blessing
+&prerequisite.rote.familiar_spirit_() [v( d.dd )]=
+	u( .rote.prereq-check, %0, %1, familiar_spirit, Spirit:4 )
+&prereq-text.rote.familiar_spirit_() [v( d.dd )]=
+	u( .rote.prereq-text, familiar_spirit )
+&tags.rote.familiar_spirit_() [v( d.dt )]=mage.proximus.spirit
+
+
+
+/*
+================================================================================
+== SETTING UP A NEW PROXIMUS DYNASTY ===========================================
+
+@fo me=&bio.dynasty [v( d.dd )]=
+	[setunion( get( v( d.dd )/bio.dynasty ), Sisters of the Mountain, . )]
+
+@dolist/delimit | 
+	Oaths Fulfilled|
+	Exceptional Luck|
+	Shifting the Odds|
+	Monkey's Paw|
+	Shared Fate|
+	Cleanse the Body|
+	Analyze Life|
+	Body Control|
+	Lure and Repel|
+	Purge Illness|
+	Degrading the Form|
+	Honing the Form|
+	Knit|
+	Gremlins={ 
+		@edit v( d.dt )/tags.rote.[edit( ##, %b, _ )]_()=$, 
+		.sisters of the mountain
+	}
+
+*/
+
+
+
+
+/*
+################################################################################
+## MAGE CHARGEN ################################################################
+
+TO DO:
+If in an Order, add a dot of Occult
+
+Distribute ten Merit dots, less any spent on Gnosis; characters in an Order 
+receive Order Status • and High Speech • for free.
+
+
+================================================================================
+== CHARGEN: ALLOCATIONS ========================================================
+
+--------------------------------------------------------------------------------
+-- Allocated Merits: Gnosis ----------------------------------------------------
+*/
+
+&f.allocated.power-trait.mage [v( d.cg )]=
+	mul( 
+		dec( first( get( %0/_advantage.gnosis ), . )), 
+		5 
+	)
+
+
+/*
+================================================================================
+== CHARGEN: BIO ================================================================
+
+path
+order
+
+--------------------------------------------------------------------------------
+-- Bio Check: Mage -------------------------------------------------------------
+
+*/
+
+&check.bio.mage [v( d.cg )]=Virtue Vice Path Order
+
+
+/*
+--------------------------------------------------------------------------------
+-- Bio Check: Proximus ---------------------------------------------------------
+
+*/
+
+&check.bio.proximus [v( d.cg )]=Virtue Vice Dynasty
+
+
+/*
+================================================================================
+== CHARGEN CHECK: MAGE =========================================================
+*/
+
+&check.chargen.mage [v( d.cg )]=
+	strcat( 
+		u( check.arcanum, %0 ), 
+		u( check.rotes_&_praxis, %0 )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Chargen Check: Favored Attribute --------------------------------------------
+
+currently: 
+	stat/set <attribute>.favored=1
+	stat/set <attribute> + 1
+
+(I hope to get this changed.)
+
+1. check that attributes with 'favored' subtype are allowed
+2. check that there's only one
+3. check what happens if we -1 that from the system
+
+*/
+
+&check.chargen.attributes.mage [v( d.cg )]=
+	strcat( 
+		setq( f, v( d.mage.favored_attributes )), 
+		setq( a, 
+			lcstr( 
+				iter( lattr( %0/_attribute.*.favored ), elements( %i0, 2, . ))
+			)
+		), 
+		setq( i, setinter( %qa, %qf )), 
+		setq( c, ulocal( f.pts-valid?.attributes, %0, attribute.%qi:-1 )), 
+
+		ulocal( f.allocated.attributes, %0 ), %b, %(of 5/4/3 + favored%), %b, 
+		ulocal( display.check.stats, %0, attributes, attribute.%qa:-1 ), %r, 
+
+		%b %b%b, ansi( h, Favored Attribute ), :, %b, 
+		titlestr( itemize( %qa )), %b, 
+		%[, 
+		case( 1, 
+			eq( words( %qa ), 0 ), 
+			ansi( r, none set%, try: stat/set <attr>.favored = 1 ), 
+			gt( words( %qa ), 1 ), ansi( r, too many set ), 
+			neq( words( %qi ), 1 ), 
+			ansi( r, this favored not allowed for Mage ), 
+			not( %qc ), ansi( r, is the bonus missing? check your %qa ), 
+			lt( first( get( %0/_attribute.%qa ), . ), 2 ), 
+			ansi( r, %qa must be at least 2 ), 
+			ansi( g, OK )
+		), 
+		%]
+	)
+
+&d.mage.favored_attributes [v( d.cg )]=resolve stamina composure 
+
+
+/*
+--------------------------------------------------------------------------------
+-- Chargen Check: Arcanum ------------------------------------------------------
+*/
+
+&check.arcanum [v( d.cg )]=
+	strcat( 
+		setq( l, u( f.allocated.arcana, %0 )), 
+		setq( r, rest( grab( %ql, #ruling*, ` ))), 
+		setq( c, rest( grab( %ql, #common*, ` ))), 
+		setq( i, rest( grab( %ql, #inferior*, ` ))), 
+
+		setq( t, ladd( iter( %qr %qc %qi, rest( %i0, : )))), 
+
+		ansi( h, %b Arcana ), : , %b, %qt, %b, (of 6), %b, 
+		u( check.arcanum.total, %qt, 6 ), %r, 
+
+		u( check.arcanum.ruling, %0, %qr ), 
+		u( check.arcanum.common, %0, %qc ), 
+		u( check.arcanum.inferior, %0, %qi ), 
+	)
+
+
+
+&f.allocated.arcana [v( d.cg )]=
+	strcat( 
+		setq( a, lcstr( sort( edit( lattr( %0/_arcanum.* ), _ARCANUM., )))), 
+		setq( r, setinter( u( .mage_path_arcana, %0, ruling ), %qa )), 
+		setq( c, setinter( u( .mage_path_arcana, %0, common ), %qa )), 
+		setq( i, setinter( u( .mage_path_arcana, %0, inferior ), %qa )), 
+		#ruling, %b, 
+		iter( %qr, %i0:[get( %0/_arcanum.%i0 )]), `, 
+		#common, %b, 
+		iter( %qc, %i0:[get( %0/_arcanum.%i0 )]), `, 
+		#inferior, %b, 
+		iter( %qi, %i0:[get( %0/_arcanum.%i0 )] )
+	)
+
+
+// mages may have 6 dots in arcana
+
+&check.arcanum.total [v( d.cg )]=u( display.check.ok-no, eq( %0, 6 ))
+
+
+// ruling: at least 3 spent, at most 5 spent, 
+// no higher than 3, all ruling must have 1 dot
+
+&check.arcanum.ruling [v( d.cg )]=
+	strcat( 
+		setq( t, ladd( iter( %1, rest( %i0, : )))), 
+		setq( e, 
+			case( 0, 
+				u( .between, %qt, 3, 5 ), 
+				#-1 at least 3 and no more than 5 dots, 
+				eq( 
+					words( %1 ), 
+					words( 
+						first( 
+							v( 
+								d.mage_path_arcana.
+								[u( v( d.dd )/.value_full, %0, bio.path )] 
+							), 
+							: 
+						)
+					)
+				), 
+				#-1 at least 1 dot in each ruling arcana, 
+				1 
+			)
+		), 
+
+		space( 4 ), ansi( h, Ruling ), : %qt dots, %b, 
+		if( not( %qe ), 
+			ansi( n, %[, r, rest( %qe ), n, %] ), 
+			ansi( n, %[, g, OK, n, %] )
+		), %r, 
+
+		setq( e, 
+			iter( %1, 
+				strcat( 
+					space( 6 ), 
+					ljust( capstr( first( %i0, : )), 7 ), :, %b, 
+					rest( %i0, : ), 
+					if( gt( rest( %i0, : ), 3 ), 
+						ansi( n, %b%[, r, no, n, %] )
+					)
+				), 
+				, %r 
+			) 
+		), 
+		if( t( %qe ), %qe%r )
+	)
+
+
+// common: no higher than 3 (I know how odd the [OK] line looks)
+
+&check.arcanum.common [v( d.cg )]=
+	strcat( 
+		setq( t, ladd( iter( %1, rest( %i0, : )))), 
+
+		space( 4 ), ansi( h, Common ), : %qt dots, %b, 
+		ansi( n, %[, g, OK, n, %] ), %r, 
+		setq( e, 
+			iter( %1, 
+				strcat( 
+					space( 6 ), 
+					ljust( capstr( first( %i0, : )), 7 ), :, %b, 
+					rest( %i0, : ), 
+					if( gt( rest( %i0, : ), 3 ), 
+						ansi( n, %b%[, r, no, n, %] )
+					)
+				), 
+				, %r 
+			) 
+		), 
+		if( t( %qe ), %qe%r )
+	)
+
+
+// inferior: none allowed 
+
+&check.arcanum.inferior [v( d.cg )]=
+	strcat( 
+		setq( t, ladd( iter( %1, rest( %i0, : )))), 
+		setq( e, 
+			case( 1, 
+				t( %qt ), 
+				#-1 no inferior arcanum allowed at chargen, 
+				1 
+			)
+		), 
+
+		space( 4 ), ansi( h, Inferior ), : %qt dots, %b, 
+		if( not( %qe ), 
+			ansi( n, %[, r, rest( %qe ), n, %] ), 
+			ansi( n, %[, g, OK, n, %] )
+		), %r, 
+
+		setq( e, 
+			iter( %1, 
+				strcat( 
+					space( 6 ), 
+					ljust( capstr( first( %i0, : )), 7 ), :, %b, 
+					rest( %i0, : ), 
+					if( gt( rest( %i0, : ), 3 ), 
+						ansi( n, %b%[, r, no, n, %] )
+					)
+				), 
+				, %r 
+			) 
+		), 
+		if( t( %qe ), %qe%r )
+	)
+
+// --
+
+&d.mage_path_arcana.acanthus [v( d.cg )]=fate time:forces
+&d.mage_path_arcana.mastigos [v( d.cg )]=mind space:matter
+&d.mage_path_arcana.moros [v( d.cg )]=death matter:spirit
+&d.mage_path_arcana.obrimos [v( d.cg )]=forces prime:death
+&d.mage_path_arcana.thyrsus [v( d.cg )]=life spirit:mind
+
+&.mage_path_arcana [v( d.cg )]=
+	localize( strcat( 
+		setq( a, edit( lcstr( lattr( v( d.dd )/arcanum.* )), arcanum., )), 
+		setq( d, u( v( d.dd )/.value_full, %0, bio.path )), 
+		setq( p, 
+			v( d.mage_path_arcana.%qd )
+		), 
+		switch( %1, 
+			ruling, first( %qp, : ), 
+			inferior, rest( %qp, : ), 
+			setdiff( %qa, edit( %qp, :, %b ))
+		)
+	))
+
+
+/*
+--------------------------------------------------------------------------------
+-- Chargen Check: Rotes & Praxis -----------------------------------------------
+
+Straight from Fallen World. (Tweaked how 'allocated' works.)
+
+(p.86) Every dot of Gnosis comes with a free Praxis.
+
+*/
+
+&check.rotes_&_praxis [v( d.cg )]=
+	udefault( 
+		check.rotes_&_praxis.[get( %0/_bio.template )], 
+		** check failed **, 
+		%0 
+	)
+
+&check.rotes_&_praxis.mage [v( d.cg )]=
+	localize( strcat( 
+		setq( a, u( f.allocated.rotes_&_praxes, %0 )), 
+		setq( r, elements( %qa, 1, ` )), 
+		setq( p, elements( %qa, 2, ` )), 
+		setq( n, ulocal( v( d.dd )/.value, %0, advantage.gnosis )), 
+		%b, %b, ansi( h, Total Rotes ), :, %b, 
+		if( eq( %qr, 0 ), ansi( xh, <none> ), %qr ), %b, %(of 3%), %b, 
+		u( check.rotes.mage.total, %qr ), %r, 
+		%b, %b, ansi( h, Total Praxis ), :, %b, 
+		if( eq( %qp, 0 ), ansi( xh, <none> ), %qp ), %b, %(of %qn%), %b, 
+		u( check.praxes.mage.total, %qp, %qn ), %r 
+	))
+
+&f.allocated.rotes_&_praxes [v( d.cg )]=
+	localize( strcat( 
+		setq( t, attrcnt( %0/_ROTE.* )), 
+		setq( p, attrcnt( %0/_ROTE.*(PRAXIS) )), 
+		setq( r, sub( %qt, %qp )), 
+		%qr, `, %qp 
+	))
+
+&check.rotes.mage.total [v( d.cg )]=u( display.check.ok-no, eq( %0, 3 ))
+
+&check.praxes.mage.total [v( d.cg )]=
+	u( display.check.ok-no, eq( %0, if( strlen( %1 ), %1, 1 )))
+
+
+
+
+/*
+################################################################################
+## MAGE: XP COSTS ##############################################################
+
+NOTES
+This system was not set up for buying some things with one kind of Experience 
+let alone with buying something with two kinds of Experience. In the meantime, 
+only Normal Experience may be auto-spent on these. There is probably a way to 
+get staff involved and have them manually alter the Experiences.
+
+*/
+
+&d.restricted.types.mage [v( d.xpas )]=
+	arcanum rote
+&d.restricted.stats.mage [v( d.xpas )]=
+	advantage.gnosis 
+
+&xp.advantage.gnosis [v( d.xpcd )]=u( cost.standard, 5, %1, %2 )
+
+// &xp.rote [v( d.xpcd )]=1
+
+&xp.rote [v( d.xpcd )]=
+	case( u( v( d.dd )/.value, %0, template ), 
+		Mage, 1, 
+		Proximus, u( cost.standard, 1, %1, %2 )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- XP: Arcanum -----------------------------------------------------------------
+
+Following is sent from XP: 
+	%0: dbref of sheet
+	%1: from
+	%2: to
+	%3: statpath, sans instance
+	%4: value.list.from.statpath
+
+	a: path
+	b: <ruling spheres>:<inferior spheres>
+	c: limit for this arcana (2, 4, or 5)
+	d: 4xp if new value >= limit, 5xp otherwise
+*/
+
+&xp.arcanum [v( d.xpcd )]=
+	localize( strcat( 
+		setq( a, u( .value_full, %0, bio.path )), 
+		setq( b, u( v( d.cg )/d.mage_path_arcana.%qa, %0 )), 
+		setq( c, 
+			case( 1, 
+				t( match( first( %qb, : ), rest( %3, . ))), 5, 
+				t( match( last( %qb, : ), rest( %3, . ))), 2, 
+				4 
+			)
+		), 
+		setq( d, if( lte( %2, %qc ), 4, 5 )), 
+
+// .. if raising arcana over the Limit: split up cost
+
+		if( not( u( .between_else, %qc, %1, %2 )), 
+			u( cost.standard, %qd, %1, %2 ), 
+			add( 
+				u( cost.standard, 4, %1, %qc ), 
+				u( cost.standard, 5, %qc, %2 )
+			)
+		)
+	))
+
+
+
+
+/*
+################################################################################
+## MAGE: SHEET #################################################################
+
+More from the "Fallen World" Power Hour.
+
+ ---------------------------------- Arcanum ----------------------------------
+Death    : -    Fate     : -    Forces   : 3    Life     : -    Matter   : 2   
+Mind     : -    Prime    : 1    Space    : -    Spirit   : -    Time     : 1   
+ ----------------------------- Rotes and Praxes ------------------------------
+                                    Forces                                    
+Transmission (Science) ............ 2 Turn Momentum (Science) ........... 3
+                                    Matter                                    
+Machine Invisibility (Praxis) ..... 2 Shaping (Praxis) .................. 2
+                                    Prime                                     
+Dispel Magic (Athletics) .......... 1 Pierce Deception (Investigation) .. 1
+Sacred Geometry (Academics) ....... 1 
+
+*/
+
+// -- Bio ----------------------------------------------------------------------
+
+&bio.default.proximus [v( d.nsc )]=
+	birthdate concept cabal dynasty virtue vice
+
+&bio.default.mage [v( d.nsc )]=
+	birthdate concept cabal path order legacy virtue vice
+
+
+// -- Sheet: Advantages --------------------------------------------------------
+
+&traits.morality.mage [v( d.nsc )]=
+	ulocal( f.cheat_getstat.morality, %0, integrity, Wisdom )
+
+&traits.mana [v( d.nsc )]=
+	u( f.cheat_getstat.pool, %0, mana )
+
+&block.traits.mana [v( d.sheet )]=
+	strcat( 
+		setq( w, 38 ), setq( t, 10 ), 
+		setq( x, ulocal( traits.mana, %0 )), 
+		setq( c, rest( setr( y, first( %qx, | )), : )), 
+		setq( p, last( %qx, : )), 
+		u( display.trait-and-value, %qy, %qt, %qw, pool, %b, %qp )
+	)
+
+&block.traits.mage [v( d.sheet )]=
+	strcat( 
+		setq( w, 38 ), setq( t, 10 ), 
+		setq( r, ulocal( block.traits.mana, %0 )), 
+		setq( z, 
+			u( display.trait-and-value, 
+				u( traits.supernatural_resistance, %0 ), 
+				%qt, %qw, numeric 
+			)
+		), 
+		vcolumns( %qw:%qr, %qw:%qz, |, %b ), %r, 
+	)
+
+&block.traits.proximus [v( d.sheet )]=
+	strcat( 
+		setq( w, 38 ), setq( t, 10 ), 
+		setq( r, ulocal( block.traits.mana, %0 )), 
+		vcolumns( %qw:%qr, |, %b ), %r, 
+	)
+
+
+// -- Sheet: Powers ------------------------------------------------------------
+
+&block.powers.mage [v( d.sheet )]=
+	localize( strcat( 
+		u( block.powers.arcanum, %0 ), 
+		u( block.powers.rote, %0 )
+	))
+
+
+&powers.arcanum [v( d.nsc )]=
+	iter( death fate forces life matter mind prime space spirit time, 
+		ulocal( f.cheat_getstat.with_name, %0, arcanum.%i0, numeric ), 
+		, | 
+	)
+
+
+&block.powers.arcanum [v( d.sheet )]=
+	strcat( 
+		setq( w, 15 ), 
+		setq( t, 9 ), 
+		setq( x, ulocal( powers.arcanum, %0 )), 
+		setq( y, 
+			iter( %qx, 
+				u( display.trait-and-value, %i0, %qt, %qw, numeric ), |, | 
+			)
+		), 
+
+		divider( Arcanum ), %r, 
+		columns( %qy, %qw, | ), 
+	)
+
+
+&powers.rote [v( d.nsc )]=
+	localize( 
+		strcat( 
+			setq( x, 
+				iter( 
+					sort( 
+						ulocal( 
+							v( d.sfp )/f.list-stats-tags, 
+							%0, rote, %1 
+						)
+					), 
+					ulocal( f.cheat_getstat.with_name, 
+						%0, %i0, numeric 
+					), 
+					, | 
+				)
+			), 
+			if( strlen( %qx ), %qx )
+		)
+	)
+
+
+&block.powers.rote [v( d.sheet )]=
+	strcat( 
+		setq( w, 35 ), 
+		setq( t, 34 ), 
+		divider( Rotes & Praxis ), %r, 
+		iter( Death Fate Forces Life Matter Mind Prime Space Spirit Time, 
+			if( strlen( setr( x, u( powers.rote, %0, %i0 ))), 
+				strcat( 
+					center( ansi( hy, %i0 ), 78 ), %r, 
+					columns( 
+						iter( %qx, 
+							ulocal( display.trait-and-value, 
+								%i0, %qt, %qw, numeric, . 
+							), 
+							|, %r 
+						), 
+						add( %qw, 3 ), %r 
+					)
+				)
+			), 
+			, @@ 
+		), 
+	)
+
+
+&block.powers.proximus [v( d.sheet )]=
+	ulocal( block.powers.rote, %0 )
+
+
+&block.powers.sleepwalker [v( d.sheet )]=
+  strcat( 
+
+// .. rites, if any 
+		setq( x, u( powers.rites.mage, %0 )), 
+		if( strlen( %qx ), 
+			strcat( 
+				setq( w, 38 ), setq( t, 38 ), 
+
+				setq( y, 
+					iter( %qx, 
+						u( display.trait-name-only, %i0, %qt, %qw, flag ), 
+						|, | 
+					)
+				), 
+				setq( a, words( %qx, | )), 
+				setq( b, ceil( fdiv( %qa, 2 ))), 
+				setq( c, lnum( 1, %qb )), 
+				setq( d, lnum( inc( %qb ), inc( %qa ))),
+
+				divider( Rites ), %r, 
+
+				vcolumns( 
+					%qw:[elements( %qy, %qc, |, | )], 
+					%qw:[elements( %qy, %qd, |, | )], 
+					|, 
+					%b 
+				), %r 
+			)
+		)
+	)
+
+
+
+
+/*
+################################################################################
+## MAGE: SPEND/REGAIN MANA #####################################################
+
+expands: 9c - Spend and Regain
+
+	spend mana=<amt/method> for <reason>
+
+spend limit per Gnosis: 
+	1 2 3 4 5 6 7 8 10 15
+
+regain methods:
+	... dunno right now
+
+
+--------------------------------------------------------------------------------
+-- Spend/Regain Methods --------------------------------------------------------
+*/
+
+&regain.methods.mana [v( d.psrs )]=|all
+&spend.methods.mana [v( d.psrs )]=[@@( nothing but numeric allowed here )]
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Spend/Regain Mana Amts ---------------------------------------------------
+*/
+
+&amt.spend.numeric.mana [v( d.psrs )]=
+	if( t( u( amt.spend.numeric.default, %0, %1, %2 )), 
+		if( 
+			lte( %2, 
+				elements( 
+					1 2 3 4 5 6 7 8 10 15, 
+					getstat( %0/Gnosis )
+				)
+			), 
+			mul( %2, -1 ), 
+			#-1 You can't spend that much at one time 
+		), 
+		u( amt.spend.numeric.default, %0, %1, %2 )
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Spend Mana Trigger ----------------------------------------------------------
+*/
+
+&spend.trigger.mana [v( d.psrs )]=
+	think strcat( 
+		m:, %b, setr( m, u( f.match_method, %1, spend, mana, %2 )), %r, 
+		a:, %b, setr( a, u( amt.spend, %1, mana, %qm )), %r, 
+		u:, %b, setr( u, hasattr( %1, _advantage.gnosis )), %r, 
+		s:, %b, setr( s, hasattr( %1, _advantage.mana_maximum )), %r, 
+	); 
+
+	@assert cand( %qu, %qs )={ 
+		@pemit %0=u( .msg, mana/spend, 
+			cat( 
+				if( strmatch( %0, %1 ), You, name( %1 )), 
+				must have both Gnosis and an Mana pool 
+			)
+		) 
+	}; 
+
+	@assert strlen( %qm )={ 
+		@pemit %0=u( .msg, mana/spend, I could not find the method '%2' ) 
+	}; 
+
+	@assert t( %qa )={ 
+		@pemit %0=u( .msg, mana/spend, rest( %qa )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.canchange, %1, Mana, %qa )))={ 
+		@pemit %0=u( .msg, mana/spend, rest( %qe )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.changestat, %1, mana, %qa )))={ 
+		@pemit %0=u( .msg, mana/spend, rest( %qe )) 
+	}; 
+
+	think e: 
+		[setr( e, 
+			u( display.number, %0, %1, mana, spend, %qa, %qm, %4 )
+		)]; 
+	@eval u( f.announcement, %0, %1, spend, %qe ); 
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Regain Mana Trigger ---------------------------------------------------------
+*/
+
+&regain.trigger.mana [v( d.psrs )]=
+	think strcat( 
+		m:, %b, setr( m, u( f.match_method, %1, regain, mana, %2 )), %r, 
+		a:, %b, setr( a, u( amt.regain, %1, mana, %qm )), %r, 
+		u:, %b, setr( u, hasattr( %1, _advantage.Gnosis )), %r, 
+		s:, %b, setr( s, hasattr( %1, _advantage.mana_maximum )), %r, 
+	); 
+
+	@assert cand( %qu, %qs )={ 
+		@pemit %0=u( .msg, mana/regain, 
+			cat( 
+				if( strmatch( %0, %1 ), You, name( %1 )), 
+				must have both Gnosis and an Mana pool 
+			)
+		) 
+	}; 
+
+	@assert strlen( %qm )={ 
+		@pemit %0=u( .msg, mana/regain, I could not find the method '%2' ) 
+	}; 
+
+	@assert t( %qa )={ 
+		@pemit %0=u( .msg, mana/regain, rest( %qa )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.canchange, %1, mana, %qa )))={ 
+		@pemit %0=u( .msg, mana/regain, rest( %qe )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.changestat, %1, mana, %qa )))={ 
+		@pemit %0=u( .msg, mana/regain, rest( %qe )) 
+	}; 
+
+	think e: 
+		[setr( e, 
+			u( display.number, %0, %1, mana, regain, %qa, %qm, %4 )
+		)]; 
+	@eval u( f.announcement, %0, %1, regain, %qe ); 
+
+
+
+
+/*
+################################################################################
+## MAGE: NOTES #################################################################
+
+THE NOTES SO FAR
+
+SO MANY NOTES
+
+MUCH HEADAHCHE
+
+WOW
+
+
+
+
+bio.path: Acanthus.Mastigos.Moros.Obrimos.Thyrsus
+	Acanthus: Fate, Time; Forces
+	Mastigos: Mind, Space; Matter
+	Moros: Death, Matter; Spirit
+	Obrimos: Forces, Prime; Death
+	Thyrsus: Life, Spirit; Mind
+
+bio.order: Adamantine Arrow.Guardians of the Veil.Mysterium.Silver Ladder.Free Council.Apostate.Nameless
+	Adamantine Arrow: Athletics, Intimidation, Medicine
+	Guardians of the Veil: Investigation, Stealth, Subterfuge
+	Mysterium: Investigation, Occult, Survival
+	Silver Ladder: Expression, Persuasion, Subterfuge
+	Free Council: Crafts, Persuasion, Science
+	
+	Assuming your character has an Order, she receives a free dot in the 
+	Order Status Merit, a dot of Occult, and the High Speech Merit.
+
+bio.cabal: *
+
+advantage.gnosis: 1
+(+1 per 5 Merits)
+advantage.mana: (maxed out, as per gnosis)
+
+advantage.wisdom: 7
+
+
+
+
+(Nimbus: as a note)
+(Dedicated Magical Tool: as a note)
+
+Starting Arcana: 6 dots, 3-5 in Ruling Arcana
+Starting Rotes: 6 dots
+Starting Merits: 10 dots
+
+Every Awakened character begins play with one additional dot of Composure, Resolve, or Stamina, which may not raise the Attribute chosen above five dots.
+
+Obsessions: Long-Term Aspirations, from Arcane Beats
+(start with 1, or 2 if Gnosis 3)
+
+Starting Praxis: 1 per Gnosis
+
+--
+
+xp chart: p. 83
+
+Arcanum 		Maximum Untrained
+Common 			4 dots
+Ruling 			5 dots
+Inferior		2 dots
+
+... so: arcanum.death: 1.2.3.4.5|trained (?)
+
+--
+			Max							Highest		Other
+Gnosis		Trait		Obsessions 		Arcanum		Arcanum		Mana
+1			5			1				3			2			10
+2			5			1				3			3			11
+3			5			2				4			3			12
+4			5			2				4			4			13
+5			5			2				5			4			14
+6			6			3				5			5			15
+7			7			3				5			5			20
+8			8			3				5			5			25
+9			9			4				5			5			30
+10			10			4				5			5			75
+
+
+
+--==--=-=-=-=-=-=
+
+bio.legacy: *
+merit.legacy_attainments: 1-5, must have legacy
+
+
+Making a soul-stone: -1 to Max Gnosis 
+(Yeah, we don't have a system for this sorry.)
+
+What the heck is a 'rote skill' used for? :: 
+	+1 die when used with a rote whose rote skill matches yours.
+
+-=-=-=-=-=-=-=-=-==--=-=-=-=-=-=-==--=
+
+
+Proximi (minor template): 
+
+5 mana.
+path.
+
+"Blessing Arcana: Proximi may purchase Blessings from their Parent Path’s Ruling 
+Arcana and one other Arcanum, chosen at character creation"
+
+--> Most people I've talked to say that this is picked for the *Dynasty*, 
+    not for the character. So link these things to the Dynasty. Moreover:
+
+"Dynastic Blessings: Every Proximus has the capacity to learn up to 30 dots 
+worth of Blessings, chosen from the three Blessing Arcana at character creation. 
+Blessings may be based on any spell of up to three Arcanum dots. Proximi 
+characters buy their Blessings from the list for their Dynasty as Merits."
+
+--> The Blessings are chosen for the *Dynasty*, and become a list for that 
+    Dynasty's Proximi to take. We've added the 'Blessing' type to each Rote, 
+    so now we have:
+
+	<skills.for.rote>.praxis.blessing
+
+    Things are more complex this way, but we can keep that complexity to 
+    the back end.
+
+
+WHAT NEEDS DONE FOR PROXIMI:
+
+STAT/set: 
+	* Allow Proximi to only take rotes on their Dynasty list.
+	* BUG: Only as 'blessings'.
+
+CG/check:
+	* Spend 'merit dots' for Rotes on their list.
+
+sheet:
+	* MUST HAVE DYNASTY!
+
+*/

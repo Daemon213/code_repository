@@ -1,0 +1,51 @@
+& help
+Raw weather data for weather code.
+
+Conditions: Current conditions as of the Last Updated time.
+Today: Today's forecast.
+Tomorrow: Tomorrow's forecast.
+Astronomy: Sun & Moon facts. (under construction)
+Alerts: Emergency weather service alerts.
+Credits: People and things to thank.
+
+Powered by Dark Sky (https://darksky.net/poweredby/)
+
+Last Updated on August 23, 05:42 PM EDT
+& conditions
+Summary: Light Rain
+Temperature: 77 F (25 C)
+Feels Like: 78 F (26 C)
+Humidity: 79\% 
+Wind: 5 mph S (7 kph)
+Wind Description: Light Air
+Wind Gusts: 8 mph (12 kph)
+Pressure: 29.84 in
+Cloud Cover: Overcast
+& today
+High: 81 F (27 C)
+Low: 66 F (19 C)
+Conditions: Mostly cloudy throughout the day.
+Wind: 5 mph SE (8 kph)
+Wind Gusts: 16 mph (25 kph)
+Humidity: 86\% 
+Chance of Rain: 32\% 
+& tomorrow
+High: 85 F (30 C)
+Low: 65 F (18 C)
+Conditions: Humid and partly cloudy throughout the day.
+Wind: 4 mph W (6 kph)
+Wind Gusts: 12 mph (20 kph)
+Humidity: 85\% 
+Chance of Rain: 17\% 
+& astronomy
+Intentionally if sadly blank.
+& alerts
+No alerts in your area.
+& credits
+Weather powered by Dark Sky (https://darksky.net/poweredby/)
+
+Sun & moon information provided by the United States Naval Observatory's 
+amazing Astronomical Applications department (https://aa.usno.navy.mil/data/docs/api.php)
+
+PHP and TinyMUX code originally by Brus using the Yahoo Weather API.
+Rewritten by Thenomain using the Dark Sky API.

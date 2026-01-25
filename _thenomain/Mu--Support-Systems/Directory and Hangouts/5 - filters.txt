@@ -1,0 +1,157 @@
+/* 
+================================================================================
+== PEOPLE IN ROOM ==============================================================
+
+	filter( filter.people-in-room, lcon( <room dbref> ))
+
+A filter that returns connected people who aren't dark.
+
+*/
+
+&filter.people-in-room [v( d.dah )]=
+	cor(
+		andflags(%0, Wc!D), 
+		andflags(%0, Zc!D), 
+		andflags(%0, wc!D), 
+		andflags(%0, c!W!Z!w)
+	)
+
+
+/* 
+================================================================================
+== HANGOUTS WITH PEOPLE ========================================================
+
+	filter( filter.location.occupied, u( f.population.rank, <0/1> ))
+
+a.k.a. occupied hangouts - filters out the 0:xxx entries
+
+*/
+
+&filter.location.occupied [v( d.dah )]=
+	gt( first( %0, : ), 0 )
+
+
+/* 
+================================================================================
+== FINDABLE-ONLY ===============================================================
+
+A filter that removes unfindable people.
+
+*/
+
+&filter.findable-only [v( d.dah )]=
+	not( hasflag( %0, unfindable ))
+
+
+
+
+
+
+
+
+
+
+
+
+// ----------------------------------------------------------------------------- 
+// -- Filter: Findable? -------------------------------------------------------- 
+// Can '%1' find '%0'?
+
+&filter.findable [v( d.dah )]=
+	findable( %1, %0 )
+
+
+
+// -- Filter: Passes view lock?
+// 0: List of <population>:<dbref>
+// 1: dbref of viewer
+// Just strips out <population>: and passes to 'f.lock.pass'
+
+&filter.lock.pass [v( d.dah )]=
+	u( f.lock.pass, rest( %0, : ), %1 )
+
+
+
+
+
+
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Filter: Element -------------------------------------------------------------
+
+Return all attribtues where <match> is in <element>
+
+This grabs elements matching 'name*'.
+We generally know which element we're grabbing, but this is the full treatment.
+
+	filter( filter.element, 
+		lattr( 
+			v( d.data )/
+			loc.[elements( grab( v( d.elements ), name:* ), 2, : )].* 
+		), 
+		@@( idelim ), 
+		@@( odelim ), 
+		<name>*, 
+		v( d.data ), 
+		elements( grab( v( d.elements ), name:* ), 3, : )
+	)
+
+--
+
+0: <dbrefs>
+1: <match> (to make it partial: '<name>*')
+2: v( d.data ) -- this cuts down on v() calls to grab it
+3: <element position>
+
+*/
+
+&filter.element [v( d.dah )]=
+	strmatch( 
+		elements( get( %2/%0 ), %3, | ), 
+		%1 
+	)
+
+
+
+
+
+
+
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Sortby: Names ---------------------------------------------------------------
+
+0: list of attribtues
+
+*/
+
+&sortby.element.name [v( d.dah )]=
+	comp( 
+		first( get( v( d.data )/%0 ), | ), 
+		first( get( v( d.data )/%1 ), | )
+	)
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Sortby: Elements (Descending) -----------------------------------------------
+
+0: list of <population>:<main dbref>
+qe: element to sort by 
+
+This code is used to better organize the output of 'dir' and 
+especially 'dir/all'. The elements to sort by are probably pulled from 
+'&d.sort.elements' in '1 - info and setup.txt'
+
+*/
+
+&sortby.element.desc [v( d.dah )]=
+	comp( 
+		stripansi( u( f.get.element, %qe, rest( %1, : ))), 
+		stripansi( u( f.get.element, %qe, rest( %0, : )))
+	)

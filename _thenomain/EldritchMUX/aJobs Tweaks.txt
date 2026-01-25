@@ -1,0 +1,26 @@
+/*
+
+For AnomalyJobs 6
+
+================================================================================
+== +JOB/COMPLETE NOW @MAILS, /APPROVE & /DENY DEPRECIATED ======================
+*/
+
+@fo me=&d.jgo me=[search( name=Job Global Object <JGO> )]
+
+&MLETTER_COM [get( v( d.jgo )/vc )]=
+	[name( %0 )] has been completed:%r
+	%r
+	[last( get( %0/COMMENT_1 ), | )]%r
+	[repeat( -, 75 )]%r
+	[ansi( h, Comments added by [name( %2 )]: )] %3
+
+@edit [v( d.jgo )]/cmd_job/complete=
+	{ You have completed [name( %q0 )].; }, 
+	{ You have completed [name( %q0 )], adding the comments: [trim( %1 )]; }
+
+&cmd_job/approve [v( d.jgo )]=
+	$+job/approve *=*:@pemit %#=Please use +job/complete.
+
+&cmd_job/deny [v( d.jgo )]=$+job/deny *=*:@pemit %#=Please use +job/complete.
+

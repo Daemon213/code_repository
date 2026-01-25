@@ -1,0 +1,410 @@
+/*
+################################################################################
+## ROLL SWITCHES ###############################################################
+
+Multiple switches may be given (and, of course, taken out). Each system adds 
+to what's being rolled and will probably depend upon the dice-to-roll part of 
+it being parsed first.
+
+Spaces may not be in any switch.
+
+Name completion will do its best, so 'w' will match 'weakness' before 
+'willpower', but 'wi' will be clear. &d.switch.alias allows switches to have 
+multiple names. For instance: 'wp' -> 'willpower'.
+
+--
+
+Active switches need some more in-depth code run. They are processed after the 
+stat interpreter ('x + y - z' -> numbers). All are passed the following:
+
+	%0: '/<switch>[=<stuff>]'
+	%1: dbref of roller, usually %#
+
+--
+
+n-Again Switches (active):
+	/again=<again type> - roll different types of n-again
+		/<number>[-again]
+		/no[-again]
+		/weakness
+
+'Weakness' is a term half made-up from the Vampire book, indicating some clans' 
+weaknesses reminiscent of oWoD's success counter: After counting successes, 
+subtract 1s. 'Weakness' is also always 'no-again' and cannot dramatically fail.
+
+--
+
+Willpower Switches (active):
+	/willpower - spend a willpower for +3 dice (needs hooked into spend system)
+		/willpower=<number of dice> - spend a willpower for + <number of dice>
+		/wp[=<num dice>]
+
+--
+
+Passive Switches (used in other parts of the roller):
+	/tr[ained] - ignore untrained modifiers
+	/now[ound] - ignore wound penalties
+	/rote - roll as a rote (failures re-rolled once)
+	/blind - roller does not see the results
+
+According to the printed literature that I could find, 'rote' is processed 
+before all n-again rolls, including weakness. This means weakness + rote could 
+take a normal failure ('2') and turn it into a success-eating '1'.
+
+It is what it is.
+
+
+
+================================================================================
+== Data ========================================================================
+
+
+--------------------------------------------------------------------------------
+-- Switch Aliases --------------------------------------------------------------
+
+Remember to process switch matches before this. 
+'/nowound' should match before '/now' and before '/no'.
+Wildcards are valid.
+
+	<full switch>:<alias>:<alias>:<alias> <full switch 2>:...
+
+*/
+
+&d.switch.passives [v( d.nr )]=
+	nowound 
+	trained 
+	weakness 
+	rote 
+	blind 
+
+// --
+	
+&d.switch.aliases [v( d.nr )]=
+	10-again|again=10 
+	9-again|again=9 
+	8-again|again=8 
+	no-again|again=no 
+	11-again|again=no 
+	wp|willpower 
+
+
+
+/*
+================================================================================
+== Functions ===================================================================
+
+
+--------------------------------------------------------------------------------
+-- Name Complete Switches ------------------------------------------------------
+
+Take the switch list /x/w=m/r/g/r and name-complete it.
+
+0: list/of/switches
+returns: name-completed and alias-fixed list/of/switches
+
+q0: list of switches as known by the attributes
+q1: hey it matched
+
+// maybe switch these back to a/b, since I think we don't need them //
+
+x: the switch
+y: the switch modifier (after '=')
+
+*/
+
+&f.switch.name-complete [v( d.nr )]=
+	localize( 
+		iter( lcstr( trim( %0, l, / )), 
+			strcat( 
+				setq( 0, 
+					lcstr( sort( edit( lattr( %!/f.roll/* ), F.ROLL/, )))
+				), 
+				setq( x, before( %i0, = )), 
+				setq( y, rest( %i0, = )), 
+				case( 1, 
+					t( setr( 1, grab( %q0, %qx* ))), 
+					/%q1[if( strlen( %qy ), =%qy )], 
+
+					t( setr( 1, grab( v( d.switch.passives ), %qx* ))), 
+					/%q1[if( strlen( %qy ), =%qy )], 
+
+					t( setr( 1, 
+						rest( grab( v( d.switch.aliases ), %qx*|* ), | )
+					)), 
+					/%q1[if( words( %qy ), =%qy )] 
+				)
+			), 
+			/, @@ 
+		)
+	)
+
+/* -- Tests --
+
+think u( v( d.nr )/f.switch.name-complete, 8/w/no/dsfds/no-/ag=5/t/tr/fd/wp=4 )
+
+think [setr( z, /w/tr/e/ta=15 )] --> [setq( z, u( v( d.nr )/f.switch.name-complete, %qz ))]%qz
+
+(This being more what it should probably look like when we're done.)
+
+
+--------------------------------------------------------------------------------
+-- GetSwitch -------------------------------------------------------------------
+
+Passive switches are used in other parts of the system, usually to stop them 
+from working, or to cause them to work a little differnetly. For them, the 
+/whole/switch/list is passed, as well as the item to check. Yeah, it's pretty 
+simple.
+
+CODE NOTE: This works just like grab(%0, %1*, /). The reason it works is 
+because the list is <null>/item1/item2/item3, so searching for * returns the 
+<null>. This is VERY USEFUL.
+
+0: partial name of switch to check for
+returns: the full item
+
+*/
+
+&f.getswitch [v( d.nr )]=
+	regrabi( %qz, ^%0, / )
+
+
+/*
+--------------------------------------------------------------------------------
+-- HasSwitch? ------------------------------------------------------------------
+
+0: partial name of switch to check for
+returns: 1 for true, 0 for false (null returns false)
+
+*/
+
+&f.hasswitch? [v( d.nr )]=
+	t( u( f.getswitch, %0 ))
+
+
+
+/*
+================================================================================
+== /weakness ===================================================================
+
+A vampire weakness roll is always no-again.
+A chance roll takes precident.
+
+*/
+
+&f.roll/weakness [v( d.nr )]=
+	strcat( 
+		setq( a, 11 ), 
+		if( not( strmatch( %qs, chance )), 
+			setq( s, Weakness )
+		)
+	)
+
+
+
+/*
+================================================================================
+== /again ======================================================================
+
+/again=10, 9, 8. 7 is 8 + 2 dice, 6 is 8 + 4 dice, and so on.
+/again=no, converts to 11.
+
+0: /again=xxx
+q0: the "again" type
+
+*/
+
+&f.roll/again [v( d.nr )]=
+	strcat( 
+		setq( 0, rest( %0, = )), 
+		case( 
+			1, 
+
+// .. check an "again" type was actually passed
+			not( t( %q0 )), 
+			u( f.registers.error-add, Again type not passed. ), 
+
+// .. "n"o-again
+			strmatch( %q0, n* ), 
+			setq( a, 11 ), 
+
+// .. must be at least 8 and integer
+			not( and( isint( %q0 ), gte( %q0, 8 ))), 
+			u( f.registers.error-add, 
+				Again type must be integer of 8 or higher. 
+			), 
+
+// .. else just set
+			setq( a, %q0 )
+		)
+	)
+
+
+
+/*
+================================================================================
+== /extended[=<num>] ===========================================================
+
+/extended[=<rolls>] will roll either pool- or <rolls>-number-of-times.
+
+Extended to xx rolls: /extended[=<num>]
+Extended to target: /target=<num>
+Extended to whichever is first: /extended[=<num>]/target=<num>.
+
+Remember, this switch doesn't activate the rolls, but modifies them.
+
+--
+
+0: /extended[=<num>]
+q0: the "extended" value, if any
+q1: upper limit of <num>
+qn: a GLOBAL REGISTER for number of times to roll
+
+*/
+
+&f.roll/extended [v( d.nr )]=
+// .. if <num> is there, %q0 = <num>, else %q0 = %qn
+// .. this may be redundant, but allows us to check <num> and %qn 
+// .. with the same code
+	strcat( 
+		setq( 0, if( strmatch( %0, *=* ), rest( %0, = ), %qn )), 
+		setq( 1, 200 ), 
+
+		case( 0, 
+// .. checks if both %qn and %q0 fail
+			cor( t( %qn ), t( rest( %0, = ))), 
+			u( f.registers.error-add, 
+				If there no traits in the roll%, you must use /extended=<num> 
+			), 
+// .. <num> must be an integer > 0 (catches "null")
+			cand( isint( %q0 ), gt( %q0, 0 )), 
+			u( f.registers.error-add, 
+				Extended roll must be an integer greater than zero 
+			), 
+
+// .. <num> can't be higher than %q1
+			lte( %0, %q1 ), 
+			u( f.registers.error-add, 
+				Extended roll cannot be higher than %q1
+			), 
+// .. else, set %q0 into %qn
+			setq( n, %q0 )
+		)
+	)
+
+/* -- Tests -- 
+
+think %%qn: [setr( n, 4 )] - [u(nWoD Roller/f.roll/extended, /extended)] - errors: %qe - number rolls: %qn
+think %%qn: [setr( n, 4 )] - [u(nWoD Roller/f.roll/extended, /extended=2)] - errors: %qe - number rolls: %qn
+
+think %%qn: [setr( n, 0 )] - [u(nWoD Roller/f.roll/extended, /extended)] - errors: %qe - number rolls: %qn
+think %%qn: [setr( n, 4 )] - [u(nWoD Roller/f.roll/extended, /extended=)] - errors: %qe - number rolls: %qn
+
+
+
+================================================================================
+== /target=<num> ===============================================================
+
+/target=<target> will roll until <target> successes are reached.
+
+Extended to xx rolls: /extended[=<num>]
+Extended to target: /target=<num>
+Extended to whichever is first: /extended[=<num>]/target=<num>.
+
+Remember, this switch doesn't activate the rolls, but modifies them.
+
+--
+
+0: /target=<num>
+q0: the "target" value
+q1: upper bound for <num> (for code sanity)
+qt: a GLOBAL REGISTER for number of times to roll
+
+*/
+
+&f.roll/target [v( d.nr )]=
+	strcat( 
+		setq( 0, rest( %0, = )), 
+		setq( 1, 200 ), 
+		
+		case( 0, 
+			cand( t( %q0 ), isint( %q0 ), gt( %q0, 0 )), 
+			u( f.registers.error-add, 
+				Targeted roll must be an integer greater than zero 
+			), 
+			lte( %q0, %q1 ), 
+			u( f.registers.error-add, 
+				Target number cannot be higher than %q1
+			), 
+			setq( t, %q0 )
+		)
+	)
+
+
+
+/*
+================================================================================
+== /willpower[=<dice>] =========================================================
+
+We also aliased this to '/wp' for sanity, tho '/wi[llpower]' would work too.
+
+Add <dice> to the roll and trigger a willpower spend via the spend/regain 
+system, default 3.
+
+Cannot be combined with /extended or /target, for sanity's sake.
+
+As a reminder: 
+	The rules state that only one Willpower can be spent per turn.
+	We do not check this.
+
+*/
+
+&f.roll/willpower [v( d.nr )]=
+	strcat( 
+		setq( 0, if( strlen(rest( %0, = )), rest( %0, = ), 3 )), 
+		setq( 1, 4 ), 
+		
+		case( 0, 
+
+// cannot roll with '/extended' or '/target'
+			not( cor( 
+				u( f.hasswitch?, extended ), 
+				u( f.hasswitch?, target )
+			)), 
+			u( f.registers.error-add, 
+				Cannot add willpower to an extended or targeted roll%; 
+				roll one at a time. 
+			), 
+
+// value check
+			cand( isint( %q0 ), gt( %q0, 0 )), 
+			u( f.registers.error-add, 
+				Dice for willpower must be between 2 and %q1. 
+			), 
+
+			lte( %q0, %q1 ), 
+			u( f.registers.error-add, 
+				Dice for willpower cannot be higher than %q1. 
+			), 
+
+// template check (for the spend system)
+			t( getstat( %1/template )), 
+			u( f.registers.error-add, 
+				Must have a template to spend willpower. 
+			), 
+			
+
+// enough willpower? 
+			t( u( v( d.spend-regain )/f.pool.canchange, %1, willpower, -1 )), 
+			u( f.registers.error-add, 
+				You don't have enough Willpower to spend. 
+			), 
+
+// ok... (doesn't display willpower spend; should it?)
+			strcat( 
+				u( f.registers.output-add, %q0 %(willpower%) ), 
+				u( f.registers.dice-add, %q0 ), 
+				u( v( d.spend-regain )/f.pool.changestat, %1, willpower, -1 )
+			)
+		)
+	)
+

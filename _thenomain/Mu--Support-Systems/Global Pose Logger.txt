@@ -1,0 +1,731 @@
+/*
+################################################################################
+## THE DATABASE ################################################################
+
+DROP TABLE IF EXISTS mush_poselogger; 
+CREATE TABLE IF NOT EXISTS mush_poselogger
+(
+    time             NUMERIC(18,6)   NOT NULL, 
+    location         INT             NOT NULL, 
+    location_name    VARCHAR(255)    NOT NULL, 
+    triggered_by     INT             NOT NULL, 
+    triggered_name   VARCHAR(255)    NOT NULL, 
+    quote            TEXT, 
+    status           INT             NOT NULL DEFAULT 0, 
+
+    PRIMARY KEY (time, location), 
+    INDEX (status), 
+    FOREIGN KEY (status)
+        REFERENCES mush_poselogger_status (status)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS mush_poselogger_status; 
+CREATE TABLE IF NOT EXISTS mush_poselogger_status
+(
+    status           INT            NOT NULL, 
+    description      TEXT, 
+
+    PRIMARY KEY (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO mush_poselogger_status VALUES (0, ''); 
+INSERT INTO mush_poselogger_status VALUES (1, 'NOW LISTENING'); 
+INSERT INTO mush_poselogger_status VALUES (2, 'NO LONGER LISTENING'); 
+INSERT INTO mush_poselogger_status VALUES (3, 'START OF SCENE'); 
+INSERT INTO mush_poselogger_status VALUES (4, 'END OF SCENE'); 
+
+
+################################################################################
+## THE POSE LOGGER #############################################################
+
+
+================================================================================
+== CREATE & LINK ===============================================================
+*/
+
+@create Pose Logger=10
+@set Pose Logger=INHERIT SAFE
+
+@force me=&d.me Pose Logger=[num(Pose Logger)]
+
+
+/*
+--------------------------------------------------------------------------------
+-- Additional Usage of the CODP formatter --------------------------------------
+*/
+
+@parent Pose Logger=CODP
+&prefix.sql Pose Logger=sql.
+&prefix.display Pose Logger=display.
+
+
+/*
+================================================================================
+== SQL Statements ==============================================================
+
+
+--------------------------------------------------------------------------------
+-- SQL: Transaction Start/Commit -----------------------------------------------
+*/
+
+&f.transaction.start Pose Logger=
+	strcat(
+		sql( START TRANSACTION ), 
+		sql( SET autocommit = 0 )
+	)
+
+// --
+
+&f.tranaction.commit Pose Logger=
+	strcat(
+		sql( COMMIT ), 
+		sql( SET autocommit = 1 )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- SQL: Insert -----------------------------------------------------------------
+
+0: dbref of poser
+1: location logged from
+2: text
+3: status (optional)
+
+*/
+
+&sql.insert Pose Logger=
+	strcat(
+		INSERT INTO mush_poselogger VALUES%(, 
+			rpad(round(secs(local, 6), 6), 19, 0), %, , 
+			ulocal(f.sqlescape, rest(%1, #)), %, 
+			', ulocal( f.sqlescape, name(%1) ), '%, , 
+			ulocal(f.sqlescape, rest(%0, #)), %, 
+			', ulocal( f.sqlescape, name(%0) ), '%, 
+			', ulocal( f.sqlescape, %2 ), ' %,, 
+			if(and(strlen(%3), isint(%3)), %3, 0)
+		%)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- SQL: List Primary Keys by Location ------------------------------------------
+
+0: dbref of location (here = loc(%#))
+
+returns: secs(, 6), location dbref without #
+
+*/
+
+&sql.primary-keys.location Pose Logger=
+	strcat(
+		SELECT time%, 
+		location 
+		FROM mush_poselogger 
+		WHERE location=, 
+			rest(if(isdbref(%0), %0), #), %b
+		ORDER BY time DESC, 
+		if(isint(%1), cat(%bLIMIT, %1))
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- SQL: Triggered By & Quote by Primary Key ------------------------------------
+
+We're looking up by primary key, but just in case something goes pear-shaped, 
+limit to 1 record.
+
+*/
+
+&sql.quote.primary-key Pose Logger=
+	strcat(
+		SELECT triggered_by%, quote 
+		FROM mush_poselogger 
+		WHERE 
+			time =%b, 
+				if(strmatch(%0, *.??????), %0),
+			%b
+			AND location =%b, 
+				if(isdbref(#%1), %1), 
+			%b
+			LIMIT 1
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- SQL: Status Description by Primary Key --------------------------------------
+
+We're looking up by primary key, but just in case something goes pear-shaped, 
+limit to 1 record.
+
+*/
+
+&sql.status.primary-key Pose Logger=
+	strcat(
+		SELECT description 
+		FROM mush_poselogger_status 
+		INNER JOIN mush_poselogger AS log USING (status) 
+		WHERE 
+			log.time =%b, 
+				if(strmatch(%0, *.??????), %0),
+			AND 
+				log.location =%b, 
+				if(isdbref(#%1), %1),  
+		%b
+		LIMIT 1
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- SQL: List Last 'x' Lines from a specific location ---------------------------
+
+0: dbref of location (here = loc(%#))
+1: 'last' value
+
+*/
+
+&sql.last-lines.location Pose Logger=
+	strcat(
+		SELECT 
+			time%,  
+			concat%('#'%, location%) AS location%, 
+			concat%('#'%, triggered_by%) AS triggered_by%, 
+			quote 
+		FROM mush_poselogger 
+		WHERE location=, 
+			rest(if(isdbref(%0), %0), #), %b
+		ORDER BY time DESC 
+		LIMIT%b, 
+			if(isint(%1), %1, 0)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- SQL: Count Lines from a specific location -----------------------------------
+
+0: dbref of location (here = loc(%#))
+
+*/
+
+&sql.count-lines.location Pose Logger=
+	strcat(
+		SELECT 
+			count%(*%) AS lines
+		FROM mush_poselogger 
+		WHERE location=, 
+			rest(loc(if(isdbref(%0), %0)), #), %b
+	)
+
+
+/*
+================================================================================
+== Cross-Platform Functions ====================================================
+*/
+
+&.header Pose Logger=wheader(%0)
+&.footer Pose Logger=wfooter(%0)
+&.divider Pose Logger=wdivider(%0)
+
+&.notice Pose Logger=[ansi(xh, GAME:)] %0
+&.ooc Pose Logger=[ansi(b, <OOC>)] %0
+&.titlestr Pose Logger=titlestr(%0)
+
+&.lbuf Pose Logger=config(lbuf_size)
+
+
+/*
+================================================================================
+== Functions ===================================================================
+
+
+--------------------------------------------------------------------------------
+-- Func: Escape SQL ------------------------------------------------------------
+*/
+
+&f.sqlescape Pose Logger=edit( edit( edit( edit( %0, \\, \\\\ ), ', \\' ), ", \\" ), \%, \\\\\% )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Func: Log Passed Text -------------------------------------------------------
+
+0: room
+1: triggered by
+2: text
+3: status
+
+*/
+
+&f.log-what-I-hear Pose Logger=
+	case(0, 
+		isdbref(%0), #-1 LOCATION INVALID, 
+		isdbref(%1), #-1 TRIGGERER INVALID, 
+//		strmatch(loc(%1), %0), #-1 LOCATION MISMATCH, 
+
+		sql(escape(ulocal(sql.insert, %1, %0, %2, %3)))
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Func: List Listeners --------------------------------------------------------
+*/
+
+&f.list.listeners Pose Logger=
+	iter(
+		children(%!), 
+		strcat(
+			%i0|, 
+			loc(%i0)
+		)
+	)
+
+
+/*
+================================================================================
+== Triggers ====================================================================
+
+
+--------------------------------------------------------------------------------
+-- Trigger: New Pose-Logger at Target Location ---------------------------------
+
+0: target location
+q0: dbref of target location
+
+*/
+
+&tr.spawn-listener Pose Logger=
+	@if t( 
+		iter( 
+			lcon( setr( 0, if( not( strlen( %0 )), loc( %# ), %0 ))), 
+			if( strmatch( parent( %i0 ), %! ), %i0 )
+		)
+	)=
+	{
+		@pemit %#=[u(.notice, There is already a listener at that location.)]
+	}, 
+	{
+		@pemit/contents %q0=u( .ooc, *** Pose Logging Active %(see: +poses%) ); 
+		@eval setq( d, create( Elder God, 100 )); 
+		@set %qd=DARK INHERIT MONITOR; 
+		@lock %qd=#1; 
+		@desc %qd=This location's pose-listener.; 
+		@parent %qd=%!; 
+		@link %qd=%q0; 
+		@listen %qd=*; 
+		@wait 3=@amove %qd={
+			@eval 
+				ulocal(f.log-what-I-hear, 
+					%q0, 
+					v( d.me ), 
+					[name( %q0 )] %(%q0%), 
+					2
+				); 
+			@pemit %%#=
+				%[u( .notice, 
+					This listener was slaved to its location. Deactivating. 
+				)%]; 
+			@pemit %q0=u( .ooc, *** Pose Logging Deactivated %(see: +poses%) ); 
+			@destroy/instant %%!; 
+		}; 
+
+		@ahear %qd=
+			@eval 
+				ulocal( f.log-what-I-hear, 
+					loc( %%! ), 
+					%%#, 
+					strtrunc( %%0, mul( u( .lbuf ), .95 ))
+				); 
+
+		@eval 
+			ulocal( f.log-what-I-hear, 
+				%q0, 
+				v( d.me ), 
+				[name( %q0 )] %(%q0%), 
+				1 
+			); 
+
+		@tel/quiet %qd=HOME
+	}
+
+
+/*
+--------------------------------------------------------------------------------
+-- Trigger: Destroy Pose-Logger from Target Location ---------------------------
+
+0: target location
+
+*/
+
+&tr.destroy-listener Pose Logger=
+	@if t( iter( lcon( %0 ), if( strmatch( parent( %i0 ), %! ), %i0 )))=
+	{
+		@eval setq( d, 
+			iter( lcon( %0 ), 
+				if( strmatch( parent( %i0 ), %! ), %i0 )
+			)
+		); 
+
+		@dolist %qd={
+			@set ##=HALT; 
+
+			@eval 
+				ulocal( f.log-what-I-hear, 
+					loc( ## ), 
+					v( d.me ), 
+					[name( %0 )] ( %0 ), 
+					2
+				 ); 
+
+			@tel/quiet ##=%!; 
+			@destroy/override/instant ##
+		}; 
+		
+		@pemit/contents %0=
+			u( .ooc, *** Pose Logging Deactivated %(see: +poses%) ); 
+	}, 
+	{
+		@pemit %#=[u( .notice, There are no listeners at that location. )]
+	}
+	
+
+/*
+================================================================================
+== Displays ====================================================================
+
+
+--------------------------------------------------------------------------------
+-- Display: Last 'x' Poses -----------------------------------------------------
+
+0: list of <primary>|<key> <primary>|<key> to display
+
+*/
+
+&display.last-poses Pose Logger=
+	localize( 
+		list( %0, 
+			strcat( 
+				setq( e, 
+					sql( 
+						u( sql.quote.primary-key, 
+							first( %i0, | ), 
+							rest( %i0, | )
+						), 
+						, | 
+					)
+				), 
+				setq( s, 
+					sql( 
+						u( sql.status.primary-key, 
+							first( %i0, | ), 
+							rest( %i0, | )
+						), 
+						, | 
+					)
+				), 
+// pretty text, ugly code			
+				ansi( xh, %[ ), 
+				ansi( xh, convsecs( first( %i0, | ))), 
+				ansi( xh, %] %[ ), 
+				ansi( xh, name( first( #%qe, | ))), 
+				ansi( xh, %]:%b ), 
+				if( strlen( %qs ), *** %qs:%b ), 
+				rest( %qe, | )
+			)
+		)
+	)
+
+
+/*
+################################################################################
+## THE FRONT-END ###############################################################
+
++poselog last[ <amt>[=<location>]]
+
+
+================================================================================
+== Setup =======================================================================
+*/
+
+@create Poselog Front-End=10
+@set Poselog Front-End=INHERIT SAFE
+
+@parent Poselog Front-End=codp
+&prefix.cross-platform Poselog Front-End=.
+
+// --
+
+@fo me=&d.sql Poselog Front-End=[num( Pose Logger )]
+@tel Pose Logger=Poselog Front-End
+
+
+/*
+================================================================================
+== Cross-Platform Functions ====================================================
+*/
+
+
+&.header Poselog Front-End=wheader( %0 )
+&.footer Poselog Front-End=wfooter( %0 )
+&.divider Poselog Front-End=wdivider( %0 )
+
+&.notice Poselog Front-End=[ansi( xh, GAME: )] %0
+&.alert Poselog Front-End=[ansi( r, >%b, nh, %0, nr, %b< )] %1
+
+&.lbuf Poselog Front-End=config( lbuf_size )
+&.isstaff Poselog Front-End=isstaff( %0 )
+
+
+/*
+================================================================================
+== Mistress Commands ===========================================================
+
+The "Mistress" Command structure (from Seth, AetherMux) allows a generic sorting system for easy refactoring.
+
+It is entirely function-based.  Use trigger() when necessary.
+
+
+--------------------------------------------------------------------------------
+-- Mistress: Primary Command ---------------------------------------------------
+
+1: /switches
+2: text
+
+*/
+
+&c.poses Poselog Front-End=$^\+pose[s]?(/[^ ]*)?( .*)?$:
+	@pemit %#=
+		switch( 1, 
+			t( strlen( %1 )), 
+			u( c.poses.switch, %1, trim( %2 )), 
+			
+			t( strlen( trim( %2 ))), 
+			u( c.poses.specific, trim( %2 ), @@( pseudo-switches )), 
+			
+			u( c.poses.default )
+		)
+
+// --
+
+@set Poselog Front-End/c.poses=regexp
+
+
+/*
+--------------------------------------------------------------------------------
+-- Mistress: Switches ----------------------------------------------------------
+
+0: /switch/es
+1: text (if passed)
+
+n: command name ('poses')
+s: switches found (c.poses/*)
+p: pseudo-switches (others)
+
+*/
+
+&c.poses.switch Poselog Front-End=
+	[setq( n, poses )]
+	[setq( s,  )]
+	[setq( p,  )]
+	[setq( a, lattr( %!/c.%qn/* ))]
+
+// filter real ( %qs ) and psudo-switches ( %qp )
+	[iter( 
+		rest( %0, / ), 
+		if( 
+			t( grab( %qa, c.%qn/%i0* )), 
+			setq( s, %qs/[rest( grab( %qa, c.%qn/%i0* ), / )] ), 
+			setq( p, %qp/%i0 )
+		), 
+		/, 
+		@@
+	)]
+
+// process: 
+	[if( t( %qs ), 
+
+// .. pass to first real-switch passed
+		ulocal( c.%qn/[extract( %qs, 2, 1, / )], %1, %qp ), 
+
+// .. else pass to '.specific' or '.default' with pseudo-switches
+		if( 
+			t( %1 ), 
+				ulocal( c.%qn.specific, %1, %qp ), 
+				ulocal( c.%qn.default, %qp )
+		)
+	)]
+
+
+/*
+--------------------------------------------------------------------------------
+-- Mistress: Default -----------------------------------------------------------
+
+0: psudo-switches, if passed (error'd, for +poses)
+
+*/
+
+&c.poses.default Poselog Front-End=u(c.poses.specific, , %0)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Mistress: Specific ----------------------------------------------------------
+
+0: text (<loc>[=<last>]|<last>)
+1: psudo-switches, if passed (error'd, for +poses)
+
+*/
+
+&c.poses.specific Poselog Front-End=
+	if( strlen( %1 ), 
+		[u( .alert, poses, 
+			Use one of the following switches: [u( f.switchlist )] 
+		)], 
+
+		u( c.poses/last, %0 )
+	)
+
+
+/*
+================================================================================
+== Switched Commands ===========================================================
+
+Most of the mistress system ability is here.  Alias commands to these.
+
+Format:
+	&c.<command>/<switch>: %0: text, %1: psudo-switches (if any)
+
+
+--------------------------------------------------------------------------------
+-- Switch: /Last ---------------------------------------------------------------
+
+Default for +poses.
+
+0: <loc>[=<last>]|<last>
+1: last 
+
+l: location (default: 'here')
+n: number of "last" entries (default: 10)
+
+*/
+
+&c.poses/last Poselog Front-End=
+// Make sure 'l' is 'location' and 'n' is 'number of entries'
+	[setq( n, first( %0, = ))]
+	[if( isdbref( %qn ), 
+		[setq( l, %qn )][setq( n, rest( %0, = ))], 
+		setq( l, rest( %0, = ))
+	)]
+	[if( not( %ql ), setq( l, loc( %# )))]
+	[if( not( %qn ), setq( n, 10 ))]
+
+// Error-check:
+	[case( 0, 
+		or( strmatch( %ql, loc( %# )), u( .isstaff, %# )), 
+		u( .alert, poses/last, Checking poses from afar is staff only. ), 
+
+		and( isint( %qn ), gte( %qn, 0 )), 
+		u( .alert, poses/last, Check a coherent number of entries%, please. ), 
+
+		lt( %qn, 10000 ), 
+		u( .alert, poses/last, Don't be silly. ), 
+		
+// OK: let's show it!
+		strcat( 
+			setq( q, 
+				sql(  
+					u( [v( d.sql )]/sql.primary-keys.location, %ql, %qn ), 
+					, |
+				)
+			), 
+
+			list( 1, u( .header, Last %qn for [name( %ql )] ( %ql ))), 
+			u( [v( d.sql )]/display.last-poses, revwords( %qq )), 
+			list( 1, 
+				u( .footer, 
+					if( u( f.listening.at-loc, %ql ), Active at This Location )
+				)
+			)
+		)
+	)]
+
+
+/*
+--------------------------------------------------------------------------------
+-- Switch: /Where --------------------------------------------------------------
+
+Report all the places I have records from, whether it's active, and the time since the last recorded pose.
+
+This command is designed for transparency.  This should be usable by everyone, with the possible exception of guests/bots as reasonable limitations.
+
+*/
+
+&c.poses/where Poselog Front-End=
+	strcat( 
+		setq( l, 
+			sql(  
+				SELECT DISTINCT location 
+				FROM mush_poselogger 
+				ORDER BY location ASC 
+			)
+		), 
+
+		list( 1, u( .header, Logged Locations )), 
+
+		list( %ql, 
+			cat( 
+				%b [name( #%i0 )] ( #%i0 )%,, 
+				last activity:, 
+
+				exptime( 
+					sub( 
+						secs( local, 6 ), 
+						sql(  
+							SELECT time 
+							FROM mush_poselogger 
+							WHERE location = %i0 
+							ORDER BY time DESC 
+							LIMIT 1 
+						)
+					)
+				), 
+				ago, 
+
+				if( u( f.listening.at-loc, #%i0 ), ansi( xh, %[active%] ))
+			)
+		), 
+
+		list( 1, u( .footer, words( %ql )))
+	)
+
+
+/*
+================================================================================
+== Functions ===================================================================
+
+
+--------------------------------------------------------------------------------
+-- Function: Listening at Location? --------------------------------------------
+*/
+
+&f.listening.at-loc Poselog Front-End=
+	lor(iter(lcon(%0), strmatch(parent(%i0), v(d.sql))))
+
+// REACH SPECIFIC: Global Function: islogged(<loc>)
+//	&fp_islogged #978=ulocal(#8201/f.listening.at-loc, %0)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Switch List -----------------------------------------------------------------
+*/
+
+&f.switchlist Poselog Front-End=
+	lcstr( itemize( edit( lattr( %!/c.poses/* ), C.POSES/, ), , or ))

@@ -1,0 +1,43 @@
+/* 
+DtDz - Eldritch House-Rules
+
+These are meant to override or replace any existing code in the system.
+
+Demon-Blooded: 
+	Not a Template, treat them as Enhanced Stigmatics.
+	NO EMBEDS!
+
+&merit.demon-blooded_() DD=5|fractal.offspring
+&tags.merit.demon-blooded_() D:T=stigmatic.chargen-only
+*/
+
+
+
+/* 
+	Soul Pact
+	http://eldritch.mechanipus.com/w/index.php/Merits/Custom#Soul_Pact
+*/
+
+&merit.soul_pact_() DD=2.3.4.5|*
+&tags.merit.soul_pact_() D:T=demon
+
+
+
+/*
+================================================================================
+== MERIT.CLEAR-SIGHTED =========================================================
+
+Allowed for 'wolf-blooded' and 'stigmatic'.
+
+*/
+
+@fo me=&tags.merit.clear-sighted d:t=
+	strcat( 
+		setr( a, get( d:t/tags.merit.clear-sighted )), 
+		if( 
+			not( match( get( d:t/tags.merit.clear-sighted ), stigmatic, . )), 
+			.stigmatic 
+		)
+	)
+
+

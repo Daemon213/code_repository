@@ -1,0 +1,880 @@
+/*
+Check Stats
+
+
+================================================================================
+== CHECK STATS =================================================================
+
+Let's check someone's entire sheet to see if there are any prerequisite 
+inconsistencies. Also is THE ONLY PLACE WE VALIDATE SPECIALTY VALUE, due to the 
+data dictionary structure not able to do this.
+
+Without %2: Validates the existing sheet item.
+With %2: Validates a "new" value.
+
+We don't check cg-only here, as it's only meaningful for xp/spend.
+
+
+--------------------------------------------------------------------------------
+-- Statcheck -------------------------------------------------------------------
+
+Validate a single stat.
+
+--
+
+0: sheet dbref
+1: _sheet.statpath
+2: value to raise by/add to list ('null' for a sheet-only check)
+returns: validation for: <stat value>.<cg-only>.<template>.<prereq>
+
+s: dd.statpath (without instance)
+c: stat's class
+v: current perm value for stat if numeric, full stat otherwise
+t: temp validation results, used here and there
+
+*/
+
+&f.statcheck [v( d.cg )]=
+	localize( strcat(  
+		setq( s, 
+			ulocal( v( d.sfp )/f.statpath-without-instance, rest( %1, _ ))
+		), 
+		setq( c, ulocal( v( d.sfp )/f.get-class, %qs )), 
+		setq( v, case( %qc, numeric, first( u( %0/%1 ), . ), u( %0/%1 ))), 
+
+// >> <stat value>
+		setq( t, 
+			case( 1, 
+
+// .. substat: _*.*.*: base item must be at least 1
+				strmatch( %1, _*.*.* ), 
+				u( f.statcheck.substat, %0, %1, %2 ), 
+
+// .. derived: dd value matches [*]: check the sheet value is integer or string
+				ulocal( v( d.sfp )/f.hastag?.workhorse, %qs, derived ), 
+				ulocal( f.statcheck.derived, %0, %1, %qc ), 
+
+// .. list: stat with class of "list"
+				strmatch( %qc, list ), 
+				ulocal( f.statcheck.list, %qs, %qv, %2 ), 
+
+// .. flag: check the number in = number out
+// .. WHY? f.statvalidate.workhorse sends back the value of a flag stat
+// .. even if the value passed to it is different, making it appear valid
+// .. when it is not.
+				strmatch( %qc, flag ), 
+				if( 
+					cand(
+						t( setr( t, 
+							ulocal( f.statcheck.normal, %1, %qs, %qv, %2 )
+						)), 
+// .. .. checks value if set, not if no value to check against is passed
+						xor( 
+							not( member( %qt, %2 )), 
+							comp( %2, )
+						)
+					), 
+					%qt, 
+					#-1 VALUE NOT FOUND 
+				), 
+
+// .. normal: anything else: validate stat as usual ( name then value )
+				ulocal( f.statcheck.normal, %1, %qs, %qv, %2 )
+			)
+		), 
+		if( t( %qt ), 1, %qt ), ., 
+
+// >> <prereq>
+		iter( 
+			cg-only template other, 
+			ulocal( f.prerequisite.%i0, %0, %1, %2 ), , . 
+		)
+	))
+
+/* -- test --
+
+think u( v( d.cg )/f.statcheck, pmatch( hemi ), _skill.brawl.punching )
+
+think u( v( d.cg )/f.statcheck, %#, _merit.hardy )
+think u( v( d.cg )/f.statcheck, %#, _advantage.willpower )
+
+think u( v( d.cg )/f.statcheck, %#, _merit.medium )
+think u( v( d.cg )/f.statcheck, %#, _merit.medium, 1 )
+think u( v( d.cg )/f.statcheck, %#, _merit.medium, 2 )
+think u( v( d.cg )/f.statcheck, %#, _merit.etiquette )
+think u( v( d.cg )/f.statcheck, %#, _merit.unseen_sense_(wyrd), 3 )
+
+think u( v( d.cg )/f.statcheck.normal, _merit.etiquette, merit.etiquette, 1, @@(null) )
+
+think u( v( d.cg )/f.statcheck, %#, _skill.flubber )
+
+think u( v( d.cg )/f.statcheck, %#, _advantage.size )
+
+
+--------------------------------------------------------------------------------
+-- Statcheck: Normal -----------------------------------------------------------
+
+Check that a normal stat's value is valid.
+'normal': anything else - validate stat as usual (name then value)
+
+--
+
+0: _sheet.statpath (with instance)
+1: dd.statpath (without instance)
+2: sheet value
+3: value to raise by (otherwise 0/null)
+
+t: temp whatsit
+i: instance
+d: dd's instance list
+v: value to check (if %3, then do a dance for num/non-num)
+
+*/
+
+&f.statcheck.normal [v( d.cg )]=
+
+	localize( strcat( 
+
+// >> see if the stat's even on the DD
+		setq( t, 
+			if( 
+				hasattr( [u( d.dd )], %1 ), 1, #-1 Stat not found
+			)
+		), 
+
+// >> grab the instance ( if any ) and check it against the dd.
+// .. ( shouldn't something like this be on the stat lookup? no? )
+		setq( t, 
+			if( 
+				cand( t( %qt ), strmatch( %0, _*.*_(*) )), 
+
+// .. instance is there: process
+				strcat( 
+					setq( i, edit( strip( rest( %0, %( ), %) ), _, %b )), 
+					setq( d, extract( get( [u( d.dd )]/%1 ), 2, 1, | )), 
+					case( 1, 
+						t( member( %qd, * )), 1, 
+						and( member( %qd, # ), isint( %qi )), 1, 
+						t( match( %qd, %qi, . )), 1, 
+						#-1 Instance is not valid %(%qi%) 
+					)
+				), 
+
+// .. instance is not there: pass %qt it on
+				%qt
+			)
+		), 
+
+// >> now we did THAT dance, let's find the value we're checking
+		setq( v, 
+			case( 1, 
+// .. if sheet value is numeric and there's a new value, add them
+				and( isnum( %2 ), t( %3 )), add( %2, %3 ), 
+// .. if sheet value is NOT numeric and there's a new value, use the new value
+				t( %3 ), %3, 
+// .. else use sheet value
+				%2
+			)
+		), 
+
+// >> if instance was valid, check stat value
+		if( 
+			strlen( %qt ), 
+// .. if statpath is ok, validate the value
+			ulocal( [u( d.sfp )]/f.statvalidate.workhorse, %1, %qv ), 
+// .. if statpath is not ok, pass its error
+			%qt 
+		)
+	))
+
+/* -- test --
+
+think u( v( d.cg )/f.statcheck.normal, _merit.etiquette, merit.etiquette, 1, @@(null) )
+
+think u( v( d.cg )/f.statcheck.normal, _merit.unseen_sense_(god_machine), merit.unseen_sense_(), , 3 )
+
+think u( v( d.cg )/f.statcheck.normal, _merit.unseen_sense_(god_machine), merit.unseen_sense_(), , 2 )
+
+--
+
+think u( v( d.dd) /.specialty_for, %#, Portraiture )
+
+
+
+--------------------------------------------------------------------------------
+-- Statcheck: Derived ----------------------------------------------------------
+
+Check that a derived stat's value is valid.
+
+'derived': dd has 'derived' tag - check the sheet value is integer if 'numeric'
+
+--
+
+0: sheet dbref
+1: _full.statpath_(with_instance)
+2: stat class
+
+*/
+
+&f.statcheck.derived [v( d.cg )]=
+	case( 0, 
+		hasattr( %0, %1 ), 
+		#-1 Derived stat is not set, 
+
+		not( strmatch( %2, string )), 
+		1, 
+
+		strmatch( %2, numeric ), 
+		if(
+			isint( 
+				first( 
+					ulocal( v( d.sfp )/f.getstat.workhorse.numeric, %0, %1 ), 
+					. 
+				)
+			), 
+			1, 
+			#-1 Derived stat is non-numeric 
+		), 
+
+		if( 
+			strlen( 
+				ulocal( v( d.sfp )/f.getstat.workhorse.%2, %0, %1 )
+			), 
+			1, 
+			#-1 Derived stat returns null 
+		)
+	)
+
+/* -- test --
+
+think u( v( d.sfp )/f.getstat.workhorse.numeric, %#, _advantage.size )
+think u( v( d.cg )/f.statcheck.derived, %#, _advantage.size, numeric )
+think u( v( d.cg )/f.statcheck.derived, %#, _advantage.willpower, numeric )
+think u( v( d.cg )/f.statcheck.derived, %#, _advantage.willpower_maximum, numeric )
+think u( v( d.cg )/f.statcheck.derived, %#, _advantage.vitae_maximum, numeric )
+
+
+--------------------------------------------------------------------------------
+-- Statcheck: Substat ----------------------------------------------------------
+
+Check that a substat's value is valid.
+
+.. substat: _*.*.*: base item must be at least 1/integer
+.. If _skill.*.*, item itself may only be 1.
+
+--
+
+0: sheet dbref
+1: _sheet.statpath_(full).substat
+2: value to raise by (otherwise null, a sheet-only check)
+
+t: temp whatsit
+
+*/
+
+&f.statcheck.substat [v( d.cg )]=
+	localize(
+		case( 1, 
+
+			not( cand( 
+				isint( setr( t, first( u( %0/[elements( %1, 1 2, . )] ), . ))), 
+				gt( %qt, 0 )
+			)), 
+			if( strmatch( %1, _skill.* ), 
+				#-1 Specialties cannot be set if skill is zero or non-numeric, 
+				#-1 Substat cannot be set if main stat is zero or non-numeric 
+			), 
+
+			cand( 
+				strmatch( %1, _skill.* ), 
+				gt( add( u( %0/%1 ), %2 ), 1 )
+			), 
+			#-1 Specialty substats must have a value of 1, 
+
+			1 
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Statcheck: List -------------------------------------------------------------
+
+Check that a list stat's value is valid.
+
+Class:List stats are checked similarly to other types, but each element
+.. '1.2' + '3 5' -> '1.2.3.5'
+
+--
+
+think u( v( d.sfp )/f.statvalidate.workhorse, gift.gift_of_death, unlock.honor )
+	u( v( d.sfp )/f.statvalidate.workhorse, %0, edit( %2, %b, . ))
+
+--
+
+0: dd.statpath (without instance)
+1: sheet value
+2: value to add (otherwise 0/null)
+
+l: final list (e.g. 1.2.3.5)
+
+*/
+
+&f.statcheck.list [v( d.cg )]=
+	localize( strcat( 
+		setq( l, 
+			setinter( 
+// .. valid stats vs.
+				first( get( v( d.dd )/%0 ), | ), 
+				setunion( 
+// .. .. sheet stats +
+					%1, 
+// .. .. stat to add
+//					u( v( d.sfp )/f.statvalidate.workhorse, 
+//						%0, 
+//						edit( %2, %b, . )
+//					), 
+					edit( %2, %b, . ), 
+					.
+				), 
+				.
+			)
+		), 
+
+// Any matches?
+		if(
+			gte( words( %ql, . ), 1 ), 
+			%ql, 
+			#-1 No list items valid 
+		)
+	))
+
+
+
+/*
+================================================================================
+== CHECKSTAT FUNCTIONS =========================================================
+
+Now that we know how to check a stat, what's there to check?
+
+
+--------------------------------------------------------------------------------
+-- Badstat? --------------------------------------------------------------------
+
+Does this stat pass the statcheck?
+
+0: sheet dbref
+1: _sheet.statpath
+
+*/
+
+&f.badstat? [v( d.cg )]=
+	not( land( u( f.statcheck, %1, %0 ), . ))
+
+
+/*
+--------------------------------------------------------------------------------
+-- Badstats --------------------------------------------------------------------
+
+0: sheet dbref
+output: All invalid stats on the sheet
+
+*/
+
+&f.badstats [v( d.cg )]=
+	iter( 
+		u( [u( d.sfp )]/d.search-order ), 
+		filter( f.badstat?, lattr( %0/_%i0.* ), , , %0 )
+	)
+
+
+
+/*
+================================================================================
+== CG/CHECK ====================================================================
+
+Here's our old +sheet/check, temporarially called 'v( d.cg )/check'
+
+This switch is really a part of chargen.  That is, this system goes through a
+sheet validation.  For people who are not yet approved, it will check the cgen 
+point values.  For everyone it will check all stat validations except cgen, 
+which is mostly for the cgen and xp-spend systems.
+
+--
+
+0: person to check
+
+p: dbref of person to check
+s: sheet dbref
+t: template for sheet
+b: badstat list
+
+*/
+
+&c.cg/check [v( d.cg )]=$^\+?cg/check(.*):
+	think strcat( 
+		player dbref:, %b, 
+		setr( p, if( t( strlen( trim( %1 ))), pmatch( trim( %1 )), %# )), %r, 
+		sheet dbref:, %b, 
+		setr( s, u( u( d.sfp )/f.find-sheet, %qp )), %r, 
+		sheet template:, %b, 
+		setr( t, u( %qs/_bio.template ))
+	); 
+
+	@pemit %#=
+	case( 0, 
+		not( isapproved( %#, guest )), 
+		u( .msg, cg/check, Players only ), 
+
+		t( %qp ), 
+		u( .msg, cg/check, Player cannot be found ), 
+
+		cor( isstaff( %# ), not( comp( %qp, %# ))), 
+		u( .msg, cg/check, You must be staff or checking yourself ), 
+
+		t( %qs ), 
+		u( .msg, cg/check, Can't find the sheet ), 
+
+		t( %qt ), 
+		u( .msg, cg/check, No template set ), 
+
+		strcat( 
+			wheader( Checking [name( %qp )]'s Stats ), %r, 
+
+// .. chargen-level check happens only pre-approval
+			if( 
+				cor( 
+					isapproved( %qp, chargen ), 
+					isapproved( %qp, unapproved ), 
+					isstaff( %qp )
+				), 
+				strcat( 
+					ulocal( check.bio, %qp, %qs, %qt ), %r, 
+					ulocal( check.chargen, %qs, %qt, %qp ), 
+				), 
+
+				u( display.cgen_stamp, %qp )%r
+			 ), 
+// .. valid stats check
+			ulocal( check.badstats, %qs ), %r, 
+
+			wfooter( )
+		)
+	)
+
+// --
+
+@set v( d.cg )/c.cg/check=regex
+
+
+/*
+--------------------------------------------------------------------------------
+-- Display: Check OK/NO --------------------------------------------------------
+*/
+
+&display.check.ok-no [v( d.cg )]=
+	if( t( %0 ), 
+		ansi( n, \\[, g, OK, n, \\] ), 
+		ansi( n, \\[, r, no, n, \\] )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Display: Cgen Stamp ---------------------------------------------------------
+*/
+
+&display.cgen_stamp [v( d.cg )]=
+	cat( 
+		%b Chargen Approval Stamp:, 
+		elements( rest( setr( z, u( %0/_cgstamp )), | ), 2 3 5 ), 
+		by, 
+		rest( first( %qz, | ), Approved by%b )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Display: Check Stats --------------------------------------------------------
+
+0: dbref of sheet
+1: category to check
+2: potential late additions/subtractions ('free' points being accounted for)
+output: Ob. yes/no in full prismatic color
+
+*/
+
+&display.check.stats [v( d.cg )]=
+	u( display.check.ok-no, u( f.pts-valid?.%1, %0, %2 ))
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Bio -------------------------------------------------------------------
+
+This is the basic check. '&check.bio.<template>' will continue this.
+
+--
+
+0: dbref of player
+1: dbref of sheet
+2: template of sheet
+
+q1: column`1`list
+q2: column`2`list
+i: item from sheet
+
+uses: vcolumns(), our vertical-column system
+
+*/
+
+&check.bio [v( d.cg )]=
+	strcat( 
+// >> column 1: Gender, Concept, Full Name, Birthdate
+		setq( 1, 
+		strcat( 
+				ansi( h, Gender ), :, %b, 
+					setr( g, get( %0/sex )), %b, 
+					u( display.check.ok-no, match( f m p, strtrunc( %qg, 1 ))), 
+					`, 
+				ansi( h, Concept ), :, %b, 
+					if( 
+						hasattr( %0, _bio.concept ), 
+						ansi( g, exists ), 
+						ansi( r, blank )
+					), 
+					`, 
+				iter( 
+					full_name birthdate, 
+					strcat( 
+						ansi( h, titlestr( edit( %i0, _, %b ))), :, %b, 
+						setr( i, u( %1/_bio.%i0 )), %b, 
+						u( display.check.ok-no, comp( %qi, ))
+					), 
+					, `
+				)
+			)
+		), 
+
+// .. column 2: Template Foo (human default: virtue vice)
+		setq( 2, 
+			iter( 
+				cat( 
+					template, 
+					udefault( check.bio.%2, u( check.bio.default ), %1 )
+				), 
+				strcat( 
+					ansi( h, titlestr( edit( %i0, _, %b ))), :, %b, 
+					setr( i, u( %1/_bio.%i0 )), %b, 
+					u( display.check.ok-no, comp( %qi, ))
+				), 
+				, `
+			)
+		), 
+
+// >> display results
+		divider( Biography Check, width( %# )), %r, 
+		vcolumns( 38:%q1, 37:%q2, `, %b, %b%b )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Bio: Human ------------------------------------------------------------
+
+*/
+
+&check.bio.default [v( d.cg )]=virtue vice
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Chargen ---------------------------------------------------------------
+
+Merits: 5/10 (5 on <name of Power Stat>)
+
+0: dbref of sheet
+1: template
+2: dbref of character
+
+*/
+
+&check.chargen [v( d.cg )]=
+	strcat( 
+		divider( Chargen Levels, width( %# )), %r, 
+
+		%b%b, ansi( h, Attributes ), :%b, 
+		udefault( 
+			check.chargen.attributes.%1, 
+			u( check.chargen.attributes.default, %0 ), 
+			%0 
+		), 
+
+		ulocal( check.chargen.attributes, %0, %1 ), %r, 
+
+		%b%b, ansi( h, Skills ), :%b, 
+		udefault( 
+			check.chargen.skills.%1, 
+			u( check.chargen.skills.default, %0 ), 
+			%0 
+		), %r, 
+		ulocal( check.chargen.specialties, %0, %1 ), %r, 
+
+		%b%b, ansi( h, Aspirations ), :%b, 
+			setq( a, u( f.allocated.aspirations, %0 )), 
+			Short-Term:, %b, first( %qa, / ), /2%,%b, 
+			Long-Term:, %b, rest( %qa, / ), /1%b, 
+			u( display.check.stats, %0, aspirations ), %r, 
+
+		%b%b, ansi( h, Merits ), :%b, 
+			setq( a, u( f.allocated.merits, %0 )), 
+			ladd( %qa, / ), /10, 
+			%b%(, rest( %qa, / ), %b, on Power Stat%), %b, 
+			u( display.check.stats, %0, merits ), %r, 
+
+// .. template chargen checks
+		u( check.chargen.%1, %0, %2 )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Chargen: Attributes ---------------------------------------------------
+*/
+
+&check.chargen.attributes.default [v( d.cg )]=
+	strcat( 
+		u( f.allocated.attributes, %0 ), %b, %(of 5/4/3%), %b, 
+		u( display.check.stats, %0, attributes ), 
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Check Chargen: Skills -------------------------------------------------------
+*/
+
+&check.chargen.skills.default [v( d.cg )]=
+	strcat( 
+		u( f.allocated.skills, %0 ), %b, %(of 11/7/4%), %b, 
+		u( display.check.stats, %0, skills )
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Check Chargen: Specialties --------------------------------------------------
+
+0: sheet dbref
+1: template
+
+a: all specialties
+s: standard specialties
+r: template-specific specialties
+
+*/
+
+&check.chargen.specialties [v( d.cg )]=
+	strcat(
+		setq( a, ulocal( f.allocated.specialties, %0 )), 
+		setq( s, first( %qa, ` )), 
+		setq( r, rest( %qa, ` )), 
+
+		%b%b, ansi( h, Specialties ), :%b, 
+		iter( 
+			%qs, 
+			ulocal( u( d.sfp )/f.statname.workhorse, rest( %i0, . )), 
+			, %,%b
+		), 
+
+// check & output template specs
+		ulocal( check.specialties.%1, %qr ), 
+
+		%r%b%b, ansi( h,  Final Specialties Check ), %b, ->, %b, 
+		words( %qs ), /3, %b, 
+		ulocal( display.check.stats, %0, specialties )
+
+	)
+
+/* -- test --
+
+think u( v( d.cg )/check.chargen.specialties, v( _special.sheet_location ), Demon ) -- %qa -- %qs -- %qr 
+
+think u( v( d.cg )/check.chargen.specialties, pmatch( Hemi ), Human ) --> %qa --> %qs --> %qr 
+
+
+/*
+--------------------------------------------------------------------------------
+-- List Specialties: Changeling ------------------------------------------------
+
+Another example
+
+0: <changeling>`<seeming>`<kith(s)>
+
+*/
+
+&check.specialties.changeling [v( d.cg )]=
+	strcat( 
+// .. changeling
+		%b Changeling -%b, 
+		iter( elements( %0, 1, ` ), 
+			u( u( d.sfp )/f.statname-workhorse, rest( %i0, . )), 
+			, %,%b 
+		), 
+
+// .. seeming
+		if( strlen( elements( %0, 2, ` ), %r%b Seeming-%b)), 
+		iter( elements( %0, 2, ` ), 
+			u( u( d.sfp )/f.statname-workhorse, rest( %i0, . )), 
+			, %,%b 
+		), 
+
+// .. kith(s)
+		if( strlen( elements( %0, 3, ` ), %r%b Kith-%b)), 
+		iter( elements( %0, 3, ` ), 
+			u( u( d.sfp )/f.statname-workhorse, rest( %i0, . )), 
+			, %,%b 
+		)
+	)
+
+/* --
+
+This is from the old system and needs integrated into the new system
+under the "are these points valid?" system
+
+
+&f.pts-valid?.specialties.changeling.beast [v( d.cg )]=eq( words( extract( %0, 3, 1, ` )), 1 )
+&f.pts-valid?.specialties.changeling.soldier [v( d.cg )]=eq( words( extract( %0, 4, 1, ` )), 1 )
+&f.pts-valid?.specialties.changeling.telluric [v( d.cg )]=eq( words( extract( %0, 4, 1, ` )), 2 )
+&f.pts-valid?.specialties.changeling.razorhand [v( d.cg )]=eq( words( extract( %0, 4, 1, ` )), 1 )
+&f.pts-valid?.specialties.changeling.riddleseeker [v( d.cg )]=eq( words( extract( %0, 4, 1, ` )), 1 )
+&f.pts-valid?.specialties.changeling.nightsinger [v( d.cg )]=eq( words( extract( %0, 4, 1, ` )), 1 )
+&f.pts-valid?.specialties.changeling.daitya [v( d.cg )]=eq( words( extract( %0, 4, 1, ` )), 1 )
+*/
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Chargen: Changeling ---------------------------------------------------
+
+More examples
+
+0: dbref of sheet to check
+
+
+&check.chargen.changeling [v( d.cg )]=
+	strcat( 
+		%b Contracts:%b, 
+			u( f.allocated.contracts, %0 ), %b, 
+			u( display.check.stats, %0, contracts ), %r
+	)
+*/
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check: Badstats -------------------------------------------------------------
+
+0: sheet dbref
+
+*/
+
+&check.badstats [v( d.cg )]=
+	strcat( 
+		wdivider( Invalid Stats ), %r, 
+		setq( p, u( f.badstats, %0 )), 
+
+// .. (cheat copiously)
+		setq( i, 
+			iter( %qp, 
+				strcat( 
+					%(, 
+					lcstr( first( rest( %i0, _ ), . )), 
+					%)%b, 
+					ansi( 
+						c, u( u( d.sfp )/f.statname.workhorse, rest( %i0, . ))
+					), 
+					:, %b, 
+					itemize( 
+						trim( 
+							iter( u( f.statcheck, %0, %i0 ), 
+								if( not( %i0 ), 
+									[titlestr( rest( %i0 ))]| 
+								), 
+								., @@ 
+							), 
+							b, | 
+						), 
+						| 
+					)
+				), 
+				, %r
+			)
+		), 
+		if( strlen( %qi ), 
+			trim( wrap( %qi, sub( width( %# ), 4 ), left, %b%b ), r ), 
+			%b All Stats Valid 
+		)
+	)
+
+/* -- test --
+
+think u( v( d.cg )/check.badstats, udefault( %#/_special.sheet_location, %# ))
+
+*/
+
+
+/*
+================================================================================
+== CG/FORCECHECK ===============================================================
+
+'cg/check', but will check someone even if they're not 'in chargen'.
+Otherwise identical.
+
+*/
+
+&c.cg/forcecheck [v( d.cg )]=$^\+?cg/forcecheck(.*):
+	@pemit %#='cg/check' should now work for anyone who is not approved.
+
+/*
+	think strcat( 
+		player dbref:, %b, 
+		setr( p, if( t( strlen( trim( %1 ))), pmatch( trim( %1 )), %# )), %r, 
+		sheet dbref:, %b, 
+		setr( s, u( u( d.sfp )/f.find-sheet, %qp )), %r, 
+		sheet template:, %b, 
+		setr( t, u( %qs/_bio.template ))
+	); 
+
+	@pemit %#=
+	case( 0, 
+
+		t( %qp ), 
+		u( .msg, cg/check, Player cannot be found ), 
+
+		cor( isstaff( %# ), not( comp( %qp, %# ))), 
+		u( .msg, cg/check, You must be staff or checking yourself ), 
+
+		t( %qs ), 
+		u( .msg, cg/check, Can't find the sheet ), 
+
+		t( %qt ), 
+		u( .msg, cg/check, No template set ), 
+
+		strcat( 
+			wheader( Checking [name( %qp )]'s Stats ), %r, 
+
+// .. chargen-level check normally happens only pre-approval
+			strcat( 
+				ulocal( check.bio, %qp, %qs, %qt ), %r, 
+				ulocal( check.chargen, %qs, %qt, %qp ), 
+			), 
+// .. valid stats check
+			ulocal( check.badstats, %qs ), %r, 
+
+			wfooter()
+		)
+	)
+*/
+
+// --
+
+@set v( d.cg )/c.cg/forcecheck=regex

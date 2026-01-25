@@ -1,0 +1,52 @@
+EVERYTHING ELSE IS NOW IN ITS OWN SEPARATE FILES.
+
+This is left here for now in case it is needed.
+
+
+== THE COMMAND ================================================================
+
++setstat <player>/<stat>=[+|-]<value>
+
+illegal characters for value: : ` <number>. (but only at the start)
+
+
+
+
+
+
+
+
+
+Sets a player's stat to <value> or returns it to the default chargen value, which may be null or derived.
+
+(Once I get the default value for the chargen object filled.)
+(have +command use stattag to allow only for 'derived' tagged stats.)
+
+Code Flow:
+
+* validate sheet
+* validate stat name
+* validate stat value (or if it has a default).
+
+Hmm.  Validate Value should be simple once we've Validated the Stat (and boy have we validated the fuck out of it.)
+
+How do I best set up so they can set the offset ("boost") in this, or do I?
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=--==--=-=-=-=-=-=-=-=-==-==--=-=-==--
+
+DATA DICTIONARY THOUGHTS: 
+
+You say, ÒIf your seeming or kith matches something in the tag list, affinity. If goblin matches something in the tag list, goblin. Else, non-affinity.Ó
+
+Blue says, ÒVery near, though they don't scale in cost the same way. You just pay for the rank, straight up, without worrying about any ranks that came before.Ó
+
+You say, ÒWerewolf's gifts are also bought at level, like goblin contracts, I think.Ó
+
+You say, ÒI believe this is done because you can jump around.Ó
+
+-- a reason to make "goblin_contract" just "contract" in the DD.
+
+&xp.<type>: <value>??? - Willpower is always 8xp/dot.
+
+May not be so important if I keep stat-lookup & character-advancement DDs separate. ---
+

@@ -1,0 +1,346 @@
+/*
+================================================================================
+== /SETTYPE ====================================================================
+
+A system to add or remove instanced types (<type>) from stats.
+
+	stat/settype <stat>=[!]<type>
+
+Stats with a type of '*' cannot be changed in this way. 
+If a stat has only one instanced item, it cannot be removed.
+(Instanced stats must have at least one type.)
+
+1) determine if stat is instanced
+2) prettify input
+3) add to the end
+
+
+0: <stat>=[!]<type>
+
+s: statpath (without all the extra checking)
+c: stat class
+a: <types> from attribute 
+
+n: not? [!]
+t: type to add/remove
+m: match %qt from %qa
+
+f: final list of types
+a: (again) get full attribute for final edit
+e: error check
+
+*/
+
+&f.stat/settype [v( d.ss )]=
+	strcat( 
+		setq( s, 
+			u( 
+				v( d.stat-funcs )/f.statpath-validate-name, 
+				first( %0, = )
+			)
+		), 
+		setq( a, elements( get( v( d.data-dictionary )/%qs ), 2, | )), 
+		setq( n, strmatch( setr( t, rest( %0, = )), !* )), 
+		setq( t, titlestr( right( %qt, sub( strlen( %qt ), %qn )))), 
+
+		setq( m, match( %qa, %qt, . )), 
+		ansi( h, <stat/settype>%b, n, 
+			case( 0, 
+				isstaff( %# ), u( .msg, stat/settype, Staff only ), 
+
+				t( %qs ), u( .msg, stat/settype, Stat not found ), 
+
+				comp( rest( %0, = ), ), 
+				u( .msg, stat/settype, 
+					At least enter something to add or remove 
+				), 
+
+				strmatch( %qs, *_%(%) ), 
+				u( .msg, stat/settype, Stat cannot take an instanced type ), 
+
+				not( member( %qa, * )), 
+				u( .msg, stat/settype, 
+					'[u( format.type.into_statpath, %qs )]' can take any type 
+					and so can't be added to or deleted from this way - 
+					change the stat's attribute directly 
+				), 
+
+				cor( not( %qn ), t( %qm )), 
+				u( .msg, stat/settype, 
+					'[u( format.type.into_statpath, %qs, %qt )]' doesn't exist 
+				), 
+
+				cor( %qn, not( %qm )), 
+				u( .msg, stat/settype, 
+					'[u( format.type.into_statpath, %qs, %qt )]' already exists 
+				), 
+
+// ok
+				strcat( 
+					setq( f, 
+						if( %qn, 
+							ldelete( %qa, %qm, . ), 
+							setunion( %qa, titlestr( %qt ), . )
+						)
+					), 
+					setq( a, get( v( d.data-dictionary )/%qs )), 
+					setq( e, 
+						set( 
+							v( d.data-dictionary ), 
+							%qs:[replace( %qa, 2, %qf, | )]
+						)
+					), 
+					if( strlen( %qe ), 
+						u( .msg, stat/settype, 
+							strcat( 
+								Error setting new attribute! 
+								Please type: &%qs, %b, 
+								v( d.data-dictionary ), =, 
+								replace( %qa, 2, %qf, | )
+							)
+						), 
+
+						u( .msg, stat/settype, 
+							strcat( 
+								', 
+								u( format.type.into_statpath, %qs, %qt ), 
+								', %b, 
+								if( %qn, removed, added )
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Format: Put Type Into Statpath ----------------------------------------------
+
+a quick way to add <type> to <statpath>_() 
+
+0: full.statpath_()
+1: instance to add to it
+
+*/
+
+&format.type.into_statpath [v( d.ss )]=
+	strcat( 
+		titlestr( edit( before( rest( %0, . ), %(%) ), _, %b )), 
+		%b, %(%1%) 
+	)
+
+
+
+/*
+================================================================================
+== /SETVALUE ===================================================================
+
+A system to add or remove values (<value>) from stats.
+
+	stat/setvalue <stat>=[!]<value>
+
+0: <stat>=[!]<value>
+   <stat>=<list value>/<list name> <-- planned
+
+s: statpath
+a: raw attrtibute 
+	'<values>'
+	'<values>|<types>|<substats>'
+	'<list values>|<list names>'
+
+n: not? [!]
+v: value to add/remove
+
+c: stat class
+u: <values>
+m: matched location of <value> in <current values>, if any
+
+*/
+
+&f.stat/setvalue [v( d.ss )]=
+	strcat( 
+		setq( s, 
+			u( 
+				v( d.stat-funcs )/f.statpath-validate-name, 
+				first( %0, = )
+			)
+		), 
+		setq( a, get( v( d.data-dictionary )/%qs )), 
+		setq( n, strmatch( setr( v, rest( %0, = )), !* )), 
+		setq( v, titlestr( right( %qv, sub( strlen( %qv ), %qn )))), 
+
+		setq( c, ulocal( v( d.stat-funcs )/f.get-class, %qs )), 
+		setq( u, elements( %qa, 1, | )), 
+		setq( m, match( %qu, %qv, . )), 
+
+		ansi( h, <stat/setvalue>%b, n, 
+		
+			case( 0, 
+				isstaff( %# ), u( .msg, stat/setvalue, Staff only ), 
+
+				t( %qs ), u( .msg, stat/setvalue, Stat not found ), 
+
+				comp( rest( %0, = ), ), 
+				u( .msg, stat/setvalue, 
+					At least enter something to add or remove 
+				), 
+
+// .. add 'list' to grab() when it's done
+				t( match( numeric string, %qc )), 
+				u( .msg, stat/setvalue, 
+					I only know how to edit the values for Numeric 
+					and String stats 
+				), 
+
+				not( cor( 
+					member( %qu, * ), 
+					member( %qu, # )
+				)), 
+				u( .msg, stat/setvalue, 
+					Stat can take any value and cannot be adjusted this way - 
+					change the stat's attribute directly 
+				), 
+
+				cor( 
+					not( strmatch( %qc, numeric )), 
+					cand( 
+						isint( %qv ), 
+						gte( %qv, 0 )
+					)
+				), 
+				u( .msg, stat/setvalue, 
+					Value '%qv' must be positive integer for numeric types 
+				), 
+
+				cor( not( %qn ), t( %qm )), 
+				u( .msg, stat/setvalue, Value '%qv' doesn't exist ), 
+
+				cor( %qn, not( %qm )), 
+				u( .msg, stat/setvalue, Value '%qv' already exists ), 
+			
+				case( %qc, 
+// ok: lists
+					list, 
+					u( .msg, stat/setvalue, 
+						This is an error because I don't know how to add 
+						to lists yet 
+					), 
+
+// ok: numeric & string
+					strcat( 
+						setq( f, 
+							if( %qn, 
+								ldelete( %qu, %qm, . ), 
+								case( %qc, 
+									numeric, setunion( %qu, %qv, ., ., n ), 
+									insert( %qu, inc( words( %qu, .)), %qv, . )
+								)
+							)
+						), 
+						setq( e, 
+							set( 
+								v( d.data-dictionary ), 
+								%qs:[replace( %qa, 1, %qf, | )]
+							)
+						), 
+
+						if( strlen( %qe ), 
+							u( .msg, stat/setvalue, 
+								strcat( 
+									Error setting new attribute! Please type: 
+									&%qs, %b, v( d.data-dictionary ), =, 
+									replace( %qa, 1, %qf, | )
+								)
+							), 
+							u( .msg, stat/setvalue, 
+								cat( Value '%qv', if( %qn, removed, added ))
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+
+
+
+/*
+================================================================================
+== /SETTAG =====================================================================
+
+A quick way to add or remove a tag from a stat.
+
+0: <stat>=[!]<value>
+
+s: statpath
+a: raw attribute
+   '<list>.<of>.<tags>'
+
+n: not? [!]
+v: value to add/remove
+m: tag's matched position (if exists)
+
+f: final attribute to set
+
+*/
+
+&f.stat/settag [v( d.ss )]=
+	strcat( 
+		setq( s, 
+			u( 
+				v( d.stat-funcs )/f.statpath-validate-name, 
+				first( %0, = )
+			)
+		), 
+		setq( a, get( v( d.data-tags )/tags.%qs )), 
+		setq( n, strmatch( setr( v, rest( %0, = )), !* )), 
+		setq( v, lcstr( right( %qv, sub( strlen( %qv ), %qn )))), 
+		setq( m, match( %qa, %qv, . )), 
+
+		setq( f, 
+			if( %qn, 
+				ldelete( %qa, %qm, . ), 
+				trim( %qa.%qv, b, . )
+			)
+		), 
+
+		case( 0, 
+			isstaff( %# ), 
+			u( .msg, stat/settag, Staff only ), 
+
+			t( %qs ), 
+			u( .msg, stat/settag, Stat not found ), 
+
+			comp( rest( %0, = ), ), 
+			u( .msg, stat/settag, 
+				At least enter something to add or remove 
+			), 
+
+			not( u( v( d.sfp )/f.statvalue-good, %qa )), 
+			u( .msg, stat/settag, Bad tag name ), 
+
+// if '!' and not match, or if not '!' and match, then it's some kind of error
+			not( xor( %qn, %qm )), 
+			if( t( %qn ),
+				u( .msg, stat/settag, Tag '%qv' doesn't exist ), 
+				u( .msg, stat/settag, Tag '%qv' already exists )
+			), 
+
+			strcat( 
+				setq( e, set( v( d.data-tags ), tags.%qs:%qf )), 
+				if( strlen( %qe ), 
+					u( .msg, stat/settag, 
+						Error setting new attribute! Please type: 
+						&%qs [v( d.data-tags )]=%qf
+					), 
+					u( .msg, stat/settag, 
+						cat( Tag '%qv', if( %qn, removed, added ))
+					)
+				)
+			)
+		)
+	)
+

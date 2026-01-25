@@ -1,0 +1,1694 @@
+/* 
+
+Witchcraft & Wizardry
+(Harry Potter America)
+
+A code re-skin for Boo & Spice
+
+http://wiwimush.wikidot.com
+(game not open at this time)
+
+
+
+================================================================================
+== NOTES =======================================================================
+
+Start with the core GMC/CoD code and apply the following changes. 
+
+By this time all the &d.<object> dbrefs should be on your person. Don't skip 
+anything.
+
+
+
+================================================================================
+== GENERAL CHANGES =============================================================
+
+
+--------------------------------------------------------------------------------
+-- General: Functions ----------------------------------------------------------
+*/
+
+// 'median()' isn't already in TinyMUX.
+// (we don't need the full function, but other games may)
+
+&.median [v( d.dd )]=
+	localize( strcat( 
+		setq( n, sort( %0, n, %1, %b )), 
+		setq( m, fdiv( words( %qn ), 2 )), 
+		case( 1, 
+			not( land( iter( %qn, isnum( %i0 )))), 
+			#-1 All inputs must be numeric,
+
+			isint( %qm ), 
+			fdiv( ladd( elements( %qn, cat( %qm, inc( %qm )))), 2 ), 
+
+			elements( %qn, ceil( %qm ))
+		)
+	))
+
+think u( v( d.dd )/.median, 1 4 3 ) --> 3
+think u( v( d.dd )/.median, 10.1.4.3, . ) --> 3.5
+think u( v( d.dd )/.median, 10.1.Bob.4.3, . ) --> #1
+
+
+
+/*
+################################################################################
+## DATA DICTIONARY #############################################################
+
+These are changes to the stat system from the generic game install. Some of 
+these items touch more than the Data Dictionary, but are stat-focused.
+
+--------------------------------------------------------------------------------
+-- General: Bio ----------------------------------------------------------------
+*/
+
+
+// ** Bio: Birthday Math **
+
+&bio.birthdate [v( d.dd )]=*
+
+&prerequisite.bio.birthdate [v( d.dd )]=
+	localize( strcat( 
+		case( %2, 
+			@@( null ), 
+			setq( 2, u( .value, %0, bio.birthdate )), 
+			setq( 2, %2 )
+		), 
+		cand( 
+			convtime( cat( 
+				xxx, 
+				elements( %q2, 1 ), 
+				elements( %q2, 2 ), 
+				00:00:00, 
+				elements( %q2, 3 )
+			)), 
+			not( strlen( elements( %q2, 4 )))
+		)
+	))
+
+&prereq-text.bio.birthdate [v( d.dd )]=
+	Must be in format 'Mon DD YYYY'. 
+	(Month three-letter text. Day numeric. Year four-digit numeric.)
+
+
+// b: _bio.birthdate 
+// t: timestamp format for birthdate midnight :: xxx <Mon> <DD> 00:00:00 <YYYY>
+// a: age in years
+
+&bio.age [v( d.dd )]=
+	localize( strcat( 
+		setq( b, u( .value, %0, bio.birthdate )), 
+		setq( t, 
+			cat( 
+				xxx, 
+				elements( %qb, 1 ), 
+				elements( %qb, 2 ), 
+				00:00:00, 
+				elements( %qb, 3 )
+			)
+		), 
+		if( strlen( %qb ), 
+			strcat( 
+				setr( a, first( writetime( sub( secs(), convtime( %qt ))))), 
+// add <age category> here
+				/, 
+				switch( %qa, 
+					>17, Adult,
+					>13, Teen, 
+					>0, Child, 
+					Invalid 
+				)
+			)
+		)
+	))
+&default.bio.age [v( d.dd )]=derived
+&tags.bio.age [v( d.dt )]=derived
+
+
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- General: Attributes ---------------------------------------------------------
+
+There is no 'power level stat' rule, but I'm leaving the code in place to 
+determine if anyone can take an Attribute or Skill above 10. Among other things, 
+there may be future plans to allow permanent Attributes or Skills above 5; 
+leaving this code in will make that easier.
+
+However, the language needs changed.
+
+*/
+
+@edit v( d.dd )/prereq-text.attribute.*=
+	Limited by power level stat, 
+	6+ may be set by staff only
+
+@edit v( d.dd )/prereq-text.skill.*=
+	Limited by power level stat, 
+	6+ may be set by staff only
+
+
+/*
+--------------------------------------------------------------------------------
+-- General: Skills -------------------------------------------------------------
+
+http://wiwimush.wikidot.com/skills
+
+*/
+
+&skill.occult [v( d.dd )]=
+&prerequisite.skill.occult [v( d.dd )]=
+&prereq-text.skill.occult [v( d.dd )]=
+&tags.skill.occult [v( d.dd )]=
+
+&skill.gramarye [v( d.dd )]=1.2.3.4.5.6.7.8.9.10|*
+&prerequisite.skill.gramarye [v( d.dd )]=
+	u( .trait_check, %0, skill.gramarye, %2 )
+&prereq-text.skill.gramarye [v( d.dd )]=6+ may be set by staff only
+&tags.skill.gramarye [v( d.dd )]=mental
+
+&skill.ride [v( d.dd )]=1.2.3.4.5.6.7.8.9.10|*
+&prerequisite.skill.ride [v( d.dd )]=
+	u( .trait_check, %0, skill.ride, %2 )
+&prereq-text.skill.ride [v( d.dd )]=6+ may be set by staff only
+&tags.skill.ride [v( d.dd )]=physical
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- General: Merits -------------------------------------------------------------
+
+http://wiwimush.wikidot.com/merits
+
+*/
+
+// -- Merits: Special ----------------------------------------------------------
+
+&merit.sanctity_of_merits [v( d.dd )]=#
+
+// -- Merits: Mental -----------------------------------------------------------
+
+&merit.area_of_expertise_() [v( d.dd )]=1|*
+&prerequisite.merit.area_of_expertise_() [v( d.dd )]=
+	cand( 
+		u( .at_least, %0, attribute.resolve, 2 ), 
+		u( .specialty_has, %0, *, %1 )
+	)
+&prereq-text.merit.area_of_expertise_() [v( d.dd )]=
+	Resolve 2+ and Expertise must match an existing specialty
+&tags.merit.area_of_expertise_() [v( d.dt )]=mental
+
+&merit.common_sense [v( d.dd )]=3
+&tags.merit.common_sense [v( d.dt )]=mental
+
+&merit.danger_sense [v( d.dd )]=2
+&tags.merit.danger_sense [v( d.dt )]=mental.fighting
+
+&merit.direction_sense [v( d.dd )]=1
+&tags.merit.direction_sense [v( d.dt )]=mental
+
+&merit.eidetic_memory [v( d.dd )]=2
+&tags.merit.eidetic_memory [v( d.dt )]=mental
+
+&merit.fast_reflexes [v( d.dd )]=1.2.3
+&prerequisite.merit.fast_reflexes [v( d.dd )]=
+	u( .at_least_one, %0, attribute.dexterity:3 attribute.wits:3 )
+&prereq-text.merit.fast_reflexes [v( d.dd )]=Dexterity 3+ or Wits 3+
+&tags.merit.fast_reflexes [v( d.dt )]=mental.fighting
+
+&merit.good_time_management [v( d.dd )]=1
+&prerequisite.merit.good_time_management [v( d.dd )]=
+	u( .at_least_one, %0, skill.science:2 skill.academics:2 )
+&prereq-text.merit.good_time_management [v( d.dd )]=Science 2+ or Academics 2+
+&tags.merit.good_time_management [v( d.dt )]=mental
+
+&merit.holistic_awareness [v( d.dd )]=1
+&tags.merit.holistic_awareness [v( d.dt )]=mental
+
+&merit.indomitable [v( d.dd )]=2
+&prerequisite.merit.indomitable [v( d.dd )]=
+	u( .at_least, %0, attribute.resolve, 3 )
+&prereq-text.merit.indomitable [v( d.dd )]=Resolve 3+
+&tags.merit.indomitable [v( d.dt )]=mental
+
+&merit.interdisciplinary_specialty_() [v( d.dd )]=1|*
+&prerequisite.merit.interdisciplinary_specialty_() [v( d.dd )]=
+	u( .at_least, %0, u( .specialty_for, %0, %1 ), 3 )
+&prereq-text.merit.interdisciplinary_specialty_() [v( d.dd )]=
+	Chosen specialty must belong to a Skill at 3+
+&tags.merit.interdisciplinary_specialty_() [v( d.dt )]=mental
+
+&merit.language_() [v( d.dd )]=1.2|*
+&tags.merit.language_() [v( d.dt )]=mental
+&notes.merit.language_() [v( d.dd )]=
+	Normally, a character may know a total number of languages (including native 
+	language) equal to his Intelligence. These are priced as one-dot Merits.|
+	Additional languages above one's Intelligence are purchased as two-dot 
+	Merits.|
+	Giant: 75 Brownies (25 Brownies for giant-kin)|
+	Gobbledegook: 20 Brownies (Free for goblins)|
+	Mermish: 50 Brownies
+
+&merit.library_() [v( d.dd )]=1.2.3|
+	Academics.Computer.Crafts.Investigation.Medicine.Occult.Politics.Science
+&tags.merit.library_() [v( d.dt )]=mental
+
+&merit.meditative_mind [v( d.dd )]=1.2.4
+&tags.merit.meditative_mind [v( d.dt )]=mental
+
+&merit.multilingual_() [v( d.dd )]=1|*
+&tags.merit.multilingual_() [v( d.dt )]=mental
+
+&merit.patient [v( d.dd )]=1
+&tags.merit.patient [v( d.dt )]=mental
+
+&merit.mental_prodigy_() [v( d.dd )]=2|
+	Academics.Computer.Crafts.Investigation.Medicine.Occult.Politics.Science
+&prerequisite.merit.mental_prodigy_() [v( d.dd )]=
+	t( grab( child teen, rest( u( .value_full, %0, bio.age ), / )))
+&prereq-text.merit.mental_prodigy_() [v( d.dd )]=Character is a Child or Teen
+&tags.merit.mental_prodigy_() [v( d.dt )]=mental
+&notes.merit.mental_prodigy_() [v( d.dt )]=100 Brownies
+
+&merit.tolerance_for_biology [v( d.dd )]=1
+&prerequisite.merit.tolerance_for_biology [v( d.dd )]=
+	u( .at_least, %0, attribute.resolve, 3 )
+&prereq-text.merit.tolerance_for_biology [v( d.dd )]=Resolve 3+
+&tags.merit.tolerance_for_biology [v( d.dt )]=mental
+
+&merit.trained_observer [v( d.dd )]=1.3
+&prerequisite.merit.trained_observer [v( d.dd )]=
+	u( .at_least_one, %0, attribute.wits:3 attribute.composure:3 )
+&prereq-text.merit.trained_observer [v( d.dd )]=Wits 3+ or Composure 3+
+&tags.merit.trained_observer [v( d.dt )]=mental
+
+&tags.merit.professional_training_() [v( d.dt )]=mental
+
+// -- Merits: Physical ---------------------------------------------------------
+
+&merit.ambidextrous [v( d.dd )]=3
+&tags.merit.ambidextrous [v( d.dt )]=chargen-only.physical
+
+&merit.automotive_genius [v( d.dd )]=1
+&prerequisite.merit.automotive_genius [v( d.dd )]=
+	u( .at_least_all, %0, skill.crafts:2 skill.drive:1 )
+&prereq-text.merit.automotive_genius [v( d.dd )]=
+	Crafts 2+, Drive 1+
+&tags.merit.automotive_genius [v( d.dt )]=physical
+&notes.merit.automotive_genius [v( d.dt )]=
+	Prerequisites were reduced due to limited usefulness in the setting.
+
+&merit.crack_driver [v( d.dd )]=1.2
+&prerequisite.merit.crack_driver [v( d.dd )]=u( .at_least, %0, skill.drive, 3 )
+&prereq-text.merit.crack_driver [v( d.dd )]=Drive 3+
+&tags.merit.crack_driver [v( d.dt )]=physical
+&notes.merit.crack_driver [v( d.dt )]=
+	Costs were reduced due to limited usefulness in the setting.
+
+&merit.demolisher [v( d.dd )]=1.2.3
+&prerequisite.merit.demolisher [v( d.dd )]=
+	u( .at_least_one, %0, attribute.strength:3 attribute.intelligence:3 )
+&prereq-text.merit.demolisher [v( d.dd )]=Strength 3+ or Intelligence 3+
+&tags.merit.demolisher [v( d.dt )]=physical
+
+&merit.double_jointed [v( d.dd )]=2
+&prerequisite.merit.double_jointed [v( d.dd )]=
+	u( .at_least, %0, attribute.dexterity, 3 )
+&prereq-text.merit.double_jointed [v( d.dd )]=Dexterity 3+
+&tags.merit.double_jointed [v( d.dt )]=physical
+
+&merit.fleet_of_foot [v( d.dd )]=1.2.3
+&prerequisite.merit.fleet_of_foot [v( d.dd )]=
+	u( .at_least, %0, skill.athletics, 2 )
+&prereq-text.merit.fleet_of_foot [v( d.dd )]=Athletics 2+
+&tags.merit.fleet_of_foot [v( d.dt )]=physical
+
+&merit.greyhound [v( d.dd )]=1
+&prerequisite.merit.greyhound [v( d.dd )]=
+	u( .at_least_all, %0, 
+		skill.athletics:3 attribute.wits:3 attribute.stamina:3 
+	)
+&prereq-text.merit.greyhound [v( d.dd )]=Athletics 3+, Wits 3+, and Stamina 3+
+&tags.merit.greyhound [v( d.dt )]=physical
+
+&merit.hardy [v( d.dd )]=1.2.3
+&prerequisite.merit.hardy [v( d.dd )]=u( .at_least, %0, attribute.stamina, 3 )
+&prereq-text.merit.hardy [v( d.dd )]=Stamina 3+
+&tags.merit.hardy [v( d.dt )]=physical
+
+&merit.huge [v( d.dd )]=3
+&tags.merit.huge [v( d.dt )]=chargen-only.physical
+&notes.merit.huge [v( d.dt )]=
+	This Merit is called Giant in Chronicles of Darkness. It was changed to 
+	avoid confusion with the giant species.
+
+&merit.iron_stamina [v( d.dd )]=1.2.3
+&prerequisite.merit.iron_stamina [v( d.dd )]=
+	u( .at_least_one, %0, attribute.stamina:3 attribute.resolve:3 )
+&prereq-text.merit.iron_stamina [v( d.dd )]=Stamina 3+ or Resolve 3+
+&tags.merit.iron_stamina [v( d.dt )]=physical
+
+&merit.parkour [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.parkour [v( d.dd )]=
+	u( .at_least_all, %0, attribute.dexterity:3 skill.athletics:2 )
+&prereq-text.merit.parkour [v( d.dd )]=Dexterity 3+ & Athletics 2+
+&tags.merit.parkour [v( d.dt )]=physical.style
+&notes.merit.parkour [v( d.dt )]=15 Brownies
+
+&merit.physical_prodigy_() [v( d.dd )]=2|
+	Athletics.Brawl.Drive.Firearms.Larceny.Stealth.Survival.Weaponry
+&prerequisite.merit.physical_prodigy_() [v( d.dd )]=
+	t( grab( child teen, rest( u( .value_full, %0, bio.age ), / )))
+&prereq-text.merit.physical_prodigy_() [v( d.dd )]=Character is a Child or Teen
+&tags.merit.physical_prodigy_() [v( d.dt )]=physical
+&notes.merit.physical_prodigy_() [v( d.dt )]=100 Brownies
+
+&merit.quick_draw_() [v( d.dd )]=1|*
+&prerequisite.merit.quick_draw_() [v( d.dd )]=
+	cand( 
+		u( .at_least, %0, attribute.Wits, 3 ), 
+		cor( 
+			u( .specialty_has, %0, Brawl Weaponry Firearms, %1 ), 
+			u( .has, %0, merit.[edit( %1, %b, _ )] )
+		)
+	)
+&prereq-text.merit.quick_draw_() [v( d.dd )]=
+	Wits 3+, and the type is either a specialty for Brawl, Weaponry, Firearms, 
+	or a learned Fighting Style
+&tags.merit.quick_draw_() [v( d.dt )]=physical
+
+&merit.relentless [v( d.dd )]=1
+&prerequisite.merit.relentless [v( d.dd )]=
+	u( .at_least_all, %0, skill.athletics:2 attribute.stamina:3 )
+&prereq-text.merit.relentless [v( d.dd )]=Athletics 2+ and Stamina 3+
+&tags.merit.relentless [v( d.dt )]=physical
+
+&merit.seizing_the_edge [v( d.dd )]=2
+&prerequisite.merit.seizing_the_edge [v( d.dd )]=
+	u( .at_least_all, %0, attribute.wits:3 attribute.composure:3 )
+&prereq-text.merit.seizing_the_edge [v( d.dd )]=Wits 2+ and Composure 3+
+&tags.merit.seizing_the_edge [v( d.dt )]=physical
+
+&merit.sleight_of_hand [v( d.dd )]=2
+&prerequisite.merit.sleight_of_hand [v( d.dd )]=
+	u( .at_least, %0, skill.larceny, 3 )
+&prereq-text.merit.sleight_of_hand [v( d.dd )]=Larceny 3+
+&tags.merit.sleight_of_hand [v( d.dt )]=physical
+
+&merit.small_framed [v( d.dd )]=2
+&tags.merit.small_framed [v( d.dt )]=chargen-only.physical
+
+&merit.stunt_driver [v( d.dd )]=1.2.3.4
+&prerequisite.merit.stunt_driver [v( d.dd )]=
+	u( .at_least_all, %0, attribute.dexterity:3 skill.drive:3 attribute.wits:3 )
+&prereq-text.merit.stunt_driver [v( d.dd )]=Dexterity 3+, Drive 3+, and Wits 3+
+&tags.merit.stunt_driver [v( d.dt )]=physical.style
+
+
+// -- Merits: Social -----------------------------------------------------------
+
+&merit.allies_() [v( d.dd )]=1.2.3.4.5|*
+&notes.merit.allies_() [v( d.dt )]=
+	Certain established NPCs within Mith-Ih-Kwuh Valley may be taken as Allies 
+	with the expenditure of Brownies.
+&tags.merit.allies_() [v( d.dt )]=social
+
+&merit.closed_book [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.barfly [v( d.dd )]=
+	u( .at_least_all, %0, attribute.manipulation:3 attribute.resolve:3 )
+&prereq-text.merit.barfly [v( d.dd )]=Manipulation 3+, Resolve 3+
+&tags.merit.closed_book [v( d.dt )]=social
+
+&merit.contacts_() [v( d.dd )]=1|*
+&tags.merit.contacts_() [v( d.dt )]=social
+
+&merit.fame_() [v( d.dd )]=1.2.3|*
+&tags.merit.fame [v( d.dt )]=social
+&notes.merit.fame_() [v( d.dt )]=
+	Fame is rare in Mith-Ih-Kwuh Valley, especially the higher degrees of it.|
+	Brownies: Each dot is 100 Brownies x level.
+
+&merit.fast_talking [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.fast_talking [v( d.dd )]=
+	u( .at_least_all, %0, attribute.manipulation:3 skill.subterfuge:2 )
+&prereq-text.merit.fast_talking [v( d.dd )]=Manipulation 3+ and Subterfuge 2+
+&tags.merit.fast_talking [v( d.dt )]=social
+
+&merit.fixer [v( d.dd )]=2
+&prerequisite.merit.fixer [v( d.dd )]=
+	cand( 
+		u( .at_least, %0, attribute.wits, 3 ), 
+		gte( words( lattr( %0/_merit.contacts_%(*%) )), 2 )
+	)
+&prereq-text.merit.fixer [v( d.dd )]=Wits 3+, 2 or more Contacts 
+&tags.merit.fixer [v( d.dt )]=social
+
+&merit.hobbyist_clique_() [v( d.dd )]=2|*
+&tags.merit.hobbyist_clique_() [v( d.dt )]=social
+
+&merit.inspiring [v( d.dd )]=3
+&prerequisite.merit.inspiring [v( d.dd )]=
+	u( .at_least, %0, attribute.presence, 3 )
+&prereq-text.merit.inspiring [v( d.dd )]=Presence 3+
+&tags.merit.inspiring [v( d.dt )]=social
+
+&merit.iron_will [v( d.dd )]=2
+&prerequisite.merit.iron_will [v( d.dd )]=
+	u( .at_least, %0, attribute.resolve, 4 )
+&prereq-text.merit.iron_will [v( d.dd )]=Resolve 4+
+&tags.merit.iron_will [v( d.dt )]=social
+
+&merit.resources [v( d.dd )]=1.2.3.4.5
+&tags.merit.resources [v( d.dt )]=social
+&notes.merit.resources [v( d.dt )]=
+	Purchasing Resources 3 or higher requires the expenditure of Brownies and 
+	staff approval.|
+	The third, fourth, and fifth dots require Brownies equal to the new dots x 
+	100.
+
+&merit.retainer_() [v( d.dd )]=1.2.3.4.5|*
+&tags.merit.retainer_() [v( d.dt )]=social
+
+&merit.safe_place_() [v( d.dd )]=1.2.3.4.5|*
+&tags.merit.safe_place_() [v( d.dt )]=social
+
+&merit.small_unit_tactics [v( d.dd )]=2
+&prerequisite.merit.small_unit_tactics [v( d.dd )]=
+	u( .at_least, %0, attribute.presence, 3 )
+&prereq-text.merit.small_unit_tactics [v( d.dd )]=Presence 3+
+&tags.merit.small_unit_tactics [v( d.dt )]=social
+
+&merit.social_prodigy [v( d.dd )]=
+&prerequisite.merit.social_prodigy [v( d.dd )]=
+&prereq-text.merit.social_prodigy [v( d.dd )]=
+&tags.merit.social_prodigy [v( d.dt )]=
+&notes.merit.social_prodigy [v( d.dt )]=
+
+&merit.social_prodigy_() [v( d.dd )]=2|
+	Animal Ken.Empathy.Expression.Intimidation.Persuasion.Socialize.Streetwise.
+	Subterfuge
+&prerequisite.merit.social_prodigy_() [v( d.dd )]=
+	t( grab( child teen, rest( u( .value_full, %0, bio.age ), / )))
+&prereq-text.merit.social_prodigy_() [v( d.dd )]=Character is a Child or Teen
+&tags.merit.social_prodigy_() [v( d.dt )]=social
+&notes.merit.social_prodigy_() [v( d.dt )]=100 Brownies
+
+&merit.spin_doctor [v( d.dd )]=1
+&prerequisite.merit.spin_doctor [v( d.dd )]=
+	u( .at_least_all, %0, attribute.manipulation:3 skill.subterfuge:2 )
+&prereq-text.merit.spin_doctor [v( d.dd )]=Manipulation 3+ and Subterfuge 2+
+&tags.merit.spin_doctor [v( d.dt )]=social
+
+&merit.staff_() [v( d.dd )]=1.2.3.4.5|*
+&tags.merit.staff_() [v( d.dt )]=social
+
+&merit.status_() [v( d.dd )]=1.2.3.4.5|*
+&tags.merit.status_() [v( d.dt )]=social
+
+&merit.striking_looks_() [v( d.dd )]=1.2|*
+&tags.merit.striking_looks_() [v( d.dt )]=social
+
+&merit.sympathetic [v( d.dd )]=2
+&tags.merit.sympathetic [v( d.dt )]=social
+
+&merit.table_turner [v( d.dd )]=1
+&prerequisite.merit.table_turner [v( d.dd )]=
+	u( .at_least_all, %0, 
+		attribute.composure: 3 attribute.manipulation:3 attribute.wits:3 
+	)
+&prereq-text.merit.table_turner [v( d.dd )]=
+	Composure 3+, Manipulation 3+, and Wits 3+
+&tags.merit.table_turner [v( d.dt )]=social
+
+&merit.taste [v( d.dd )]=1
+&prerequisite.merit.taste [v( d.dd )]=
+	cand( 
+		u( .at_least, %0, skill.crafts, 2 ), 
+		u( .specialty_has, %0, Crafts Expression, * )
+	)
+&prereq-text.merit.taste [v( d.dd )]=
+	Crafts 2+ and Specialty in Crafts or Expression
+&tags.merit.taste [v( d.dt )]=social
+
+&merit.untouchable [v( d.dd )]=1
+&prerequisite.merit.untouchable [v( d.dd )]=
+	u( .at_least_all, %0, skill.manipulation:3 skill.subterfuge:2 )
+&prereq-text.merit.untouchable [v( d.dd )]=Manipulation 3+ and Subterfuge 2+
+&tags.merit.untouchable [v( d.dt )]=social
+
+
+// -- Merits: Wizard -----------------------------------------------------------
+
+// -- ANIMAGUS ---------------------
+&merit.animagus [v( d.dd )]=2.3.4.5
+&prerequisite.merit.animagus [v( d.dd )]=
+	cand( 
+		u( .at_least_all, %0, attribute.resolve:3 attribute.composure:3 ),
+		case( u( .value_full, %0, bio.paradigm ), 
+			Sorcery, u( .at_least, %0, art.transfiguration, 3 ), 
+			Arendi, u( .at_least, %0, advantage.sortilege, 3 ), 
+			0
+		)
+	)
+&prereq-text.merit.animagus [v( d.dd )]=
+	Resolve 3+, Composure 3+, and Transfiguration 3+ (if Sorcery) 
+	or Sortilege 3+ (if Arendi)
+&tags.merit.animagus [v( d.dt )]=wizard.magic
+&notes.merit.animagus [v( d.dt )]=
+	300 Brownies (-100 for Arendi, +100 for exotic animal form)
+	|Lore Threshold: Gramarye **
+	|http://wiwimush.wikidot.com/merits#toc3
+
+// -- ARITHMANCY -------------------
+&merit.arithmancy [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.arithmancy [v( d.dd )]=
+	cand( 
+		u( .is, %0, bio.paradigm, Sorcery ),
+		u( .at_least, %0, skill.gramayre, 3 ) 
+	)
+&prereq-text.merit.arithmancy [v( d.dd )]=Sorcery only, Gramayre 3+
+&tags.merit.arithmancy [v( d.dt )]=wizard.magic
+&notes.merit.arithmancy [v( d.dt )]=
+	100 Brownies (50 for Arendi)
+	|Lore Threshold: Gramarye **
+	|http://wiwimush.wikidot.com/merits#toc3
+
+// -- BEAST SPEECH --------------------
+&merit.beast_speech [v( d.dd )]=3
+&tags.merit.beast_speech [v( d.dt )]=wizard.magic
+&notes.merit.beast_speech [v( d.dt )]=
+	100 Brownies (50 for Arendi)
+	|Lore Threshold: Gramarye ** (* for Parseltongue)
+	|http://wiwimush.wikidot.com/merits#toc3
+
+// -- DIVINATION --------------------
+&merit.divination [v( d.dd )]=1.2.3.4.5
+&tags.merit.divination [v( d.dt )]=wizard.magic
+&notes.merit.beast_speech [v( d.dt )]=
+	http://wiwimush.wikidot.com/merits#toc3
+
+// -- KYBERMAGUS ---------------------
+&merit.kybermagus [v( d.dd )]=0
+&prerequisite.merit.kybermagus [v( d.dd )]=
+	localize( cand( 
+		u( .is, %0, bio.paradigm, sorcery ), 
+		lte( 
+// .. seconds old someone born Jan 1st
+			sub( secs(), convtime( Sat Jan 1 00:00:00 2000 )), 
+// .. seconds old of target
+			sub( secs(), convtime( 
+				cat( 
+					xxx, 
+					elements( setr( b, u( .value, %0, bio.birthdate )), 1 ), 
+					elements( %qb, 2 ), 
+					00:00:00, 
+					elements( %qb, 3 )
+				)
+			))
+		)
+	))
+&prereq-text.merit.kybermagus [v( d.dd )]=Sorcery Paradigm, 
+	must be born on or after January 1st of 2000
+&tags.merit.kybermagus [v( d.dt )]=chargen-only.wizard.magic
+&notes.merit.kybermagus [v( d.dt )]=
+	XX Brownies (Sexy!)
+	|Lore Threshold: Gramarye *****
+	|http://wiwimush.wikidot.com/merits#toc3
+
+// -- LAY ON HANDS -------------------
+&merit.lay_on_hands [v( d.dd )]=3
+&tags.merit.lay_on_hands [v( d.dt )]=wizard.magic
+&notes.merit.lay_on_hands [v( d.dt )]=
+	300 Brownies (-100 for Arendi)
+	|Lore Threshold: Gramarye **** (* with Arendi)
+	|http://wiwimush.wikidot.com/merits#toc3
+
+// -- LEGILIMENCY -------------------
+&merit.legilimency [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.legilimency [v( d.dd )]=
+	cand( 
+		u( .at_least, attribute.wits, 3 ), 
+		cor( 
+			<has spell 'Legilimency'>, 
+			cand( <in chargen>, u( .at_least, skill.empathy, 2 ))
+		) 
+	)
+&prereq-text.merit.legilimency [v( d.dd )]=
+	Wits 3+ and knows Legilimency spell (if Trained), 
+	or Wits 3+, Empathy 2+ (if Natural)
+&tags.merit.legilimency [v( d.dt )]=wizard.magic
+&notes.merit.legilimency [v( d.dt )]=
+	250 Brownies (300 Brownies for Natural Legilimens)
+	|Lore Threshold: Gramarye ***
+	|http://wiwimush.wikidot.com/merits#toc3
+
+// -- LYCANTHROPY --------------------
+&merit.lycanthropy [v( d.dd )]=1
+&prerequisite.merit.lycanthropy [v( d.dd )]=0
+&prereq-text.merit.lycanthropy [v( d.dd )]=
+	Must be set by staff with 'set/override'.
+&tags.merit.lycanthropy [v( d.dt )]=wizard.magic
+&notes.merit.lycanthropy [v( d.dt )]=150 Brownies
+// maybe set xp cost to 0 and force 'xp/freebie'.
+
+// -- METAMORPHMAGUS --------------------
+&merit.metamorphmagus [v( d.dd )]=5
+&tags.merit.metamorphmagus [v( d.dt )]=wizard.chargen-only.magic
+&notes.merit.metamorphmagus [v( d.dt )]=400 Brownies 
+	|Lore Threshold: Gramarye ****
+	|http://wiwimush.wikidot.com/merits#toc3
+
+// -- OCCLUMENCY --------------------
+&merit.occlumency [v( d.dd )]=3.4.5
+&prerequisite.merit.occlumency [v( d.dd )]=
+	u( .has, %0, merit.indomitable )
+&prereq-text.merit.occlumency [v( d.dd )]=Indomitable merit 
+&tags.merit.occlumency [v( d.dt )]=wizard.muggle.magic
+&notes.merit.occlumency [v( d.dt )]=
+	200 Brownies (+100 if Muggle)
+	|Lore Threshold: Gramarye ***
+	|Replaces Indomitable
+	|http://wiwimush.wikidot.com/merits#toc3
+
+// -- SACRIFICIAL PROTECTION --------------------
+&merit.sacrificial_protection [v( d.dd )]=1.3
+&prerequisite.merit.sacrificial_protection [v( d.dd )]=0
+&prereq-text.merit.sacrificial_protection [v( d.dd )]=
+	Must be set by staff with 'set/override'.
+&tags.merit.sacrificial_protection [v( d.dt )]=wizard.magic
+&notes.merit.sacrificial_protection [v( d.dt )]=
+	Lore Threshold: Gramarye *****
+	|http://wiwimush.wikidot.com/merits#toc3
+// does this one cost xp? - Spice says "purchased as normal" - staff req.
+// where did I put that code again? Cannot remember.
+
+// -- UNBREAKABLE VOW --------------------
+&merit.unbreakable_vow [v( d.dd )]=1
+&prerequisite.merit.unbreakable_vow [v( d.dd )]=0
+&prereq-text.merit.unbreakable_vow [v( d.dd )]=
+	Must be set by staff with 'set/override'.
+&tags.merit.unbreakable_vow [v( d.dt )]=wizard.magic
+&notes.merit.unbreakable_vow [v( d.dt )]=
+	Lore Threshold: Gramarye: **
+	|http://wiwimush.wikidot.com/merits#toc3
+
+// -- UNUSUAL PATRONUS --------------------
+&merit.unusual_patronus [v( d.dd )]=3
+&prerequisite.merit.unusual_patronus [v( d.dd )]=
+	<has spell 'Patronus Charm'>,
+&prereq-text.merit.unusual_patronus [v( d.dd )]=Patronus Charm spell
+&tags.merit.unusual_patronus [v( d.dt )]=wizard.magic
+&notes.merit.unusual_patronus [v( d.dt )]=
+	15 Brownies
+	|http://wiwimush.wikidot.com/merits#toc3
+
+
+
+
+
+
+
+
+/*
+================================================================================
+== BIO: UPDATES ================================================================
+
+The merit 'giant' was renamed 'huge'.
+
+*/
+
+&advantage.size [v( d.dd )]=
+	add( 
+		u( .value_stats_template, %0, special.size, advantage.size ), 
+		u( .has, %0, merit.huge ), 
+		mul( u( .has, %0, merit.small_framed ), -1 )
+	)
+&default.advantage.size [v( d.dd )]=derived
+
+/*
+================================================================================
+== HUMAN -> Muggle =============================================================
+
+
+*/
+
+// data dictionary
+&.sphere.human [v( d.dd )]=
+&.sphere.muggle [v( d.dd )]=Muggle
+&bio.template [v( d.dd )]=Muggle
+
+// data tags (spammy)
+@edit v( d.dt )/*=human, muggle
+
+// chargen (should've been 'default', beh.)
+@edit v( d.cg )/f.pts-valid?.integrity=human, muggle
+
+
+
+
+/*
+================================================================================
+== WIZARDS =====================================================================
+
+--------------------------------------------------------------------------------
+-- Wizard: Bio -----------------------------------------------------------------
+
+http://wiwimush.wikidot.com/advantages#toc1
+
+*/
+
+@fo me=&bio.template [v( d.dd )]=[get( v( d.dd )/bio.template )].Wizard
+
+&bio.paradigm [v( d.dd )]=Sorcery.Arendi
+&tags.bio.paradigm [v( d.dt )]=wizard
+
+
+/*
+--------------------------------------------------------------------------------
+-- Wizard: Search Order --------------------------------------------------------
+
+Level 2 for powers 
+Level 3 for very minor items
+*/
+
+&d.search-order-02-wizard [v( d.sfp )]=art aptitude
+&d.search-order-03-wizard [v( d.sfp )]=
+
+
+/*
+--------------------------------------------------------------------------------
+-- Wizard: Aptitudes -----------------------------------------------------------
+*/
+
+&aptitude.potency [v( d.dd )]=
+	u( .median, 
+		iter( 
+			intelligence strength presence, 
+			ladd( get( %0/_attribute.%i0 ), . )
+		)
+	)
+&default.aptitude.potency [v( d.dd )]=derived
+&tags.aptitude.potency [v( d.dt )]=derived.wizard
+
+&aptitude.precision [v( d.dd )]=
+	u( .median, 
+		iter( 
+			wits dexterity manipulation, 
+			ladd( get( %0/_attribute.%i0 ), . )
+		)
+	)
+&default.aptitude.precision [v( d.dd )]=derived
+&tags.aptitude.precision [v( d.dt )]=derived.wizard
+
+&aptitude.protection [v( d.dd )]=
+	u( .median, 
+		iter( 
+			resolve stamina composure, 
+			ladd( get( %0/_attribute.%i0 ), . )
+		)
+	)
+&default.aptitude.protection [v( d.dd )]=derived
+&tags.aptitude.protection [v( d.dt )]=derived.wizard
+
+
+/*
+--------------------------------------------------------------------------------
+-- Wizard: Advantages ----------------------------------------------------------
+
+http://wiwimush.wikidot.com/advantages
+
+*/
+
+@edit [v( d.dt )]/tags.advantage.integrity=$, .wizard
+
+&advantage.sortilege [v( d.dd )]=1.2.3.4.5.6.7.8.9.10
+&default.advantage.sortilege [v( d.dd )]=1
+&tags.advantage.sortilege [v( d.dd )]=wizard
+
+// bio.paradigm is to be displayed as a sub-type of sortilege
+
+&advantage.darkness [v( d.dd )]=
+	ladd( u( .value_full, %0, advantage.darkness_maximum ), . )
+&default.advantage.darkness [v( d.dd )]=derived
+&tags.advantage.darkness [v( d.dt )]=pool.derived.wizard
+
+&advantage.darkness_maximum [v( d.dd )]=0.1.2.3.4.5.6.7.8.9.10
+&default.advantage.darkness_maximum [v( d.dd )]=0
+&tags.advantage.darkness_maximum [v( d.dt )]=pool.derived.wizard
+
+
+/*
+--------------------------------------------------------------------------------
+-- Wizard: Arts ----------------------------------------------------------------
+
+http://wiwimush.wikidot.com/advantages#toc4
+
+*/
+
+&art.charms [v( d.dd )]=1.2.3.4.5
+&prerequisite.art.charms [v( d.dd )]=
+	u( .at_most_stat, %0, art.charms, advantage.sortilege, %2 )
+&prereq-text.art.charms [v( d.dd )]=May not be higher than Sortilege
+&tags.art.charms [v( d.dt )]=wizard
+
+&art.glamers [v( d.dd )]=1.2.3.4.5
+&prerequisite.art.glamers [v( d.dd )]=
+	u( .at_most_stat, %0, art.glamers, advantage.sortilege, %2 )
+&prereq-text.art.glamers [v( d.dd )]=May not be higher than Sortilege
+&tags.art.glamers [v( d.dt )]=wizard
+
+&art.transfiguration [v( d.dd )]=1.2.3.4.5
+&prerequisite.art.transfiguration [v( d.dd )]=
+	u( .at_most_stat, %0, art.transfiguration, advantage.sortilege, %2 )
+&prereq-text.art.transfiguration [v( d.dd )]=May not be higher than Sortilege
+&tags.art.transfiguration [v( d.dt )]=wizard
+
+&art.conjuration [v( d.dd )]=1.2.3.4.5
+&prerequisite.art.conjuration [v( d.dd )]=
+	u( .at_most_stat, %0, art.conjuration, advantage.sortilege, %2 )
+&prereq-text.art.conjuration [v( d.dd )]=May not be higher than Sortilege
+&tags.art.conjuration [v( d.dt )]=wizard
+
+&art.potions [v( d.dd )]=1.2.3.4.5
+&prerequisite.art.potions [v( d.dd )]=
+	u( .at_most_stat, %0, art.potions, advantage.sortilege, %2 )
+&prereq-text.art.potions [v( d.dd )]=May not be higher than Sortilege
+&tags.art.potions [v( d.dt )]=wizard
+
+&art.runes [v( d.dd )]=1.2.3.4.5
+&prerequisite.art.runes [v( d.dd )]=
+	u( .at_most_stat, %0, art.runes, advantage.sortilege, %2 )
+&prereq-text.art.runes [v( d.dd )]=May not be higher than Sortilege
+&tags.art.runes [v( d.dt )]=wizard
+
+
+/*
+--------------------------------------------------------------------------------
+-- Wizard: Sheet ---------------------------------------------------------------
+
+http://wiwimush.wdfiles.com/local--files/start/Character%20Sheet_Witchcraft%20%26%20Wizardry_v2.pdf
+
+*/
+
+// << to-do >>
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Wizard: Chargen -------------------------------------------------------------
+*/
+
+// << to-do >>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+################################################################################
+## CHARACTER SHEET #############################################################
+
+Changes for the showing of the sheet for Wizards.
+
+
+
+================================================================================
+== Sheet: General ==============================================================
+
+The staff wants sheets to be open, so we remove the 'staff only' check 
+from &c.sheet.
+
+*/
+
+@edit v( d.nsc )/c.sheet={ 
+		@assert cor( u( .isstaff, %# ), not( %qt ), strmatch( %qp, %# ))=
+			{ @pemit %#=Staff only. }; 
+	}, 
+
+// Default mental and physical skill lists changed.
+// (This could be done with code, tag 'mental' of type 'skill', etc.)
+
+&skills.mental.default [v( d.nsc )]=
+	iter( 
+		academics computer crafts gramayre investigation medicine politics 
+		science, 
+		u( f.cheat_getstat.skill-n-specs, %0, %i0 ), , | 
+	)
+
+&skills.physical.default [v( d.nsc )]=
+	iter( 
+		athletics brawl drive firearms larceny ride stealth survival weaponry, 
+		u( f.cheat_getstat.skill-n-specs, %0, %i0 ), , | 
+	)
+
+
+
+/*
+================================================================================
+== Sheet: Wizard ===============================================================
+
+00000000011111111112222222222333333333344444444445555555555666666666677777777778
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+<-------------< Aptitudes >-------------> <-------------< Arts >-------------->
+ Potency (Power) ..................... 2  Charms ........................... 1
+ Precision (Finesse) ................. 2  Conjuration ...................... -
+ Protection (Resistance) ............. 4  Glamers .......................... 2
+                                          Potions .......................... -
+                                          Runes ............................ -
+                                          Transfiguration .................. 2
+
+                                          0000000001111111111222222222233333333
+                                          1234567890123456789012345678901234567
+
+So:
+	Aptitudes: w:41, t:39
+	Arts: w:37, t:35
+
+*/
+
+
+// -- Bio ----------------------------------------------------------------------
+
+// &bio.default.wizard [v( d.nsc )]=@@( nothing; get rid of Full Name too )
+
+
+// -- Powers -------------------------------------------------------------------
+
+&powers.aptitudes [v( d.nsc )]=
+	iter( sort( edit( lattr( v( d.dd )/aptitude.* ), APTITUDE., )), 
+		ulocal( f.cheat_getstat.with_name, %0, aptitude.%i0, numeric ), 
+		, | 
+	)
+
+&powers.arts [v( d.nsc )]=
+	iter( sort( edit( lattr( v( d.dd )/art.* ), ART., )), 
+		ulocal( f.cheat_getstat.with_name, %0, art.%i0, numeric ), 
+		, | 
+	)
+
+&block.powers.arts [v( d.sheet )]=
+  strcat( 
+		setq( w, 41 ), setq( t, 37 ), 
+		setq( 1, 
+			strcat( 
+				divider( Aptitudes, %qw ), |, 
+				iter( u( powers.aptitudes, %0 ), 
+					ulocal( display.trait-and-value, 
+						%i0, %qt, %qw, numeric, . 
+					), 
+					|, | 
+				)
+			)
+		), 
+
+		setq( w, 37 ), setq( t, 33 ), 
+		setq( 2, 
+			strcat( 
+				divider( Arts, %qw ), |, 
+				iter( u( powers.arts, %0 ), 
+					ulocal( display.trait-and-value, 
+						%i0, %qt, %qw, numeric, . 
+					), 
+					|, | 
+				)
+			)
+		), 
+
+		vcolumns( 38:%q2, 41:%q1, | ), %r 
+	)
+
+// And this is all we need to activate it for the Wizard template:
+
+&block.powers.wizard [v( d.sheet )]=u( block.powers.arts, %0, %1 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -- Advantages ---------------------------------------------------------------
+
+&block.traits.wizard [v( d.sheet )]=
+	strcat( 
+		setq( w, 38 ), setq( t, 10 ), 
+		setq( r, @@( ... )), 
+		setq( z, 
+			u( display.trait-and-value, 
+				strcat( 
+					setq( z, u( traits.supernatural_resistance, %0 )), 
+					setq( y, 
+						strcat( 
+							first( %qz, : ), %b, 
+							%(, get( %0/_bio.paradigm ), %) 
+						)
+					), 
+					%qy, :, 
+					rest( %qz, : )
+				), 
+				inc( strlen( %qy )), 
+				%qw, 
+				numeric 
+			)
+		), 
+		vcolumns( %qw:%qr, %qw:%qz, |, %b ), %r, 
+	)
+
+
+/* 
+********************************************************************************
+** SOME CHARGEN NOTES **********************************************************
+
+added the concept of 'mandatory' general bio checks
+*/
+
+&check.bio [v( d.cg )]=
+	strcat( 
+// column 1
+		setq( 1, 
+			strcat( 
+				ansi( h, Gender ), :, %b, 
+				setr( g, get( %0/sex )), %b, 
+				u( display.check.ok-no, match( f m, strtrunc( %qg, 1 ))), `, 
+				ansi( h, Concept ), :, %b, 
+				if( hasattr( %0, _bio.concept ), 
+					ansi( g, exists ), 
+					ansi( r, blank )
+				), `, 
+				iter( v( check.bio.mandatory ), 
+					strcat( 
+						ansi( h, titlestr( edit( %i0, _, %b ))), :, %b, 
+						setr( i, u( %1/_bio.%i0 )), %b, 
+						u( display.check.ok-no, comp( %qi, ))
+					), 
+					, ` 
+				)
+			)
+		), 
+// column 2
+		setq( 2, 
+			iter( 
+				cat( 
+					template, 
+					udefault( check.bio.%2, u( check.bio.default ), %1 )
+				), 
+				strcat( 
+					ansi( h, titlestr( edit( %i0, _, %b ))), :, %b, 
+					setr( i, u( %1/_bio.%i0 )), %b, 
+					u( display.check.ok-no, comp( %qi, ))
+				), 
+				, ` 
+			)
+		), 
+// display
+		divider( Biography Check, width( %# )), 
+		%r, 
+		vcolumns( 38:%q1, 37:%q2, `, %b, %b%b )
+	)
+
+
+&check.bio.manditory [v( d.cg )]=birthdate
+&check.bio.default [v( d.cg )]=first_name last_name
+&check.bio.wizard [v( d.cg )]=first_name last_name paradigm 
+
+&f.allocated.power-trait.wizard [v( d.cg )]=
+	mul( dec( first( get( %0/_advantage.sortilege ), . )), 5 )
+
+&check.chargen.wizard [v( d.cg )]=u( check.arts, %0, wizard )
+
+&check.arts [v( d.cg )]=
+	udefault( 
+		check.arts.[get( %0/_bio.template )], 
+		** check failed **, 
+		%0 
+	) 
+
+&check.arts.wizard [v( d.cg )]=
+	localize( strcat( 
+		%b%b, ansi( h, Arts ), :, %b, 
+		setr( a, u( f.allocated.arts, %0 )), /5, %b, 
+		u( display.check.ok-no, eq( %qa, 5 )), 
+		%r 
+	))
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Chargen ---------------------------------------------------------------
+
+Merits: 5/10 (5 on <name of Power Stat>)
+
+0: dbref of sheet
+1: template
+
+a: age
+c: age chart (<skill points>:<specialties>)
+
+*/
+
+&f.valid-points.skill.default [v( d.cg )]=
+	switch( %0, 
+		<11, 0/0/0:0, 
+		11, 6/4/2:1, 
+		12, 7/4/2:1, 
+		13, 7/4/3:1, 
+		14, 8/4/3:2, 
+		15, 8/5/3:2, 
+		16, 9/5/3:2, 
+		17, 10/6/4:2, 
+		11/7/4:3 
+	)
+
+&f.valid-points.skill.vampire [v( d.cg )]=11/7/4:3
+&f.valid-points.skill.giant [v( d.cg )]=11/7/4:3
+
+
+&check.chargen [v( d.cg )]=
+	strcat( 
+		setq( a, first( u( v( d.dd )/.value, %0, bio.age ), / )), 
+		setq( t, get( %0/_bio.template )), 
+		setq( c, 
+			udefault( f.valid-points.skill.%qt, 
+				u( f.valid-points.skill.default, %qa ), 
+				%qa
+			)
+		), 
+
+		divider( Chargen Levels, width( %# )), %r, 
+
+		%b%b, ansi( h, Attributes ), :%b, 
+		udefault( 
+			check.chargen.attributes.%1, 
+			u( check.chargen.attributes.default, %0 ), 
+			%0 
+		), 
+
+		ulocal( check.chargen.attributes, %0, %1 ), %r, 
+
+		%b%b, ansi( h, Skills ), :%b, 
+		udefault( 
+			check.chargen.skills.%1, 
+			u( check.chargen.skills.default, %0, first( %qc, : )), 
+			%0, 
+			first( %qc, : )
+		), %r, 
+		ulocal( check.chargen.specialties, %0, %1, rest( %qc, : )), %r, 
+
+		%b%b, ansi( h, Merits ), :%b, 
+			setq( a, u( f.allocated.merits, %0 )), 
+			ladd( %qa, / ), /10, 
+			%b, %(, rest( %qa, / ), %b, from Power Stat, %), %b, 
+			u( display.check.stats, %0, merits ), %r, 
+
+// .. template chargen checks
+		u( check.chargen.%1, %0 )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Chargen: Skills -------------------------------------------------------
+
+0: sheet dbref
+1: valid skill points for age (low/med/high)
+
+*/
+
+&check.chargen.skills.default [v( d.cg )]=
+	strcat( 
+		u( f.allocated.skills, %0 ), %b, %(of %1%), %b, 
+		u( display.check.stats, %0, skills, , %1 )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Display: Check Stats --------------------------------------------------------
+
+0: dbref of sheet
+1: category to check
+2: potential late additions/subtractions ('free' points being accounted for)
+3: valid points for age
+output: Ob. yes/no in full prismatic color
+
+*/
+
+&display.check.stats [v( d.cg )]=
+	u( display.check.ok-no, u( f.pts-valid?.%1, %0, %2, %3 ))
+
+
+/*
+--------------------------------------------------------------------------------
+-- Pts Valid?: Skills ----------------------------------------------------------
+
+Check for: 4/7/11 points
+0: dbref of sheet
+1: possible late additions/subtractions (for 'free point' checks)
+2: valid skill points per category (high/med/low)
+
+s: skills
+
+*/
+
+&f.pts-valid?.skills [v( d.cg )]=
+	strcat( 
+		setq( s, sort( u( f.allocated.skills, %0, %1 ), n, / )), 
+		land( 
+			iter( 
+				sort( %2, n, / ), 
+				strmatch( %i0, elements( %qs, inum(), / )), 
+				/ 
+			)
+		)
+/*
+		and(
+			eq( first( %qs, / ), 4 ), 
+			eq( elements( %qs, 2, / ), 7 ), 
+			eq( last( %qs, / ), 11 )
+		)
+*/
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Chargen: Specialties --------------------------------------------------
+
+0: sheet dbref
+1: template
+2: number of valid specialties for age 
+
+a: all specialties
+s: standard specialties
+r: template-specific specialties
+
+*/
+
+&check.chargen.specialties [v( d.cg )]=
+	strcat(
+		setq( a, ulocal( f.allocated.specialties, %0 )), 
+		setq( s, first( %qa, ` )), 
+		setq( r, rest( %qa, ` )), 
+
+		%b%b, ansi( h, Specialties ), :%b, 
+		iter( 
+			%qs, 
+			ulocal( u( d.sfp )/f.statname.workhorse, rest( %i0, . )), 
+			, %,%b
+		), 
+
+// check & output template specs
+		ulocal( check.specialties.%1, %qr ), 
+
+		%r%b%b, ansi( h,  Final Specialties Check ), %b, ->, %b, 
+		words( %qs ), /%2, %b, 
+		ulocal( display.check.stats, %0, specialties, %2 )
+
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Pts Valid?: Specialties -----------------------------------------------------
+
+Check for specialties in a list of yes/no: 
+<standard>`<template>`<specialty>`<sub-specialty>
+<standard> need to be 3, otherwise check based on tempalte
+
+0: dbref of sheet
+1: number of valid specialties by age
+
+s: specialties
+t: template
+
+&f.pts-valid?.specialties.<template> (if exists):
+	input: <template>`<specialty>`<sub-specialty>
+	output: 1 1 1 (a stream of 1 or 0 responses if it's valid)
+
+*/
+
+&f.pts-valid?.specialties [v( d.cg )]=
+	strcat(
+		setq( s, u( f.allocated.specialties, %0 )), 
+		setq( t, u( %0/_bio.template )), 
+		land( 
+			[eq( words( first( %qs, ` )), %1 )] 
+			[udefault( f.pts-valid?.specialties.%qt, 1, rest( %qs, ` ))] 
+		)
+	)
+
+
+/* 
+================================================================================
+== TEMPLATE: Warn People =======================================================
+
+Because people who have their template set are treated as Unapproved Characters, 
+warn people of this. They can use 'stat/wipe' to become a Player again.
+
+Allow upper- or lower-case (upon request)
+
+--
+
+stat/template <template>[ YES]
+stat/template <target>=<template>[ YES]
+
+(upon request, accept upper or lower case for 'yes')
+
+--
+
+0: [Target=]Template[ YES]
+
+q0: target ('%#' if target is missing and 'in chargen') 
+q1: template
+q2: YES if ' YES', else null.
+
+qp: pmatch
+qw: where is the sheet location
+qv: validated template(s)
+ql: list of stats to set
+qs: setting self? (1/0)
+
+*/
+
+&f.stat/template [v( d.ss )]=
+	strcat( 
+// .. registers
+		if( strmatch( %0, *=* ), 
+			setq( 0, before( %0, = )), 
+			setq( 0, %# )
+		), 
+		if( strmatch( %0, *=* ), 
+			setq( 1, after( %0, = )), 
+			setq( 1, %0 )
+		), 
+		if( regmatchi( %q1, ^(.+)( YES)$, 2 2 3 ), 
+			[setq( 1, %q2 )][setq( 2, YES )] 
+		), 
+
+		if( strmatch( %q0, me ), setq( 0, %# )),
+		setq( p, u( .pmatch, %q0 )), 
+		setq( w, u( f.find-sheet, %qp )), 
+		setq( s, strmatch( %#, %qp )), 
+		setq( v, statvalidate( template, %q1 )), 
+
+		case( 0, 
+
+// .. staff can set anything
+// .. players can only /template themselves, and only if they're 'in chargen'
+			cor( 
+				isstaff( %# ), 
+				cand( %qs, isapproved( %#, chargen ))
+			), 
+			u( .msg, stat/template, Staff only ), 
+
+// .. template already exists 
+			not( hasattr( %qw, _bio.template )), 
+
+			if( t( %qs ), 
+				u( .msg, stat/template, 
+					You already have a template. 
+					'stat/wipe' to erase your stats.
+				), 
+				u( .msg, stat/template, 
+					Player already has a template. 
+					'stat/wipe %q0' to erase their stats. 
+				)
+			), 
+
+// .. check for ' YES'
+			strmatch( %q2, YES ), 
+			if( t( %qs ), 
+				u( .msg, stat/template, 
+					If you set your template you will become a Character. 
+					If you're sure%, type: 
+					[ansi( h, stat/template %q1 YES )]
+				), 
+				u( .msg, stat/template, 
+					If you set their template they will become a Character. 
+					If you're sure%, type: 
+					[ansi( h, stat/template %q0=%q1 YES )] 
+				)
+			), 
+
+// .. template not found
+			t( %qv ), 
+			u( .msg, stat/template, 
+				Template '%q1' could not be found; check 'stat template' 
+			), 
+
+// OK! Find all stat.paths to be set with this template
+			strcat( 
+				setq( l, u( f.statpaths-for-template, %qv )), 
+
+// .. .. output what we're setting
+				u( display.statpath_defaults, %qp, %qv, %ql ), 
+
+// .. .. and set it
+				null( set( %qw, _BIO.TEMPLATE:%qv )), 
+				null( u( f.defaults.set, %qw, %ql )), 
+			)
+		)
+	)
+
+
+
+
+
+
+/*
+-==-=--=-=-=-=-=-=-=-
+HOW TO ADD A TEMPLATE 
+-==--=-=-=-=-=-=-=-=-
+
+In this case we're going to add 'Wizard-Born'.
+
+*/
+
+// * Make sure you have all the dbrefs set on yourself:
+@fo me=&d.dd me=[search( name=Data Dictionary <dd> )]
+@fo me=&d.dt me=[search( name=Data Tags <d:t> )]
+@fo me=&d.cg me=[search( name=GMC Chargen <cg> )]
+@fo me=&d.sheet me=[search( name=Sheet: Rows )]
+
+
+// * Add the template to the main list:
+@fo me=&bio.template [v( d.dd )]=[get( v( d.dd )/bio.template )].Wizard-Born
+
+
+// * 'Wizard-Born' is a 'Muggle'-style class, 
+//   so let's find all the 'Muggle' tags and add 'Wizard-Born' to them.
+@dolist 
+	iter( 
+		lattr( v( d.dt )/tags.* ), 
+		if( grab( get( v( d.dt )/%i0 ), muggle, . ), %i0 )
+	)=
+	{ 
+		@set [v( d.dt )]=
+			##:
+			[replace( 
+				get( v( d.dt )/## ), 
+				match( get( v( d.dt )/## ), muggle, . ), 
+				muggle.wizard-born, 
+				. 
+			)]
+	}
+
+
+// Dev Note: 
+// We do it this way because `grepi( x, *, wizard )` would match 'wizard-born'.
+// And `@edit xx=wizard, wizard.blah` would also match 'wizard-born'.
+
+
+// * We don't need to do anything else. 
+//   'Muggle' is the default for sheet and chargen.
+
+
+/*
+-=-=-=-=---=-=-=-=-=-=-=-==
+HOW TO ADD A MAGIC TEMPLATE
+-=--=-=-=-==-=--=-==-=--=-=
+
+But what if we were adding to the Wizard template?
+
+We need to make sure that the sheet shows them correctly, right? Right.
+
+*/
+
+// * Again make sure you have all the dbrefs set on yourself:
+@fo me=&d.dd me=[search( name=Data Dictionary <dd> )]
+@fo me=&d.dt me=[search( name=Data Tags <d:t> )]
+@fo me=&d.cg me=[search( name=GMC Chargen <cg> )]
+@fo me=&d.sheet me=[search( name=Sheet: Rows )]
+
+
+// * Add the template to the main list:
+@fo me=&bio.template [v( d.dd )]=[get( v( d.dd )/bio.template )].Magical-Being
+
+
+// * 'Magical-Being' is a 'Wizard'-style class, 
+//   so let's find all the 'Wizard' tags and add 'Magical Being' to them.
+@dolist 
+	iter( 
+		lattr( v( d.dt )/tags.* ), 
+		if( grab( get( v( d.dt )/%i0 ), wizard, . ), %i0 )
+	)=
+	{ 
+		@set [v( d.dt )]=
+			##:
+			[replace( 
+				get( v( d.dt )/## ), 
+				match( get( v( d.dt )/## ), wizard, . ), 
+				wizard.magical-being, 
+				. 
+			)]
+	}
+
+
+// * Allow 'Magical-Being' to see the 'Wizard' parts
+&block.powers.magical-being [v( d.sheet )]=u( block.powers.wizard, %0, %1 )
+&block.traits.magical-being [v( d.sheet )]=u( block.traits.wizard, %0 )
+
+
+// * Chargen checks (just copy/pasted from the same `.wizard` checks.
+&check.bio.magical-being [v( d.cg )]=first_name last_name paradigm 
+
+&f.allocated.power-trait.magical-being [v( d.cg )]=
+	mul( dec( first( get( %0/_advantage.sortilege ), . )), 5 )
+
+&check.chargen.magical-being [v( d.cg )]=u( check.arts, %0, magical-being )
+
+&check.arts.magical-being [v( d.cg )]=u( check.arts.wizard, %0 )
+
+
+
+/*
+################################################################################
+## ADDITIONAL SYSTEMS ##########################################################
+
+Here are some additional systems that I created for the game. They are small, but I figured I'd add them somewhere.
+
+
+================================================================================
+== FINGER: SURNAMES ============================================================
+
+	surnames: 
+		List all surnames on characters on the game. 
+		Ignores surnames on players and staff.
+	surname <name>: 
+		Lists all characters with that surname. 
+		Ignores players and staff.
+
+*/
+
+&c.surnames [v( d.fc )]=$^\+?surnames?( .*)?$:
+    think strcat( 
+        setq( 1, trim( %1 )), 
+    ); 
+
+    @pemit %#=
+        if( strlen( %q1 ), 
+            u( display.surnames.one, %q1 ), 
+            u( display.surnames.all )
+        )
+
+@set v( d.fc )/c.surnames=regex
+
+
+&display.surnames.all [v( d.fc )]=
+    strcat( 
+        setq( l, 
+            setunion( 
+                iter( 
+                    search( eplayer=
+                        cand( 
+                            hasattr( ##, _bio.template ), 
+                            hasattr( ##, _bio.last_name ), 
+                            not( isstaff( ## ))
+                        )
+                    ), 
+                    __[edit( get( %i0/_bio.last_name ), %b, _ )]
+                ), 
+            )
+        ), 
+        setq( m, add( lmax( iter( %ql, strlen( %i0 ))), 2 )), 
+
+        header( Surnames ), %r, 
+        edit( table( %ql, %qm, 78, , | ), _, %b ), %r, 
+        footer()
+    )
+
+&display.surnames.one [v( d.fc )]=
+    strcat( 
+        setq( l, 
+            search( eplayer=
+                cand( 
+                    hasattr( ##, _bio.template ), 
+                    hasattr( ##, _bio.last_name ), 
+                    not( isstaff( ## )), 
+                    strmatch( get(##/_bio.last_name ), %0 )
+                )
+            )
+        ), 
+
+        if( strlen( %ql ), 
+            strcat( 
+                setq( f, get( first( %ql )/_bio.last_name )), 
+                setq( n, iter( %ql, __[edit( name( %i0 ), %b, _ )] )), 
+                setq( m, add( lmax( iter( %qn, strlen( %i0 ))), 2 )), 
+
+                header( Surname %qf ), %r, 
+                edit( table( %qn, %qm, 78, , | ), _, %b ), %r, 
+                footer()
+            ), 
+
+            Surname not found. Check 'surnames' 
+        )
+    )

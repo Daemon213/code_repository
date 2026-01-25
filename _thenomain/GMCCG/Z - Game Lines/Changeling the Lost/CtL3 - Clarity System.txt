@@ -1,0 +1,1497 @@
+/*
+################################################################################
+## CLARITY SYSTEM ##############################################################
+
+HOLY SMOKES THIS IS NOT A SIMPLE SYSTEM!
+
+What follows is my working summary of the system, as pulled from the various 
+places in the rulebook and discussion on the Onyx Path forums.
+
+
+================================================================================
+== CLARITY SYSTEM ==============================================================
+
+The word 'damage' here refers to Clarity damage unless specified otherwise.
+
+
+DETERMINE CLARITY TRACK:
+- Wits + Composure + Icons (p.203)
+- One free Touchstone (p.98)
+  Touchstones start at Composure + 1, even if stats change
+  Max Touchstones = Max Clarity - Composure
+  Attached = Represented on track and does not have severe damage
+
+DETERMINE CLARITY BREAK:
+- Comatose Changelings cannot suffer a Clarity Break
+- Look up amount of dice from Breaking Points chart (p.106) 
+  Or use Seeming Curse, using half Wyrd, rounded up
+- Add and remove dice based on Changeling's personal attachment (pp.104-5)
+- If successes are rolled, apply damage (below)
+
+APPLYING DAMAGE:
+- Roll Wyrd and apply that much damage
+  If the Clarity Break roll was Exceptional, apply damage as severe, else mild
+- Modify damage roll by attached Touchstones (p.98)
+  0:  +2 Dice
+  1:  -1 Die
+  2+: -2 Dice
+- Severe damage overwrites mild damage
+- Damage to the last three boxes creates Clarity conditions (p.107)
+  One normal condition max for any amount of mild damage per Clarity Break
+  One persistent condition max for any amount of severe damage per Clarity Break
+- Damage that fills the Clarity track causes the Comatose condition instead
+  Normal if mild damage, Persistent if severe damage
+
+HEALING DAMAGE:
+- Spend time with a Touchstone (attached or otherwise)
+  Heal 1 severe or all mild damage
+  Do not resolve any conditions by default
+- Resolve a Clarity condition
+  Normal condition: Heal 1 point of any damage
+  Persistent condition: Heal 2 points of any damage(s)
+
+COMATOSE: 
+- The changeling is in a dream-state but believes the world to be real
+- Actions the changeling believes they are taking will resolve conditions
+  in this state and heal Clarity damage
+- Those with normal Comatose will awaken when Clarity damage is healed
+- Those with persistent Comatose will not
+
+CLARITY CONDITIONS:
+• Broken (Persistent)
+• Comatose (Sometimes Persistent, Sometimes Not)
+• Confused
+• Delusional (Persistent)
+• Dissociation
+• Distracted
+• Fugue (Persistent)
+• Numb (Persistent)
+• Shaken
+• Sleepwalking (Persistent)
+• Spooked
+• Withdrawn
+
+
+================================================================================
+== HELP NOTES ==================================================================
+
+clarity/hurt [<name>/]<type>[=<amt>]
+clarity/heal [<name>/]<type>[=<amt>]
+
+
+name: target character, defaults to 'me'
+amt: positive integer value or 'all', defaults to '1'
+type: mild, severe
+
+
+================================================================================
+== BASICS: CLARITY STATS =======================================================
+
+Add these to the Data Dictionary.
+
+'&advantage.clarity' is because this may be rolled (et al.) and therefore needs 
+to be exposed to the core roller via type 'advantage'.
+
+*/
+
+&advantage.clarity [v( d.dd )]=
+	[u( .value_stats, %0, clarity.maximum )].
+	-[u( .value, %0, clarity.damage )]
+&default.advantage.clarity [v( d.dd )]=derived
+&tags.advantage.clarity [v( d.dt )]=derived.pool
+&notes.advantage.clarity [v( d.dd )]=
+	Use the 'clarity' command to apply damage
+
+
+// the rest of the system is hidden from the roller, like health
+
+&clarity.maximum [v( d.dd )]=
+	add( 
+		u( .value_stats, %0, attribute.wits attribute.composure ), 
+		words( lattr( %0/_advantage.icon_(*) ))
+	)
+&default.clarity.maximum [v( d.dd )]=derived
+&tags.clarity.maximum [v( d.dt )]=derived.changeling
+
+&clarity.mild [v( d.dd )]=#
+&clarity.severe [v( d.dd )]=#
+
+&default.clarity.mild [v( d.dd )]=0
+&default.clarity.severe [v( d.dd )]=0
+
+&clarity.damage [v( d.dd )]=
+	ladd( iter( mild severe, u( .value, %0, clarity.%i0 )))
+&default.clarity.damage [v( d.dd )]=derived
+
+&clarity.penalty [v( d.dd )]=
+	min( 
+		0, 
+		add( 
+			u( .value, %0, clarity.maximum ), 
+			mul( -1, u( .value, %0, clarity.damage )), 
+			-3 
+		)
+	)
+&tags.clarity.penalty [v( d.dt )]=derived
+&default.clarity.penalty [v( d.dd )]=derived
+
+/*
+--------------------------------------------------------------------------------
+-- Other Added Traits ----------------------------------------------------------
+*/
+
+// ICON (): Bits of a Changeling's soul
+&advantage.icon_() [v( d.dd )]=*|*
+&prerequisite.advantage.icon_() [v( d.dd )]=0
+&prereq-text.advantage.icon_() [v( d.dd )]=
+	May only be set by staff with 'stat/override'
+&tags.advantage.icon_() [v( d.dt )]=changeling
+&notes.advantage.icon_() [v( d.dt )]=
+	Type: Name of Icon|
+	Value: Description of Icon
+
+
+// TOUCHSTONE (): What keeps a Changeling grounded
+// (Warning: Vampire also uses Touchstones this way.)
+// I may create a 'touchstone' system some year to resolve this. Maybe.
+&merit.touchstone_() [v( d.dd )]=1|*
+&prerequisite.merit.touchstone_() [v( d.dd )]=
+	lte( 
+		add( 
+			words( lattr( %0/_merit.touchstone_(*) )), 
+// .. "include this instance" - because cg/check also runs this code
+			t( strlen( %2 ))
+		), 
+// .. Max Touchstones = Max Clarity - Composure
+		sub( 
+			u( .value_stats, %0, clarity.maximum ), 
+			u( .value_stats, %0, attribute.composure )
+		)
+	)
+&prereq-text.merit.touchstone_() [v( d.dd )]=
+	May not have more Touchstones than Clairty track allows
+&tags.merit.touchstone_() [v( d.dt )]=changeling
+
+/*
+################################################################################
+## CLARITY HEALTH SYSTEM #######################################################
+
+Stealing copiously from the core Health system.
+
+There is no 'push' or 'wrap', only fill or overlay.
+Exceptions happen on filling the last square.
+
+
+================================================================================
+== Setup =======================================================================
+*/
+
+@create Changeling Clarity System <ccs>
+@fo me=&d.ccs me=search( name=Changeling Clarity System <ccs> )
+@set Changeling Clarity System <ccs>=inherit safe
+
+// systems we'll have to access
+
+@fo me=&d.dd Changeling Clarity System <ccs>=
+	[search( name=Data Dictionary <dd> )]
+@fo me=&d.sfp Changeling Clarity System <ccs>=
+	[search( name=Stat Functions Prototype <sfp> )]
+
+@fo me=@parent Changeling Clarity System <ccs>=[v( d.codp )]
+
+// tell the sheet system where to find this info
+
+@fo me=&d.ccs [v( d.nsc )]=[search( name=Changeling Clarity System <ccs> )]
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Setup: Data -----------------------------------------------------------------
+*/
+
+&d.symbol.touchstone [v( d.ccs )]=^
+
+/* 
+--------------------------------------------------------------------------------
+-- Setup: Dot Functions --------------------------------------------------------
+
+FAQ: "What is a dot function?"
+
+     It's a function used so often that it could be a global function or a 
+     very general local function.
+     
+     Sometimes it's about what feels right.
+
+*/
+
+// u( .msg, <header>, <message> )
+&.msg [v( d.ccs )]=ansi( h, <%0>, n, %b%1 )
+
+// u( .plural, <num>, thing, things )
+&.plural [v( d.ccs )]=cat( %0, if( eq( %0, 1 ), %1, %2 ))
+
+// u( .sign, <num> ) --> - or + or neither if 0
+&.sign [v( d.ccs )]=case( sign( %0 ), 1, +, -1, - )
+
+// call the data dictionary 'value' lookup
+&.value [v( d.ccs )]=ulocal( v( d.dd )/.value, %0, %1 )
+&.value_stats [v( d.ccs )]=ulocal( v( d.dd )/.value_stats, %0, %1 )
+
+// damage track is full or Changeling has a 'comatose' condition
+&.is_comatose [v( d.ccs )]=
+	cor( 
+		lte( 
+			ulocal( v( d.dd )/.value_stats, %0, advantage.clarity ), 
+			0 
+		), 
+		t( lattr( %0/_cond.comatose.*  )),
+		t( lattr( %0/_cond.persistent_comatose.*  ))
+	)
+
+
+
+/*
+================================================================================
+== Clarity-Related Functions ===================================================
+
+--------------------------------------------------------------------------------
+-- Function: Active Touchstones ------------------------------------------------
+
+How many touchstones are active?
+
+Ties into the 'display' code for now, so we assume this the following are 
+already calculated:
+
+0: <mild> <severe>
+1: <list of positions for touchstones, far left = 1>
+
+Return: Positions for active Touchstones
+
+*/
+
+&f.touchstones.active [v( d.ccs )]=setdiff( %1, lnum( 1, rest( %0 )))
+
+
+
+/* 
+################################################################################
+## CLARITY OUTPUT ##############################################################
+
+--------------------------------------------------------------------------------
+-- Clarity: How is it going to look on the sheet? ------------------------------
+
+Composure 2, Wits 2, one Touchstone:
+  [ ] [ ] [ ] [ ]  (1 Attached Touchstone)
+           ^
+
+Composure 2, Wits 2, two Touchstones:
+  [ ] [ ] [ ] [ ]  (2 Attached Touchstones)
+           ^   ^
+
++2 Minor Damage:
+  [/] [/] [ ] [ ]  (2 Attached Touchstones)
+           ^   ^
+Plus notification of gaining a condition.
+
++1 Major Damage:
+  [X] [/] [ ] [ ]  (2 Attached Touchstones)
+           ^   ^
+
++1 Minor Damage:
+  [X] [/] [/] [ ]  (2 Attached Touchstones)
+           ^   ^
+Plus notification of gaining a condition.
+
++2 Major Damage:
+  [X] [X] [X] [ ]  (1 Attached Touchstone)
+           ^   ^
+Plus notification of gaining a persistent condition.
+
+
+--------------------------------------------------------------------------------
+-- Display: Clarity Bar --------------------------------------------------------
+
+Do all the calculations and lookups before passing it on the the 'format' for 
+the final readable output.
+
+See 'Format: Clarity Bar' for what we're passing. It's not far.
+Full testing also follows.
+
+0: Sheet to display
+
+*/
+
+&display.clarity-bar [v( d.ccs )]=
+	ulocal( format.clarity-bar, 
+		iter( mild severe, u( .value_stats, %0, clarity.%i0 )), 
+		ladd( 
+			u( .value_stats, %0, clarity.maximum ), 
+			. 
+		), 
+		inc( u( .value, %0, attribute.composure )), 
+		u( .value_stats, %0, clarity.penalty ), 
+		%b%b 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Format: Clarity Bar ---------------------------------------------------------
+
+This is the main output. "Format" because all the calculation should be done 
+elsewhere. This is the place to create out the raw output.
+
+0: <mild> <severe>
+1: <max clarity>
+2: <list of positions for touchstones, far left = 1>
+3: perception penalty (grabbed from 'clarity.penalty')
+4: left margin text
+
+Example: 
+	think u( v( d.ccs )/display.clarity-bar, 2 1, 7, 5 6, 0, %b%b )
+	Output: [X][/][/][ ][ ][ ][ ] 
+	                     ^  ^     (2 Touchstones)
+
+	think u( v( d.ccs )/display.clarity-bar, 0 2, 4, 2, -1, %b%b )
+	Or:     [X][X][ ][ ] (-1 Perception)
+	            ^        (No Touchstones)
+
+w: what are we displaying?
+d: total levels of damage
+t: touchstone position list (intersect passed list with other things)
+a: number of active touchstones
+
+
+*/
+
+&format.clarity-bar [v( d.ccs )]=
+	strcat( 
+		setq( w, inc( words( %0 ))), 
+		setq( d, ladd( %0 )), 
+		setq( t, setinter( %2, lnum( 1, %1 ))), 
+		setq( a, words( u( f.touchstones.active, %0, %qt ))), 
+		setq( p, u( .value, %x, )), 
+
+// line 1: graph and touchstone reporting
+		%4, 
+// .. X / inversely related to <mild> <severe>
+		iter( 
+			X /, 
+			iter( 
+// .. .. count the wound levels represented by which outer loop we're on
+// .. .. (here's where we invert, too)
+				lnum( elements( %0, sub( %qw, inum( 0 )))), 
+// .. .. output the symbol on the outer loop we're on
+				ansi( xh, %[, nh, %i1, xh, %] ), 
+				, @@ 
+			), 
+			, @@ 
+		), 
+
+// .. undamaged (max - damage)
+		iter( 
+			lnum( sub( %1, %qd )), 
+			ansi( xh, %[%b%] ), 
+			, @@ 
+		), 
+// .. report Perception penalties
+		if( 
+			neq( 0, %3 ), 
+			ansi( xh, 
+				strcat( 
+					%b, %(, 
+					u( .sign, %3 ), trim( %3, b, - ), %b, 
+					Perception, 
+					%) 
+				)
+			)
+		), 
+
+// line 2: touchstone locations
+		if( strlen( %2 ), 
+			strcat( 
+				%r, 
+				%4, 
+				repeat( %b %b, dec( first( %2 ))), 
+				ansi( xh, 
+					repeat( 
+						%b[v( d.symbol.touchstone )]%b, 
+						words( %qt )
+					), 
+				), 
+// .. fill spaces to end of health track
+				space( 
+					mul( 3, 
+						sub( %1, add( dec( first( %2 )), words( %2 )))
+					) 
+				), 
+			)
+		), %b, 
+// .. report active touchstones
+		ansi( 
+			xh, %(, 
+			xh, edit( u( .plural, %qa, Touchstone, Touchstones ), 0%b, No%b ), 
+			xh, %) 
+		), 
+
+	)
+
+// -- test --
+think ansi( y, -- TEST: FORMAT.CLARITY-BAR -- )
+think u( v( d.ccs )/format.clarity-bar, 2 1, 7, 5 6, 0, %b%b )
+think u( v( d.ccs )/format.clarity-bar, 1 1, 4, 2, -1, %b%b )
+think u( v( d.ccs )/format.clarity-bar, 0 2, 4, 2, -1, %b%b )
+
+// -- more real test --
+
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:3
+@set/quiet me=_clarity.severe:2
+
+think 
+	u( v( d.ccs )/format.clarity-bar, 
+		iter( mild severe, 
+			get( %#/_clarity.%i0 )
+		), 
+		ladd( 
+			ulocal( v( d.nsc )/f.cheat_getstat.numeric, 
+				%#, 
+				clarity.maximum 
+			), 
+			. 
+		), 
+		inc( ladd( 
+			ulocal( v( d.nsc )/f.cheat_getstat.numeric, 
+				%#, 
+				attribute.composure 
+			), 
+			. 
+		)), 
+		u( v( d.dd )/.value_stats, %#, clarity.penalty ), 
+		%b%b 
+	)
+
+// Should match:
+think ansi( y, -- TEST: DISPLAY.CLARITY-BAR (should match above) -- )
+think u( v( d.ccs )/display.clarity-bar, %# )
+
+
+/*
+################################################################################
+## CALCULATE DAMAGE AND HEALING ################################################
+
+Notes:
+
+max damage (because 'severe' overwrites 'mild' we can ignore it there):
+	max( 
+		<amt>, 
+		<max> - add( <severe>, if( type=='mild' then <mild> else 0 ))
+	)
+
+add (mild):
+	* <mild> =+ <dmg>
+
+overlap (severe):
+	* <mild> = <mild> - min( <dmg>, <mild> )
+	* <severe> = <severe> + <dmg> 
+
+
+================================================================================
+== Function: "Actual Damage" ===================================================
+
+	u( f.clarity.actual_damage, <target dbref>, <dmg amt>, <dmg type> )
+
+Passed 'mild' or 'severe' damage, returns the amount of that kind of damage to 
+set for that type.
+
+The 'mild damage' and 'severe damage' system then takes that information and 
+processes the new mild/severe damage.
+
+returns: FINAL damage of that type (and that type only)
+
+*/
+
+&f.clarity.actual_damage [v( d.ccs )]=
+	min( 
+		add( 
+			%1, 
+			u( .value, %0, clarity.%2 ), 
+		), 
+		sub( 
+			u( .value, %0, clarity.maximum ), 
+			if( strmatch( %2, mild ), u( .value, %0, clarity.severe ))
+		)
+	)
+
+
+// -- test --
+think ansi( y, -- TEST: F.CLARITY.ACTUAL_DAMAGE -- )
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:3
+@set/quiet me=_clarity.severe:2
+think [u( v( d.ccs )/f.clarity.actual_damage, %#, 2, mild )] --> 5
+think [u( v( d.ccs )/f.clarity.actual_damage, %#, 2, severe )] --> 4
+
+think [u( v( d.ccs )/f.clarity.actual_damage, %#, 8, mild )] --> 5
+think [u( v( d.ccs )/f.clarity.actual_damage, %#, 8, severe )] --> 7
+
+think [u( v( d.ccs )/f.clarity.actual_damage, %#, 99, mild )] --> 5
+think [u( v( d.ccs )/f.clarity.actual_damage, %#, 99, severe )] --> 7
+
+
+
+/*
+================================================================================
+== Function: Calculate 'Mild' Damage ===========================================
+
+	u( f.clarity.hurt.mild, <target dbref>, <dmg amt> )
+
+returns: <current mild> <current severe>|<new mild> <current severe>
+
+If a changeling takes any more mild Clarity damage after her track fills with  
+damage of any kind, she falls unconscious, lost in her own dreams. She takes the 
+Comatose Condition (p. 334) and can’t take any more Clarity damage until she 
+heals at least one point.
+
+m: current mild damage
+s: current severe damage
+d: new mild damage ("actual")
+
+*/
+
+&f.clarity.hurt.mild [v( d.ccs )]=
+	localize( strcat( 
+		setq( m, u( .value, %0, clarity.mild )), 
+		setq( s, u( .value, %0, clarity.severe )), 
+		setq( d, u( f.clarity.actual_damage, %0, %1, mild )), 
+
+		case( 1, 
+			u( .is_comatose, %0 ), 
+			#-1 Target is comatose%; cannot take damage, 
+
+// .. current damage|new damage
+			strcat( %qm %qs, |, %qd %qs )
+		)
+	)) 
+
+// -- test --
+think ansi( y, -- TEST: F.CLARITY.HURT.MILD -- )
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:3
+@set/quiet me=_clarity.severe:2
+think [u( v( d.ccs )/f.clarity.hurt.mild, %#, 1 )] --> 3 2|4 2 
+think [u( v( d.ccs )/f.clarity.hurt.mild, %#, 2 )] --> 3 2|5 2
+think [u( v( d.ccs )/f.clarity.hurt.mild, %#, 8 )] --> 3 2|5 2 
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:4
+@set/quiet me=_clarity.severe:3
+think [u( v( d.ccs )/f.clarity.hurt.mild, %#, 1 )] --> #-1 comatose
+
+
+/*
+================================================================================
+== Function: Calculate 'Severe' Damage =========================================
+
+	u( f.clarity.hurt.severe, <target dbref>, <dmg amt> )
+
+returns: <new mild damage> <new severe damage>
+
+If she takes severe damage after her track is filled with damage instead, she 
+not only takes the Comatose Condition, but risks death. The Comatose Condition 
+becomes Persistent and she can only resolve it with the help of her friends, as 
+noted in the Condition’s text.
+
+m: existing mild damage
+s: existing severe damage
+
+d: new severe damage ("actual")
+n: new mild damage
+
+*/
+
+&f.clarity.hurt.severe [v( d.ccs )]=
+	localize( strcat( 
+		setq( m, u( .value, %0, clarity.mild )), 
+		setq( s, u( .value, %0, clarity.severe )), 
+		setq( d, u( f.clarity.actual_damage, %0, %1, severe )), 
+		setq( n, sub( %qm, min( %1, %qm ))), 
+
+		case( 1, 
+			u( .is_comatose, %0 ), 
+			#-1 Target is comatose%; cannot take damage, 
+
+// .. current damage|new damage
+			strcat( %qm %qs, |, %qn %qd )
+		)
+	))
+
+// -- test --
+think ansi( y, -- TEST: F.CLARITY.HURT.SEVERE -- )
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:3
+@set/quiet me=_clarity.severe:2
+think [u( v( d.ccs )/f.clarity.hurt.severe, %#, 1 )] --> 3 2|2 3
+think [u( v( d.ccs )/f.clarity.hurt.severe, %#, 2 )] --> 3 2|1 4
+think [u( v( d.ccs )/f.clarity.hurt.severe, %#, 8 )] --> 3 2|0 7
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:4
+@set/quiet me=_clarity.severe:3
+think [u( v( d.ccs )/f.clarity.hurt.severe, %#, 1 )] --> #-1 comatose
+
+
+
+
+/*
+================================================================================
+== Function: Calculate Damage (in general) =====================================
+
+This is the one to call for damage.
+
+	u( f.clarity.hurt, <target dbref>, <dmg type>, <dmg amt> )
+
+<type>: Mild or Severe. May be "all".
+<amt>: May be "all" or positive integer
+returns: <new mild damage> <new severe damage>
+
+t: damage type
+
+*/
+
+&f.clarity.hurt [v( d.ccs )]=
+	localize( 
+		case( 0, 
+			strlen( setr( t, setinter( mild severe all, lcstr( %1 )))), 
+			#-1 Type is Mild%, Severe%, or All, 
+
+			not( u( .is_comatose, %0 )), 
+			#-1 Target is comatose%; cannot take damage, 
+			
+			not( cor( strmatch( %2, all ), strmatch( %qt, all ))), 
+			u( f.clarity.hurt.all, %0, %qt ), 
+
+			cand( isint( %2 ), gte( %2, 0 )), 
+			#-1 Damage with positive integer only, 
+
+// .. ok
+			u( f.clarity.hurt.%qt, %0, %2 )
+		)
+	)
+
+// -- test --
+think -- TEST: F.CLARITY.HURT --
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:3
+@set/quiet me=_clarity.severe:2
+think [u( v( d.ccs )/f.clarity.hurt, %#, mild, 2 )] --> 3 2|5 2
+think [u( v( d.ccs )/f.clarity.hurt, %#, severe, 2 )] --> 3 2|1 4
+
+think [u( v( d.ccs )/f.clarity.hurt, %#, mild, 99 )] --> 3 2|5 2
+think [u( v( d.ccs )/f.clarity.hurt, %#, severe, 99 )] --> 3 2|0 7
+
+think [u( v( d.ccs )/f.clarity.hurt, %#, mild, x )] --> #-1 integer
+think [u( v( d.ccs )/f.clarity.hurt, %#, ???, 2 )] --> #-1 type
+think [u( v( d.ccs )/f.clarity.hurt, %#, , 2 )] --> #-1 type
+
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:5
+@set/quiet me=_clarity.severe:2
+think [u( v( d.ccs )/f.clarity.hurt, %#, mild, 2 )] --> #-1 comatose
+
+
+/*
+================================================================================
+== Function: "Hurt All" ========================================================
+
+	u( f.clarity.hurt.all, <target dbref>, <dmg type> )
+
+Fill available Clarity with <type> damage.
+
+This is here to make calling 'f.clarity.heal.all' easier from the workhorse.
+
+*/
+
+&f.clarity.hurt.all [v( d.ccs )]=
+	case( %1, 
+		all, u( f.clarity.hurt, %0, severe, 9999 ), 
+		mild, u( f.clarity.hurt, %0, mild, 9999 ), 
+		severe, u( f.clarity.hurt, %0, severe, 9999 ), 
+		#-1 Unknown Damage Type  
+	)
+
+// -- test --
+think ansi( y, -- TEST: F.CLARITY.HURT.ALL -- )
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:1
+@set/quiet me=_clarity.severe:2
+think [u( v( d.ccs )/f.clarity.hurt.all, %#, all )] --> 1 2|0 7
+think [u( v( d.ccs )/f.clarity.hurt.all, %#, mild )] --> 1 2|5 2
+think [u( v( d.ccs )/f.clarity.hurt.all, %#, severe )] --> 1 2|0 7 
+think [u( v( d.ccs )/f.clarity.hurt, %#, mild, all )] --> 1 2|5 2
+think [u( v( d.ccs )/f.clarity.hurt, %#, all )] --> 1 2|0 7
+
+
+think [u( v( d.ccs )/f.clarity.hurt.all, %#, ??? )] --> #-1 type
+think [u( v( d.ccs )/f.clarity.hurt.all, %#, )] --> #-1 type
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:1
+@set/quiet me=_clarity.severe:6
+think [u( v( d.ccs )/f.clarity.hurt.all, %#, mild )] --> #-1 comatose
+
+
+/*
+================================================================================
+== Function: Calculate Healing =================================================
+
+	u( f.clarity.heal, <target dbref>, <heal type>, <heal amt> )
+
+Very simplistic: Take the number and subtract the amount healed for that type.
+(It's a function in case complexity is added to the system.)
+(What are the chances of that?)
+
+returns: <old dmg>|<new mild dmg> <new severe dmg>
+
+t: Clarity damage type to heal (may be 'all')
+m: existing mild damage
+s: existing severe damage
+d: new damage of <heal type> (%qt)
+
+*/
+
+&f.clarity.heal [v( d.ccs )]=
+	localize( 
+		case( 0, 
+			add( 
+				setr( m, u( .value, %0, clarity.mild )), 
+				setr( s, u( .value, %0, clarity.severe ))
+			),
+			strcat( 
+				#-1 Target is already healthy, 
+				if( u( .is_comatose, %0 ), %bbut is still comatose )
+			), 
+			
+
+			strlen( setr( t, setinter( mild severe all, lcstr( %1 )))), 
+			#-1 Type is Mild%, Severe%, or All, 
+
+			not( cor( strmatch( %2, all ), strmatch( %qt, all ))), 
+			u( f.clarity.heal.all, %0, %qt ), 
+
+			cand( isint( %2 ), gte( %2, 0 )), 
+			#-1 Heal with positive integer only, 
+
+// output all new damages
+			strcat( 
+				setq( d, 
+					case( %qt, 
+						mild, %qm, 
+						severe, %qs
+					)
+				), 
+				setq( d, max( 0, sub( %qd, %2 ))), 
+				%qm %qs|, 
+				case( %qt, 
+					mild, %qd %qs, 
+					severe, %qm %qd, 
+					#-1 Panic in &f.clarity.heal 
+				)
+			)
+		)
+	)
+
+// -- test --
+think ansi( y, -- TEST: F.CLARITY.HEAL -- )
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:3
+@set/quiet me=_clarity.severe:2
+think [u( v( d.ccs )/f.clarity.heal, %#, mild, 1 )] --> 3 2|2 2
+think [u( v( d.ccs )/f.clarity.heal, %#, severe, 1 )] --> 3 2|3 1 
+
+think [u( v( d.ccs )/f.clarity.heal, %#, mild, 99 )] --> 3 2|0 2
+think [u( v( d.ccs )/f.clarity.heal, %#, severe, 99 )] --> 3 2|3 0 
+
+think [u( v( d.ccs )/f.clarity.heal, %#, severe, -9 )] --> #-1 integer
+think [u( v( d.ccs )/f.clarity.heal, %#, ???, 1 )] --> #-1 type
+
+
+/*
+--------------------------------------------------------------------------------
+-- Heal All --------------------------------------------------------------------
+
+	u( f.clarity.heal.all, <target dbref>, <heal type> )
+
+Heal all of a certain type, including 'all'.
+
+Don't bother with the fancy calculations.
+
+*/
+
+&f.clarity.heal.all [v( d.ccs )]=
+	case( 0, 
+		strlen( setr( t, setinter( mild severe all, lcstr( %1 )))), 
+		#-1 Type is Mild%, Severe%, or All, 
+
+		strcat( 
+			setq( m, u( .value, %0, clarity.mild )), 
+			setq( s, u( .value, %0, clarity.severe )), 
+			%qm %qs|, 
+			case( %1, 
+				all, 0 0, 
+				mild, 0 %qs, 
+				severe, %qm 0, 
+				#-1 Unknown bug in &f.clarity.heal.all 
+			)
+		)
+	)
+
+// -- test --
+think ansi( y, -- TEST: F.CLARITY.HEAL.ALL -- )
+@set/quiet me=_clarity.maximum:7
+@set/quiet me=_clarity.mild:4
+@set/quiet me=_clarity.severe:3
+think [u( v( d.ccs )/f.clarity.heal.all, %#, mild )] --> 4 3|0 3
+think [u( v( d.ccs )/f.clarity.heal.all, %#, severe )] --> 4 3|4 0
+think [u( v( d.ccs )/f.clarity.heal.all, %#, all )] --> 4 3|0 0
+
+think [u( v( d.ccs )/f.clarity.heal, %#, mild, all )] --> 4 3|0 3
+think [u( v( d.ccs )/f.clarity.heal, %#, all )] --> 4 3|0 0
+
+think [u( v( d.ccs )/f.clarity.heal.all, %#, ??? )] --> #-1 type
+
+
+
+/* 
+================================================================================
+== TEST HEALTH CHANGE ==========================================================
+
+Check for things that may happen between <old damage> and <new damage>
+
+Damage is reported as: <mild dmg> <severe dmg>
+
+--------------------------------------------------------------------------------
+-- Test Change -----------------------------------------------------------------
+
+	u( f.test-change, <target dbref>, <old dmg>, <new dmg> )
+
+The main code run for testing. Determines if damage was hurt or heal and passes 
+info to deeper code checks.
+
+o: original damage total (for legibility)
+n: new damage total (for legibility)
+
+*/
+
+&f.test-change [v( d.ccs )]=
+	strcat( 
+		setq( o, ladd( %1 )), 
+		setq( n, ladd( %2 )), 
+
+		case( 1, 
+			cor( 
+				gt( %qa, %qo ), 
+				gt( elements( %2, 2 ), elements( %1, 2 ))
+			), 
+			ulocal( f.test-change.hurt, %0, %1, %2 ), 
+
+			lt( ladd( %2 ), ladd( %1 )), 
+			ulocal( f.test-chage.heal, %0, %1, %2 ),  
+
+			@@( no change )
+		)
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Test Change: Hurt -----------------------------------------------------------
+
+	u( f.test-change.hurt, <target dbref>, <old dmg>, <new dmg> )
+
+m: max clarity
+o: original damage total (needed if we report touchstone loss)
+n: new damage total
+
+s: damage was severe? ('1' for true)
+p: 'persistent ' text if it was
+
+*/
+
+&f.test-change.hurt [v( d.ccs )]=
+	localize( case( 1, 
+
+// is the changeling already comatose?
+		u( .is_comatose, %0 ), 
+		@@( comatose cannot gain damage ), 
+
+// are %1 and %2 identical? Why do we pass %1, anyway?
+		strmatch( %1, %2 ), 
+		@@( nothing changed so ignore it ), 
+
+		strcat( 
+			setq( m, u( .value, %0, clarity.maximum )), 
+			setq( o, ladd( %1 )), 
+			setq( n, ladd( %2 )), 
+		
+			setq( s, gt( elements( %2, 2 ), elements( %1, 2 ))), 
+			setq( p, if( %qs, Persistent%b )), 
+			
+// either comatose condition, clarity condition, or neither
+			case( 1, 
+// .. track is full: comatose condition
+				gte( %qn, %qm ), 
+				|Gains %qpComatose Condition, 
+
+// .. last three filled: clarity condition
+				lt( sub( %qm, %qn ), 3 ), 
+				|should set a %qpClarity Condition, 
+
+				@@( neither )
+			)
+		)
+	))
+
+// -- test --
+think ansi( y, -- TEST: F.TEST-CHANGE.HURT -- )
+@set/quiet me=_clarity.maximum:5
+@set/quiet me=_clarity.mild:0
+@set/quiet me=_clarity.severe:0
+
+think u( v( d.ccs )/f.test-change.hurt, %#, 0 0, 0 1 ) --> (no condition)
+think u( v( d.ccs )/f.test-change.hurt, %#, 0 0, 3 0 ) --> clarity
+think u( v( d.ccs )/f.test-change.hurt, %#, 0 0, 0 3 ) --> persistent clarity
+
+think u( v( d.ccs )/f.test-change.hurt, %#, 0 4, 1 4 ) --> comatose
+think u( v( d.ccs )/f.test-change.hurt, %#, 4 0, 4 1 ) --> persistent comatose
+
+think u( v( d.ccs )/f.test-change.hurt, %#, 4 1, 4 1 ) --> (no change)
+
+@set/quiet me=_clarity.maximum:5
+@set/quiet me=_clarity.mild:4
+@set/quiet me=_clarity.severe:1
+
+think u( v( d.ccs )/f.test-change.hurt, %#, 0 0, 1 0 ) --> (already comatose)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Test Change: Heal -----------------------------------------------------------
+
+	u( f.test-change.heal, <target dbref>, <old dmg>, <new dmg> )
+
+
+We don't use <old dmg> or <new dmg> here, but I'm paranoid.
+
+c: comatose registered
+p: persistent comatose registered
+
+Nothing can help 'persistent comatose', but we treat `cond.` data with suspicion
+
+	* If someone has multiple `_cond.comtaose.<timestamp>`, 
+	  then we wipe all of them.
+	* If someone has both `_cond.comatose` and `_cond.persistent_comatose`, 
+	  then we let persistent comatose take priority.
+
+*/
+
+&f.test-change.heal [v( d.ccs )]=
+	strcat( 
+		setq( c, lattr( %0/_cond.comatose.* )), 
+		setq( p, lattr( %0/_cond.persistent_comatose.* )), 
+
+		case( 1, 
+			strmatch( %1, %2 ), 
+			@@( nothing changed so ignore it ), 
+
+			cand( t( %qc ), not( t( %qp ))), 
+			|can resolve a normal Comatose Condition, 
+
+			@@( nothing else happened )
+		)
+	)
+
+// -- test --
+think ansi( y, -- TEST: F.TEST-CHANGE.HEAL -- )
+@set/quiet me=_clarity.maximum:5
+@set/quiet me=_clarity.mild:3
+@set/quiet me=_clarity.severe:2
+@set/quiet me=_cond.comatose.xxx:
+@set/quiet me=_cond.persistent_comatose.xxx:
+
+think u( v( d.ccs )/f.test-change.heal, %#, 3 2, 2 2 ) --> (no change)
+
+@set/quiet me=_cond.comatose.xxx:yyy
+think u( v( d.ccs )/f.test-change.heal, %#, 3 2, 2 2 ) --> resolve comatose
+
+@set/quiet me=_cond.comatose.xxx:yyy
+@set/quiet me=_cond.persistent_comatose.xxx:yyy
+think u( v( d.ccs )/f.test-change.heal, %#, 3 2, 2 2 ) --> (persistent comatose)
+
+@@ this one we want to clean up
+@set/quiet me=_cond.comatose.xxx:
+@set/quiet me=_cond.persistent_comatose.xxx:
+
+
+
+
+/*
+################################################################################
+## COMMANDS ####################################################################
+
+clarity/hurt [<name>/]<type>[=<amt>]
+clarity/heal [<name>/]<type>[=<amt>]
+
+amt: positive integer value or 'all'
+type: mild, severe, or 'all'
+
+================================================================================
+== Commands: Heal & Hurt =======================================================
+*/
+
+&c.clarity/hurt [v( d.ccs )]=$^\+?clarity\/hurt(.*)$:
+	@pemit %#=u( f.healhurt-workhorse, %#, trim( %1 ), 0 )
+
+&c.clarity/heal [v( d.ccs )]=$^\+?clarity\/heal(.*)$:
+	@pemit %#=u( f.healhurt-workhorse, %#, trim( %1 ), 1 )
+
+@set v( d.ccs )/c.clarity/hurt=regex
+@set v( d.ccs )/c.clarity/hurt=no_parse
+
+@set v( d.ccs )/c.clarity/heal=regex
+@set v( d.ccs )/c.clarity/heal=no_parse
+
+/*
+--------------------------------------------------------------------------------
+-- The Heal/Hurt Worhorse ------------------------------------------------------
+
+This is a much simpler system than traditional WoD damage. "all" still fills or 
+removes all damage of that damage type.
+
+Healing type 'all' bypasses other checks and resets all damage to 0.
+	clarity/heal severe=1
+	clarity/heal mild=all
+	clarity/heal all
+
+	clarity/hurt theno/severe=1
+	clarity/heal theno/all
+
+
+0: enactor dbref (usually %#)
+1: [<name>/]<type>[=<amt>]
+2: 'true' (1) if heal, 'false' (0) if hurt
+
+x: passed target (optional)
+y: passed type
+z: passed amt (optional)
+
+d: target dbref (default %0)
+s: target sheet
+
+h: 'heal' or 'hurt' - which command did this come from?
+a: amt (default '1')
+t: type (mild, severe, or all)
+
+c: clarity dmg (<old dmg>|<new dmg>)
+r: test-change (|<message>|<message>) - test-change is for notices
+e: potential errors from `f.healhurt-apply`
+
+*/
+
+&f.healhurt-workhorse [v( d.ccs )]=
+	strcat( 
+ 		setq( 0, regmatchi( %1, v( d.regex.healhurt ), 0 x x y z z )), 
+
+		setq( d, case( %qx, me, %0, @@( null ), %0, pmatch( %qx ))), 
+		setq( s, u( v( d.sfp )/f.find-sheet, %qd )), 
+
+		setq( h, case( %2, 1, heal, 0, hurt, ??? )), 
+		setq( t, grab( |all|mild|severe, %qy*, | )), 
+		setq( a, case( %qz, @@( null ), 1, %qz )), 
+
+		case( 0, 
+
+// .. core validity checks
+			%q0, 
+			u( .msg, clarity/%qh, Command format is: 
+				\\[<target>/\\]<type>\\[=<amt>\\] 
+			), 
+			
+			isdbref( %qd ), 
+			u( .msg, clarity/%qh, Target not found ), 
+
+			cor( isstaff( %# ), strmatch( %#, %qd )), 
+			u( .msg, clarity/%qh, Only staff can target others ), 
+
+			cand( 
+				isapproved( %qd ), 
+				strmatch( u( .value, %qd, bio.template ), changeling ), 
+				hasattr( %qd, _clarity.maximum )
+			), 
+			u( .msg, clarity/%qh, Target must be approved changeling ), 
+
+			cor( 
+				cand( isint( %qa ), gt( %qa, 0 )), 
+				strmatch( %qa, all )
+			), 
+			u( .msg, clarity/%qh, Amount must be positive integer or 'all' ), 
+	
+			strlen( %qt ), 
+			u( .msg, clarity/%qh, I don't know that type of damage ), 
+
+// .. oblique checks (none currently)
+
+// .. calculate end condition
+			strcat( 
+				setq( c, ulocal( f.clarity.%qh, %qd, %qt, %qa )), 
+				setq( r, ulocal( f.test-change.%qh, 
+					%qd, 
+					first( %qc, | ), 
+					rest( %qc, | )
+				)), 
+
+// .. check for errors from the rest of the system
+// .. (%qd is unlikely to have errors, but just in case that changes)
+				case( 1, 
+					strmatch( %qc, #-1* ), 
+					u( .msg, clarity/%qh, rest( %qc )), 
+
+					strmatch( %qr, #-1* ), 
+					u( .msg, clarity/%qr, rest( %qd )), 
+
+// .. does new stat setting, rare case of errors
+					strmatch( 
+						setr( e, 
+							u( f.healhurt-apply, %0, %qd, %qs, %qh, %qc, %qr )
+						), 
+						#-1* 
+					), 
+					u( .msg, clarity/%qh, rest( %qe )), 
+
+// .. .. everything was good: report the change
+					u( f.healhurt-report, 
+						%0, 
+						%qd, 
+						%qa, 
+						if( %2, healing, damage ), 
+						%qr
+					)
+				)
+			)
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Apply Damage and Triggers ---------------------------------------------------
+
+This was wrapped into "workhorse" for physical damage; I'm splitting it off 
+here.
+
+All input is assumed verified.
+
+0: enactor dbref
+1: target dbref (for conditions)
+2: target sheet (for stats)
+3: 'heal' or 'hurt'
+4: <old health>|<new health>
+5: |<extra triggers & messages>
+
+Returns: #-1 if panic, otherwise nothing
+
+m: new mild damage
+s: new severe damage
+c: 'comatose' notes
+
+*/
+
+&f.healhurt-apply [v( d.ccs )]=
+	localize( strcat( 
+		setq( m, first( rest( %4, | ))), 
+		setq( s, rest( rest( %4, | ))), 
+		setq( c, graball( %5, *comatose*, | )), 
+		case( 0, 
+			not( strlen( set( %2, _clarity.mild:%qm ))), 
+			#-1 Clarity Mild not set! Stopping!, 
+
+			not( strlen( set( %2, _clarity.severe:%qs ))), 
+			#-1 Clarity Severe not set! Stopping after Mild set!, 
+
+// .. apply 'comatose' if necessary, otherwise just report
+			case( 1, 
+				t( grab( %qc, Gains Persistent Comatose Condition, | )), 
+				u( f.healhurt-apply.condition, 
+					%1, persistent_comatose, 
+					Set by Clarity System for damage taken.
+				), 
+
+				t( grab( %qc, Gains Comatose Condition, | )), 
+				u( f.healhurt-apply.condition, 
+					%1, comatose, 
+					Set by Clarity System for damage taken.
+				), 
+
+				@@( nothing else needed looked into )
+			)
+		)
+	))
+
+
+/*
+--------------------------------------------------------------------------------
+-- regex: healhurt input breakdown ---------------------------------------------
+
+expecting: 
+	[<target>/]<type>[=<amt>]
+
+regex registers
+	0: entire match
+	1: <target>/
+	2: <target>
+	3: <type>
+	4: =<amt>
+	5: <amt>
+
+*/
+
+&d.regex.healhurt [v( d.ccs )]=^(([^/]+)/)?([^=]+)(=(.+))?$
+
+
+/*
+--------------------------------------------------------------------------------
+-- Healhurt Apply Comatose -----------------------------------------------------
+
+From &C.PLAYER.STATUS.ADD [v( d.ctst )], which does too much checking for this 
+to succeed.
+
+	0: player dbref
+	1: condition
+	2: 'set by' note.
+
+*/
+
+&f.healhurt-apply.condition [v( d.ccs )]=
+	set( %0, 
+		_COND.%1.[secs( )]:
+		cond.%1|%2 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Healhurt Report Successful Action -------------------------------------------
+
+Report action and final clarity bar to enactor and target.
+Report action to everyone in target's room.
+
+0: enactor
+1: target dbref
+2: amt, 
+3: 'damage'/'healing'
+4: |check|messages
+
+*/
+
+&f.healhurt-report [v( d.ccs )]=
+	localize( strcat( 
+		setq( d, 
+			if( not( strmatch( %0, %1 )), 
+				Dealt by [name( %0 )] %(%0%) 
+			)
+		), 
+		iter( setunion( %0 %1, ), 
+			pemit( %i0, 
+				u( display.healhurt.full, %1, %i0, %2, %3, %4, %qd )
+			)
+		), 
+
+		iter( 
+			setdiff( lcon( loc( %1 )), %0 %1  ), 
+			pemit( %i0, 
+				u( .msg, clarity, 
+					u( display.healhurt.action, %1, %i0, %2, %3, %4, %qd )
+				)
+			)
+		)
+	))
+
+
+/* 
+-- Display: Healhurt Action ---
+
+The message everyone sees on a successful clarity heal/hurt.
+
+0: target
+1: person we're pemitting to
+2: amt
+3: 'damage'/'healing'
+4: other notes (e.g., gains a clarity condition)
+5: 'dealt by' foo
+
+You/they take/s xx clarity damage/healing and xxx.
+
+*/
+
+&display.healhurt.action [v( d.ccs )]=
+	localize( strcat( 
+		if( setr( y, strmatch( %0, %1 )), You, name( %0 )), %b, 
+		take, if( %qy, , s ), %b, 
+		%2 Clarity %3, 
+		if( strlen( %4 ), 
+			strcat( 
+				%b, and, %b, 
+				iter( trim( %4, b, | ), 
+					%i0, 
+					|, %,%b 
+				)
+			)
+		), ., 
+		if( strlen( %5 ), %b%(%5%))
+	))
+
+&display.healhurt.full [v( d.ccs )]=
+	strcat( 
+		header( 
+			strcat( 
+				case( %3, damage, Losing, healing, Gaining, ???ing ), %b, 
+				%2 Clarity 
+			)
+		), %r, 
+		u( display.healhurt.action, %0, %1, %2, %3, %4 ), %r,
+		Clarity is now:, %r,  
+		u( display.clarity-bar, %0 ), %r, 
+		footer( %5 )
+	)
+
+
+
+/*
+================================================================================
+== DETAILED NOTES ==============================================================
+
+p.104:
+
+System: A changeling's Clarity track has boxes equal to her Wits + Composure. 
+Her player can't buy additional Clarity boxes with Experiences, but they 
+increase automatically as she purchases dots of Wits and Composure, and she can 
+recover Icons (p. 203) to add further boxes. There is no upper limit to the 
+number of Clarity boxes a character can have. In dreams, her Clarity contributes 
+to her dream form's Health track (p. 216).
+
+Clarity Damage: Mild fills left to right. Severe fills left to right, 
+overwriting mild but not severe.
+
+As a changeling takes damage to her three rightmost Clarity boxes, she gains 
+Conditions — Persistent Conditions if the damage was severe
+
+--
+
+A changeling can regain Clarity by spending time with her Touchstones, and by 
+resolving the damage Conditions (below). Even if she has no Touchstones 
+currently attached, each scene she spends interacting in a meaningful way with 
+one of her Touchstones heals one level of severe Clarity damage, or all levels 
+of mild Clarity damage (but doesn't resolve any Conditions by default).
+
+--
+
+So Clarity = Wits + Composure + Icons
+
+
+--------------------------------------------------------------------------------
+-- Touchstones -----------------------------------------------------------------
+
+Your character's Touchstone is a person, place, or thing that reminds her of how 
+to trust, and helps her re-adjust to life after her durance. Name a Touchstone, 
+and count a number of Clarity boxes from the left equal to your character's 
+Composure + 1. Write your Touchstone next to that box. See p. 98 for more on 
+Touchstones. If you choose to take the Touchstone Merit, you may start with 
+additional Touchstones.
+
+Write Touchstones alongside your character's Clarity track. Count boxes from the 
+left equal to your character's Composure + 1, and write your first Touchstone 
+next to that box. For instance, if your character has Composure 3, write the 
+Touchstone next to the fourth box from the left. If you purchase more Composure 
+in play, push her Touchstones to the right so that her first one is always 
+attached at Composure + 1.
+
+As Clarity is a fluid thing in a changeling's life, her attachment to her 
+Touchstones is also fluid. Consider a Touchstone attached when its associated 
+Clarity box is not filled with severe damage. If a Touchstone is attached, 
+anytime the changeling defends her attachment to it, she regains a Willpower 
+point. If this defense causes her serious harm, she regains all her spent 
+Willpower points.
+
+Your character can gain additional Touchstones by taking the Touchstone Merit 
+(p. 120). Write the new Touchstone in beside the next available box to the right 
+of the rightmost box that already has an associated Touchstone. A changeling 
+character cannot have more Touchstones than she has Clarity boxes to the right 
+of the first box with an associated Touchstone. If her maximum Clarity increases 
+in play by purchasing more Wits or recovering an Icon, it opens a spot for a new 
+Touchstone through the Merit.
+
+I...have no idea how I'm going to do this yet.
+
+
+-- takeaways --
+
+* Max Clarity = Wits + Compsure + Icons
+  Write Touchstones alongside your character's Clarity track at Composure + 1
+  Clarity Track: [1] [2] [3] [4], Composure 2, Wits 2
+                          ^-- Free Touchstone
+
+* If you purchase more Composure in play, push her Touchstones to the right so 
+  that her first one is always attached at Composure + 1.
+  Clarity Track: [1] [2] [3] [4] [5], Composure 3, Wits 2
+                              ^-- Free Touchstone
+
+* Your character can gain additional Touchstones by taking the Touchstone Merit 
+  (p. 120). Write the new Touchstone in beside the next available box to the 
+  right of the rightmost box that already has an associated Touchstone.
+  Clarity Track: [1] [2] [3] [4] [5], Composure 3, Wits 2
+                              ^   ^ -- Touchstone spaces
+
+* You cannot have more Touchstones than free spaces
+  Therefore, the number of Touchstones you can have is equal to Wits + Icons
+
+  Clarity Track: [1] [2] [3] [4] [5] [6], Composure 3, Wits 2, Icons 1
+                              ^   ^   ^ -- Touchstone spaces
+
+  Clarity Track: [1] [2] [3] [4] [5] [6] [7], Composure 5, Wits 2
+                                      ^   ^ -- Touchstone spaces
+
+* Just to make sure: Total Touchstones = Max Clarity - Composure
+  So if something else increases the Clarity Track, it's already accounted for.
+
+
+--------------------------------------------------------------------------------
+-- Filled Track ----------------------------------------------------------------
+
+If a Changeling fills their last box on their Clarity track, they fall 
+unconscious and take the Comatose condition (p.344). If the damage was Severe, 
+the condition is Persistent, and can’t take any more Clarity damage until she 
+heals at least one point. 
+
+
+--------------------------------------------------------------------------------
+-- Conclusions -----------------------------------------------------------------
+
+Max Clarity = Wits + Compsure + Icons
+Max Touchstones = Max Clarity - Composure
+First Touchstone's Position = Clarity + 1 
+
+We will need stats for Touchstones and Icons
+
+* Touchstone: <first>|<second>|<third> ???
+* &_advantage.clarity.1 = <first touchstone> ??? -- can't prerequisite.
+
+* Icon (<name>)=1
+
+
+--------------------------------------------------------------------------------
+-- Challenges ------------------------------------------------------------------
+
+There is no easy way to implement Touchstones at this time. I will keep thinking 
+about this.
+
+For Changeling (and Vampire), the free one is calculated at its proper location.
+Additional Touchstones are counted in:
+	&merit.touchstone: 1.2.3.4.5
+
+*/

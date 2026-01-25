@@ -1,0 +1,518 @@
+/*
+################################################################################
+## ROLL PRIMER #################################################################
+
+The following registers are used across the entire system:
+
+    qd: Number: Total number of dice to roll (default 0)
+        0: Use chance roller
+        1+: Use normal roller
+    qa: Number: The "again" to roll (default 10, 11 = "No 10-again")
+    qe: Text: Error.list (default empty)
+    qo: Text: Things.to.add to skill-list output (default empty)
+    qs: Text: Which success system to use. (default "Standard")
+        "Standard": Use the standard system
+        "Weakness": Use the weakness system
+    qz: Text: /Full/on/switches
+    qr: Text: Result of dice throw, <throw>|<throw> if extended/multiple throws
+    
+	qn: Number of times to roll (default 1 unless /extended switch used)
+	qt: Target number to roll until (default null unless /target switch used)
+
+	qr: Final Roll(s), |-delimited
+	qc: List of Successes, space-delimited
+
+These registers are to be considered global and should not be touched out of 
+context, for any reason.
+
+See "6b - Roll Switches" for details about how to add and include switches 
+to roll.
+
+
+================================================================================
+== REGISTERS ===================================================================
+
+Playing with the registers in a way where I know it will work properly.
+
+In all cases, %0 is what to add. In all cases, no error checking is done. In 
+all cases, there is to be no output.
+
+
+--------------------------------------------------------------------------------
+-- Add to Output (qo) ----------------------------------------------------------
+
+0: stat name to add to output
+1: sign (default '+')
+2: "nostat" if we want to error it
+
+*/
+
+&f.registers.output-add [v( d.nr )]=
+	setq( o, 
+        strcat( 
+            %qo, `, 
+            if( comp( %1, ), %1, + ), 
+            if( strmatch( %2, nostat ), ansi( xh, %[%0%] ), %0 )
+        )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Add to Dice (qd) ------------------------------------------------------------
+*/
+
+&f.registers.dice-add [v( d.nr )]=setq( d, add( %qd, %0 ))
+
+
+/*
+--------------------------------------------------------------------------------
+-- Add to Errors (qe) ----------------------------------------------------------
+*/
+
+&f.registers.error-add [v( d.nr )]=setq( e, %qe`%0 )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Add to Number of Extended Rolls To Make (qt) --------------------------------
+*/
+
+&f.registers.extendednum-add [v( d.nr )]=setq( n, add( %qn, %0 ))
+
+
+
+/*
+================================================================================
+== STAT CHECKS =================================================================
+
+These functions build the basic what-to-roll list. Stats, untrained penalties 
+and wound penalties are all added here.
+
+
+--------------------------------------------------------------------------------
+-- Check for Health Penalty ----------------------------------------------------
+
+Add (subtract) health penalty unless passive /nowounds switch is included
+
+"now" is "nowounds" shortened
+
+0: sheet dbref
+q0: health penalties
+
+*/
+
+&f.stat-check.health [v( d.nr )]=
+	if( 
+		cand( 
+			not( u( f.hasswitch?, nowounds )), 
+			lt( setr( 0, ladd( u( .value_full, %0, health.penalty ), . )), 0 )
+		), 
+
+		strcat( 
+			u( f.registers.output-add, [abs( %q0 )] %(wounds%), - ), 
+			u( f.registers.dice-add, %q0 )
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check for Stats -------------------------------------------------------------
+
+Build the what-to-roll list with the stats. If the system can pull the stat, 
+it will roll it.
+
+>> here is where I would put in <player>:<stat>, if we could <<
+
+--
+
+0: Sheet dbref (player)
+1: Things to roll
+Outputs: Null -- see "roll primer"
+
+q0: Current stat to check
+q1: Current sign (+ or -)
+q2: Current full stat path
+
+*/
+
+&f.stat-check.stats [v( d.nr )]=
+	iter( edit( %1, -%b, -, -, +- ), 
+
+		case( 1, 
+// >> it's a number
+			u( f.stat-check.number, %i0 ), 
+			@@( number ), 
+
+// >> it's possibly a stat - collect information on it
+			strcat( 
+				setq( 1, u( .sign, %i0 )),
+				setq( 0, trim( case( %q1, -, rest( %i0, - ), %i0 ))), 
+				setq( 2, 
+					if( comp( %q0, ), 
+						u( .statpath, %q0, %0 ), 
+						setq( 0, %b )
+					)
+				), 
+				u( f.stat-check.invalid-trait, %q0, %q1, %q2 )
+			), 
+			@@( invalid ), 
+
+			u( f.stat-check.trait, %0, %q0, %q1, %q2 ), 
+			@@( check the stat )
+		), 
+		+, @@ 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Stat Check: Number ----------------------------------------------------------
+
+See if this is a straight-up number.
+
+0: number to check
+
+*/
+
+&f.stat-check.number [v( d.nr )]=
+	if( 
+		isint( %0 ), 
+		strcat( 
+			u( f.registers.dice-add, %0 ), 
+			u( f.registers.output-add, abs( %0 ), u( .sign, %0 )), 
+			1 
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Stat Check: Invalid Trait ---------------------------------------------------
+
+0: trait to check (player requested)
+1: sign
+2: full stat path (can't be found if invalid trait)
+
+*/
+
+&f.stat-check.invalid-trait [v( d.nr )]=
+	if( 
+		not( %2 ), 
+		strcat( 
+			u( f.registers.output-add, %0, %1, nostat ), 
+			1 
+		)
+	)
+
+/* -- Tests -- 
+
+think u( v( d.nr )/f.stat-check.invalid-trait, beauty, +, beauty )
+
+
+--------------------------------------------------------------------------------
+-- Stat Check: What Kind of Trait ----------------------------------------------
+
+0: sheet dbref
+1: trait to check (player requested)
+2: trait's sign (+ or -)
+3: full stat path
+
+*/
+
+&f.stat-check.trait [v( d.nr )]=
+	if( 
+		u( f.stat-check.skill, %0, %1, %2, %3 ), 
+		1, 
+
+		udefault( f.stat-check.trait.[u( .class, %3 )], 
+			u( f.registers.error-add, Trait class not recognized ), 
+			%0, %1, %2, 
+			u( .statname, rest( %3, . )), 
+			u( .value_full, %0, %3 )
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Stat Check: Trait: Numeric --------------------------------------------------
+
+Skills are handled separately.
+
+0: sheet dbref
+1: trait to check (player requested) [unused]
+2: trait's sign (+ or -)
+3: proper stat name
+4: value from sheet
+
+*/
+
+&f.stat-check.trait.numeric [v( d.nr )]=
+	strcat( 
+		u( f.registers.dice-add, mul( ladd( %4, . ), case( %2, -, -1, 1 ))), 
+		u( f.registers.output-add, %3, %2 ), 
+		u( f.registers.extendednum-add, 
+			mul( ladd( %4, . ), case( %2, -, -1, 1 ))
+		), 
+		1 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Stat Check: Trait: String ---------------------------------------------------
+
+Don't roll this, sheesh.
+
+0: sheet dbref [unused]
+1: trait to check (player requested) [unused]
+2: trait's sign (+ or -)
+3: proper trait name
+4: value from sheet [unused]
+
+*/
+
+&f.stat-check.trait.string [v( d.nr )]=
+	strcat( 
+		u( f.registers.output-add, %3, %2, nostat ), 
+		1 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Stat Check: Trait: List -----------------------------------------------------
+
+0: sheet dbref [unused]
+1: trait to check (player requested) [unused]
+2: trait's sign (+ or -)
+3: proper trait name
+4: value from sheet [unused]
+
+*/
+
+&f.stat-check.trait.list [v( d.nr )]=
+	strcat( 
+		u( f.registers.output-add, %2, %3, nostat ), 
+		1 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Stat Check: Skill -----------------------------------------------------------
+
+Determine whether the skill is trained or untrained and process those, with spec
+
+This setup will allow 'untrained with specialty'; it's up to the rest of the 
+system to prevent this if necessary "untrained" does not remove from extened 
+roll total specs always add to extended roll total
+
+--
+
+0: sheet dbref
+1: trait to check (player requested)
+2: trait's sign (+ or -)
+3: full stat path
+
+q4: only skill's statpath (remove specs)
+q5: skill's value 
+q6: specs name(s)
+q7: specs' value(s)
+
+*/
+
+&f.stat-check.skill [v( d.nr )]=
+	if( strmatch( %3, skill.* ), 
+		strcat( 
+			setq( 4, elements( %3, 1 2, . )), 
+			setq( 5, u( .value_full, %0, %q4 )), 
+			setq( 6, rest( rest( %3, . ), . )), 
+// specs' values could be simple '# of specs' like so:
+// 			setq( 7, words( %q6, . )), 
+			setq( 7, 
+				ladd( iter( edit( %q6, %b, _ ), 
+					u( .value_full, %0, %q4.%i0 ), 
+					. 
+				)
+			)), 
+			case( 1, 
+// >> untrained skill (+ specs)
+				u( f.stat-check.skill.untrained, %0, %q4, %q5, %q6, %q7, %2 ), 
+				1, 
+
+// >> skill (+ specs)
+				u( f.stat-check.skill.trained, %0, %q4, %q5, %q6, %q7, %2 ), 
+				1, 
+
+				u( f.registers.error-add, Failed at Stat-Check Skill )
+			)
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Stat Check: Skill: Untrained ------------------------------------------------
+
+If request was '- untrained skill', then result is probably positive. Strange, I 
+know, but math tells us it should work this way. ( - -x == + x ) 
+If not, here's the place to change it.
+
+Ignores this if the '/trained' switch is used.
+
+--
+
+0: sheet dbref
+1: skill's statpath
+2: skill's value (empty/0/error if 'untrained' )
+3: specs name(s)
+4: specs' value(s)
+5: intended sign (usually +, but you never know)
+
+q6: untrained penalty
+q7: building the dice-to-roll
+q8: prettified stat name
+
+q0: output message
+q1: final sign
+q2: 'nostat' if it's intended to be discarded (e.g., specialty doesn't exist)
+
+*/
+
+&f.stat-check.skill.untrained [v( d.nr )]=
+	if( cand( not( %2 ), not( u( f.hasswitch?, trained ))), 
+		strcat( 
+			setq( 6, 
+				case( 1, 
+					u( .hastag?, %1, physical.social, or ), 
+					-1, 
+					u( .hastag?, %1, mental ), 
+					-3, 
+					-99 
+				)
+			), 
+
+			setq( 7, %q6 ), 
+			setq( 8, u( .statname, rest( %1, . ))), 
+			setq( 9, u( .statname, %3 )), 
+
+			case( 1, 
+
+// .. no specalty requested
+				not( %3 ), 
+				strcat( 
+					u( f.registers.dice-add, %q7 ), 
+					setq( 0, [abs( %q7 )] [lcstr( %(untrained %q8%) )] ), 
+					setq( 1, u( .sign, mul( %q7, case( %5, -, -1, 1 )))), 
+					setq( 2, )
+				), 
+
+// .. valid specialty - add spec to extended but do not remove untrained
+				t( %4 ), 
+				strcat( 
+					setq( 7, ladd( %q7.%4, . )), 
+					setq( 0, [abs( %q7 )] [lcstr( %(untrained %q8.%q9%) )] ), 
+					setq( 1, u( .sign, mul( %q7, case( %5, -, -1, 1 )))), 
+					setq( 2, ), 
+					u( f.registers.extendednum-add, ladd( %4, . )) 
+				), 
+
+// .. spec entered but has no value: reject the skill
+				strcat( 
+					setq( 7, ), 
+					setq( 0, %q8.%q9 ), 
+					setq( 1, %5 ), 
+					setq( 2, nostat )
+				)
+			), 
+
+			u( f.registers.output-add, %q0, %q1, %q2 ), 
+			
+			1
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Stat Check: Skill: Trained --------------------------------------------------
+
+If we fell through on the 'untrained', either because the stat existed or the 
+'/trained' switch was used, we go here.
+
+0: sheet dbref
+1: skill's name
+2: skill's value (empty/0/error if 'untrained' )
+3: specs name(s)
+4: specs' value(s)
+5: intended sign
+
+q6: dice to add, also add to number of extended
+q7: output string
+q8: 'nostat' if the [not-a-stat] is meant to be used
+
+*/
+
+&f.stat-check.skill.trained [v( d.nr )]=
+	strcat( 
+		case( 1, 
+
+// .. no specialty
+			not( %3 ), 
+			strcat( 
+				setq( 6, %2 ), 
+				setq( 7, u( .statname, rest( %1, . ))), 
+				setq( 8, )
+			), 
+
+// .. valid specialty
+			t( %4 ), 
+			strcat( 
+				setq( 6, ladd( %2.%4, . )), 
+				setq( 7, [u( .statname, rest( %1, . ))].[u( .statname, %3 )] ), 
+				setq( 8, )
+			), 
+
+// .. invalid specialty: do not add the trait to dice to roll
+			strcat( 
+				setq( 6, 0 ), 
+				setq( 7, [u( .statname, rest( %1, . ))].[u( .statname, %3 )] ), 
+				setq( 8, nostat )
+			)
+		), 
+
+// .. always add output
+		u( f.registers.output-add, %q7, %5, %q8 ), 
+
+// .. if output is valid, also add to dice and extended
+		if( t( %q6 ), 
+			strcat( 
+				u( f.registers.dice-add, %q6 ), 
+				u( f.registers.extendednum-add, %q6 )
+			)
+		), 
+
+		1 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Some Tests ------------------------------------------------------------------
+
+At the moment we don't have 'f.hasswitch?' in, so we can't check '/nowounds' or 
+'/trained'.
+
+--
+
+think [u( v( d.nr )/f.stat-check.stats, pmatch(me), strength + beauty + willpower + stealth + occult )]Output: %qo -- Dice: %qd -- Extended Rolls: %qn
+
+think [u( v( d.nr )/f.stat-check.stats, pmatch(me), full name + str + beauty + will + stealth + occ.bla )]Output: %qo -- Dice: %qd -- Extended Rolls: %qn
+
+
+think [u( v( d.nr )/f.stat-check.stats, pmatch(me), full name + str + beauty + will + stealth + cra.psych )]Output: %qo -- Dice: %qd -- Extended Rolls: %qn
+
+*/

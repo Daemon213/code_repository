@@ -1,0 +1,190 @@
+/*
+finger
+finger <player>
+
+--
+
+Brand New Who-Where <bnww> (#207)
+
+*/
+
+&.msg Brand New Who-Where <bnww>=ansi( h, <%0>, n, %b%1 )
+
+// -- 
+
+&c.finger Brand New Who-Where <bnww>=$^\+?finger(.*)$:
+	think strcat( 
+		p:, setr( p, if( t( %1 ), pmatch( trim( %1 )), %# ))
+	); 
+	
+	@assert hastype( %qp, PLAYER )={ 
+		@pemit %#=u( .msg, finger, Player not found - %1 - %qp )
+	}; 
+
+	@pemit %#=strcat( 
+		wheader( strcat( Finger:, %b, moniker( %qp ), %b, %(%qp%) )), %r, 
+
+		u( display.finger.bio, %qp ), %r, 
+		u( display.finger.main, %qp ), %r, 
+
+		if( isstaff( %# ), strcat( u( display.finger.staff, %qp ), %r )), 
+
+
+		wfooter( )
+	); 
+
+// --
+
+@set Brand New Who-Where <bnww>/c.finger=regexp
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Display: Bio ----------------------------------------------------------------
+
+*/
+
+&display.finger.bio #207=
+	strcat( 
+		Alias:, %b, get( %0/alias ), %r, 
+		Location:, %b, name( loc( %0 )), %r, 
+		Connection Foo%, Activity Timer%, Approval Status
+	)
+
+&display.finger.main #207=strcat( wdivider( Main ), %r, Main information%, fame rating%, statuses?%, not sure what goes here. )
+
+&display.finger.staff #207=strcat( wdivider( Staff ), %r, Staffly Info. )
+
+
+/*
+
+&C.+FINGER Finger Code=$+Finger *:@pemit %#=[if(setr(0, pmatch+(%0)), [wheader([capstr(name(pmatch+(%0)))]'s +Finger)]%r[u(me/fn.infobanner)]%r[wdivider(Profile Information)][u(me/fn.details)][u(me/fn.badges)][if(isstaff(%#), %r[wdivider(Staff Information)][u(me/fn.staffinfo)]%r[wfooter()], %r[wfooter()])], [alert(+Finger, alert)] Cannot find %0)]
+
+&C.+FINGER/SET Finger Code=$+Finger/set *=*:@pemit %#=[switch(%0, *position*, Set. [set(%#, finger-position:%1)], *song*, Set. [set(%#, finger-song:%1)], *fullname*, Set. [set(%#, finger-fullname:%1)], *short-desc*, Set. [set(%#, short-desc:%1)], *note*, Set. [set(%#, finger-note:%1)], *quote*, Set. [set(%#, finger-quote:%1)], *email*, Set. [set(%#, _finger-email:%1)], *playedby*, Set. [set(%#, finger-playedby:%1)], *rp-prefs*, Set. [set(%#, rp-prefs:%1)], *rpprefs*, Set under rp-prefs. [set(%#, rp-prefs:%1)], *info*, Set. [set(%#, finger-info:%1)], *fame*, Set. [set(%#, finger-fame:%1)], *wiki*, Set. [set(%#, finger-wiki:%1)], *timezone*, Set. [set(%#, finger-timezone:%1)], *alts*, Set. [set(%#, finger-alts:%1)], *shadowname*, Set. [Set(%#, shadowname:%1)], That is not a valid +finger option. Please see +help finger.)]
+
+
+===============================> Vera's +Finger <===============================
+Idle: 00:01    Unread Mail: 33   Gender: f  Alias:           Timezone:      
+Location: Storefront - The Itsy Bitsy Spider                                  
+----> Profile Information <-----------------------------------------------------
+Fullname:   Veralynn Hawtin
+Position:   Mekhet Priscus
+Short-desc: An odd-eyed (SL2) ginger girl. With glasses.
+Info:       Classy as /fuck/.
+Wiki:       http://thereachmux.org/wiki/Vera
+Badges:     Dr. Mcpsycho.
+================================================================================
+
+
+
+
+
+
+
+
+
+
+&fil.staff #207=isstaff( %0 )
+&fil.dark #207=hasflag( %0, dark )
+&fil.off-duty #207=hasflag( %0, transparent )
+
+&sortby.connected #207=comp( conn( %0 ), conn( %1 ))
+
+
+
+
+
+
+&c.staff #207=$^\+?staff$: 
+	@pemit %#=strcat( 
+		setq( w, filter( fil.staff, lwho())), 
+		setq( d, sortby( sortby.connected, filter( fil.dark, %qw ))), 
+		setq( w, setdiff( %qw, %qd )), 
+		setq( o, filter( fil.off-duty, %qw, %qd )), 
+		setq( w, sortby( sortby.connected, setdiff( %qw, %qo ))), 
+
+		wheader( Eldritch Staff ), %r, 
+		iter( %qw, 
+			u( display.staff.one-line, %i0, singletime( idle( %i0 )), %# )
+			, , %r 
+		), %r, 
+
+		if( words( %qo ), 
+			strcat( 
+				wdivider( Off-Duty ), %r, 
+				iter( %qo, 
+					u( display.staff.one-line, 
+						%i0, 
+						singletime( idle( %i0 )), 
+						%# 
+					), 
+					, %r 
+				), 
+				%r 
+			), 
+		), 
+
+		if( words( %qd ), 
+			strcat( 
+				wdivider( Dark Staff -- Super-Off-Duty ), %r, 
+				iter( %qd, 
+					ansi( xh, u( display.staff.one-line, %i0, , %# )), 
+					, %r 
+				), 
+				%r 
+			)
+		), 
+
+		wfooter()
+	)
+
+@set #207/c.staff=regexp
+
+
+
+
+&display.staff.one-line #207=
+	strcat( 
+		ljust( u( f.get-who-flags, %0 ), 3 ), 
+		ljust( name( %0 ), 20 ), %b, 
+		ljust( %1 , 4 ), %b, 
+		ljust( 
+			get( %i0/position ), 
+			sub( width( %2 ), 47 )
+		)
+	)
+
+
+
+
+
+
+
+
+*/
+
+
+
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-
+
+
+
+
+
+
+
+--=-=-=-=-=
+
+
+
+help files for xp.
+xp/spend.
+
+Crappy +Notes System
+<+Notes> There are no notes/views on Claire.
+<+Notes> There are no notes/views on Claire.
+
+[Staff] Deviant says, “Did you manage to get around to coding Professional training so that it accounts for the extra stuff in cg depending on how hgih you take it?”

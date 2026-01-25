@@ -1,0 +1,376 @@
+/*
+DtD2: Flowers of Hell
+
+================================================================================
+== NEW MERITS ==================================================================
+
+
+-- Merits: Demon ---------------------------------------------------------------
+*/
+
+&merit.advance_form [v( d.dd )]=1
+&tags.merit.advance_form [v( d.dt )]=demon
+
+&merit.efficient_dealer [v( d.dd )]=2
+&tags.merit.efficient_dealer [v( d.dt )]=demon
+&prereq-text.merit.efficient_dealer [v( d.dd )]=Specialty in Skill 
+	that would be appropriate for screwing someone over.
+
+&merit.electromagnetic_linguistics [v( d.dd )]=2
+&tags.merit.electromagnetic_linguistics [v( d.dt )]=demon
+&prerequisite.merit.electromagnetic_linguistics [v( d.dd )]=
+	u( .has, %0, skill.computer )
+&prereq-text.merit.electromagnetic_linguistics [v( d.dd )]=Computer 1+
+
+&merit.high_tolerance [v( d.dd )]=1.2
+&tags.merit.high_tolerance [v( d.dt )]=demon
+
+&merit.living_the_lie [v( d.dd )]=2
+&tags.merit.living_the_lie [v( d.dt )]=demon
+&prerequisite.merit.living_the_lie [v( d.dd )]=
+	u( .at_least, %0, advantage.primum, 2 )
+&prereq-text.merit.living_the_lie [v( d.dd )]=Primum 2+
+
+&merit.monkeywrencher [v( d.dd )]=2
+&tags.merit.monkeywrencher [v( d.dt )]=demon
+&prerequisite.merit.monkeywrencher [v( d.dd )]=
+	u( .at_least, %0, advantage.primum, 2 )
+&prereq-text.merit.monkeywrencher [v( d.dd )]=Primum 2+
+
+&merit.resonance_aware [v( d.dd )]=1.2.3.4.5
+&tags.merit.resonance_aware [v( d.dt )]=demon
+&prerequisite.merit.resonance_aware [v( d.dd )]=
+	u( .at_least, %0, attribute.wits, 3 )
+&prereq-text.merit.resonance_aware [v( d.dd )]=Wits 3+
+
+&merit.resonance_sensitive [v( d.dd )]=1
+&tags.merit.resonance_sensitive [v( d.dt )]=demon
+&prerequisite.merit.resonance_sensitive [v( d.dd )]=
+	u( .at_least, %0, attribute.wits, 4 )
+&prereq-text.merit.resonance_sensitive [v( d.dd )]=Wits 4+
+
+&merit.subsumed_gadget [v( d.dd )]=2
+&tags.merit.subsumed_gadget [v( d.dt )]=demon
+&prerequisite.merit.subsumed_gadget [v( d.dd )]=
+	u( .at_least, %0, advantage.primum, 3 )
+&prereq-text.merit.subsumed_gadget [v( d.dd )]=Primum 3+
+
+&merit.sympathetic_stigmatic_() [v( d.dd )]=2
+&tags.merit.sympathetic_stigmatic_() [v( d.dt )]=demon
+&prerequisite.merit.sympathetic_stigmatic [v( d.dd )]=
+	u( .has, %0, merit.true_friend_(<name>) )
+&prereq-text.merit.sympathetic_stigmatic [v( d.dd )]=True Friend
+
+&merit.tattooed_gadget [v( d.dd )]=2
+&tags.merit.tattooed_gadget [v( d.dt )]=demon
+
+// -- Merits: Stigmatic --------------------------------------------------------
+
+&merit.potent_blood [v( d.dd )]=1
+&tags.merit.potent_blood [v( d.dt )]=stigmatic
+
+&merit.sleeve_integrator [v( d.dd )]=1.2.3.4.5
+&tags.merit.sleeve_integrator [v( d.dt )]=stigmatic
+&prerequisite.merit.sleeve_integrator [v( d.dd )]=
+	u( .at_least, %0, advantage.integrity, 5 )
+&prereq-text.merit.sleeve_integrator [v( d.dd )]=Integrity 5
+
+&merit.sympathetic_demon_() [v( d.dd )]=2
+&tags.merit.sympathetic_demon_() [v( d.dt )]=stigmatic
+
+
+
+/*
+================================================================================
+== NEW EMBEDS ==================================================================
+
+--------------------------------------------------------------------------------
+-- Embeds: Cacophony -----------------------------------------------------------
+*/
+
+&embed.apple_of_discord [v( d.dd )]=Manipulation+Expression vs. Integrity
+&tags.embed.apple_of_discord [v( d.dt )]=demon.cacophony
+
+&embed.anarchism [v( d.dd )]=Manipulation+Politics-Composure
+&tags.embed.anarchism [v( d.dt )]=demon.cacophony
+
+&embed.breakdown [v( d.dd )]=Wits+Medicine-Resolve
+&tags.embed.breakdown [v( d.dt )]=demon.cacophony
+
+&embed.fire_drill [v( d.dd )]=Wits+Science
+&tags.embed.fire_drill [v( d.dt )]=demon.cacophony
+
+&embed.fractal_reality [v( d.dd )]=Wits+Science
+&tags.embed.fractal_reality [v( d.dt )]=demon.cacophony
+
+&embed.password_entropy [v( d.dd )]=Wits+Computer
+&tags.embed.password_entropy [v( d.dt )]=demon.cacophony
+
+&embed.play_possum [v( d.dd )]=Manipulation+Medicine
+&tags.embed.play_possum [v( d.dt )]=demon.cacophony
+
+&embed.ripple [v( d.dd )]=Wits+Science
+&tags.embed.ripple [v( d.dt )]=demon.cacophony
+
+&embed.trip [v( d.dd )]=Wits+Athletics-Dexterity
+&tags.embed.trip [v( d.dt )]=demon.cacophony
+
+&embed.victory_at_any_price [v( d.dd )]=Wits+Science
+&tags.embed.victory_at_any_price [v( d.dt )]=demon.cacophony
+
+// -- Embeds: Instrumental -----------------------------------------------------
+
+&embed.call_out [v( d.dd )]=
+	Manipulation+Intimidation vs. Presence + Supernatural Tolerance
+&tags.embed.call_out [v( d.dt )]=demon.instrumental
+
+&embed.data_retrieval [v( d.dd )]=Wits+Computer
+&tags.embed.data_retrieval [v( d.dt )]=demon.instrumental
+
+&embed.data_wipe [v( d.dd )]=Wits+Computer
+&tags.embed.data_wipe [v( d.dt )]=demon.instrumental
+
+&embed.functional_identity [v( d.dd )]=Wits+Crafts
+&tags.embed.functional_identity [v( d.dt )]=demon.instrumental
+
+&embed.high_of_birth [v( d.dd )]=Manipulation+Politics
+&tags.embed.high_of_birth [v( d.dt )]=demon.instrumental
+
+&embed.knock-off [v( d.dd )]=Dexterity+Larceny
+&tags.embed.knock-off [v( d.dt )]=demon.instrumental
+
+&embed.open_sesame [v( d.dd )]=Wits+Larceny-Special Penalties
+&tags.embed.open_sesame [v( d.dt )]=demon.instrumental
+
+&embed.soup_up [v( d.dd )]=Dexter+Drive-Special Penalties
+&tags.embed.soup_up [v( d.dt )]=demon.instrumental
+
+&embed.trivia [v( d.dd )]=Manipulation+Expression
+&tags.embed.trivia [v( d.dt )]=demon.instrumental
+
+&embed.wasted_time [v( d.dd )]=Wits+Science
+&tags.embed.wasted_time [v( d.dt )]=demon.instrumental
+
+// -- Embeds: Mundane ----------------------------------------------------------
+
+&embed.associate_and_integrate [v( d.dd )]=
+	Manipulation+Science vs. Resolve + Composure
+&tags.embed.associate_and_integrate [v( d.dt )]=demon.mundane
+
+&embed.clothes_make_the_man [v( d.dd )]=Wits+Persuasion vs. Wits + Target Skill
+&tags.embed.clothes_make_the_man [v( d.dt )]=demon.mundane
+
+&embed.deep_cover [v( d.dd )]=Manipulation+Occult
+&tags.embed.deep_cover [v( d.dt )]=demon.mundane
+
+&embed.going_native [v( d.dd )]=Wits+Socialize
+&tags.embed.going_native [v( d.dt )]=demon.mundane
+
+&embed.like_the_movies [v( d.dd )]=Wits+Academics
+&tags.embed.like_the_movies [v( d.dt )]=demon.mundane
+
+&embed.mistaken_identity [v( d.dd )]=Manipulation+Persuasion-Composure
+&tags.embed.mistaken_identity [v( d.dt )]=demon.mundane
+
+&embed.persistent_legend [v( d.dd )]=Wits+Academics
+&tags.embed.persistent_legend [v( d.dt )]=demon.mundane
+
+&embed.the_voting_dead [v( d.dd )]=Manipulation+Politics
+&tags.embed.the_voting_dead [v( d.dt )]=demon.mundane
+
+&embed.wave_function_collapse [v( d.dd )]=
+	Dexterity+Brawl vs. Stamina + Supernatural Tolerance
+&tags.embed.wave_function_collapse [v( d.dt )]=demon.mundane
+
+&embed.you_can_tell_me [v( d.dd )]=Manipulation+Empathy-Composure
+&tags.embed.you_can_tell_me [v( d.dt )]=demon.mundane
+
+// -- Embeds: Vocal ------------------------------------------------------------
+
+&embed.imagine [v( d.dd )]=Manipulation+Persuasion
+&tags.embed.imagine [v( d.dt )]=demon.vocal
+
+&embed.the_look [v( d.dd )]=Manipulation+Intimidation-Stamina
+&tags.embed.the_look [v( d.dt )]=demon.vocal
+
+&embed.loose_lips [v( d.dd )]=Manipulation+Socialize-Stamina
+&tags.embed.loose_lips [v( d.dt )]=demon.vocal
+
+&embed.the_only_word_that_matters [v( d.dd )]=Manipulation+Expression-Composure
+&tags.embed.the_only_word_that_matters [v( d.dt )]=demon.vocal
+
+&embed.remote_link-up [v( d.dd )]=Wits+Socialize
+&tags.embed.remote_link-up [v( d.dt )]=demon.vocal
+
+&embed.rhetoric [v( d.dd )]=Wits+Subterfuge
+&tags.embed.rhetoric [v( d.dt )]=demon.vocal
+
+&embed.social_engineering [v( d.dd )]=Manipulation+Persuasion
+&tags.embed.social_engineering [v( d.dt )]=demon.vocal
+
+&embed.strength_through_adversity [v( d.dd )]=Manipulation+Intimidation-Resolve
+&tags.embed.strength_through_adversity [v( d.dt )]=demon.vocal
+
+&embed.sum_of_all_fears [v( d.dd )]=Wits+Empathy-Composure
+&tags.embed.sum_of_all_fears [v( d.dt )]=demon.vocal
+
+&embed.vox [v( d.dd )]=Manipulation+Expression
+&tags.embed.vox [v( d.dt )]=demon.vocal
+
+/*
+================================================================================
+== NEW EXPLOITS ================================================================
+*/
+
+&exploit.break_the_dam [v( d.dd )]=Presence + Science + Primum
+&tags.exploit.break_the_dam [v( d.dt )]=demon
+
+&exploit.context_matters [v( d.dd )]=Presence + Persuasion + Primum
+&tags.exploit.context_matters [v( d.dt )]=demon
+
+&exploit.demon_car [v( d.dd )]=Strength + Drive + Primum
+&tags.exploit.demon_car [v( d.dt )]=demon
+
+&exploit.devour_infrastructure [v( d.dd )]=Strength + Survival + Primum
+&tags.exploit.devour_infrastructure [v( d.dt )]=demon
+
+&exploit.living_installation [v( d.dd )]=Intelligence + Medicine + Primum
+&tags.exploit.living_installation [v( d.dt )]=demon
+
+&exploit.newton's_nightmares [v( d.dd )]=Intelligence + Science + Primum
+&tags.exploit.newton's_nightmares [v( d.dt )]=demon
+
+&exploit.open-and-shut_case [v( d.dd )]=Presence + Investigation + Primum
+&tags.exploit.open-and-shut_case [v( d.dt )]=demon
+
+&exploit.show_of_power [v( d.dd )]=Presence + Occult + Primum 
+	vs. highest Wits + Supernatural Tolerance of observers
+&tags.exploit.show_of_power [v( d.dt )]=demon
+
+&exploit.soul_brand [v( d.dd )]=Presence + Expression + Primum – Supernatural Tolerance
+&tags.exploit.soul_brand [v( d.dt )]=demon
+
+&exploit.stop [v( d.dd )]=Intelligence + Science + Primum
+&tags.exploit.stop [v( d.dt )]=demon
+
+&exploit.terrible_avatar [v( d.dd )]=Strength + Occult + Primum
+&tags.exploit.terrible_avatar [v( d.dt )]=demon
+
+&exploit.two_places_at_once [v( d.dd )]=Presence + Science + Primum
+&tags.exploit.two_places_at_once [v( d.dt )]=demon
+
+&exploit.ultimatium [v( d.dd )]=Intelligence + Science + Primum vs. Resolve
+&tags.exploit.ultimatium [v( d.dt )]=demon
+
+&exploit.urban_legend [v( d.dd )]=Intelligence + Expression + Primum
+&tags.exploit.urban_legend [v( d.dt )]=demon
+
+&exploit.visions_of_heaven_and_hell [v( d.dd )]=Presence + Intimidation + Primum 
+	vs. Resolve + Supernatural Tolerance
+&tags.exploit.visions_of_heaven_and_hell [v( d.dt )]=demon
+
+&exploit.walls_of_jericho [v( d.dd )]=Strength + Intimidation + Primum
+&tags.exploit.walls_of_jericho [v( d.dt )]=demon
+
+
+/* 
+================================================================================
+== NEW DEMONIC FORMS ===========================================================
+
+-- Demonic Forms: Modifications ------------------------------------------------
+*/
+
+&demonic_form.advanced_optics [v( d.dd )]=1
+&tags.demonic_form.advanced_optics [v( d.dt )]=demon.modification
+
+&demonic_form.component_indicators [v( d.dd )]=1
+&tags.demonic_form.component_indicators [v( d.dt )]=demon.modification
+
+&demonic_form.detachable_limbs [v( d.dd )]=1
+&tags.demonic_form.detachable_limbs [v( d.dt )]=demon.modification
+
+&demonic_form.lighting [v( d.dd )]=1
+&tags.demonic_form.lighting [v( d.dt )]=demon.modification
+
+&demonic_form.limb_retractor [v( d.dd )]=1
+&tags.demonic_form.limb_retractor [v( d.dt )]=demon.modification
+
+&demonic_form.low_density [v( d.dd )]=1
+&tags.demonic_form.low_density [v( d.dt )]=demon.modification
+
+&demonic_form.nauseating_musk [v( d.dd )]=1
+&tags.demonic_form.nauseating_musk [v( d.dt )]=demon.modification
+
+&demonic_form.olfactory_enhancements [v( d.dd )]=1
+&tags.demonic_form.olfactory_enhancements [v( d.dt )]=demon.modification
+
+&demonic_form.radio_suite [v( d.dd )]=1
+&tags.demonic_form.radio_suite [v( d.dt )]=demon.modification
+
+&demonic_form.resistors [v( d.dd )]=1
+&tags.demonic_form.resistors [v( d.dt )]=demon.modification
+
+&demonic_form.steel_frame [v( d.dd )]=1
+&tags.demonic_form.steel_frame [v( d.dt )]=demon.modification
+
+&demonic_form.unyielding_vice [v( d.dd )]=1
+&tags.demonic_form.unyielding_vice [v( d.dt )]=demon.modification
+
+// -- Demonic Form: Technologies -----------------------------------------------
+
+&demonic_form.abruption_jets [v( d.dd )]=1
+&tags.demonic_form.abruption_jets [v( d.dt )]=demon.technology
+
+&demonic_form.adhesive [v( d.dd )]=1
+&tags.demonic_form.adhesive [v( d.dt )]=demon.technology
+
+&demonic_form.collapsible [v( d.dd )]=1
+&tags.demonic_form.collapsible [v( d.dt )]=demon.technology
+
+&demonic_form.laser_cutter [v( d.dd )]=1
+&tags.demonic_form.laser_cutter [v( d.dt )]=demon.technology
+
+&demonic_form.mantle_of_fire [v( d.dd )]=1
+&tags.demonic_form.mantle_of_fire [v( d.dt )]=demon.technology
+
+&demonic_form.savant_core_() [v( d.dd )]=1|
+	Academics.Animal Ken.Athletics.Brawl.Computer.Crafts.Drive.Empathy.
+	Expression.Firearms.Intimidation.Investigation.Larceny.Medicine.
+	Occult.Persuasion.Politics.Science.Socialize.Stealth.Streetwise.
+	Subterfuge.Survival.Weaponry
+&tags.demonic_form.savant_core_() [v( d.dt )]=demon.technology
+
+// &demonic_form.savant_core [v( d.dd )]=1
+// &tags.demonic_form.savant_core [v( d.dt )]=demon
+
+&demonic_form.shielded_compartment [v( d.dd )]=1
+&tags.demonic_form.shielded_compartment [v( d.dt )]=demon.technology
+
+// -- Demonic Form: Propulsions ------------------------------------------------
+
+&demonic_form.aquatic [v( d.dd )]=1
+&tags.demonic_form.aquatic [v( d.dt )]=demon.propulsion
+
+&demonic_form.burrowing [v( d.dd )]=1
+&tags.demonic_form.burrowing [v( d.dt )]=demon.propulsion
+
+&demonic_form.tread [v( d.dd )]=1
+&tags.demonic_form.tread [v( d.dt )]=demon.propulsion
+
+&demonic_form.urban_fluidity [v( d.dd )]=1
+&tags.demonic_form.urban_fluidity [v( d.dt )]=demon.propulsion
+
+// -- Demonic Form: Processes --------------------------------------------------
+
+&demonic_form.amorphous [v( d.dd )]=1
+&tags.demonic_form.amorphous [v( d.dt )]=demon.process
+
+&demonic_form.dataform [v( d.dd )]=1
+&tags.demonic_form.dataform [v( d.dt )]=demon.process
+
+&demonic_form.eliminator_cannon [v( d.dd )]=1
+&tags.demonic_form.eliminator_cannon [v( d.dt )]=demon.process
+
+&demonic_form.nanobot_composition [v( d.dd )]=1
+&tags.demonic_form.nanobot_composition [v( d.dt )]=demon.process
+

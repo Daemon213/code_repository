@@ -1,0 +1,929 @@
+/*
+================================================================================
+== NOTES =======================================================================
+
+HOLY SMOKES THIS IS A LOT OF INFORMATION.
+
+Most of this section is about setting up the code for evaluating trait 
+prerequisites. 
+
+If you plan on creating or adding game books, be sure to read the summaries in 
+the "functions" section.
+
+The following is passed to every &prerequisite.<statpath>:
+	0: sheet dbref
+	1: instance (if exists)
+	2: value to raise by
+
+This information can then be passed to the functions set up below. They are 
+meant to be powerful shortcuts to the usual things that new World of Darkness/
+Chronicles of Darkness wants for prerequisites, usually for merits and sometimes 
+for powers.
+
+Use these functions for good, not evil.
+
+
+================================================================================
+== SETUP =======================================================================
+*/
+
+@create Data Dictionary <dd>
+@set  Data Dictionary <dd>=inherit safe
+
+@fo me=&d.dd me=search( name=Data Dictionary <dd> )
+
+@fo me=@parent Data Dictionary <dd>=[v( d.codp )]
+&prefix.functions Data Dictionary <dd>=.
+&prefix.attributes Data Dictionary <dd>=attribute.
+&prefix.skills Data Dictionary <dd>=skill.
+&prefix.merits Data Dictionary <dd>=merit.
+&prefix.advantages Data Dictionary <dd>=advantage.
+&prefix.bio Data Dictionary <dd>=bio.
+&prefix.specials Data Dictionary <dd>=special.
+&prefix.health Data Dictionary <dd>=health.
+&prefix.conditions Data Dictionary <dd>=condition.
+&prefix.specials Data Dictionary <dd>=special.
+
+
+/*
+--------------------------------------------------------------------------------
+-- Data Tags -------------------------------------------------------------------
+
+These are on its own object because the system might flood the poor lookup 
+system.
+
+In the future, notes and page references should go here as well.
+
+*/
+
+@create Data Tags <d:t>
+@set Data Tags <d:t>=inherit safe
+@fo me=&d.dt me=search( name=Data Tags <d:t> )
+@fo me=&d.dt [v( d.dd )]=search( name=Data Tags <d:t> )
+
+@fo me=@parent [v( d.dt )]=[v( d.codp )]
+&prefix.attributes [v( d.dt )]=tags.attribute.
+&prefix.skills [v( d.dt )]=tags.skill.
+&prefix.merits [v( d.dt )]=tags.merit.
+&prefix.advantages [v( d.dt )]=tags.advantage.
+&prefix.bio [v( d.dt )]=tags.bio.
+&prefix.specials [v( d.dt )]=tags.special.
+&prefix.health [v( d.dt )]=tags.health.
+&prefix.conditions [v( d.dt )]=tags.condition.
+&prefix.specials [v( d.dt )]=tags.special.
+
+
+
+/*
+================================================================================
+== FUNCTIONS ===================================================================
+
+Data Dictionary Prerequisite Shortcut Functions
+
+--------------------------------------------------------------------------------
+-- Summary ---------------------------------------------------------------------
+
+"This stat" means "this stat's final value".
+
+For almost all of these, the following variables are passed:
+	0: sheet dbref
+	1: instance (when exists)
+	2: value to check against
+	3: value this stat (with the prereq on it) is being adjusted by
+
+Class - Numeric, String, List, or Peppermint.
+	.Class			(see above)
+
+Value - Current value of a stat,.
+	.Value			Numeric. Unadjusted value.
+	.Value_Full		Any. Untouched attribute.
+	.Value_Stats	Numeric. Summed & current value of a list of statpaths.
+	.Value_Stats_Template	Numeric. Will add template alterations.
+
+At Least - Numeric. Statpath(s) passed are >= ("at least") value(s) passed.
+	.At_Least		This stat is at least value.
+	.At_Least_All	Other stats are at least value.
+	.At_Least_One	One of other stats is at least value.
+	.At_Least_Stat	This stat is at least value of another stat.
+
+At Most - Numeric. Opposite of "At Least", Stat <= Value.
+	.At_Most		
+	.At_Most_All	
+	.At_Most_One	
+	.At_Most_Stat	
+
+Between - Numeric. Both 'at least' and 'at most'
+	.Between
+
+Is - Direct comparison of stat's value.
+	.Is				Numeric. Stat's value is 'x'.
+	.Is_Full		Any. Stat's contents is 'x'.
+	.Is_Not			Numeric. Stat's value is not 'x'.
+	.Is_One_Of		Numeric. Stat's value matches one of a dot-delim list.
+	.Is_None_Of		Numeric. Opposite of "is one of", above.
+	.Is_Stat		Any. Statpath's value equals another statpath's value.
+
+Has - Checking for existance of stats.
+	.Has			Stat exists on sheet.
+	.Has_Not		Stat doesn't exist on sheet.
+	.Has_One_Of		One of stats listed exists on sheet.
+	.Has_All_Of		Stats listed all exist on sheet.
+	.Has_None_Of	Stats listed all do not exist on sheet.
+
+Min/Max Of - Return a high/low value
+	.Min_Of			Lowest value of a list of stats
+	.Max_Of			Highest value of a list of stats
+
+List Class Checks  - Checks specifically about the 'list' stat class
+	.List_Has		'List' stat class includes value passed
+	.List_Has_All	Includes all of a dot-delimited list passed
+	.List_Has_Not	Includes none of a dot-delimited list passed
+	.List_At_Least	Has a level of at least value
+
+Core Stat Checks - Check against Supernatural Tollerance (power trait)
+	.Max_Trait		How high can they take skills/attributes?
+	.Trait_Check	Can they take "this" skill/attribute "that" high?
+	.Sphere			Which 'sphere' (game line) do you belong to?
+
+Specialty - Get information about specialties
+	.Specialty_For  Return the skill that has the passed specialty
+	.Specialty_Has  Has the specialty named in a certain or any skill
+
+Instanced - Information about Instanced <stat>(<type>) stats
+	.Instanced_Once		Item has one or zero existing instances
+
+
+--------------------------------------------------------------------------------
+-- Class -----------------------------------------------------------------------
+
+What is the class of the stat?
+	0: stat path
+*/
+
+&.Class [v( d.dd )]=u( [u( d.sfp )]/f.get-class, %0 )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Value -----------------------------------------------------------------------
+
+The "value" directive just pulls the permanent part of a numeric stat (such as 
+Strength) or the first item from a text list.
+
+-- value --
+
+Value of a primary stat, or the first item of a list
+	0: sheet dbref
+	1: stat.path
+	e.g.:
+		u( .value, %0, attribute.strength )
+*/
+
+&.Value [v( d.dd )]=
+	case( u( .class, %1 ), 
+		numeric, first( u( .value_full, %0, %1 ), . ), 
+		u( .value_full, %0, %1 )
+	)
+
+/* -- value full --
+
+Full text on a stat ("both" for numeric stats)
+	0: sheet dbref
+	1: stat.path
+	e.g.:
+		u( .value_full, %0, bio.full_name )
+*/
+
+&.Value_Full [v( d.dd )]=
+	udefault( 
+		[u( d.sfp )]/f.getstat.workhorse.[u( .class, %1 )], 
+		u( %0/_%1 ), 
+		%0, _%1 
+	)
+
+/* -- value stats --
+
+Total value of a numeric trait
+	0: sheet dbref
+	1: list.of stat.paths
+	e.g.:
+		u( .value_stats, %0, attribute.strength skill.brawl )
+*/
+
+&.Value_Stats [v( d.dd )]=
+	ladd( iter( %1 , u( .value_full, %0, %i0 ), , . ), . )
+
+
+/* -- value stats template --
+
+Run 'value stats' but also check for '<stat path>.<template>'.
+(Similar to how Health does it. See '5a - Setup and Data'.)
+
+	0: sheet dbref
+	1: list.of stat.paths
+	2: calling statpath
+	e.g. perception: 
+		u( .value_stats_template, 
+			%0, 
+			attribute.wits attribute.composure, 
+			advantage.perception
+		)
+	perception.changeling:
+		if( gt( <clarity>, div( <max clarity>, 2 )), <wyrd>, 0 )
+*/
+
+&.Value_Stats_Template [v( d.dd )]=
+	add( 
+		u( .value_stats, %0, %1 ), 
+		u( %2.[u( .value_full, %0, bio.template )], %0 )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- At Least --------------------------------------------------------------------
+
+The "at" directives check that a stat is "at least" (equal to or greater than) 
+another value. Sometimes that other value is another stat.
+
+Pass %2 from the &prerequisite.<statpath> when the stat we're comparing is 
+"this" stat, aka the stat in <statpath>. This is required to make cgen/xp 
+spends to properly see if the new value of "this stat" meets prerequisites.
+
+-- at least --
+
+Stat is no lower than a value
+	0: sheet dbref
+	1: stat.path
+	2: min value
+	3: add-offset (send "%2" when stat.path is self)
+	e.g.:
+		u( .at_least, %0, skill.empathy, 2 )
+*/
+
+&.At_Least [v( d.dd )]=
+	gte( add( u( .value, %0, %1 ), %3 ), %2 )
+
+/* -- at least all --
+
+Stats passed are all no lower than values associated ("and _at_least")
+	0: sheet dbref
+	1: stat.path:value|stat.path:value
+	(cannot be used for "this stat" situations)
+	e.g.:
+		u( .at_least_all, %0, attribute.dexterity:3 skill.athletics:2 )
+*/
+
+&.At_Least_All [v( d.dd )]=
+	land( iter( %1, u( .at_least, %0, first( %i0, : ), rest( %i0, : ))))
+
+/* -- at least one --
+
+One stat passed is no lower than values associated ("or _at_least")
+	0: sheet dbref
+	1: stat.path:value|stat.path:value
+	(cannot be used for "this stat" situations)
+	e.g.:
+		u( .at_least_one, %0, skill.weaponry:2 skill.firearms:2 )
+*/
+
+&.At_Least_One [v( d.dd )]=
+	lor( iter( %1, u( .at_least, %0, first( %i0, : ), rest( %i0, : ))))
+
+/* -- at least stat --
+
+This stat is no lower than another stat
+	0: sheet dbref
+	1: this.statpath
+	2: that.statpath +/- stuff
+	3: add-offset (send "%2" always, used in xp-spends)
+	e.g.:
+		u( .at_least_stat, %0, merit.fame, attribute.presence, %2 )
+		u( .at_least_stat, %0, merit.hollow_(%1).size, advantage.wyrd + 2, %2 )
+*/
+
+&.At_Least_Stat [v( d.dd )]=
+	localize( 
+// .. sloppy, but gets the job done
+		[setq( t, trim( first( edit( %2, -, +- ), + )))]
+		[setq( a, 
+			iter( rest( edit( edit( %2, -%b, - ), -, %b+- ), + ), %i0, + 	)
+		)]
+		[u( 
+			.at_least, 
+			%0, 
+			%1, 
+			ladd( 
+				[u( .value, %0, %qt )] 
+				%qa 
+			), 
+			%3 
+		)]
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- At Most ---------------------------------------------------------------------
+
+Same as "At Least", only checks that things are "at most" (equal to or less 
+than) a value.
+
+Pass %2 from the &prerequisite.<statpath> when the stat we're comparing is 
+"this" stat, aka the stat in <statpath>. This is required to make cgen/xp 
+spends to properly see if the new value of "this stat" meets prerequisites.
+
+--
+
+Stat is no higher than a value
+	0: sheet dbref
+	1: stat.path
+	2: value
+	3: add-offset (send "%2" when stat.path is self, used in xp-spends)
+	e.g.:
+		u( .at_most, %0, power.fubar, 3, %2 )
+*/
+
+&.At_Most [v( d.dd )]=
+	lte( add( u( .value, %0, %1 ), %3 ), %2 )
+
+/* -- at most all --
+
+Stats passed are all no higher than values associated ("and _at_most")
+	0: sheet dbref
+	1: stat.path:value stat.path:value
+	(cannot be used for "this stat" situations)
+	e.g.:
+		u( .at_most_all, %0, attribute.strength:4 skill.athletics:1 )
+*/
+
+&.At_Most_All [v( d.dd )]=
+	land( iter( %1, u( .at_most, %0, first( %i0, : ), rest( %i0, : ))))
+
+/* -- at most one --
+
+One stat passed is no higher than values associated ("or _at_most")
+	0: sheet dbref
+	1: stat.path:value|stat.path:value
+	(cannot be used for "this stat" situations)
+	e.g.:
+		u( .at_most_one, %0, merit.fame:3 attribute.presence:3 )
+*/
+
+&.At_Most_One [v( d.dd )]=
+	lor( iter( %1, u( .at_most, %0, first( %i0, : ), rest( %i0, : ))))
+
+/* -- at most stat --
+This stat is no higher than another stat
+	0: sheet dbref
+	1: this.statpath
+	2: that.statpath(+/-<value>)
+	3: add-offset (send "%2" always, used in xp-spends)
+
+	t: that.statpath
+	a: add value(s)
+
+	e.g.:
+		u( .at_most_stat, %0, merit.hidden_life, advantage.wyrd, %2 )
+		u( .at_most_stat, %0, skill.academics, advantage.wyrd+1, %2 )
+*/
+
+&.At_Most_Stat [v( d.dd )]=
+	localize( 
+// .. sloppy, but gets the job done
+		[setq( t, trim( first( edit( %2, -, +- ), + )))]
+		[setq( a, 
+			iter( rest( edit( edit( %2, -%b, - ), -, %b+- ), + ), %i0, + )
+		)]
+		[u( .at_most, 
+			%0, 
+			%1, 
+			ladd( 
+				[u( .value, %0, %qt )] 
+				%qa 
+			), 
+			%3 
+		)] 
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Between ---------------------------------------------------------------------
+
+This stat is between *and includes* <value 1> and <value 2>
+	0: sheet dbref
+	1: this.statpath
+	2: value 1 (low)
+	3: value 2 (high)
+	4: add-offset (send "%2" always, used in xp-spends)
+*/
+
+&.Between [v( d.dd )]=
+	cand( 
+		u( .at_least, %0, %1, %2, %4 ), 
+		u( .at_most, %0, %1, %3, %4 )
+	)
+
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Is --------------------------------------------------------------------------
+
+Intended for list stats, "is" compares the stat's primary (first) value to 
+another or against a list. Can be used with numeric stats as well if an exact 
+match needs to be found, but it's discouraged.
+
+-- is --
+
+Stat's "first" text value matches exactly
+	0: sheet dbref
+	1: stat.path
+	2: value (text)
+	3: stat being set (ignore sheet value if passed)
+	e.g.:
+		u( .is, %0, bio.kith, shadowsoul )
+		u( .is_full, %0, bio.seeming, seemingless, %2 )
+*/
+
+&.Is [v( d.dd )]=
+	strmatch( %2, if( t( %3 ), %3, u( .value, %0, %1 )))
+
+/* -- is full --
+
+Stat's "full" value matches
+	0: sheet dbref
+	1: stat.path
+	2: value (text)
+	3: stat being set (ignore sheet value if passed)
+	e.g.:
+		u( .is_full, %0, bio.template, human.fae-touched )
+		u( .is_full, %0, bio.template, changeling, %2 )
+*/
+
+&.Is_Full [v( d.dd )]=
+	strmatch( %2, if( t( %3 ), %3, u( .value_full, %0, %1 )))
+
+
+/* -- is not --
+
+Stat's "first" text value doesn't match
+	0: sheet dbref
+	1: stat.path
+	2: value (text)
+	3: stat being set (ignore sheet value if passed)
+	e.g.:
+		u( .is_not, %0, advantage.vice, pride )
+		u( .is_not, %0, bio.seeming, seemingless, %2 )
+*/
+
+&.Is_Not [v( d.dd )]=
+	not( u( .is, %0, %1, %2, %3 ))
+
+/* -- is one of --
+
+Stat's "first" text item matches one from a list
+	0: sheet dbref
+	1: stat.path
+	2: one.of.list
+	3: value being set (ignore sheet value if passed)
+	e.g.:
+		u( .is_one_of, %0, bio.template, changeling.human )
+		u( .is_one_of, 
+			%0, 
+			bio.bloodline, 
+			v( d.bloodlines.[u( .value, %0, bio.clan )] ), 
+			%2 
+		)
+*/
+
+&.Is_One_Of [v( d.dd )]=
+	t( match( %2, if( t( %3 ), %3, u( .value, %0, %1 )), . ))
+
+/* -- is none of --
+
+Stat's "first" text value matches none from a list
+	0: sheet dbref
+	1: stat.path
+	2: one.of.list
+	3: value being set (ignore sheet value if passed)
+	e.g.:
+		u( .is_none_of, %0, bio.kith, %1.Kithless )
+*/
+
+&.Is_None_Of [v( d.dd )]=
+	not( u( .is_one_of, %0, %1, %2, %3 ))
+
+/* -- is stat --
+
+Stat's "first" text value matches another stat's
+	0: sheet dbref
+	1: stat.path (usually the one is_stat is being called from)
+	2: stat.path (target)
+	e.g.:
+		u( .is_stat, %0, attribute.wits, skill.stealth )
+*/
+
+&.Is_Stat [v( d.dd )]=
+	u( .is_one_of, %0, 
+		%1, 
+		u( .value, %0, %2 )
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Has -------------------------------------------------------------------------
+
+The "has" directives check to see if a stat (or a list of stats) exists (or 
+don't exist) on someone's sheet.
+
+Allows instanced stats to be passed with a wildcard, e.g.:
+	u( .has, %0, language_(*) )
+
+All 'has' functions will honor this.
+
+-- has --
+
+Sheet has a stat
+	0: sheet dbref
+	1: stat.path
+	e.g.:
+		u( .has, %0, skill.crafts )
+*/
+
+&.Has [v( d.dd )]=
+	if( member( last( %1, _ ), %(*%) ), 
+		t( lattr( %0/_%1 )), 
+		t( u( .value, %0, %1 ))
+	)
+
+
+/* -- has not --
+
+Sheet doesn't have a stat
+	0: sheet dbref
+	1: stat.path
+	e.g.:
+		u( .has_not, %0, merit.fame )
+*/
+
+&.Has_Not [v( d.dd )]=
+	not( u( .value, %0, %1 ))
+
+/* -- has one of --
+
+Sheet has one of the stats from a list
+	0: sheet dbref
+	1: list.of stat.paths to.check
+	e.g.:
+		u( .has_one_of, %0, merit.clairvoyance merit.channeling_(spirit) )
+*/
+
+&.Has_One_Of [v( d.dd )]=
+	lor( iter( %1, u( .has, %0, %i0 )))
+
+/* -- has all of --
+
+Sheet has all of the stats from a list
+	0: sheet dbref
+	1: list.of stat.paths to.check
+	e.g.:
+		u( .has_all_of, %0, merit.astral_projection merit.thought_projection )
+*/
+
+&.Has_All_Of [v( d.dd )]=
+	land( iter( %1, u( .has, %0, %i0 )))
+
+/* -- has none of --
+
+Sheet has none of the stats from a list
+	0: sheet dbref
+	1: list.of stat.paths to.check
+	e.g.:
+		u( .has_none_of, %0, merit.occlusion merit.hidden_life )
+*/
+
+&.Has_None_Of [v( d.dd )]=
+	not( u( .has_one_of, %0, %1 ))
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Min Of/Max Of ---------------------------------------------------------------
+
+Returns the lowst or highest value of a list of stats. We have to fold our own 
+"lmin" and "lmax" for these, hurrah.
+
+	0: sheet dbref
+	1: list.of stat.paths to.check
+	e.g.:
+		u( .min_of, %0, merit.occlusion merit.hidden_life ))
+		u( .max_of, %0, merit.occlusion merit.hidden_life ))
+
+-- min of --
+*/
+
+&.Min_Of [v( d.dd )]=
+	min( 
+		u( .value, %0, first( %1 )), 
+		if( 
+			dec( words( rest( %1 ))), 
+			u( .min_of, %0, rest( %1 )), 
+			u( .value, %0, rest( %1 ))
+		)
+	)
+
+
+// -- max of --
+
+&.Max_Of [v( d.dd )]=
+	max( 
+		u( .value, %0, first( %1 )), 
+		if( 
+			dec( words( rest( %1 ))), 
+			u( .max_of, %0, rest( %1 )), 
+			u( .value, %0, rest( %1 ))
+		)
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- List Has --------------------------------------------------------------------
+
+Takes a list stat (or, for that matter, any numeric stat) and returns 1 if the 
+item exists in it, 0 if it doesn't. 
+
+List stats are stored: item.item.item
+
+Item name must be exact or contain its own wildcards.
+
+	0: sheet dbref
+	1: stat.path
+	2: value
+	e.g.:
+		u( .list_has, %0, bio.kith, runnerswift )
+
+-- list has --
+*/
+
+&.List_Has [v( d.dd )]=
+	t( match( u( .value_full, %0, %1 ), %2, . ))
+
+// -- list has all --
+
+&.List_Has_All [v( d.dd )]=
+	eq( 
+		words( setinter( u( .value_full, %0, %1 ), %2, . ), . ), 
+		words( %2, . )
+	)
+
+// -- list has none --
+
+&.List_Has_None [v( d.dd )]=
+	eq( 
+		words( setinter( u( .value_full, %0, %1 ), %2, . ), . ), 
+		0 
+	)
+
+
+/* -- list at least --
+
+List-class stat passed has a value of at least value
+	0: sheet dbref
+	1: statpath
+	2: value
+	e.g.:
+		u( .at_least_list, %0, merit.martial_arts, 2 )
+*/
+
+&.List_At_Least [v( d.dd )]=gte( lmax( u( .value, %0, %1 ), . ), %2 )
+
+
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Class: List -----------------------------------------------------------------
+
+*** Hey, Theno, this is pretty good code and you should use it in stat/set! ***
+
+Turns the number portion of a class:list statpath and returns the name portion.
+Looks up text in the value portion and, if match, returns the name portion.
+Else, assumes translating name->value
+
+(This is the first dd .function that does not use the sheet)
+
+	0: full.statpath
+	1: value
+
+-- class: translate list
+*/
+
+&.class_translate_list [v( d.dd )]=
+	case( 1, 
+// .. number value -> name
+		isnum( %1 ), 
+		elements( rest( v( %0 ), | ), %1, . ), 
+// .. text value -> name
+		t( match( first( v( %0 ), | ), %1, . )), 
+		elements( rest( v( %0 ), | ), match( first( v( %0 ), | ), %1, . ), . ), 
+// .. name -> value
+		elements( first( v( %0 ), | ), match( rest( v( %0 ), | ), %1*, .), . )
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- What's My Max Trait? --------------------------------------------------------
+
+The more supers we get, the more generalized we need to make some of these 
+things. It's important, therefore, to be able to simply ask for the "maximum 
+trait" based on general power level.
+
+>>> When adding or removing spheres from a game, alter this -- for now <<< 
+
+Some spheres allow the max to be raised depending on a merit, and sometimes 
+only for a specific stat.
+
+	 0: sheet dbref
+	 1: trait statpath [optional]
+
+think u( v( d.dd )/.max_trait, num( *thenomain ))
+think u( v( d.dd )/.max_trait, num( *thenomain ), attribute.intelligence )
+
+-- max trait --
+*/
+
+&.max_trait [v( d.dd )]=
+	add( 
+		max( 5, 
+			u( .value, 
+				%0, 
+				udefault( 
+					.max_trait.[u( .value_full, %0, bio.template )], 
+					0 
+				)
+			)
+		), 
+		ladd( 
+			iter( 
+				lattr( %!/.max_trait.[u( .value_full, %0, bio.template )].* ), 
+				u( %!/%i0, %0, %1 )
+			)
+		)
+	)
+
+// -- max trait (template) --
+
+&.max_trait.Changeling [v( d.dd )]=advantage.wyrd
+&.max_trait.Werewolf [v( d.dd )]=advantage.primal_urge
+&.max_trait.Promethean [v( d.dd )]=advantage.azoth
+&.max_trait.Mage [v( d.dd )]=advantage.gnosis
+&.max_trait.Geist [v( d.dd )]=advantage.psyche
+&.max_trait.Skinthief [v( d.dd )]=advantage.supernatural_tolerance
+
+&.max_trait.Werewolf.Embodiment [v( d.dd )]=
+	u( .has, %0, merit.embodiment_of_the_firstborn_([rest( %1, . )]))
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Trait Check -----------------------------------------------------------------
+
+Like Gift Check, but for power level -> attribute/skill. We use this so often 
+that we're making it its own thing.
+
+This is prefered to 'max trait' above and the above may be folded into this 
+function, instead.
+
+	0: sheet dbref
+	1: stat.path
+	2: adding to stat, if any (pass %2 to this function, as there usually is)
+
+think u(dd/.max_trait, num( eric russell ))
+think u(dd/.max_trait, num( *thenomain ), attribute.presence )
+
+*/
+
+&.trait_check [v( d.dd )]=
+	u( .at_most, %0, %1, u( .max_trait, %0, %1 ), %2 )
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Sphere ----------------------------------------------------------------------
+
+Which game-line is this template from? The game-line is almost certainly the 
+same name as the major template from that game-line.
+(possible exception: The 'Geist' game-line has the major template 'Sin-Eater'.)
+
+	0: sheet dbref
+
+*/
+
+&.sphere [v( d.dd )]=
+	localize( strcat( 
+		setq( s, 
+			lcstr( 
+				last( 
+					grepi( 
+						%!, 
+						.sphere.*, 
+						edit( u( .value_full, %0, bio.template ), %b, _ )
+					), 
+					. 
+				)
+			)
+		), 
+		if( t( %qs ), %qs )
+	))
+
+// -- spheres for templates --
+
+&.sphere.human [v( d.dd )]=Human
+&.sphere.vampire [v( d.dd )]=Vampire Ghoul
+&.sphere.demon [v( d.dd )]=Demon Stigmatic
+&.sphere.werewolf [v( d.dd )]=Werewolf Wolf-Blooded
+
+/* a thought:
+	&bio.template [v( d.dd )]=[iter( lattr( %!/bio.template.* ), v( %i0 ), , . )]
+	&bio.template.human [v( d.dd )]=Human
+	&bio.template.demon [v( d.dd )]=Demon.Stigmatic
+	&bio.template.werewolf [v( d.dd )]=Werewolf.Wolf-Blooded
+	&bio.template.vampire [v( d.dd )]=Vampire.Ghoul
+	
+	&sphere [v( d.dd )]=
+		lcstr( last( 
+			grepi( %!, bio.template., u( .value_full, %0, bio.template )), 
+			. 
+		))
+
+	However, the data line such as `bio.template` does not process code. Dammit.
+*/
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Specialties -----------------------------------------------------------------
+
+-- specialty for --
+
+Return the skill that has the passed specialty
+	0: sheet dbref
+	1: specialty to find
+	e.g.:
+		u( .specialty_for, %0, drawing )
+*/
+
+&.Specialty_For [v( d.dd )]=
+	lcstr( 
+		rest( 
+			first( 
+				sort( iter( lattr( %0/_skill.*.%1 ), elements( %i0, 1 2, . )))
+			), 
+			_ 
+		)
+	)
+
+/* -- specialty has --
+
+Does the sheet have this specialty?
+	0: sheet dbref
+	1: skill(s) to match, '*' means 'all'
+	2: specialty to find, '*' means 'any'
+	e.g.:
+		u( .specialty_has, %0, Crafts Expression, * )
+		u( .specialty_has, %0, Crafts, Pottery )
+		u( .specialty_has, %0, *, Engineering )
+*/
+
+&.Specialty_Has [v( d.dd )]=
+	gt( words( iter( %1, lattr( %0/_skill.%i0.%2 ))), 0 )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Instanced -------------------------------------------------------------------
+
+-- instanced once --
+
+Does the trait have one or zero existing instances?
+	0: sheet dbref
+	1: complete statpath: stat.path_(instanced)
+	e.g.:
+		u( .instanced_once, %0, merit.language_(french) )
+*/
+
+&.instanced_once [v( d.dd )]=
+	localize( strcat( 
+		setq( p, first( %1 , _%(%) )), 
+		setq( i, before( rest( %1, _(, )), ) ), 
+		not( 
+			setdiff( 
+				lattr( %0/%qp_(*) ), 
+				_%qp_(%qi) 
+			)
+		)
+	))

@@ -1,0 +1,2737 @@
+/* 
+################################################################################
+## CHANGELING: THE LOST (2nd Edition) ##########################################
+
+This file includes all additions to the system for Changeling: the Lost (2nd 
+Edition) core rules
+
+
+================================================================================
+== NOTES =======================================================================
+
+--------------------------------------------------------------------------------
+-- Notes: Fae-Touched ----------------------------------------------------------
+
+Template: Fae-Touched
+Integrity: Yes
+
+Wyrd: 0, cannot be raised
+
+Max Glamour: 10
+
+"All fae-touched characters suffer from the Madness Condition."
+"Additionally, the character suffers from the Arcadian Dreams and Hedge 
+Addiction Conditions"
+
+
+================================================================================
+== OBJECT CREATION AND CODE ====================================================
+
+--------------------------------------------------------------------------------
+-- Pre-Setting Attributes ------------------------------------------------------
+
+If you don't have the attributes set on yourself, run this code:
+
+@fo me=&d.sfp me=search( name=Stat Functions Prototype <sfp> )
+@fo me=&d.dd me=search( name=Data Dictionary <dd> )
+@fo me=&d.dt me=search( name=Data Tags <d:t> )
+
+@fo me=&d.xpas me=search( name=XP Advancement System <xpas> )
+@fo me=&d.xpcd me=search( name=XP Cost Database <xpcd> )
+
+@fo me=&d.cg me=search( name=GMC Chargen <cg> )
+@fo me=&d.sheet me=search( name=Sheet: Rows )
+
+@fo me=&d.whs me=search( name=WoD Health System <whs> )
+
+@fo me=&d.psrs me=search( name=Pool Spend Regain System <psrs> )
+
+
+
+################################################################################
+## CHANGELING: STAT FUNCTIONS ##################################################
+
+--------------------------------------------------------------------------------
+-- SFP: Search Order -----------------------------------------------------------
+
+Level 2 for powers 
+Level 3 for very minor items
+*/
+
+&d.search-order-02-changeling [v( d.sfp )]=contract
+&d.search-order-03-changeling [v( d.sfp )]=
+
+
+// -- XPCD tweak --
+
+@fo me=&d.sfp [v( d.xpcd )]=search( name=Stat Functions Prototype <sfp> )
+
+
+
+/*
+################################################################################
+## CHANGELING: DATA DICTIONARY #################################################
+
+
+
+================================================================================
+== DD: SETUP ===================================================================
+*/
+
+// CODP prefixes 
+&prefix.changeling_-_contracts [v( d.dd )]=contract.
+&prefix.changeling_-_contracts [v( d.dt )]=tags.contract.
+
+
+// add to templates
+@fo me=&bio.template [v( d.dd )]=
+	[get( v( d.dd )/bio.template )].Changeling.Fae-Touched
+
+
+// register "max trait" statpath
+&.max_trait.changeling [v( d.dd )]=advantage.wyrd
+
+
+// register "sphere"'s templates (could this be folded into 'templates'?)
+&.sphere.changeling [v( d.dd )]=Changeling Fae-Touched
+
+// changeling's calculated favored regalia, based on seeming
+&.changeling.seeming_regalia [v( d.dd )]=
+	case( ulocal( .value, %0, bio.seeming ), 
+		Beast, Steed, 
+		Darkling, Mirror, 
+		Elemental, Sword, 
+		Fairest, Crown, 
+		Ogre, Shield, 
+		Wizened, Jewels, 
+		None 
+	)
+
+
+
+/*
+================================================================================
+== CHANGELING BIO ==============================================================
+
+One of the coolest parts of this version of Changeling is that making new Courts 
+is a lot simpler, and has deep impact on the Chronicle.
+
+*/
+
+&bio.seeming [v( d.dd )]=Beast.Darkling.Elemental.Fairest.Ogre.Wizened
+&tags.bio.seeming [v( d.dt )]=changeling
+
+&bio.kith [v( d.dd )]=
+	Artist.Bright One.Chatelaine.Gristlegrinder.Helldiver.Hunterheart.
+	Leechfinger.Mirrorskin.Nightsinger.Notary.Playmate.Snowskin.
+	Kithless
+&default.bio.kith [v( d.dd )]=Kithless
+&tags.bio.kith [v( d.dt )]=changeling
+
+// Changelings get two Favored Regalia: One from Seeming and one from choice
+// Fae-Touched only get one.
+// Here is a good example of why a stat needs to check its own value.
+
+&bio.favored_regalia [v( d.dd )]=
+	Steed.Mirror.Sword.Crown.Shield.Jewels
+&prereq-text.bio.favored_regalia [v( d.dd )]=
+	Cannot be same as your Seeming's Favored Regalia
+&prerequisite.bio.favored_regalia [v( d.dd )]=
+	u( .is_not, %0, 
+		bio.favored_regalia, 
+		u( .changeling.seeming_regalia, %0 ), 
+		%2 
+	)
+&tags.bio.favored_regalia [v( d.dt )]=changeling.fae-touched
+
+&bio.court [v( d.dd )]=Spring.Summer.Autumn.Winter.Courtless
+&default.bio.court [v( d.dd )]=Courtless
+&tags.bio.court [v( d.dt )]=changeling
+
+&bio.motley [v( d.dd )]=*
+&tags.bio.motley [v( d.dt )]=changeling.fae-touched.clique
+
+// anchors: needle/thread, replace virtue/vice
+&bio.needle [v( d.dd )]=
+	Bon Vivant.Chess Master.Commander.Composer.Counselor.Daredevil.Dynamo.
+	Protector.Provider.Scholar.Storyteller.Teacher.Traditionalist.Visionary
+&tags.bio.needle [v( d.dd )]=changeling
+
+&bio.thread [v( d.dd )]=
+	Acceptance.Anger.Family.Friendship.Hate.Honor.Joy.Love.Memory.Revenge
+&tags.bio.thread [v( d.dd )]=changeling
+
+
+// -- bio: fae-touched ---------------------------------------------------------
+
+@edit [v( d.dt )]/tags.advantage.integrity=$, .fae-touched
+
+&bio.promise [v( d.dd )]=*
+&tags.bio.promise [v( d.dd )]=fae-touched
+
+
+
+/*
+================================================================================
+== CLARITY SYSTEM ==============================================================
+
+Clarity moved to `CtL3 - Clarity System`
+
+*/
+
+&advantage.wyrd [v( d.dd )]=0.1.2.3.4.5.6.7.8.9.10
+&default.advantage.wyrd [v( d.dd )]=
+	[if( u( .is, %0, bio.template, changeling ), 1, 0 )]
+&prerequisite.advantage.wyrd [v( d.dd )]=
+	if( u( .is, %0, bio.template, fae-touched ), 
+		lte( add( u( .value, %0, advantage.wyrd ), %2 ), 0 ), 
+		gte( add( u( .value, %0, advantage.wyrd ), %2 ), 1 )
+	)
+&prereq-text.advantage.wyrd [v( d.dd )]=
+	1+ for Changelings, 0 for Fae-Touched
+&tags.advantage.wyrd [v( d.dt )]=power.changeling.fae-touched
+
+
+&advantage.glamour [v( d.dd )]=
+	u( .value_stats, %0, advantage.glamour_maximum )
+&default.advantage.glamour [v( d.dd )]=derived
+&tags.advantage.glamour [v( d.dt )]=derived.changeling.fae-touched
+
+
+&advantage.glamour_maximum [v( d.dd )]=
+	if( u( .is_full, %0, bio.template, changeling ), 
+		elements( 
+			10 11 12 13 15 20 25 30 50 75, 
+			u( .value, %0, advantage.wyrd )
+		), 
+
+		10 
+	)
+&default.advantage.glamour_maximum [v( d.dd )]=derived
+&tags.advantage.glamour_maximum [v( d.dt )]=derived.changeling.fae-touched
+
+
+&advantage.goblin_debt [v( d.dd )]=#
+&default.advantage.goblin_debt [v( d.dd )]=0
+&tags.advantage.goblin_debt [v( d.dt )]=pool.changeling
+&notes.advantage.goblin_debt [v( d.dt )]=
+	Gain one point after successfully using a Goblin Contract (see '+help 
+	pools')
+	|Staff and STs can use these points when interesting
+	|At 10+, you're a Hobgoblin
+
+// .. there's no need for this except for the spend/regain system
+&advantage.goblin_debt_maximum [v( d.dd )]=99
+&default.advantage.goblin_debt_maximum [v( d.dd )]=99
+&tags.advantage.goblin_debt_maximum [v( d.dt )]=pool.changeling
+
+
+&advantage.frailties [v( d.dd )]=[@@( no idea how to do this )]
+&tags.advantage.frailties [v( d.dd )]=changeling
+
+
+&advantage.kenning [v( d.dd )]=
+	if( 
+		gt( 
+			u( .value_stats, %0, advantage.clarity ), 
+			fdiv( u( .value_stats, %0, advantage.clarity_maximum ), 2 )
+		), 
+		u( .value_stats, %0, advantage.clarity ), 
+		n/a 
+	)
+&default.advantage.kenning [v( d.dd )]=derived
+&tags.advantage.kenning [v( d.dt )]=derived.changeling
+&notes.advantage.kenning [v( d.dt )]=
+	A player whose character currently suffers Clarity damage in fewer than 
+	half her Clarity boxes may make a kenning roll by spending a point of 
+	Willpower.
+	|This means you can't spend Willpower on Kenning.
+
+
+&advantage.perception.changeling [v( d.dd )]=
+	add( 
+// .. +2 if max clarity, unless acute senses, then +wyrd.
+		if( u( .has, %0, merit.acute_senses ), 
+			u( .value_stats, %0, advantage.wyrd ), 
+			mul( 2, 
+				u( .is_stat, %0, 
+					advantage.clarity, 
+					advantage.clarity_maximum 
+				)
+			)
+		), 
+// .. -1 if clarity 4 or 3, -2 if clarity 2 or 1.
+		min( 
+			0, 
+			sub( ceil( fdiv( u( .value_stats, %0, advantage.clarity ), 2 )), 3 )
+		)
+	)
+
+
+
+
+/*
+================================================================================
+== CHANGELING MERITS ===========================================================
+
+Merits tagged "Motley" can be purchased as a motley; any character that 
+contributes dots to the total has access to the full, combined amount.
+
+*/
+
+&merit.accute_senses [v( d.dd )]=1
+&prerequisite.merit.accute_senses [v( d.dd )]=
+	u( .at_least_one, %0, attribute.wits:3 attribute.composure:3 )
+&prereq-text.merit.accute_senses [v( d.dd )]=Wits 3+ or Composure 3+
+&tags.merit.accute_senses [v( d.dt )]=changeling
+
+&merit.arcadian_metabolism [v( d.dd )]=2
+&tags.merit.arcadian_metabolism [v( d.dt )]=changeling
+
+&merit.brownie's_boon [v( d.dd )]=1
+&tags.merit.brownie's_boon [v( d.dt )]=changeling
+
+&merit.cloak_of_leaves [v( d.dd )]=3
+&prerequisite.merit.cloak_of_leaves [v( d.dd )]=
+	cand( 
+		u( .is, %0, bio.court, autumn ), 
+		u( .at_least, %0, merit.mantle, 3 )
+	)
+&prereq-text.merit.cloak_of_leaves [v( d.dd )]=Autumn Mantle 3+
+&tags.merit.cloak_of_leaves [v( d.dt )]=changeling.court.autumn
+
+&merit.cold_hearted [v( d.dd )]=3
+&prerequisite.merit.cold_hearted [v( d.dd )]=
+	cand( 
+		u( .is, %0, bio.court, winter ), 
+		u( .at_least, %0, merit.mantle, 3 )
+	)
+&prereq-text.merit.cold_hearted [v( d.dd )]=Winter Mantle 3+
+&tags.merit.cold_hearted [v( d.dt )]=changeling.court.winter
+
+&merit.court_goodwill_() [v( d.dd )]=1.2.3.4.5|Spring.Summer.Autumn.Winter
+&prerequisite.merit.court_goodwill_() [v( d.dd )]=
+	u( .is_not, %0, bio.court, %1 )
+&prereq-text.merit.court_goodwill_() [v( d.dd )]=
+	Cannot have Court Goodwill in your own Court.
+&tags.merit.court_goodwill_() [v( d.dt )]=changeling.fae-touched.court
+&notes.merit.court_goodwill_() [v( d.dt )]=
+	Each court in which a character has Court Goodwill comes with a single dot 
+	of Mentor, a changeling who serves as the character's court liaison and 
+	helps him understand its rituals, its customs, and its very essence.
+
+&merit.defensive_dreamscaping [v( d.dd )]=2
+&tags.merit.defensive_dreamscaping [v( d.dt )]=changeling
+
+&merit.diviner [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.diviner [v( d.dd )]=
+	u( .has_all, %0, attribute.composure:3 attribute.wits:3 )
+&prereq-text.merit.diviner [v( d.dd )]=Composure 3+, Wits 3+
+&tags.merit.diviner [v( d.dt )]=changeling
+
+&merit.dream_warrior [v( d.dd )]=1
+&prerequisite.merit.dream_warrior [v( d.dd )]=
+	cand( 
+		u( .at_least, %0, advantage.wyrd, 2 ), 
+		u( .at_least_one, %0, 
+			attribute.presence:3 attribute.manipulation:3 attribute.composure:3 
+		), 
+		t( u( .specialty_has, Brawl Weaponry, * ))
+	)
+&prereq-text.merit.dream_warrior [v( d.dd )]=Wyrd 2+, a Social Attribute 3+, and 
+	a Brawl or Weaponry specialty
+&tags.merit.dream_warrior [v( d.dt )]=changeling
+
+&merit.dreamweaver [v( d.dd )]=3
+&prerequisite.merit.dreamweaver [v( d.dd )]=
+	u( .at_least, %0, advantage.wyrd, 3 )
+&prereq-text.merit.dreamweaver [v( d.dd )]=Wyrd 3+
+&tags.merit.dreamweaver [v( d.dt )]=changeling
+
+&merit.dull_beacon [v( d.dd )]=1.2.3.4.5
+&tags.merit.dull_beacon [v( d.dt )]=changeling
+
+// MAY ONLY BE TAKEN ONCE: Put the code for that here.
+&merit.elemental_warrior_() [v( d.dd )]=1.2.3.4.5|*
+&prerequisite.merit.elemental_warrior_() [v( d.dd )]=
+	cand( 
+		u( .at_least_one, %0, attribute.dexterity:3 attribute.wits:3 ), 
+		u( .at_least_one, %0, skill.brawl:2 skill.firearms:2 skill.weaponry:2 ), 
+		cor( 
+			u( .is, %0, bio.seeming, Elemental ), 
+			u( .has_one_of, %0, 
+				contract.elemental_weapon contract.primal_glory 
+			)
+		)
+	)
+&prereq-text.merit.elemental_warrior_() [v( d.dd )]=
+	Dexterity or Wits 3+; 
+	Brawl, Firearms, or Weaponry 2+; 
+	Elemental Weapon or Primal Glory (Contracts) or Elemental seeming
+&tags.merit.elemental_warrior_() [v( d.dt )]=changeling.style.fighting
+&notes.merit.elemental_warrior_() [v( d.dt )]='Type' must be a physical element 
+	used by this merit.|May only be taken once.
+
+&merit.enchanting_performance [v( d.dd )]=1.2.3
+&prerequisite.merit.enchanting_performance [v( d.dd )]=
+	u( .at_least_all, %0, attribute.presence:3 skill.expression:3 )
+&prereq-text.merit.enchanting_performance [v( d.dd )]=Presence 3+, Expression 3+
+&tags.merit.enchanting_performance [v( d.dt )]=changeling.style.social
+
+&merit.fae_mount [v( d.dd )]=1.2.3.4.5
+&tags.merit.fae_mount [v( d.dt )]=changeling
+
+&merit.faerie_favor [v( d.dd )]=3
+&tags.merit.faerie_favor [v( d.dt )]=changeling
+&notes.merit.faerie_favor [v( d.dt )]=The character gains the Notoriety 
+	Condition among the Lost when she calls in the favor.
+
+// MAY ONLY BE TAKEN ONCE: Put the code for that here.
+&merit.fair_harvest_() [v( d.dd )]=1.2|*
+&prerequisite.merit.fair_harvest_() [v( d.dd )]=
+	<< may only be taken once >>
+&prereq-text.merit.fair_harvest_() [v( d.dd )]=May only be taken once.
+&tags.merit.fair_harvest_() [v( d.dt )]=changeling
+&notes.merit.fair_harvest_() [v( d.dt )]='Type' is the emotion harvested.
+
+&merit.firebrand [v( d.dd )]=2
+&prerequisite.merit.firebrand [v( d.dd )]=
+	cand( 
+		u( .is, %0, bio.court, summer ), 
+		u( .at_least, %0, merit.mantle, 3 )
+	)
+&prereq-text.merit.firebrand [v( d.dd )]=Summer Mantle 3+
+&tags.merit.firebrand [v( d.dt )]=changeling.court.summer
+
+&merit.gentrified_bearing [v( d.dd )]=2
+&prerequisite.merit.gentrified_bearing [v( d.dd )]=
+	u( .at_least, %0, advantage.wyrd, 2 )
+&prereq-text.merit.gentrified_bearing [v( d.dd )]=Wyrd 2+
+&tags.merit.gentrified_bearing [v( d.dt )]=changeling.special snowflake
+
+&merit.glamour_fasting [v( d.dd )]=1
+&tags.merit.glamour_fasting [v( d.dt )]=changeling
+
+&merit.goblin_bounty [v( d.dd )]=1.2.3.4.5
+&tags.merit.goblin_bounty [v( d.dt )]=changeling
+
+&merit.grounded [v( d.dd )]=3
+&prerequisite.merit.grounded [v( d.dd )]=
+	cand( 
+		u( .is, %0, bio.court, spring ), 
+		u( .at_least, %0, merit.mantle, 3 )
+	)
+&prereq-text.merit.grounded [v( d.dd )]=Spring Mantle 3+
+&tags.merit.grounded [v( d.dt )]=changeling.court.spring
+
+&merit.hedge_brawler [v( d.dd )]=2
+&prerequisite.merit.hedge_brawler [v( d.dd )]=
+	u( .at_least_one, %0, skill.brawl:2 skill.firearms:2 skill.weaponry:2 )
+&prereq-text.merit.hedge_brawler [v( d.dd )]=Brawl, Firearms, or Weaponry 2+
+&tags.merit.hedge_brawler [v( d.dt )]=changeling
+
+// brute-forced 'any social skill 2+'. meh.
+&merit.hedge_duelist [v( d.dd )]=1.2.3
+&prerequisite.merit.hedge_duelist [v( d.dd )]=
+	cand( 
+		u( .at_least_one, %0, attribute.presence:2 attribute.manipulation:2 ), 
+		u( .at_least_one, %0, skill.brawl:2 skill.weaponry:2 ), 
+		u( .at_least_one, %0, 
+			skill.animal_ken:2 
+			skill.empathy:2 
+			skill.expression:2 
+			skill.intimidation:2 
+			skill.persuasion:2 
+			skill.socialize:2 
+			skill.streetwise:2 
+			skill.subterfuge:2 
+		)
+	)
+&prereq-text.merit.hedge_duelist [v( d.dd )]=
+	Presence or Manipulation 2+, 
+	Brawl or Weaponry 2+, 
+	any Social Skill 2+
+&tags.merit.hedge_duelist [v( d.dt )]=changeling.style.fighting
+
+&merit.hedge_sense [v( d.dd )]=1
+&tags.merit.hedge_sense [v( d.dt )]=changeling
+
+&merit.hob_kin [v( d.dd )]=1
+&tags.merit.hob_kin [v( d.dt )]=changeling.goblin
+
+&merit.hollow [v( d.dd )]=1.2.3.4.5
+&tags.merit.hollow [v( d.dt )]=changeling.location.motley
+&notes.merit.hollow [v( d.dt )]=
+	Anyone sharing a Changeling Motley with points in this merit gains benefits 
+	from all points totaled%, max 5.
+
+// courtless can't pick up mantle, but most people will be picking courts
+// .. remove '&default.merit.mantle' if you don't like this behavior.
+&merit.mantle [v( d.dd )]=1.2.3.4.5
+&default.merit.mantle [v( d.dd )]=1
+&prereq-text.merit.mantle [v( d.dd )]=May not be taken by Courtless changelings.
+&prerequisite.merit.mantle [v( d.dd )]=u( .is_not, %0, bio.court, courtless )
+&tags.merit.mantle [v( d.dt )]=changeling.court
+
+&merit.manymask [v( d.dd )]=3
+&prerequisite.merit.manymask [v( d.dd )]=
+	u( .at_least_all, advantage.wyrd:2 attribute.manipulation:3 )
+&prereq-text.merit.manymask [v( d.dd )]=Wyrd 2+, Manipulation 3+
+&tags.merit.manymask [v( d.dt )]=changeling
+
+&merit.market_sense [v( d.dd )]=1
+&tags.merit.market_sense [v( d.dt )]=changeling.goblin
+
+&merit.noblesse_oblige [v( d.dd )]=1.2.3
+&prerequisite.merit.noblesse_oblige [v( d.dd )]=
+	u( .is_not, %0, bio.court, Courtless )
+&prereq-text.merit.noblesse_oblige [v( d.dd )]=Belongs to a Court
+&tags.merit.noblesse_oblige [v( d.dt )]=changeling.court
+&notes.merit.noblesse_oblige [v( d.dt )]=
+	May be used only with those who share your Court or Court Goodwill|
+	May not be used if Courtless
+
+// Add the Merit's rating in dice to any rolls she makes to incite Bedlam
+&merit.pandemoniacal [v( d.dd )]=1.2.3
+&prerequisite.merit.pandemoniacal [v( d.dd )]=
+	u( .at_least, %0, advantage.wyrd, 6 )
+&prereq-text.merit.pandemoniacal [v( d.dd )]=Wyrd 6+
+&tags.merit.pandemoniacal [v( d.dt )]=changeling
+
+&merit.parallel_lives [v( d.dd )]=3
+&tags.merit.parallel_lives [v( d.dt )]=changeling
+
+&merit.rigid_mask [v( d.dd )]=3
+&prerequisite.merit.rigid_mask [v( d.dd )]=
+	u( .at_least, %0, skill.subterfuge, 2 )
+&prereq-text.merit.rigid_mask [v( d.dd )]=Subterfuge 2+
+&tags.merit.rigid_mask [v( d.dt )]=changeling
+&notes.merit.rigid_mask [v( d.dt )]=Intentionally dropping your character's Mask 
+	deals her a point of lethal damage in addition to the normal rules
+
+&merit.stable_trod [v( d.dd )]=1.2.3.4.5
+&tags.merit.stable_trod [v( d.dt )]=changeling.motley
+&notes.merit.stable_trod [v( d.dt )]=Anyone sharing a Changeling Motley 
+	with points in this merit gains benefits from all points totaled%, max 5.
+
+&merit.token [v( d.dd )]=#
+&tags.merit.token [v( d.dt )]=changeling.motley
+&notes.merit.token [v( d.dt )]=Anyone sharing a Changeling Motley 
+	with points in this merit gains benefits from all points totaled%, max 5.
+
+&merit.touchstone [v( d.dd )]=1.2.3.4.5
+&tags.merit.touchstone [v( d.dt )]=vampire.changeling
+&notes.merit.touchstone [v( d.dt )]=For each dot in this merit, add a +note 
+	as to its position and content.
+
+&merit.warded_dreams [v( d.dd )]=1.2.3
+&prerequisite.merit.warded_dreams [v( d.dd )]=
+	u( .at_least, %0, attribute.resolve, %2 )
+&prereq-text.merit.warded_dreams [v( d.dd )]=Resolve equal to or higher than 
+	this merit
+&tags.merit.warded_dreams [v( d.dt )]=changeling
+
+&merit.workshop [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.workshop [v( d.dd )]=u( .has, %0, merit.hollow )
+&prereq-text.merit.workshop [v( d.dd )]=Hollow 1+
+&tags.merit.workshop [v( d.dt )]=changeling.motley
+&notes.merit.workshop [v( d.dt )]=Anyone sharing a Changeling Motley 
+	with points in this merit gains benefits from all points totaled%, max 5.
+
+
+// -- Fae-Touched Merits -------------------------------------------------------
+
+&merit.dream_shaper [v( d.dd )]=2
+&prerequisite.merit.dream_shaper [v( d.dd )]=u( .has, %0, merit.lucid_dreamer )
+&prereq-text.merit.dream_shaper [v( d.dd )]=Merit: Lucid Dreamer
+&tags.merit.dream_shaper [v( d.dt )]=fae-touched
+
+&merit.expressive [v( d.dd )]=1
+&prerequisite.merit.expressive [v( d.dd )]=
+	u( .is_not, %0, bio.template, Changeling )
+&prereq-text.merit.expressive [v( d.dd )]=Non-Changeling
+
+&merit.find_the_oathbreaker [v( d.dd )]=2
+&prerequisite.merit.find_the_oathbreaker [v( d.dd )]=
+	u( .has, %0, merit.sense_vows )
+&prereq-text.merit.find_the_oathbreaker [v( d.dd )]=Merit: Sense Vows
+&tags.merit.find_the_oathbreaker [v( d.dt )]=fae-touched
+
+&merit.hedge_delver [v( d.dd )]=3
+&prerequisite.merit.hedge_delver [v( d.dd )]=
+	u( .at_least, %0, skill.survival, 2 )
+&prereq-text.merit.hedge_delver [v( d.dd )]=Survival 2+
+&tags.merit.hedge_delver [v( d.dt )]=fae-touched
+
+&merit.oathkeeper [v( d.dd )]=3
+&prerequisite.merit.oathkeeper [v( d.dd )]=
+	u( .at_least, %0, attribute.resolve, 3 )
+&prereq-text.merit.oathkeeper [v( d.dd )]=Resolve 3+
+&tags.merit.oathkeeper [v( d.dt )]=fae-touched
+
+&merit.promise_of_debt [v( d.dd )]=1.2.3
+&tags.merit.promise_of_debt [v( d.dt )]=fae-touched
+
+&merit.promise_of_love [v( d.dd )]=1.2.3
+&tags.merit.promise_of_love [v( d.dt )]=fae-touched
+
+&merit.promise_of_loyalty [v( d.dd )]=3
+&tags.merit.promise_of_loyalty [v( d.dt )]=fae-touched
+
+&merit.promise_of_protection [v( d.dd )]=1.2.3.4.5
+&tags.merit.promise_of_protection [v( d.dt )]=fae-touched
+
+&merit.promise_to_provide [v( d.dd )]=3
+&tags.merit.promise_to_provide [v( d.dt )]=fae-touched
+
+&merit.promise_to_serve [v( d.dd )]=1.2.3
+&tags.merit.promise_to_serve [v( d.dt )]=fae-touched
+
+&merit.punish_the_oathbreaker [v( d.dd )]=2
+&prerequisite.merit.punish_the_oathbreaker [v( d.dd )]=
+	u( .has, %0, merit.find_the_oathbreaker )
+&prereq-text.merit.punish_the_oathbreaker [v( d.dd )]=
+	Merit: Find the Oathbreaker
+&tags.merit.punish_the_oathbreaker [v( d.dt )]=fae-touched
+
+&merit.sense_vows [v( d.dd )]=1
+&tags.merit.sense_vows [v( d.dt )]=fae-touched
+
+
+// -- Human Merits -------------------------------------------------------------
+
+// ** make 'allies' a Motley Merit
+@edit v( d.dt )/tags.merit.allies_()=$,.motley
+@fo me=&notes.merit.allies_() [v( d.dt )]=
+	[trim( 
+		strcat( get( v( d.dt )/notes.merit.allies_() ), 
+			|Anyone sharing a Changeling Motley with points in this merit 
+			gains benefits from all points totaled%, max 5. 
+		), 
+		b, | 
+	)]
+
+// ** make 'contacts' a Motley Merit
+@edit v( d.dt )/tags.merit.contacts_()=$,.motley
+@fo me=&notes.merit.contacts_() [v( d.dt )]=
+	[trim( 
+		strcat( get( v( d.dt )/notes.merit.contacts_() ), 
+			|Anyone sharing a Changeling Motley with points in this merit 
+			gains benefits from all points totaled%, max 5. 
+		), 
+		b, | 
+	)]
+
+&merit.etiquette [v( d.dd )]=1.2.3.4.5
+&prerequisite.merit.etiquette [v( d.dd )]=
+	u( .at_least_all, %0, attribute.composure:3 skill.socialize:2 )
+&prereq-text.merit.etiquette [v( d.dd )]=Composure 3+, Socialize 2+
+&tags.merit.etiquette [v( d.dt )]=social.style
+
+&merit.lucid_dreamer [v( d.dd )]=2
+&prerequisite.merit.lucid_dreamer [v( d.dd )]=
+	cand( 
+		u( .is_not, %0, bio.template, changeling ), 
+		u( .at_least, %0, attribute.resolve, 3 )
+	)
+&prereq-text.merit.lucid_dreamer [v( d.dd )]=Non-Changeling, Resolve 3+
+&tags.merit.lucid_dreamer [v( d.dt )]=mental
+
+// ** make 'resources' a Motley Merit
+@edit v( d.dt )/tags.merit.resources=$,.motley
+@fo me=&notes.merit.resources [v( d.dt )]=
+	[trim( 
+		strcat( get( v( d.dt )/notes.merit.resources ), 
+			|Anyone sharing a Changeling Motley with points in this merit 
+			gains benefits from all points totaled%, max 5. 
+		), 
+		b, | 
+	)]
+
+// ** make 'safe place' a Motley Merit
+@edit v( d.dt )/tags.merit.safe_place_()=$,.motley
+@fo me=&notes.merit.safe_place_() [v( d.dt )]=
+	[trim( 
+		strcat( get( v( d.dt )/notes.merit.safe_place_() ), 
+			|Anyone sharing a Changeling Motley with points in this merit 
+			gains benefits from all points totaled%, max 5. 
+		), 
+		b, | 
+	)]
+
+// ** make 'staff' a Motley Merit
+@edit v( d.dt )/tags.merit.staff_()=$,.motley
+@fo me=&notes.merit.staff_() [v( d.dt )]=
+	[trim( 
+		strcat( get( v( d.dt )/notes.merit.staff_() ), 
+			|Anyone sharing a Changeling Motley with points in this merit 
+			gains benefits from all points totaled%, max 5. 
+		), 
+		b, | 
+	)]
+
+// ** make 'status' a Motley Merit
+@edit v( d.dt )/tags.merit.status_()=$,.motley
+@fo me=&notes.merit.status_() [v( d.dt )]=
+	[trim( 
+		strcat( get( v( d.dt )/notes.merit.status_() ), 
+			|Anyone sharing a Changeling Motley with points in this merit 
+			gains benefits from all points totaled%, max 5. 
+		), 
+		b, | 
+	)]
+
+
+
+/*
+================================================================================
+== CHANGELING CONTRACTS ========================================================
+
+
+stat/set tumult=1
+stat/set tumult.beast=1
+stat/set tumult.fairest=1
+
+xp/spend tumult
+xp/spend tumult.beast
+xp/spend tumult.fairest
+
+*/
+
+&type.contract.? [v( d.dd )]=flag
+&type.contract.?.? [v( d.dd )]=flag
+
+
+// -- Contracts: Arcadian, Crown -----------------------------------------------
+
+&contract.hostile_takeover [v( d.dd )]=1|Beast.Fairest
+&tags.contract.hostile_takeover [v( d.dt )]=
+	changeling.fae-touched.crown.beast.fairest.common
+
+&contract.mask_of_superiority [v( d.dd )]=1|Fairest.Ogre
+&tags.contract.mask_of_superiority [v( d.dt )]=
+	changeling.fae-touched.crown.fairest.ogre.common
+
+&contract.paralyzing_presence [v( d.dd )]=1|Darkling.Fairest
+&tags.contract.paralyzing_presence [v( d.dt )]=
+	changeling.fae-touched.crown.darkling.fairest.common
+
+&contract.summon_the_loyal_servant [v( d.dd )]=1|Elemental.Fairest
+&tags.contract.summon_the_loyal_servant [v( d.dt )]=
+	changeling.fae-touched.crown.elemental.fairest.common
+
+&contract.tumult [v( d.dd )]=1|Fairest.Ogre
+&tags.contract.tumult [v( d.dt )]=
+	changeling.fae-touched.crown.fairest.ogre.common
+
+// -- 
+
+&contract.discreet_summons [v( d.dd )]=1|Darkling.Fairest
+&tags.contract.discreet_summons [v( d.dt )]=
+	changeling.fae-touched.crown.darkling.fairest.royal
+
+&contract.mastermind's_gambit [v( d.dd )]=1|Elemental.Fairest
+&tags.contract.mastermind's_gambit [v( d.dt )]=
+	changeling.fae-touched.crown.elemental.fairest.royal
+
+&contract.pipes_of_the_beastcaller [v( d.dd )]=1|Beast.Fairest
+&tags.contract.pipes_of_the_beastcaller [v( d.dt )]=
+	changeling.fae-touched.crown.beast.fairest.royal
+
+&contract.the_royal_court [v( d.dd )]=1|Fairest.Wizened
+&tags.contract.the_royal_court [v( d.dt )]=
+	changeling.fae-touched.crown.fairest.wizened.royal
+
+&contract.spinning_wheel [v( d.dd )]=1|Fairest.Ogre
+&tags.contract.spinning_wheel [v( d.dt )]=
+	changeling.fae-touched.crown.fairest.ogre.royal
+
+
+// -- Contracts: Jewels --------------------------------------------------------
+
+&contract.blessing_of_perfection [v( d.dd )]=1|Fairest.Wizened
+&tags.contract.blessing_of_perfection [v( d.dt )]=
+	changeling.fae-touched.jewels.fairest.wizened.common
+
+&contract.changing_fortunes [v( d.dd )]=1|Ogre.Wizened
+&tags.contract.changing_fortunes [v( d.dt )]=
+	changeling.fae-touched.jewels.ogre.wizened.common
+
+&contract.light-shy [v( d.dd )]=1|Darkling.wizened
+&tags.contract.light-shy [v( d.dt )]=
+	changeling.fae-touched.jewels.darkling.wizened.common
+
+&contract.murkblur [v( d.dd )]=1|Elemental.Wizened
+&tags.contract.murkblur [v( d.dt )]=
+	changeling.fae-touched.jewels.elemental.wizened.common
+
+&contract.trivial_reworking [v( d.dd )]=1|Darkling.Wizened
+&tags.contract.trivial_reworking [v( d.dt )]=
+	changeling.fae-touched.jewels.darkling.wizened.common
+
+// --
+
+&contract.changeling_hours [v( d.dd )]=1|Elemental.Wizened
+&tags.contract.changeling_hours [v( d.dt )]=
+	changeling.fae-touched.jewels.elemental.wizened.royal
+
+&contract.dance_of_the_toys [v( d.dd )]=1|Beast.Wizened
+&tags.contract.dance_of_the_toys [v( d.dt )]=
+	changeling.fae-touched.jewels.beast.wizened.royal
+
+&contract.hidden_reality [v( d.dd )]=1|Fairest.Wizened
+&tags.contract.hidden_reality [v( d.dt )]=
+	changeling.fae-touched.jewels.fairest.wizened.royal
+
+&contract.stealing_the_solid_reflection [v( d.dd )]=1|Fairest.Wizened
+&tags.contract.stealing_the_solid_reflection [v( d.dt )]=
+	changeling.fae-touched.jewels.fairest.wizened.royal
+
+&contract.tatterdemalion's_workshop [v( d.dd )]=1|Ogre.Wizened
+&tags.contract.tatterdemalion's_workshop [v( d.dt )]=
+	changeling.fae-touched.jewels.ogre.wizened.royal
+
+
+// -- Contracts: Mirror --------------------------------------------------------
+
+&contract.glimpse_of_a_distant_mirror [v( d.dd )]=1|Beast.Darkling
+&tags.contract.glimpse_of_a_distant_mirror [v( d.dt )]=
+	changeling.fae-touched.mirror.beast.darkling.common
+
+&contract.know_the_competition [v( d.dd )]=1|Beast.Darkling
+&tags.contract.know_the_competition [v( d.dt )]=
+	changeling.fae-touched.mirror.beast.darkling.common
+
+&contract.portents_and_visions [v( d.dd )]=1|Darkling.Elemental
+&tags.contract.portents_and_visions [v( d.dt )]=
+	changeling.fae-touched.mirror.darkling.elemental.common
+
+&contract.read_lucidity [v( d.dd )]=1|Beast.Darkling
+&tags.contract.read_lucidity [v( d.dt )]=
+	changeling.fae-touched.mirror.beast.darkling.common
+
+&contract.walls_have_ears [v( d.dd )]=1|Darkling.Wizened
+&tags.contract.walls_have_ears [v( d.dt )]=
+	changeling.fae-touched.mirror.darkling.wizened.common
+
+// --
+
+&contract.props_and_scenery [v( d.dd )]=1|Darkling.Ogre
+&tags.contract.props_and_scenery [v( d.dt )]=
+	changeling.fae-touched.mirror.darkling.ogre.royal
+
+&contract.reflections_of_the_past [v( d.dd )]=1|Darkling.Fairest
+&tags.contract.reflections_of_the_past [v( d.dt )]=
+	changeling.fae-touched.mirror.darkling.fairest.royal
+
+&contract.riddle-kith [v( d.dd )]=1|Darkling.Elemental
+&tags.contract.riddle-kith [v( d.dt )]=
+	changeling.fae-touched.mirror.darkling.elemental.royal
+
+&contract.skinmask [v( d.dd )]=1|Darkling.Fairest
+&tags.contract.skinmask [v( d.dt )]=
+	changeling.fae-touched.mirror.darkling.fairest.royal
+
+&contract.unravel_the_tapestry [v( d.dd )]=1|Darkling.Wizened
+&tags.contract.unravel_the_tapestry [v( d.dt )]=
+	changeling.fae-touched.mirror.darkling.wizened.royal
+
+
+// -- Contracts: Shield --------------------------------------------------------
+
+&contract.cloak_of_night [v( d.dd )]=1|Darkling.Ogre
+&tags.contract.cloak_of_night [v( d.dt )]=
+	changeling.fae-touched.shield.darkling.ogre.common
+
+&contract.fae_cunning [v( d.dd )]=1|Elemental.Ogre
+&tags.contract.fae_cunning [v( d.dt )]=
+	changeling.fae-touched.shield.elemental.ogre.common
+
+&contract.shared_burden [v( d.dd )]=1|Ogre.Wizened
+&tags.contract.shared_burden [v( d.dt )]=
+	changeling.fae-touched.shield.ogre.wizened.common
+
+&contract.thorns_and_brambles [v( d.dd )]=1|Darkling.Ogre
+&tags.contract.thorns_and_brambles [v( d.dt )]=
+	changeling.fae-touched.shield.darkling.ogre.common
+
+&contract.trapdoor_spider's_trick [v( d.dd )]=1|Ogre.Wizened
+&tags.contract.trapdoor_spider's_trick [v( d.dt )]=
+	changeling.fae-touched.shield.ogre.wizened.common
+
+// --
+
+&contract.fortifying_presence [v( d.dd )]=1|Fairest.Ogre
+&tags.contract.fortifying_presence [v( d.dt )]=
+	changeling.fae-touched.shield.fairest.ogre.royal
+
+&contract.hedgewall [v( d.dd )]=1|Beast.Ogre
+&tags.contract.hedgewall [v( d.dt )]=
+	changeling.fae-touched.shield.beast.ogre.royal
+
+&contract.vow_of_no_compromise [v( d.dd )]=1|Ogre.Elemental
+&tags.contract.vow_of_no_compromise [v( d.dt )]=
+	changeling.fae-touched.shield.ogre.elemental.royal
+
+&contract.whispers_of_morning [v( d.dd )]=1|Ogre.Wizened
+&tags.contract.whispers_of_morning [v( d.dt )]=
+	changeling.fae-touched.shield.ogre.wizened.royal
+
+
+// -- Contracts: Steed ---------------------------------------------------------
+
+&contract.boon_of_the_scuttling_spider [v( d.dd )]=1|Beast.Darkling
+&tags.contract.boon_of_the_scuttling_spider [v( d.dt )]=
+	changeling.fae-touched.steed.beast.darkling.common
+
+&contract.dreamsteps [v( d.dd )]=1|Beast.Fairest
+&tags.contract.dreamsteps [v( d.dt )]=
+	changeling.fae-touched.steed.beast.fairest.common
+
+&contract.nevertread [v( d.dd )]=1|Beast.Wizened
+&tags.contract.nevertread [v( d.dt )]=
+	changeling.fae-touched.steed.beast.wizened.common
+
+&contract.pathfinder [v( d.dd )]=1|Beast.Wizened
+&tags.contract.pathfinder [v( d.dt )]=
+	changeling.fae-touched.steed.beast.wizened.common
+
+&contract.seven-league_leap [v( d.dd )]=1|Beast.Ogre
+&tags.contract.seven-league_leap [v( d.dt )]=
+	changeling.fae-touched.steed.beast.ogre.common
+
+// --
+
+&contract.chrysalis [v( d.dd )]=1|Beast.Ogre
+&tags.contract.chrysalis [v( d.dt )]=
+	changeling.fae-touched.steed.beast.ogre.royal
+
+&contract.flickering_hours [v( d.dd )]=1|Beast.Elemental
+&tags.contract.flickering_hours [v( d.dt )]=
+	changeling.fae-touched.steed.beast.elemental.royal
+
+&contract.leaping_toward_nightfall [v( d.dd )]=1|Beast.Darkling
+&tags.contract.leaping_toward_nightfall [v( d.dt )]=
+	changeling.fae-touched.steed.beast.darkling.royal
+
+&contract.mirror_walk [v( d.dd )]=1|Beast.Elemental
+&tags.contract.mirror_walk [v( d.dt )]=
+	changeling.fae-touched.steed.beast.elemental.royal
+
+&contract.talon_and_wing [v( d.dd )]=1|Beast.Darkling
+&tags.contract.talon_and_wing [v( d.dt )]=
+	changeling.fae-touched.steed.beast.darkling.royal
+
+// -- Contracts: Sword ---------------------------------------------------------
+
+&contract.elemental_weapon [v( d.dd )]=1|Darkling.Elemental
+&tags.contract.elemental_weapon [v( d.dt )]=
+	changeling.fae-touched.sword.darkling.elemental.common
+
+&contract.might_of_the_terrible_brute [v( d.dd )]=1|Beast.Elemental
+&tags.contract.might_of_the_terrible_brute [v( d.dt )]=
+	changeling.fae-touched.sword.beast.elemental.common
+
+&contract.overpowering_dread [v( d.dd )]=1|Elemental.Fairest
+&tags.contract.overpowering_dread [v( d.dt )]=
+	changeling.fae-touched.sword.elemental.fairest.common
+
+&contract.primal_glory [v( d.dd )]=1|Elemental.Ogre
+&tags.contract.primal_glory [v( d.dt )]=
+	changeling.fae-touched.sword.elemental.ogre.common
+
+&contract.touch_of_wrath [v( d.dd )]=1|Elemental.Wizened
+&tags.contract.touch_of_wrath [v( d.dt )]=
+	changeling.fae-touched.sword.elemental.wizened.common
+
+&contract.relentless_pursuit [v( d.dd )]=1|Beast.Elemental
+&tags.contract.relentless_pursuit [v( d.dt )]=
+	changeling.fae-touched.sword.beast.elemental.royal
+
+&contract.elemental_fury [v( d.dd )]=1|Elemental.Fairest
+&tags.contract.elemental_fury [v( d.dt )]=
+	changeling.fae-touched.sword.elemental.fairest.royal
+
+&contract.thief_of_reason [v( d.dd )]=1|Elemental.Fairest
+&tags.contract.thief_of_reason [v( d.dt )]=
+	changeling.fae-touched.sword.elemental.fairest.royal
+
+&contract.red_revenge [v( d.dd )]=1|Elemental.Ogre
+&tags.contract.red_revenge [v( d.dt )]=
+	changeling.fae-touched.sword.elemental.ogre.royal
+
+&contract.oathbreaker's_punishment [v( d.dd )]=1|Elemental.Wizened
+&tags.contract.oathbreaker's_punishment [v( d.dt )]=
+	changeling.fae-touched.sword.elemental.wizened.royal
+
+
+/*
+--------------------------------------------------------------------------------
+-- Court Contracts -------------------------------------------------------------
+
+p.150:
+	Learning a Common Court Contract requires at least a Mantle of 1, or Court 
+	Goodwill of 2. Likewise, learning a Royal Court Contract requires Mantle 3, 
+	or Court Goodwill 5. The seasonal courts can make two exceptions: anyone can 
+	learn any *one* Common Contract, and allies with Court Goodwill 4 can learn 
+	any *one* Royal Contract, as a way to foster allies.
+
+This requires breaking the rules for learning Court contracts into two 
+steps.
+	1a. Anyone can learn one Common out-of-Court Contract with no Goodwill.
+	 b. Else must have Mantle 1 or Goodwill 2
+	2a. Anyone can learn one Royal out-of-Court Contract with Goodwill 4.
+	 b. Else must have Mantle 3 or Goodwill 5.
+
+So we'll make a function to check against these rules.
+I'm sure it won't go wrong.
+
+0: sheet dbref
+1: contract being set
+2: that contract's court
+3: 'common' or 'royal'.
+4: value being passed (check for <null>)
+
+
+*/
+
+&.prereq.contract.court [v( d.dd )]=
+	localize( strcat( 
+		u( .prereq.contract.pre-load, %0, %1, %2, %3, %4 ), 
+		u( .prereq.contract.court.%3, %qc, %qm, %qg )
+	))
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Prereq: Court Contact Pre-Load ----------------------------------------------
+
+c: contracts matching %2.%3, or <null> if %4 is <null>
+b: bio.court
+m: court's mantle (if %qk is true)
+g: court goodwill (if %qk is false)
+
+*/
+
+&.prereq.contract.pre-load [v( d.dd )]=
+	strcat( 
+// again, hastag?.workhorse eats a lot of registers, so it goes first.
+		setq( c, 
+			if( gte( %4, 1 ), 
+				setunion( 
+					lcstr( filter( v( d.sfp )/f.hastag?.workhorse, 
+						edit( lattr( %0/_contract.* ), _CONTRACT. , CONTRACT. ), 
+						@@( idelim ), @@( odelim ), 
+						%2.%3, and  
+					)), 
+					%1 
+				), 
+				@@( always allow null to unset trait )
+			)
+		), 
+		setq( b, u( .value, %0, bio.court )), 
+		if( strmatch( %qb, %2 ), 
+			setq( m, u( .value, %0, merit.mantle )), 
+			setq( g, u( .value, %0, merit.court_goodwill_%(%2%) ))
+		), 
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Prereq: Court Contact, Common/Royal -----------------------------------------
+
+0: contracts matching %2.%3, or <null> if %4 is <null>   (%qc)
+1: court's mantle (if %qk is true)                       (%qm)
+2: court goodwill (if %qk is false)                      (%qg)
+
+*/
+
+&.prereq.contract.court.common [v( d.dd )]=
+	strcat( 
+		case( 1, 
+// .. mantle 1+ or goodwill 2+: Can take any Common Court
+			cor( gte( %1, 1 ), gte( %2, 2 )), 1, 
+// .. this is the only common court contract being taken: OK
+			lte( words( %0 ), 1 ), 1, 
+// .. else: nope
+			0 
+		)
+	)
+
+&.prereq.contract.court.royal [v( d.dd )]=
+	case( 1, 
+// .. mantle 3+ or goodwill 5: Can take any Royal Court
+		cor( gte( %1, 3 ), gte( %2, 5 )), 1, 
+// .. unsetting is always okay, 
+		lte( words( %0 ), 0 ), 1, 
+// .. goodwill 4+ and it's the only royal being taken: OK
+		cand( lte( words( %0 ), 1 ), gte( %2, 4 )), 1, 
+// .. else: nope
+		0 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Prereq-Text: Court Contracts ------------------------------------------------
+
+0: 'common' or 'royal'
+1: court
+
+*/
+
+&.prereq-text.contract.court [v( d.dd )]=
+	case( %1, 
+		common, 
+		Common Court contracts past the first require [capstr( %0 )] Court and 
+		Mantle 1+%, or Court Goodwill %([capstr( %0 )]%) 2+, 
+
+		royal, 
+		Royal Court contracts require [capstr( %0 )] Court and Mantle 3+%, or 
+		Court Goodwill %([capstr( %0 )]%) 5 %(except the first can be taken at 
+		4+%), 
+
+		For some reason I don't know if this prerequisite error message is for a 
+		common or royal contract. Someone should fix this. 
+	)
+
+
+// test:
+/*
+&_contract.baleful_sense [v( _special.sheet_location )]=
+&_contract.child_of_the_hearth [v( _special.sheet_location )]=1 
+think [u( v( d.dd )/.prereq.contract.court, 
+		v( _special.sheet_location ), 
+		contract.baleful_sense, summer, common, 1 
+	)] --> 0
+
+*/
+
+// -- Court Contracts: Spring --------------------------------------------------
+
+&contract.cupid's_arrow [v( d.dd )]=1
+&prereq-text.contract.cupid's_arrow [v( d.dd )]=
+	[u( .prereq-text.contract.court, spring, common )]
+&prerequisite.contract.cupid's_arrow [v( d.dd )]=
+	[u( .prereq.contract.court, %0, contract.cupid's_arrow, spring, common )]
+&tags.contract.cupid's_arrow [v( d.dt )]=
+	changeling.fae-touched.spring.common
+
+
+&contract.dreams_of_the_earth [v( d.dd )]=1
+&tags.contract.dreams_of_the_earth [v( d.dt )]=
+	changeling.fae-touched.spring.common
+
+&contract.gift_of_warm_breath [v( d.dd )]=1
+&tags.contract.gift_of_warm_breath [v( d.dt )]=
+	changeling.fae-touched.spring.common
+
+&contract.spring's_kiss [v( d.dd )]=1
+&tags.contract.spring's_kiss [v( d.dt )]=
+	changeling.fae-touched.spring.common
+
+&contract.wyrd-faced_stranger [v( d.dd )]=1
+&tags.contract.wyrd-faced_stranger [v( d.dt )]=
+	changeling.fae-touched.spring.common
+
+// --
+
+&contract.blessing_of_spring [v( d.dd )]=1
+&prereq-text.contract.blessing_of_spring [v( d.dd )]=
+	u( .prereq-text.contract.court, spring, royal )
+&prerequisite.contract.blessing_of_spring [v( d.dd )]=
+	u( .prereq.contract.court, %0, contract.blessing_of_spring, spring, royal )
+&tags.contract.blessing_of_spring [v( d.dt )]=
+	changeling.fae-touched.spring.royal
+
+&contract.gift_of_warm_blood [v( d.dd )]=1
+&tags.contract.gift_of_warm_blood [v( d.dt )]=
+	changeling.fae-touched.spring.royal
+
+&contract.pandora's_gift [v( d.dd )]=1
+&tags.contract.pandora's_gift [v( d.dt )]=
+	changeling.fae-touched.spring.royal
+
+&contract.prince_of_ivy [v( d.dd )]=1
+&tags.contract.prince_of_ivy [v( d.dt )]=
+	changeling.fae-touched.spring.royal
+
+&contract.waking_the_inner_fae [v( d.dd )]=1
+&prereq-text.contract.waking_the_inner_fae [v( d.dd )]=
+	u( .prereq-text.contract.court, spring, royal )
+&prerequisite.contract.waking_the_inner_fae [v( d.dd )]=
+	u( .prereq.contract.court, %0, 
+		contract.waking_the_inner_fae, spring, royal, %2 
+	)
+&tags.contract.waking_the_inner_fae [v( d.dt )]=
+	changeling.fae-touched.spring.royal
+
+
+// -- Court Contracts: Summer --------------------------------------------------
+
+&contract.baleful_sense [v( d.dd )]=1
+&prereq-text.contract.baleful_sense [v( d.dd )]=
+	u( .prereq-text.contract.court, summer, common )
+&prerequisite.contract.baleful_sense [v( d.dd )]=
+	u( .prereq.contract.court, %0, 
+		contract.baleful_sense, summer, common, %2 
+	)
+&tags.contract.baleful_sense [v( d.dt )]=
+	changeling.fae-touched.summer.common
+
+&contract.child_of_the_hearth [v( d.dd )]=1
+&prereq-text.contract.child_of_the_hearth [v( d.dd )]=
+	u( .prereq-text.contract.court, summer, common )
+&prerequisite.contract.child_of_the_hearth [v( d.dd )]=
+	u( .prereq.contract.court, %0, 
+		contract.child_of_the_hearth, summer, common, %2 
+	)
+&tags.contract.child_of_the_hearth [v( d.dt )]=
+	changeling.fae-touched.summer.common
+
+&contract.helios'_light [v( d.dd )]=1
+&tags.contract.helios'_light [v( d.dt )]=
+	changeling.fae-touched.summer.common
+
+&contract.high_summer's_zeal [v( d.dd )]=1
+&tags.contract.high_summer's_zeal [v( d.dt )]=
+	changeling.fae-touched.summer.common
+
+&contract.vigilance_of_ares [v( d.dd )]=1
+&tags.contract.vigilance_of_ares [v( d.dt )]=
+	changeling.fae-touched.summer.common
+
+// --
+
+&contract.fiery_tongue [v( d.dd )]=1
+&prereq-text.contract.fiery_tongue [v( d.dd )]=
+	u( .prereq-text.contract.court, summer, royal )
+&prerequisite.contract.fiery_tongue [v( d.dd )]=
+	u( .prereq.contract.court, %0, 
+		contract.fiery_tongue, summer, royal, %2 
+	)
+&tags.contract.fiery_tongue [v( d.dt )]=
+	changeling.fae-touched.summer.royal
+
+&contract.flames_of_summer [v( d.dd )]=1
+&prereq-text.contract.flames_of_summer [v( d.dd )]=
+	u( .prereq-text.contract.court, summer, royal )
+&prerequisite.contract.flames_of_summer [v( d.dd )]=
+	u( .prereq.contract.court, %0, 
+		contract.flames_of_summer, summer, royal, %2 
+	)
+&tags.contract.flames_of_summer [v( d.dt )]=
+	changeling.fae-touched.summer.royal
+
+&contract.helios'_judgement [v( d.dd )]=1
+&tags.contract.helios'_judgement [v( d.dt )]=
+	changeling.fae-touched.summer.royal
+
+&contract.solstice_revelation [v( d.dd )]=1
+&tags.contract.solstice_revelation [v( d.dt )]=
+	changeling.fae-touched.summer.royal
+
+&contract.sunburnt_heart [v( d.dd )]=1
+&tags.contract.sunburnt_heart [v( d.dt )]=
+	changeling.fae-touched.summer.royal
+
+
+// -- Court Contracts: Autumn --------------------------------------------------
+
+&contract.autumn's_fury [v( d.dd )]=1
+&tags.contract.autumn's_fury [v( d.dt )]=
+	changeling.fae-touched.autumn.common
+
+&contract.last_harvest [v( d.dd )]=1
+&tags.contract.last_harvest [v( d.dt )]=
+	changeling.fae-touched.autumn.common
+
+&contract.tale_of_the_baba_yaga [v( d.dd )]=1
+&tags.contract.tale_of_the_baba_yaga [v( d.dt )]=
+	changeling.fae-touched.autumn.common
+
+&contract.twilight's_harbinger [v( d.dd )]=1
+&tags.contract.twilight's_harbinger [v( d.dt )]=
+	changeling.fae-touched.autumn.common
+
+&contract.witches'_intuition [v( d.dd )]=1
+&tags.contract.witches'_intuition [v( d.dt )]=
+	changeling.fae-touched.autumn.common
+
+// --
+
+&contract.famine's_bulwark [v( d.dd )]=1
+&tags.contract.famine's_bulwark [v( d.dt )]=
+	changeling.fae-touched.autumn.royal
+
+&contract.mien_of_the_baba_yaga [v( d.dd )]=1
+&tags.contract.mien_of_the_baba_yaga [v( d.dt )]=
+	changeling.fae-touched.autumn.royal
+
+&contract.riding_the_falling_leaves [v( d.dd )]=1
+&tags.contract.riding_the_falling_leaves [v( d.dt )]=
+	changeling.fae-touched.autumn.royal
+
+&contract.sorcerer's_rebuke [v( d.dd )]=1
+&tags.contract.sorcerer's_rebuke [v( d.dt )]=
+	changeling.fae-touched.autumn.royal
+
+&contract.tasting_the_harvest [v( d.dd )]=1
+&tags.contract.tasting_the_harvest [v( d.dt )]=
+	changeling.fae-touched.autumn.royal
+
+
+// -- Court Contracts: Winter --------------------------------------------------
+
+&contract.the_dragon_knows [v( d.dd )]=1
+&tags.contract.the_dragon_knows [v( d.dt )]=
+	changeling.fae-touched.winter.common
+
+&contract.heart_of_ice [v( d.dd )]=1
+&tags.contract.heart_of_ice [v( d.dt )]=
+	changeling.fae-touched.winter.common
+
+&contract.ice_queen's_call [v( d.dd )]=1
+&tags.contract.ice_queen's_call [v( d.dt )]=
+	changeling.fae-touched.winter.common
+
+&contract.slipknot_dreams [v( d.dd )]=1
+&tags.contract.slipknot_dreams [v( d.dt )]=
+	changeling.fae-touched.winter.common
+
+&contract.touch_of_winter [v( d.dd )]=1
+&tags.contract.touch_of_winter [v( d.dt )]=
+	changeling.fae-touched.winter.common
+
+// --
+
+&contract.ermine's_winter_coat [v( d.dd )]=1
+&tags.contract.ermine's_winter_coat [v( d.dt )]=
+	changeling.fae-touched.winter.royal
+
+&contract.fallow_fields [v( d.dd )]=1
+&tags.contract.fallow_fields [v( d.dt )]=
+	changeling.fae-touched.winter.royal
+
+&contract.field_of_regret [v( d.dd )]=1
+&tags.contract.field_of_regret [v( d.dt )]=
+	changeling.fae-touched.winter.royal
+
+&contract.mantle_of_frost [v( d.dd )]=1
+&tags.contract.mantle_of_frost [v( d.dt )]=
+	changeling.fae-touched.winter.royal
+
+&contract.winter's_curse [v( d.dd )]=1
+&tags.contract.winter's_curse [v( d.dt )]=
+	changeling.fae-touched.winter.royal
+
+
+// -- Contracts: Goblin --------------------------------------------------------
+// (remember to add to Goblin Debt!)
+
+&contract.blessing_of_forgetfulness [v( d.dd )]=1
+&tags.contract.blessing_of_forgetfulness [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.blessing_of_forgetfulness [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+&contract.glib_tongue [v( d.dd )]=1
+&tags.contract.glib_tongue [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.glib_tongue [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+&contract.goblin's_eye [v( d.dd )]=1
+&tags.contract.goblin's_eye [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.goblin's_eye [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+&contract.goblin's_luck [v( d.dd )]=1
+&tags.contract.goblin's_luck [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.goblin's_luck [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+&contract.huntsman's_clarion [v( d.dd )]=1
+&tags.contract.huntsman's_clarion [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.huntsman's_clarion [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+&contract.lost_visage [v( d.dd )]=1
+&tags.contract.lost_visage [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.lost_visage [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+&contract.mantle_mask [v( d.dd )]=1
+&tags.contract.mantle_mask [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.mantle_mask [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+&contract.sight_of_truth_and_lies [v( d.dd )]=1
+&tags.contract.sight_of_truth_and_lies [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.sight_of_truth_and_lies [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+&contract.uncanny [v( d.dd )]=1
+&tags.contract.uncanny [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.uncanny [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+&contract.wayward_guide [v( d.dd )]=1
+&tags.contract.wayward_guide [v( d.dt )]=
+	changeling.fae-touched.goblin
+&notes.contract.wayward_guide [v( d.dt )]=
+	Remember to add Goblin Debt when used
+
+
+
+/* 
+################################################################################
+## CHANGELING CHARGEN ##########################################################
+
+
+================================================================================
+== CHARGEN: BIO ================================================================
+
+--------------------------------------------------------------------------------
+-- Bio Check -------------------------------------------------------------------
+
+*/
+
+&check.bio.changeling [v( d.cg )]=needle thread court seeming favored_regalia
+
+
+
+/*
+================================================================================
+== CHARGEN: ATTRIBUTES =========================================================
+
+As well, every seeming has three favored Attributes from either 
+Power, Finesse, or Resistance traits. Take an additional dot in one of these. 
+This can only take an Attribute to five dots.
+
+Beast      Resistance
+Darkling   Finesse
+Elemental  Resistance
+Fairest    Power
+Ogre       Power
+Wizened    Finesse
+
+
+"Favored Attribute" has been done in Vampire, so we'll be replicating it here.
+
+
+--------------------------------------------------------------------------------
+-- Favored Attribute -----------------------------------------------------------
+
+currently: 
+	stat/set <attribute>.favored=1
+
+(I hope to get this changed.)
+
+1. check that attributes with 'favored' subtype are allowed
+2. check that there's only one
+3. check what happens if we -1 that from the system
+
+*/
+
+&check.chargen.attributes.changeling [v( d.cg )]=
+	strcat( 
+		setq( f, v( d.changeling.favored_attributes.[get( %0/_bio.seeming )] )), 
+		setq( a, 
+			lcstr( 
+				iter( lattr( %0/_attribute.*.favored ), elements( %i0, 2, . ))
+			)
+		), 
+		setq( i, setinter( %qa, %qf )), 
+		setq( c, ulocal( f.pts-valid?.attributes, %0, attribute.%qi:-1 )), 
+
+		ulocal( f.allocated.attributes, %0 ), %b, %(of 5/4/3 + favored%), %b, 
+		ulocal( display.check.stats, %0, attributes, attribute.%qa:-1 ), %r, 
+
+		%b %b%b, ansi( h, Favored Attribute ), :, %b, 
+		titlestr( itemize( %qa )), %b, 
+		%[, 
+		case( 1, 
+			eq( words( %qa ), 0 ), ansi( r, none set ), 
+			gt( words( %qa ), 1 ), ansi( r, too many set ), 
+			neq( words( %qi ), 1 ), ansi( r, not allowed for your seeming ), 
+			not( %qc ), ansi( r, bonus point not spent ), 
+			ansi( g, OK )
+		), 
+		%]
+	)
+
+&d.changeling.favored_attributes.beast [v( d.cg )]=
+	composure resolve stamina
+&d.changeling.favored_attributes.darkling [v( d.cg )]=
+	dexterity manipulation wits
+&d.changeling.favored_attributes.elemental [v( d.cg )]=
+	composure resolve stamina
+&d.changeling.favored_attributes.fairest [v( d.cg )]=
+	intelligence presence strength
+&d.changeling.favored_attributes.ogre [v( d.cg )]=
+	intelligence presence strength
+&d.changeling.favored_attributes.wizened [v( d.cg )]=
+	dexterity manipulation wits
+
+
+
+/*
+================================================================================
+== CHARGEN: MERITS =============================================================
+
+--------------------------------------------------------------------------------
+-- Allocated Merits: Mantle ----------------------------------------------------
+
+Mantle 1 is free for all but Courtless. Calculate how many points to subtract.
+
+*/
+
+&f.allocated.merits.changeling [v( d.cg )]=
+	cand( 
+		not( strmatch( get( %0/_bio.court ), Courtless )), 
+		hasattr( %0, _merit.mantle )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Free Merits -----------------------------------------------------------
+
+After subtracting 'Mantle' from the merit total, report it for clarity
+
+*/
+
+&check.changeling.merits.free [v( d.cg )]=
+	strcat( 
+		setq( m, hasattr( %0, _merit.mantle )), 
+		setq( c, strmatch( get( %0/_bio.court ), Courtless )), 
+		%b%b%b%b, 
+		ansi( h, Mantle: ), %b, 
+		if( %qm, Set, Unset ), %b, %[ 
+		case( 1, 
+			cand( %qm, not( %qc )), ansi( g, OK ), 
+			cand( not( %qm ), %qc ), ansi( g, OK ), 
+			ansi( r, no )
+		), %] 
+	)
+
+
+
+/*
+================================================================================
+== CHARGEN: POWERS =============================================================
+
+--------------------------------------------------------------------------------
+-- Allocated Merits: Wyrd ------------------------------------------------------
+*/
+
+&f.allocated.power-trait.changeling [v( d.cg )]=
+	mul( 
+		dec( first( get( %0/_advantage.wyrd ), . )), 
+		5 
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Allocated Contracts ---------------------------------------------------------
+
+Your choice of seeming determines a Contract Regalia with which your character 
+has an affinity.
+
+p.94 (cgen summary ctd.):
+	Choose a second favored Regalia. Each character starts with four Contracts 
+	from Common Regalia, Common Court, or Goblin Contracts, at least two of 
+	which must be in favored Regalia. Also choose two Royal Contracts from court 
+	or favored Regalia.
+
+contract allocation:
+	all contracts`					(6)
+	common favored`					(2 to 4)
+	common court || goblin`			(4 - above)
+	royal (court || favored)		(2)
+
+*/
+
+&f.allocated.contracts [v( d.cg )]=
+	localize( strcat( 
+// favored regalia & court
+		setq( x, u( v( d.dd )/.value, %0, bio.favored_regalia )), 
+		setq( z, u( v( d.dd )/.changeling.seeming_regalia, %0 )), 
+		setq( y, u( v( d.dd )/.value, %0, bio.court )), 
+// f: all matching favored 'common' && favored regalias
+		setq( f, 
+			setunion( 
+				u( f.list-stats-tags, %0, contract, common.%qx, and ), 
+				u( f.list-stats-tags, %0, contract, common.%qz, and )
+			)
+			
+		), 
+// c: all matching 'common' || 'goblin', except those above
+		setq( c, 
+			setdiff( 
+				u( f.list-stats-tags, %0, contract, common.goblin, or ), 
+				%qf 
+			)
+		), 
+// r: all 'royal' from favored regalia || court
+		setq( r, 
+			setinter(
+				u( f.list-stats-tags, %0, contract, royal ), 
+				u( f.list-stats-tags, %0, contract, %qx.%qy.%qz, or ), 
+			)
+		), 
+
+		%qf, `, 
+		%qc, `, 
+		%qr 
+	))
+
+// -- test --
+think u( v( d.cg )/f.allocated.contracts, ulocal( v( d.sfp )/f.find-sheet, %# ))
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Contracts (main) ------------------------------------------------------
+
+Chargen Check for the main contract list.
+Seeming Bonuses are done separately.
+
+0: sheet loc
+
+t: total contracts (6)
+f: common favored (2 to 4)
+c: common court or goblin (4 - above)
+r: royal court or royal favored (2)
+
+w: words, # of whatever we're checking
+x: words for 'common favored', checked against common court/goblin.
+
+*/
+
+&check.contracts.full [v( d.cg )]=
+	strcat( 
+		setq( 9, u( f.allocated.contracts, %0 )), 
+		null( regmatchi( %q9, ^(.*)`(.*)`(.*)`(.*)$, 0 t f c r )), 
+
+// total: 6
+		%b%b, 
+		setq( w, words( %qt )), 
+		ansi( h, Total Contracts ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of 6%), %b, 
+		u( display.check.ok-no, eq( %qw, 6 )), %r, 
+		
+// common favored: 2 to 4
+		%b%b%b%b, 
+		setq( w, words( %qf )), 
+		ansi( h, Common Favored ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of 2 to 4%), %b, 
+		u( display.check.ok-no, cand( gte( %qw, 2 ), lte( %qw, 4 ))), %r, 
+
+// common court + goblin: 4 - common favored, above
+		%b%b%b%b, 
+		setq( x, %qw ), 
+		setq( w, words( %qc )), 
+		ansi( h, Common Court + Goblin Contracts ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of [sub( 4, %qx )]%), %b, 
+		u( display.check.ok-no, eq( %qw, sub( 4, %qx ))), %r, 
+
+// royal court + royal favored: 2
+		%b%b%b%b, 
+		setq( w, words( %qr )), 
+		ansi( h, Royal Court + Royal Favored ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of 2%), %b, 
+		u( display.check.ok-no, eq( %qw, 2 )), %r, 
+	)
+
+// -- test --
+think u( v( d.cg )/check.contracts.full, v( _special.sheet_location ))
+
+
+/*
+--------------------------------------------------------------------------------
+-- Allocated Contract Bonuses --------------------------------------------------
+
+At chargen, people should take their seeming's bonus for any contracts that have 
+them. e.g., Riddle-Kith has a Darkling and Elemental specialty. An Elemental 
+gets theirs for free.
+
+In chargen, this would be set by:
+	stat/set Riddle-Kith.Elemental = 1
+
+There is no explicit limit to the number of bonuses, though it will not be 
+higher than the number of contracts which are handled in `&check.contracts.full`
+
+* All bonuses must match Seeming
+* All bonuses must not be orphaned (with no Contract)
+
+bonus allocations:
+	list of contract.*.*`                        (total)     %qa
+	list of contracts with their seeming`        (above)     %qt
+	list of bonuses without contracts`           (zero)      %qo
+	list of contracts that woulda had bonuses    (zero)      %qw
+
+*/
+
+&f.allocated.contracts.bonuses [v( d.cg )]=
+	localize( strcat( 
+// x: seeming
+		setq( x, u( v( d.dd )/.value, %0, bio.seeming )), 
+
+// c: all contracts that share their seeming bonus in tags ('<contract>')
+// .. this goes here because 'f.hastag?.workhorse' eats %qb, so we do it first.
+		setq( c, 
+			edit( 
+				filter( v( d.sfp )/f.hastag?.workhorse, 
+					lattr( v( d.dd )/contract.* ), 
+					@@( idelim ), @@( odelim ), 
+					%qx 
+				), 
+				CONTRACT., 
+			)
+		), 
+
+// b: all seeming bonuses ('<contract>.<seeming>')
+		setq( b, 
+			edit( 
+				lattr( %0/_contract.*.* ), 
+				_CONTRACT., 
+			)
+		), 
+// a: all contracts ('<contract>')
+		setq( a, 
+			setdiff( 
+				edit( 
+					lattr( %0/_contract.* ), 
+					_CONTRACT., 
+				), 
+				%qb 
+			)
+		), 
+// s: seeming bonuses taken that match character seeming
+		setq( s, graball( %qb, *.%qx )), 
+
+// o: orphaned `contract.bonus` (from %qb) without a base contract (in %qa)
+		setq( o, 
+			filter( fil.subitem-not-in-list, %qb, , , %qa )
+		), 
+
+// w: all contracts they woulda taken with their bonus but didn't ('<contract>')
+		setq( w, 
+			setdiff( 
+				setinter( %qc, %qa ), 
+				edit( %qs, .[ucstr( %qx )], )
+			)
+		), 
+
+		%qb, `, 
+		%qs, `, 
+		%qo, `, 
+		%qw 
+	))
+
+
+// -- test --
+think u( v( d.cg )/f.allocated.contracts.bonuses, v( _special.sheet_location ))
+think iter( 
+		u( v( d.cg )/f.allocated.contracts.bonuses, 
+			v( _special.sheet_location )
+		), 
+		words( %i0 ), 
+		`, ` 
+	)
+
+// stat/set FAE_CUNNING.ELEMENTAL=
+// stat/set FAE_CUNNING.ELEMENTAL = 1
+// stat/set FAE_CUNNING = 
+// stat/set FAE_CUNNING = 1 
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Check Contract Bonuses ------------------------------------------------------
+
+Make sure all the contract bonuses from seeming are correct.
+
+0: sheet loc
+
+a: all contracts with bonuses
+t: total contracts matching character seeming
+o: orphaned bonuses (bonuses with no main contract)
+c: contracts that coulda had bonuses but didn't
+
+x: seeming
+
+n: number of all contracts with bonuses (%qa)
+
+*/
+
+&check.contracts.bonuses [v( d.cg )]=
+	strcat( 
+		setq( 9, u( f.allocated.contracts.bonuses, %0 )), 
+		null( regmatchi( %q9, ^(.*)`(.*)`(.*)`(.*)$, 0 a t o c )), 
+		setq( x, u( v( d.dd )/.value, %0, bio.seeming )), 
+
+// total (no limit)
+		%b%b, 
+		setq( w, words( %qa )), 
+		ansi( h, Total Contract Bonuses ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %r, 
+
+// total contracts with bonuses that match seeming
+		%b%b%b%b, 
+		setq( n, %qw ), 
+		setq( w, words( %qt )), 
+		ansi( h, Total Matching Seeming ), %b%(%qx%):%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of %qn%), %b, 
+		u( display.check.ok-no, eq( %qw, %qn )), %r, 
+
+// orphaned seeming bonuses
+		%b%b%b%b, 
+		setq( w, words( %qo )), 
+		ansi( h, Orphaned Bonuses ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of 0%), %b, 
+		u( display.check.ok-no, eq( %qw, 0 )), %r, 
+		if( neq( %qw, 0 ), 
+			iter( %qo, 
+				ansi( 
+					n, %b%b%b%b, 
+					xh, -%b, 
+					xh, 
+						edit( 
+							titlestr( edit( %i0, _, %b, ., %b-%b )), 
+							%b-%b, . 
+						), 
+					n, %r 
+				), , @@
+			)
+		), 
+
+// contracts they coulda taken their seeming bonus
+		%b%b%b%b, 
+		setq( w, words( %qc )), 
+		ansi( h, Contracts Needing Bonus ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of 0%), %b, 
+		u( display.check.ok-no, eq( %qw, 0 )), %r, 
+		if( neq( %qw, 0 ), 
+			iter( %qc, 
+				ansi( 
+					n, %b%b%b%b, 
+					xh, - stat/set%b, 
+					xh, lcstr( edit( %i0, _, %b )), 
+					xh, ., 
+					xh, lcstr( %qx ), 
+					xh, %b= 1, 
+					n, %r 
+				), , @@ 
+			)
+		)
+	)
+
+
+
+/* 
+================================================================================
+== CHARGEN CHECK ===============================================================
+
+--------------------------------------------------------------------------------
+-- Chargen Check: Changeling ---------------------------------------------------
+
+*/
+
+&check.chargen.changeling [v( d.cg )]=
+	strcat( 
+		u( check.changeling.merits.free, %0 ), 
+		u( check.contracts.full, %0 ), 
+		u( check.contracts.bonuses, %0 ), 
+	)
+
+
+
+
+/*
+################################################################################
+## CHARGEN: FAE-TOUCHED ########################################################
+
+(p.319) 
+	* Select a Favored Regalia for the character and two Common Contracts within 
+	  it.
+	* All fae-touched characters suffer from the Madness Condition.
+	* Additionally, the character suffers from the Arcadian Dreams and Hedge 
+	  Addiction Conditions
+
+
+
+================================================================================
+== CHARGEN: BIO, FAE-TOUCHED ===================================================
+*/
+
+&check.bio.fae-touched [v( d.cg )]=virtue vice promise favored_regalia
+
+
+/*
+================================================================================
+== CHARGEN: POWERS =============================================================
+
+p.319:
+	* Select a Favored Regalia for the character and two Common Contracts within 
+	  it.
+
+We'll use &f.allocated.contracts but process it differently:
+	all contracts`					(2)
+	common favored`					(2)
+	common court || goblin`			(0)
+	royal (court || favored)		(0)
+
+We'll also use &f.allocated.contracts.bonuses:
+	list of contract.*.*`                        (0)
+	list of contracts with their seeming`        (0)
+	list of bonuses without contracts`           (0)
+	list of contracts that woulda had bonuses    (0)
+
+--------------------------------------------------------------------------------
+-- Check Contracts, Fae-Touched ------------------------------------------------
+*/
+
+&check.contracts.fae-touched [v( d.cg )]=
+	strcat( 
+// main contracts
+		setq( 9, u( f.allocated.contracts, %0 )), 
+		null( regmatchi( %q9, ^(.*)`(.*)`(.*)`(.*)$, 0 t f c r )), 
+
+// .. total: 2
+		%b%b, 
+		setq( w, words( %qt )), 
+		ansi( h, Total Contracts ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of 2%), %b, 
+		u( display.check.ok-no, eq( %qw, 2 )), %r, 
+		
+// .. common favored: 2
+		%b%b%b%b, 
+		setq( w, words( %qf )), 
+		ansi( h, Common Favored ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of 2%), %b, 
+		u( display.check.ok-no, eq( %qw, 2 )), %r, 
+
+// contract seeming bonuses
+		setq( 9, u( f.allocated.contracts.bonuses, %0 )), 
+		null( regmatchi( %q9, ^(.*)`(.*)`(.*)`(.*)$, 0 a t o c )), 
+
+// .. total: 0
+		%b%b, 
+		setq( w, words( %qa )), 
+		ansi( h, Total Contract Bonuses ), :%b, 
+		if( eq( %qw, 0 ), ansi( xh, <none> ), %qw ), %b, 
+		%(of 0%), %b, 
+		u( display.check.ok-no, eq( %qw, 0 )), %r, 
+
+	)
+
+
+
+/*
+================================================================================
+== CHARGEN: CONDITIONS, FAE-TOUCHED ============================================
+
+(p.319) 
+	* Select a Favored Regalia for the character and two Common Contracts within 
+	  it.
+	* All fae-touched characters suffer from the Madness Condition.
+	* Additionally, the character suffers from the Arcadian Dreams and Hedge 
+	  Addiction Conditions
+
+--------------------------------------------------------------------------------
+-- Check Conditions, Fae-Touched -----------------------------------------------
+
+	Player attr format is _<type>.<name>.<timestamp> =db_attr | note | title
+
+	* _COND.MADNESS.*
+	* _COND.ARCADIAN_DREAMS.*
+	* _COND.HEDGE_ADDICTION.*
+
+	0: character dbref
+	
+*/
+
+&check.conditions.fae-touched [v( d.cg )]=
+	strcat( 
+		setq( m, lattr( %0/_cond.madness.* )), 
+		setq( a, lattr( %0/_cond.arcadian_dreams.* )), 
+		setq( h, lattr( %0/_cond.hedge_addiction.* )), 
+		
+		%b%b, 
+		ansi( h, Fae-Touched Conditions ), :%r, 
+
+		%b%b%b%b, ljust( ansi( h, Madness ), 15 ), %b, 
+		u( display.check.ok-no, neq( strlen( %qm ), 0 )), %r, 
+
+		%b%b%b%b, ansi( h, Arcadian Dreams ), %b, 
+		u( display.check.ok-no, neq( strlen( %qa ), 0 )), %r, 
+
+		%b%b%b%b, ansi( h, Hedge Addiction ), %b, 
+		u( display.check.ok-no, neq( strlen( %qh ), 0 )), %r, 
+	)
+
+
+/* 
+================================================================================
+== CHARGEN CHECK, FAE-TOUCHED ==================================================
+
+--------------------------------------------------------------------------------
+-- Chargen Check: Changeling ---------------------------------------------------
+
+*/
+
+&check.chargen.fae-touched [v( d.cg )]=
+	strcat( 
+		u( check.contracts.fae-touched, %0 ), 
+		u( check.conditions.fae-touched, %1 )
+	)
+
+
+
+
+/*
+################################################################################
+## CHANGELING: XP COSTS ########################################################
+
+Common (Favored Regalia): 2
+Royal (Favored Regalia): 3
+Common (Regalia || Court): 3
+Royal (Regalia || Court): 4
+Goblin: 2
+
+Non-Seeming Bonus: 1
+
+Wyrd: 5
+
+*/
+
+&xp.advantage.wyrd [v( d.xpcd )]=
+	u( cost.standard, 5, %1, %2 )
+
+// non-seeming contract bonus
+// .. bonus' name: last( %3, . )
+// .. core stat: elements( %3, 1 2, . )
+&xp.contract.?.? [v( d.xpcd )]=
+	case( 1, 
+		u( .is, %0, bio.seeming, elements( %3, 3, . )), 0, 
+		u( .is, %0, elements( %3, 1 2, . ), ), 0, 
+		1 
+	)
+
+
+// contract: depends on regalia & court
+// .. we cheat and grab tags and stats to process manually
+// .. as much as I love 'hastag?', this will save processing
+
+&xp.contract.? [v( d.xpcd )]=
+	localize( case( 1, 
+
+// .. goblin contracts
+		t( grab( 
+			setr( t, get( v( d.dt )/tags.%3 )), 
+			goblin, 
+			. 
+		)), 
+		2, 
+
+// .. court contracts
+		t( setinter( 
+			%qt, 
+			get( v( d.dd )/bio.court ), 
+			. 
+		)), 
+		case( 1, 
+			t( setinter( %qt, common, . )), 3, 
+			t( setinter( %qt, royal, . )), 4, 
+			0 
+		), 
+
+// .. else: regalia contracts
+		strcat( 
+// .. .. set base xp cost: 3 for common, 4 for royal, error for neither
+			setq( b, 
+				case( 1,  
+					t( setinter( %qt, common, . )), 3, 
+					t( setinter( %qt, royal, . )), 4, 
+					0 
+				)
+			), 
+// .. .. -1 if Favored
+			setq( f, get( %0/_bio.favored_regalia )), 
+			setq( s, ulocal( v( d.dd )/.changeling.seeming_regalia, %0 )), 
+			setq( x, 
+				sub( 
+					%qb, 
+					t( setinter( %qt, lcstr( %qf.%qs ), . ))
+				)
+			), 
+
+// .. .. return xp, min 0 for error (0 == cannot buy, for xp)
+			max( 0, %qx )
+		) 
+	))
+
+
+// Make it so people can't buy their own Contracts, Bonus, or Wyrd
+&d.restricted.types.changeling [v( d.xpas )]=contract contract.?
+&d.restricted.stats.changeling [v( d.xpas )]=advantage.wyrd
+
+
+
+/*
+################################################################################
+## CHANGELING: SHEET ###########################################################
+
+--------------------------------------------------------------------------------
+-- Sheet: Bio ------------------------------------------------------------------
+*/
+
+&bio.default.fae-touched [v( d.nsc )]=
+	birthdate concept [if( hasattr( %0, _bio.motley ), motley )] 
+	promise template virtue vice
+
+&bio.default.changeling [v( d.nsc )]=
+	full_name concept birthdate 
+	needle thread 
+	template court seeming kith 
+	[if( hasattr( %0, _bio.motley ), motley, %r )] 
+
+/* 
+&bio.default.changeling [v( d.nsc )]=
+	concept birthdate 
+	needle thread 
+	template court seeming kith 
+	[if( hasattr( %0, _bio.motley ), motley )] 
+*/
+
+/*
+--------------------------------------------------------------------------------
+-- Sheet: Powers ---------------------------------------------------------------
+
+0: target dbref
+1: formatted category:list.of.formatted.contracts|...
+
+y: random bleh
+z: ditto
+
+output: adds seeming bonuses to any contract that needs it
+
+*/
+
+&powers.contracts.seeming_bonus [v( d.nsc )]=
+	iter( %1, 
+		strcat( 
+			first( %i0, : ), :, 
+			iter( rest( %i0, : ), 
+				strcat( 
+					setq( y, edit( %i0, %b, _ )), 
+					setq( z, lattr( %0/_contract.%qy.* )), 
+					setq( z, 
+						edit( %qz, 
+							_CONTRACT.[ucstr( %qy )]., , 
+							%b, ., 
+							_, %b 
+						)
+					), 
+// final formatting
+					if( gt( strlen( %qz ), 0 ), 
+						%i0 %([iter( %qz, titlestr( %i0 ), ., %,%b )]%), 
+						%i0 
+					)
+				), 
+				., . 
+			)
+		), 
+		|, | 
+	)
+
+
+/* Vague Test: 
+think u( v( d.nsc )/powers.contracts.seeming_bonus, 
+		%#, 
+		Crown:Summon the Loyal Servant|
+		Shield:Skinmask.Walls Have Ears|
+		Winter:The Dragon Knows|
+		Goblin:Blessing of Forgetfulness 
+	)
+*/
+
+
+/*
+================================== Contracts ==================================
+............... Crown ...............  |  .......... Winter (mantle) ..........
+Spinning Wheel (Ogre)                  |  The Dragon Knows                       
+Tumult                                 |  .............. Goblin ...............
+......... Shield (favored) ..........  |  Blessing of Forgetfulness              
+Cloak of Night (Ogre, Darkling)        |                                        
+
+or
+
++----+ Contracts +-------------------------------------------------------------+
+            Crown (favored)          |              Spring (mantle)            
+The Royal Court (Fairest)            |  Cupid's Arrow                          
+                Jewels               |  Waking the Inner Fae                   
+Blessing of Perfection (Fairest)     |                  Goblin                 
+                Shield               |  Goblin's Luck                          
+Trapdoor Spider's Trick              |                                         
+
+
+f: favored regalia
+r: seeming regalia
+c: court
+a: all contracts
+t: arcadian contracts, court contracts, goblin contracts, in that order
+x: above, prettified
+
+*/
+
+&block.powers.changeling [v( d.sheet )]=u( block.powers.contracts, %0, %1 )
+
+&filter.powers.contracts [v( d.nsc )]=
+	cor( 
+		t( strlen( after( %0, : ))), 
+		t( setinter( %1, before( %0, : ), . ))
+	)
+
+&powers.contracts [v( d.nsc )]=
+	localize( strcat( 
+		setq( f, u( v( d.dd )/.value, %0, bio.favored_regalia )), 
+		setq( r, u( v( d.dd )/.changeling.seeming_regalia, %0 )), 
+		setq( c, u( v( d.dd )/.value, %0, bio.court )), 
+		setq( c, if( strmatch( %qc, ), None, %qc )), 
+
+		setq( a, lattr( %0/_contract.* )), 
+
+// t: get all contracts per category: <category>:<list.of.contracts>|
+// .. categores: <general contracts>.<courts from DD>.Goblin
+		setq( t, iter( 
+			Crown.Jewels.Mirror.Shield.Steed.Sword.
+			[get( v( d.dd )/bio.court )].
+			Goblin, 
+			strcat( 
+				%i0, :, 
+				filter( v( d.sfp )/f.hastag?.workhorse, 
+					edit( %qa, _CONTRACT., CONTRACT. ), 
+					, , %i0 
+				)
+			), 
+			., | 
+		)), 
+
+// u: format so that sheet can present them
+		setq( u, 
+			iter( %qt, 
+				strcat( 
+					first( %i0, : ), :, 
+					iter( rest( %i0, : ), 
+						ulocal( f.cheat_getstat.name_only, %0, %i0, flag ), 
+						, . 
+					) 
+				), 
+				|, | 
+			)
+		), 
+
+// x: add seeming bonuses
+		setq( x, ulocal( powers.contracts.seeming_bonus, %0, %qu )), 
+
+// y: filter out empty categories - except favored? and mantle?
+		setq( y, 
+			filter( filter.powers.contracts, 
+				%qx, |, |, 
+				setunion( %qf.%qr.%qc, , . )
+			)
+		), 
+
+// z: add (favored) to contact headers if 'favored_regalia' is set
+		setq( z, 
+			if( strlen( %qf ), 
+				edit( %qy, 
+					%qf:, %qf [ansi( xh, %(favored%))]:
+				), 
+				%qy 
+			)
+		), 
+
+// z: add (seeming) and (court) to contract headers
+		setq( z, 
+			edit( %qz, 
+				%qr:, %qr [ansi( xh, %(seeming%))]:, 
+				%qc:, %qc [ansi( xh, %(mantle%))]: 
+			)
+		), 
+
+// output final list
+		%qz 
+	))
+
+// test:
+think u( v( d.nsc )/powers.contracts, v( _special.sheet_location ))
+
+
+&block.powers.changeling [v( d.sheet )]=
+	u( block.powers.contracts, %0, %1 )
+
+
+&block.powers.contracts [v( d.sheet )]=
+	strcat( 
+		setq( c, u( powers.contracts, %0 )),
+
+		divider( Contracts ), %r, 
+
+		ulocal( format.block.two-even-columns, 
+			iter( 
+				u( powers.contracts, %0 ), 
+				strcat( 
+					u( display.subheader.underline, 38, first( %i0, : )), %r, 
+					edit( rest( %i0, : ), ., %r )
+				), 
+				|, | 
+			), 
+			ansi( xh, |%b )
+		), %r, 
+
+		@@( to be continued ), 
+	)
+
+think u( v( d.sheet )/block.powers.contracts, v( _special.sheet_location ))
+
+
+// ... 'subheader' ideas
+
+&display.subheader.dash [v( d.nsc )]=
+	strcat( 
+		ansi( xh, %b%b+ ), 
+		center( %b%1%b, sub( %0, 6 ), ansi( xh, - )), 
+		ansi( xh, +%b%b )
+	)
+
+&display.subheader.underline [v( d.nsc )]=center( ansi( u, %1 ), %0 )
+
+&display.subheader.dot [v( d.nsc )]=center( %b%1%b, %0, ansi( xh, . ))
+
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Sheet: Advantages -----------------------------------------------------------
+
+Add 'kenning' and 'goblin debt'
+
+*/
+
+&advantages.changeling [v( d.nsc )]=kenning goblin_debt
+
+
+// fakes out the system into not showing 'integrity' in Advantages section
+&traits.morality.changeling [v( d.nsc )]=@@( null )
+
+
+// -- glamour --
+&traits.glamour [v( d.nsc )]=
+	u( f.cheat_getstat.pool, %0, glamour )
+
+
+// -- glamour block --
+&block.traits.glamour [v( d.sheet )]=
+	strcat( 
+		setq( w, 38 ), 
+		setq( t, 10 ), 
+
+// .. glamour
+		setq( x, ulocal( traits.glamour, %0 )), 
+		setq( c, rest( setr( y, first( %qx, | )), : )), 
+		setq( p, last( %qx, : )), 
+
+// .. return
+		u( display.trait-and-value, %qy, %qt, %qw, pool, %b, %qp )
+	)
+
+
+// -- clarity block -- (Pulls from 'CtL3 - Clarity System')
+&block.clarity [v( d.sheet )]=
+	strcat( 
+		divider( Clarity ), %r, 
+		u( v( d.ccs )/display.clarity-bar, %0 )
+	)
+	
+
+// -- traits block: changeling --
+&block.traits.changeling [v( d.sheet )]=
+	strcat( 
+		setq( w, 38 ), 
+		setq( t, 10 ), 
+
+// .. glamour (power pool)
+		setq( r, ulocal( block.traits.glamour, %0 )), 
+
+// .. wyrd (supernatural resistance)
+		setq( z, 
+			u( display.trait-and-value, 
+				u( traits.supernatural_resistance, %0 ), 
+				inc( strlen( Wyrd )), %qw, numeric 
+			)
+		), 
+// .. display
+		vcolumns( 
+			%qw:%qr, 
+			%qw:%qz, 
+			|, %b 
+		), %r, 
+
+// .. clarity (morality health system)
+		u( block.clarity, %0 ), %r, 
+	)
+
+
+
+
+
+/*
+################################################################################
+## FAE-TOUCHED: SHEET ##########################################################
+
+--------------------------------------------------------------------------------
+-- Sheet, Advantages: Fae-Touched ----------------------------------------------
+*/
+
+&advantages.fae-touched [v( d.nsc )]=goblin_debt
+
+
+/*
+--------------------------------------------------------------------------------
+-- Sheet, Powers: Fae-Touched --------------------------------------------------
+*/
+
+&block.powers.fae-touched [v( d.sheet )]=u( block.powers.contracts, %0, %1 )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Sheet, Traits: Fae-Touched --------------------------------------------------
+*/
+
+&block.traits.fae-touched [v( d.sheet )]=
+	strcat( 
+		setq( w, 38 ), 
+		setq( t, 10 ), 
+
+// .. glamour (power pool)
+		setq( r, ulocal( block.traits.glamour, %0 )), 
+
+// .. wyrd (supernatural resistance)
+		setq( z, 
+			u( display.trait-and-value, 
+				u( traits.supernatural_resistance, %0 ), 
+				inc( strlen( Wyrd )), %qw, numeric 
+			)
+		), 
+
+		vcolumns( 
+			%qw:%qr, 
+			%qw:%qz, 
+			|, %b 
+		), %r, 
+	)
+
+
+
+/*
+################################################################################
+## SPEND/REGAIN GLAMOUR ########################################################
+
+expands: 9c - Spend and Regain
+(identical to 99% of the rest of these)
+
+	spend glamour=<amt/method> for <reason>
+
+spend limit per Wyrd: 
+	1 2 3 4 5 6 7 8 10 15
+
+regain methods (not coded):
+	<dice pool> (once per target per scene)
+	reap
+	dreams
+
+0 Glamour = Cannot gain benefits from eating/drinking + Deprived Condition
+
+
+--------------------------------------------------------------------------------
+-- Glamour: Spend/Regain Methods -----------------------------------------------
+*/
+
+&regain.methods.glamour [v( d.psrs )]=|all
+&spend.methods.glamour [v( d.psrs )]=[@@( nothing but numeric allowed here )]
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Glamour: Spend/Regain Amts --------------------------------------------------
+*/
+
+&amt.spend.numeric.glamour [v( d.psrs )]=
+	if( t( u( amt.spend.numeric.default, %0, %1, %2 )), 
+		if( 
+			lte( %2, 
+				elements( 
+					1 1 2 3 4 5 6 7 8 10 15, 
+					inc( getstat( %0/Wyrd ))
+				)
+			), 
+			mul( %2, -1 ), 
+			#-1 You can't spend that much at one time 
+		), 
+		u( amt.spend.numeric.default, %0, %1, %2 )
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Glamour: Spend Trigger ------------------------------------------------------
+*/
+
+&spend.trigger.glamour [v( d.psrs )]=
+	think strcat( 
+		m:, %b, setr( m, u( f.match_method, %1, spend, glamour, %2 )), %r, 
+		a:, %b, setr( a, u( amt.spend, %1, glamour, %qm )), %r, 
+		u:, %b, setr( u, hasattr( %1, _advantage.wyrd )), %r, 
+		s:, %b, setr( s, hasattr( %1, _advantage.glamour_maximum )), %r, 
+	); 
+
+	@assert cand( %qu, %qs )={ 
+		@pemit %0=u( .msg, glamour/spend, 
+			cat( 
+				if( strmatch( %0, %1 ), You, name( %1 )), 
+				must have both Wyrd and a Glamour pool 
+			)
+		) 
+	}; 
+
+	@assert strlen( %qm )={ 
+		@pemit %0=u( .msg, glamour/spend, I could not find the method '%2' ) 
+	}; 
+
+	@assert t( %qa )={ 
+		@pemit %0=u( .msg, glamour/spend, rest( %qa )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.canchange, %1, glamour, %qa )))={ 
+		@pemit %0=u( .msg, glamour/spend, rest( %qe )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.changestat, %1, glamour, %qa )))={ 
+		@pemit %0=u( .msg, glamour/spend, rest( %qe )) 
+	}; 
+
+	think e: 
+		[setr( e, 
+			u( display.number, %0, %1, glamour, spend, %qa, %qm, %4 )
+		)]; 
+	@eval u( f.announcement, %0, %1, spend, %qe ); 
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Glamour: Regain Trigger -----------------------------------------------------
+*/
+
+&regain.trigger.glamour [v( d.psrs )]=
+	think strcat( 
+		m:, %b, setr( m, u( f.match_method, %1, regain, glamour, %2 )), %r, 
+		a:, %b, setr( a, u( amt.regain, %1, glamour, %qm )), %r, 
+		u:, %b, setr( u, hasattr( %1, _advantage.wyrd )), %r, 
+		s:, %b, setr( s, hasattr( %1, _advantage.glamour_maximum )), %r, 
+	); 
+
+	@assert cand( %qu, %qs )={ 
+		@pemit %0=u( .msg, glamour/regain, 
+			cat( 
+				if( strmatch( %0, %1 ), You, name( %1 )), 
+				must have both Wyrd and a Glamour pool 
+			)
+		) 
+	}; 
+
+	@assert strlen( %qm )={ 
+		@pemit %0=u( .msg, glamour/regain, I could not find the method '%2' ) 
+	}; 
+
+	@assert t( %qa )={ 
+		@pemit %0=u( .msg, glamour/regain, rest( %qa )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.canchange, %1, glamour, %qa )))={ 
+		@pemit %0=u( .msg, glamour/regain, rest( %qe )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.changestat, %1, glamour, %qa )))={ 
+		@pemit %0=u( .msg, glamour/regain, rest( %qe )) 
+	}; 
+
+	think e: 
+		[setr( e, 
+			u( display.number, %0, %1, glamour, regain, %qa, %qm, %4 )
+		)]; 
+	@eval u( f.announcement, %0, %1, regain, %qe ); 
+
+
+
+/*
+================================================================================
+== SPEND/REGAIN GOBLIN DEBT ====================================================
+
+expands: 9c - Spend and Regain
+
+Now we're doing something different. There is no (known?) upper limit to Goblin 
+Debt, so there is no 'maximum' trait.
+
+Goblin Debt is gained upon a successful use of a Goblin Contract.
+We leave it up to the player to set this, mostly because we have no better way 
+to maintain the system right now.
+
+Goblin Debt can be spent by the ST when interesting.
+
+	1+ Points : Reduce any dice pool, 1 die per point spent.
+	4 Point   : Inflict non-persistent Condition 
+	8 Points  : Inflict persistent Condition
+
+It's suggested that these Conditions have some relation to the Goblin Contract 
+being used or the goblin that gave the character the Contract.
+
+The spending should at least make some sense.
+
+At 10 points, the character becomes a Hobgoblin. Read up. It's fun.
+
+
+--------------------------------------------------------------------------------
+-- Goblin Debt: Spend/Regain Methods -------------------------------------------
+
+Would be nice for 'spend' to include 'condition' and 'persistent condition'.
+
+*/
+
+&regain.methods.goblin_debt [v( d.psrs )]=|all
+&spend.methods.goblin_debt [v( d.psrs )]=
+	[@@( nothing but numeric allowed here )]
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Goblin Debt: Spend/Regain Amts ----------------------------------------------
+
+Not needed.
+Will trigger 'amt.spend.numeric.default' and 'amt.gain.numeric.default'
+
+
+--------------------------------------------------------------------------------
+-- Goblin Debt: Spend Trigger --------------------------------------------------
+*/
+
+&spend.trigger.goblin_debt [v( d.psrs )]=
+	think strcat( 
+		m:, %b, setr( m, u( f.match_method, %1, spend, goblin_debt, %2 )), %r, 
+		a:, %b, setr( a, u( amt.spend, %1, goblin_debt, %qm )), %r, 
+		u:, %b, setr( u, hasattr( %1, _advantage.wyrd )), %r, 
+		s:, %b, setr( s, hasattr( %1, _advantage.goblin_debt_maximum )), %r, 
+	); 
+
+	@assert cand( %qu, %qs )={ 
+		@pemit %0=u( .msg, goblin debt/spend, 
+			cat( 
+				if( strmatch( %0, %1 ), You, name( %1 )), 
+				must have both Wyrd and a Goblin Debt pool 
+			)
+		) 
+	}; 
+
+	@assert strlen( %qm )={ 
+		@pemit %0=u( .msg, goblin debt/spend, I could not find the method '%2' ) 
+	}; 
+
+	@assert t( %qa )={ 
+		@pemit %0=u( .msg, goblin debt/spend, rest( %qa )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.canchange, %1, goblin_debt, %qa )))={ 
+		@pemit %0=u( .msg, goblin debt/spend, rest( %qe )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.changestat, %1, goblin_debt, %qa )))={ 
+		@pemit %0=u( .msg, goblin debt/spend, rest( %qe )) 
+	}; 
+
+	think e: 
+		[setr( e, 
+			u( display.number, %0, %1, goblin_debt, spend, %qa, %qm, %4 )
+		)]; 
+	@eval u( f.announcement, %0, %1, spend, %qe ); 
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Goblin Debt: Regain Trigger -------------------------------------------------
+*/
+
+&regain.trigger.goblin_debt [v( d.psrs )]=
+	think strcat( 
+		m:, %b, setr( m, u( f.match_method, %1, regain, goblin_debt, %2 )), %r, 
+		a:, %b, setr( a, u( amt.regain, %1, goblin_debt, %qm )), %r, 
+		u:, %b, setr( u, hasattr( %1, _advantage.wyrd )), %r, 
+		s:, %b, setr( s, hasattr( %1, _advantage.goblin_debt_maximum )), %r, 
+	); 
+
+	@assert cand( %qu, %qs )={ 
+		@pemit %0=u( .msg, goblin debt/regain, 
+			cat( 
+				if( strmatch( %0, %1 ), You, name( %1 )), 
+				must have both Wyrd and a Goblin Debt pool 
+			)
+		) 
+	}; 
+
+	@assert strlen( %qm )={ 
+		@pemit %0=u( .msg, 
+			goblin debt/regain, 
+			I could not find the method '%2' 
+		) 
+	}; 
+
+	@assert t( %qa )={ 
+		@pemit %0=u( .msg, goblin debt/regain, rest( %qa )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.canchange, %1, goblin_debt, %qa )))={ 
+		@pemit %0=u( .msg, goblin debt/regain, rest( %qe )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.changestat, %1, goblin_debt, %qa )))={ 
+		@pemit %0=u( .msg, goblin debt/regain, rest( %qe )) 
+	}; 
+
+	think e: 
+		[setr( e, 
+			u( display.number, %0, %1, goblin_debt, regain, %qa, %qm, %4 )
+		)]; 
+	@eval u( f.announcement, %0, %1, regain, %qe ); 
+

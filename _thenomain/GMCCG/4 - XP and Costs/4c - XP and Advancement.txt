@@ -1,0 +1,2633 @@
+/*
+################################################################################
+
+XP Advancement System
+
+Performs and logs XP spends and gains.
+
+Warning: This is a mess coded in a crunch. Some year I should clean it up.
+
+--------------------------------------------------------------------------------
+
+This should be at the explanation of this system: 
+
+To stop players from purchasing a trait on their own, but allow staff to 
+purchase them on their behalf, check "&d.restricted.types" and 
+"&d.restricted.stats". More is described under 'Restricted Stats'.
+
+################################################################################
+
+* Give Passive XP: gain
+* Be able to determine: not a spend/gain thing
+* Be able to Award XP: gain
+* Be able to spend XP: spend
+* Be able to unaward XP: unaward
+* Be able to unspend: unspend
+
+################################################################################
+
+&_special.beats.<type> :: <total> -<spent>
+&_special.earned_beats.<type> :: <amt earned this week>
+
+Illegal characters: | and ` 
+
+&d.xp_types [v( d.xpas )]=normal player arcane
+&d.log_types [v( d.xpas )]=gain spend freebie auto
+
+################################################################################
+
+COMMANDS:
+	xp : how much I got? (all types)
+	xp <name> : how much they got?
+
+√	xp/log [<name>]
+√	xp/log <name>[/<type>]
+
+√	xp/award <name>=<amt> for <reason> : give out dem generic goodies
+√	xp/award <name>/<xp type>=<amt> for <reason> : give out dem specific goodies
+
+√	xp/cost <stat>=<level>[/<xp type>] : how much it be costin'?
+√	xp/cost <name>/<stat>=<level> : how much it be costin' for them?
+
+√	xp/spend <stat>[=<level>] : spend some Normal xps on some mad skillz
+	xp/spend <stat>=<level>/<xp type> : spend some specific xpz
+
+√	xp/freebie <stat>=<level> for <reason> : Give <stat> spending xpz.
+	(rewrite this and xp/spend and xp/cost to share redundant functions!)
+
+√	xp/convert <amt> [beats|xp] from <name> : Player xpz -> Normal xpz, yo.
+	(<name> must be an alt of yours)
+
+√	xp/unaward <entry_num> for <reason> : I made a mistake, help!; Wizard-only
+	("unspend" for xp/award, tho seems very minor)
+
+√	xp/unspend <entry_num> for <reason> : reverse the freebie/spend 
+	on <entry_num>; Wizard-only
+
+	xp/check [<name>] : what traits still have xp timers on them?
+
+** Anywhere that <amt> is, you can use 'exp' 'xp' or 'beats' to be explicit. **
+e.g.:
+	xp/award Bob=40 exp for Starting XP
+	xp/deduct Bob=8 beats for Shady Dealings
+
+
+
+
+################################################################################
+## THE OBJECT ##################################################################
+
+
+
+================================================================================
+== SETUP =======================================================================
+*/
+
+@create XP Advancement System <xpas>
+@fo me=&d.xpas me=search( name=XP Advancement System <xpas> )
+@set XP Advancement System <xpas>=INHERIT SAFE
+
+@fo me=&d.sfp [v( d.xpas )]=[search( name=Stat Functions Prototype <sfp> )]
+@fo me=&d.dd [v( d.xpas )]=[search( name=Data Dictionary <dd> )]
+@fo me=&d.xpcd [v( d.xpas )]=[search( name=XP Cost Database <xpcd> )]
+@fo me=&d.cg [v( d.xpas )]=[search( name=GMC Chargen <cg> )]
+
+@fo me=@parent [v( d.xpas )]=[v( d.codp )]
+&prefix.sql [v( d.xpas )]=sql.
+&prefix.validations [v( d.xpas )]=validate.
+
+
+&pref.player_spend [v( d.xpas )]=on
+
+/*
+--------------------------------------------------------------------------------
+-- CREATE TABLE ----------------------------------------------------------------
+
+DROP TABLE IF EXISTS xp_log;
+
+--
+
+CREATE TABLE IF NOT EXISTS xp_log ( 
+	target_objid VARCHAR(255) NOT NULL, 
+	target_name VARCHAR(255) NOT NULL, 
+
+	enactor_objid VARCHAR(255) NOT NULL, 
+	enactor_name VARCHAR(255) NOT NULL, 
+
+	log_time TIMESTAMP NOT NULL DEFAULT NOW(), 
+
+	xp_type VARCHAR(255) NOT NULL, 
+	xp_amt DECIMAL(21,17) NOT NULL,
+
+	trait_category VARCHAR(255),
+	trait_name VARCHAR(255), 
+	trait_value VARCHAR(255), 
+
+	action VARCHAR(255) NOT NULL, 
+	reason VARCHAR(255), 
+	
+	entry_num BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, 
+	trait_value_old VARCHAR(255), 
+
+	PRIMARY KEY (target_objid, log_time), 
+	INDEX (entry_num) 
+) ENGINE=INNODB; 
+
+
+*** If this is your first time in this installer, do not run any more SQL! *** 
+
+-- UPDATE VERSION: Only run if you used the older xp_log table
+CREATE TABLE xp_log_old LIKE xp_log; 
+INSERT xp_log_old SELECT * FROM xp_log;
+
+ALTER TABLE xp_log 
+	ADD entry_num BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, 
+	ADD INDEX (entry_num);
+
+
+*** ANOTHER UPDATE: Again, don't run if this is your first time ***
+DROP TABLE IF EXISTS xp_log_old; 
+CREATE TABLE xp_log_old LIKE xp_log; 
+INSERT xp_log_old SELECT * FROM xp_log;
+
+ALTER TABLE xp_log ADD trait_value_old VARCHAR(255); 
+
+*** THIS WILL BE HARD TO POPULATE FROM THE EXISTING SETUP ***
+-- This is how I did it:
+
+DROP TABLE IF EXISTS xp_log_old; 
+CREATE TABLE xp_log_old LIKE xp_log; 
+INSERT xp_log_old SELECT * FROM xp_log;
+
+-- Clear and start from scratch.
+UPDATE xp_log SET trait_value_old=NULL; 
+
+-- Main update.
+UPDATE xp_log AS a 
+  INNER JOIN xp_log AS b ON a.entry_num = b.entry_num 
+  SET a.trait_value_old = 
+    SUBSTRING( 
+      a.reason 
+      FROM LOCATE( '\'', a.reason ) + 1 
+      FOR LOCATE( 
+        '\'', 
+        a.reason, 
+        LOCATE( '\'', a.reason ) + 1 ) - 
+        LOCATE( '\'', a.reason ) - 1 
+    ) 
+  WHERE a.action=('spend' OR 'freebie') 
+  AND a.trait_value_old IS NULL 
+  AND a.trait_name IS NOT NULL;
+
+-- Catch false nonsense from 's and 't.
+UPDATE xp_log AS a 
+  INNER JOIN xp_log AS b ON a.entry_num = b.entry_num 
+  SET a.trait_value_old = 
+    SUBSTRING_INDEX( substring_index( a.reason, '\'', 5 ), '\'', -1 ) 
+  WHERE (a.trait_value_old REGEXP '^s.*$' OR a.trait_value_old REGEXP '^t.*$')
+  AND a.trait_name IS NOT NULL;
+
+-- Turn '' into NULL.
+UPDATE xp_log 
+  SET trait_value_old = NULL 
+  WHERE 
+    (trait_value_old NOT REGEXP '^-?[0-9]+$') AND 
+    (trait_value_old NOT REGEXP '^.+\\..+$') AND 
+    (trait_value_old NOT IN 
+      ('Unlock','Cunning','Glory','Honor','Purity','Wisdom')
+    ); 
+
+-- Check that everything went through alright.
+-- If not, you'll have to set this all by hand.
+SELECT entry_num, trait_value_old 
+  FROM xp_log 
+  WHERE 
+    (trait_value_old NOT REGEXP '^-?[0-9]+$') AND 
+    (trait_value_old NOT REGEXP '^.+\\..+$') AND 
+    (trait_value_old NOT IN 
+      ('Unlock','Cunning','Glory','Honor','Purity','Wisdom')
+    ) AND 
+    (trait_value_old IS NOT NULL); 
+
+-- If everything is okay, let's simplify the 'reason' field ...
+UPDATE xp_log 
+  SET reason=
+    if( 
+      locate( 'for reason', reason ), 
+      trim( 
+        BOTH '\'' 
+        FROM substring( reason FROM locate( 'for reason', reason ) + 11 )
+      ), 
+      NULL 
+    ) 
+  WHERE (action='spend' OR action='freebie') AND trait_name IS NOT NULL; 
+
+
+
+/*
+================================================================================
+== COMMANDS ====================================================================
+
+	xp : list all xp types (for <name>)
+	xp/award : give out xp
+	xp/remove : remove xp
+	xp/spend : buy stats
+	xp/check : output for 'spend' without buying stat/reducing xp
+
+
+--------------------------------------------------------------------------------
+-- XP : Show me things ---------------------------------------------------------
+
+	xp [<name>] : list all xp types (for <name>)
+
+*/
+
+
+// FILLER FILLER FILLER FILLER FILLER FILLER FILLER 
+
+
+/*
+--------------------------------------------------------------------------------
+-- xp/cost ---------------------------------------------------------------------
+
+	xp/cost [<name>/]<stat>[=<value>]
+
+*/
+
+&c.xp/cost [v( d.xpas )]=$^\+?xp/cost (.+)$:@pemit %#=[u( f.xp/cost, %1 )]
+@set [v( d.xpas )]/c.xp/cost=regexp
+
+&c.xp/spend [v( d.xpas )]=$^\+?xp/spend (.+)$:@pemit %#=[u( f.xp/spend, %1 )]
+@set [v( d.xpas )]/c.xp/spend=regexp
+
+&c.xp/freebie [v( d.xpas )]=$^\+?xp/freebie (.+)$:
+	@pemit %#=[u( f.xp/freebie, %1 )]
+@set [v( d.xpas )]/c.xp/freebie=regexp
+
+
+
+/*
+================================================================================
+== SHORT FUNCTIONS =============================================================
+
+--------------------------------------------------------------------------------
+-- Short Functions -------------------------------------------------------------
+*/
+
+&.isapproved [v( d.xpas )]=isapproved( %0, %1 )
+&.value [v( d.xpas )]=u( v( d.dd )/.value, %0, %1 )
+&.msg [v( d.xpas )]=ansi( h, <%0>, n, %b%1 )
+&.plural [v( d.xpas )]=if( eq( %0, 1 ), %0 %1, %0 %2 )
+&.lmax [v( d.xpas )]=lmax( %0 )
+
+// expands trunc(): Truncate '%0' to '%1' significant digits.
+&.trunc [v( d.xpas )]=
+	fdiv( 
+		trunc( 
+			mul( %0, power( 10, %1 ))
+		), 
+		power( 10, %1 )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Object ID  ------------------------------------------------------------------
+
+The unique identifier for an object, taken from Penn.
+Outputs: <#dbref>:<creation time in secondss>
+
+*/
+
+&.objid [v( d.xpas )]=localize( 
+		if( t( setr( l, locate( %#, %0, * ))), 
+			[num( %ql )]:[convtime( get( %ql/created ))], 
+			#-1 NOT FOUND 
+		)
+	)
+
+
+
+/* 
+================================================================================
+== SQL FUNCTIONS ===============================================================
+
+Things related to SQL and converting to and from a table or database.
+
+
+/*
+--------------------------------------------------------------------------------
+-- SQL Escape ------------------------------------------------------------------
+
+I removed the nested edits, here. Rhost and TinyMUSH will choke here.
+
+(... should ; also be escaped?)
+
+*/
+
+&f.sql.escape [v( d.xpas )]=edit( %0, \\, \\\\\\, ', \\\\', ", \\\\", \%, \\\\\\\% )
+
+/* -- test --
+
+think u( v( d.xpas )/f.sql.escape, lit(She said, "Oh my god!". \\ I said, "Relax; It's only a test."))
+
+
+--------------------------------------------------------------------------------
+-- HTML Escape -----------------------------------------------------------------
+
+	(not needed at this time)
+*/ 
+
+&f.html.escape [v( d.xpas )]=
+	edit( edit( edit( edit( %0, &, &amp; ), %%, &#37; ), <, &lt; ), >, &gt; )
+
+
+/*
+--------------------------------------------------------------------------------
+-- HTML Unescape ---------------------------------------------------------------
+
+	(not needed at this time)
+*/
+
+&f.html.unescape [v( d.xpas )]=
+	edit( edit( edit( edit( %0, &#37;, %% ), &lt;, < ), &gt;, > ), &amp;, & )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Time: unix2sql --------------------------------------------------------------
+
+0: secs.
+
+*/
+
+&f.time.unix2sql [v( d.xpas )]=if( %0, timefmt( $Y-$m-$d $H:$M:$S $z, %0 ), none )
+
+/* -- test --
+
+think u( v( d.xpas )/f.time.unix2sql, secs())
+
+think sql( SELECT FROM_UNIXTIME( [secs()] ))
+think timefmt( $Y-$m-$d $H:$M:$S $z, secs())
+
+
+--------------------------------------------------------------------------------
+-- Time: sql2unix --------------------------------------------------------------
+
+0: SQL Datetime, string output.
+
+*/
+
+&f.time.sql2unix [v( d.xpas )]=sql( SELECT UNIX_TIMESTAMP( '%0' ))
+
+/* -- test --
+
+think u( v( d.xpas )/f.time.sql2unix, u( v( d.xpas )/f.time.unix2sql, secs() ))
+
+think sql( SELECT UNIX_TIMESTAMP( '[u( v( d.xpas )/f.time.unix2sql, secs() )]' ))
+think secs()
+
+
+--------------------------------------------------------------------------------
+-- Transaction Begin/End -------------------------------------------------------
+
+Technically an sql.* function, but easier to do this way.
+
+*/
+
+&f.transaction.begin [v( d.xpas )]=
+	strcat( 
+		sql( START TRANSACTION ), 
+		sql( SET autocommit = 0 )
+	)
+
+// --
+
+&f.transaction.end [v( d.xpas )]=
+	strcat( 
+		sql( COMMIT ), 
+		sql( SET autocommit = 1 )
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- SQL: Add to XP Log ----------------------------------------------------------
+
+0: target dbref
+1: enactor dbref
+2: xp type (probably 'normal')
+3: xp amt
+4: reason
+5: action
+
+*/
+
+&sql.xp_log.add [v( d.xpas )]=
+	INSERT 
+		INTO xp_log (
+			target_objid, target_name, 
+			enactor_objid, enactor_name, 
+			xp_type, xp_amt, 
+			action, reason
+		) 
+		VALUES (
+			'[u( .objid, %0 )]', '[u( f.sql.escape, name( %0 ))]', 
+			'[u( .objid, %1 )]', '[u( f.sql.escape, name( %1 ))]', 
+			'%2', %3, 
+			'%5', '%4'
+		)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- SQL: Add by Auto-Award System -----------------------------------------------
+
+0: target dbref
+1: enactor dbref
+2: xp type (probably 'normal')
+3: xp amt
+
+*/
+
+&sql.xp_log.auto-add [v( d.xpas )]=
+	INSERT 
+		INTO xp_log (
+			target_objid, target_name, 
+			enactor_objid, enactor_name, 
+			xp_type, xp_amt, reason
+		) 
+		VALUES (
+			'[u( .objid, %0 )]', '[u( f.sql.escape, name( %0 ))]', 
+			'[u( .objid, %1 )]', 'Auto-Experience System', 
+			'%2', %3, 'Daily Auto'
+		)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- SQL: Get XP Log of One Type for One Character -------------------------------
+
+A summary used for xp/log 
+
+0: target dbref (pmatch(someone))
+1: xp type (normal, player, etc)
+2: partial stat name [optional]
+
+*/
+
+&sql.xp_log.type-character [v( d.xpas )]=
+	SELECT entry_num, enactor_objid, enactor_name, log_time, xp_amt, reason 
+	FROM xp_log 
+	WHERE target_objid='[u( .objid, %0 )]' 
+	AND xp_type='[lcstr( %1 )]' 
+	[if( strlen( %2 ), 
+		AND trait_name LIKE '[edit( %2, %b, _ )]%%%%'
+	)]
+
+
+
+
+
+
+/* 
+################################################################################
+## XP VIEWING ##################################################################
+
+Important data:
+	v( d.xp_types )
+	v( d.beat-to-exp )
+	get( <player>/_special.beats.<type> ) : <total> -<spent>
+
+
+
+================================================================================
+== Command: XP =================================================================
+
+	xp : how much I got? (all types)
+	xp <name> : how much they got? (all types)
+
+*/
+
+&c.xp.general [v( d.xpas )]=$^\+?xp$:
+	@assert not( isapproved( %#, guest ))={ 
+		@pemit %#=u( .msg, xp, Players only )
+	}; 
+
+	@pemit %#=
+		strcat( 
+			wheader( XP & Beats ), %r, 
+			iter( v( d.xp_types ), 
+				u( display.xp-and-beats.one-line, %#, %i0 ), 
+				, %r 
+			), %r, 
+			wdivider(), %r, 
+
+			if( isapproved( %# ), 
+				u( display.approval-deets, %# )
+			), %r, 
+
+			wfooter()
+		)
+
+@set v( d.xpas )/c.xp.general=regexp
+
+// -- 
+
+&c.xp.specific [v( d.xpas )]=$^\+?xp (.+)$:
+	think setr( p, pmatch( trim( %1 ))); 
+
+	@assert cor( isstaff( %# ), strmatch( %#, %qp ))={ 
+		@pemit %qp=u( .msg, xp, Staff or self only )
+	}; 	
+
+	@assert t( %qp )={ 
+		@pemit %qp=u( .msg, xp, '[trim( %1 )]' not found )
+	}; 	
+
+	@assert not( isapproved( %qp, guest ))={ 
+		@pemit %#=u( .msg, xp, Players only )
+	}; 
+
+	@pemit %#=
+		strcat( 
+			wheader( XP & Beats for [name( %qp )] ), %r, 
+			iter( v( d.xp_types ), 
+				u( display.xp-and-beats.one-line, %qp, %i0 ), 
+				, %r 
+			), %r, 
+			wdivider(), %r, 
+
+			if( isapproved( %qp ), 
+				u( display.approval-deets, %qp )
+			), 
+
+			wfooter()
+		)
+
+@set v( d.xpas )/c.xp.specific=regexp
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Display General XP Info -----------------------------------------------------
+
+a: attribute
+x: experiences
+b: beats
+e: earned
+
+*/
+
+&display.xp-and-beats.one-line [v( d.xpas )]=
+	strcat( 
+		setq( a, get( %0/_special.beats.%1 )), 
+		setq( c, ladd( %qa )), 
+		setq( e, first( %qa )), 
+		setq( s, rest( %qa )),
+
+		ansi( h, titlestr( %1 )), :, %b, 
+		Experience:, %b, floor( fdiv( %qc, v( d.beat-to-exp ))), %,%b, 
+		Beats:, %b, mod( %qc, v( d.beat-to-exp )), %r, 
+		%b- Earned:, %b, u( .trunc, fdiv( %qe, v( d.beat-to-exp )), 1 ), %r, 
+		%b- Spent:, %b%b, u( .trunc, fdiv( abs( %qs ), v( d.beat-to-exp )), 1 )
+	)
+
+think u( v( d.xpas )/display.xp-and-beats.one-line, %!, normal )
+
+// --
+
+&display.approval-deets [v( d.xpas )]=
+	localize( strcat( 
+		setq( y, strmatch( %#, %0 )), 
+		setq( n, name( %0 )), 
+		setq( a, u( [v( d.cg )]/f.total_secs_approved, %0 )), 
+
+		if( %qy, You have, %qn has ), %b, 
+			been approved for, %b, 
+			exptime( %qa ), 
+			%r,
+		if( %qy, You are, %qn is ), %b, 
+			auto-gaining, %b, 
+			u( f.auto.beats.weekly, %0 ), %b, 
+			Normal Beats per week, %r, 
+		if( %qy, You have, %qn has ), %b, 
+			earned, %b, 
+			default( %0/_special.beats_earned.normal, 0 ), %b, 
+			out of, %b, 
+			u( f.weekly_beats.max_earnable, %0 ), %b, 
+			Normal Beats this week, %r, 
+		It will be reset in, %b, 
+			u( .plural, 
+				sub( 7, u( f.day_in_approval_week, %0 )), 
+				day, 
+				days 
+			), %r, 
+	))
+
+think u( v( d.xpas )/display.approval-deets, %! )
+
+/* 
+================================================================================
+== Command: xp/log =============================================================
+
+	xp/log <name>           -- staff only
+	xp/log <name>/<xp type> -- staff only
+	xp/log [<xp type>]      -- players only
+	xp/log[/<log type>]     -- both
+
+??	xp/log <name>=<search>  -- find all logs for name matching '<search>*'
+
+	xp/log <entry num>      -- both; if not int, assume <name>, 
+	                           else ignore all other input
+	
+xp type: normal, player, cover, etc.
+log type: gain, spend, freebie, auto
+
+For now, shows the entire log of self or <name>. 
+This system needs massively overhauled in the future.
+Especially now that we're handing out other kinds of xps.
+
+s: switch(es)
+o: non-switch input
+
+p: raw target (kept for error reporting)
+x: raw xp type (kept for error reporting)
+
+t: processed target
+e: processed xp type
+g: processed log type (spend, gain, etc, from switch; null = all)
+
+l: log sql results
+
+*/
+
+&c.xp/log [v( d.xpas )]=$^\+?xp/log(.*)$:
+	@assert not( isapproved( %#, guest ))={ 
+		@pemit %#=u( .msg, xp/log, Players only )
+	}; 
+
+	@assert sql( select 1 )={ 
+		@pemit %#=
+			u( .msg, xp/log, SQL connection is down%; log cannot be retrieved )
+	}; 
+
+    think strcat( 
+        * Switches & Cetera *, %r, 
+        if( strmatch( strtrunc( %1, 1 ), / ), 
+            strcat( 
+                raw switches:, %b, setr( s, trim( first( %1 ))), %r, 
+                raw everything else:, %b, setr( o, trim( rest( %1 ))), %r, 
+            ), 
+            strcat( raw everything else:, %b, setr( o, trim( %1 )), %r, )
+        )
+    ); 
+
+    @if isint( %qo )={ 
+        @trigger %!/trig.xp/log.detail=%#, %qo, %qs 
+    }, { 
+        @trigger %!/trig.xp/log.summary=%#, %qo, %qs 
+    }; 
+
+// --
+
+@set v( d.xpas )/c.xp/log=regexp
+
+
+/*
+--------------------------------------------------------------------------------
+-- Trigger: xp/log summary (all entries) ---------------------------------------
+
+0: enactor (%#)
+1: other input (%qo)
+2: other switches (%qs)
+
+p: raw target (kept for error reporting)
+x: raw xp type (kept for error reporting)
+
+t: processed target
+e: processed xp type
+g: processed log type (spend, gain, etc, from switch; null = all)
+
+l: log sql results
+
+*/
+
+&trig.xp/log.summary [v( d.xpas )]=
+	think strcat( 
+		** DEBUG SPAM **, %r, 
+
+// staff input is different than player input
+// .. staff: <target>[/<type>]
+// .. player: [<type>]
+		if( isstaff( %0 ), 
+			strcat( 
+				* STAFF *, %r, 
+				raw target:, %b, setr( p, first( %1, / )), %r, 
+				raw type:, %b, setr( x, rest( %1, / )), %r, 
+			), 
+			strcat( 
+				* PLAYER *, %r, 
+				raw target:, %b, setr( p, %0 ), %r, 
+				raw type:, %b, setr( x, %1 ), %r, 
+			)
+		), 
+
+		* PROCESSING *, %r, 
+		processed target:, %b, setr( t, pmatch( trim( %qp ))), %r, 
+		processed xp type:, %b, 
+		setr( e, 
+			grab( 
+				normal|[edit( v( d.xp_types ), %b, | )], 
+				trim( %qx* ), 
+				| 
+			)
+		), %r, 
+
+		processed log type:, %b, 
+		setr( g, 
+			grab( 
+				|[edit( v( d.log_types ), %b, | )], 
+				rest( trim( %2* ), / ), 
+				| 
+			)
+		), %r, 
+	); 
+
+	@assert cor( strmatch( %0, %qp ), isstaff( %0 ))={ 
+		@pemit %0=u( .msg, xp/log, Self or staff only )
+	}; 
+
+	@assert t( %qt )={ 
+		@pemit %0=u( .msg, xp/log, Target '[trim( %qp )]' not found )
+	}; 
+
+	@assert strlen( %qe )={ 
+		@pemit %0=u( .msg, xp/log, 
+			Experience type '[trim( %qx )]' not found 
+		)
+	}; 
+
+	@assert cor( strlen( %qg ), strmatch( %2, ))={ 
+		@pemit %0=u( .msg, xp/log, 
+			Log type '[rest(trim( %2 ), / )]' not found 
+		)
+	}; 
+
+	think strcat( 
+		Log:, setr( l, 
+			iter( 
+				sql( u( sql.select.type-character, %qt, %qe, %qg ), `, | ), 
+				u( format.xp/log.one-line, %i0 ), 
+				`, `
+			)
+		)
+	); 
+
+	@pemit %0=strcat( 
+		wheader( 
+			XP/Log[if( strlen( %qg ), /[capstr( %qg)] )] 
+			for [name( %qt )] 
+			%([capstr( %qe )]%) 
+		), %r, 
+		u( display.xp/log.header ), %r, 
+		iter( %ql, u( display.xp/log.one-line, %i0 ), `, %r ), %r, 
+		wfooter()
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Trigger: xp/log detail (specific entry_num) ---------------------------------
+
+0: enactor (%#)
+1: entry_num (%q0)
+2: extra switches (%qs)
+
+l: xp_log entry
+t: target dbref
+w: enactor's width
+
+e: enactor name (dbref)
+t: target name (dbref)
+x: timetamp
+a: action
+r: reason
+n: trait name -> new value
+z: xp amount (xp type)
+
+*/
+
+&trig.xp/log.detail [v( d.xpas )]=
+    think strcat( 
+        * extra switches (%2) ignored for now *, %r, 
+        * xp log for entry '%1' *, %r, 
+        log:, %b, setr( l, sql( u( sql.select.entry_num, %1 ), `, | )), %r, 
+        target's dbref:, %b, setr( t, first( elements( %ql, 3, | ), : )), %r, 
+    ); 
+
+    @break eq( words( %ql, ` ), 0 )={ 
+        @pemit %0=u( .msg, xp/log, No entries found )
+    }; 
+
+    @assert eq( words( %ql, ` ), 1 )={ 
+        @pemit %0=u( .msg, xp/log, 
+            Somehow I found more than one entry for entry num '%1'. 
+            This is very alarming. Help. 
+        )
+    }; 
+    
+    @assert cor( strmatch( %0, %qt ), isstaff( %0 ))={ 
+        @pemit %0=u( .msg, xp/log, Self or staff only )
+    }; 
+
+// .. 'format' section - should be split in the future
+    think strcat( 
+        enactor's display width:, %b, setr( w, width( %0 )), %r 
+        * format data for display *, %r, 
+        enactor (dbref):, %b, setr( e, strcat( 
+            elements( %ql, 2, | ), %b, 
+            %(, first( elements( %ql, 1, | ), : ), %) 
+        )), %r, 
+        target (dbref):, %b, setr( t, strcat( 
+            elements( %ql, 4, | ), %b, %(, %qt, %) 
+        )), %r, 
+        timestamp:, %b, setr( x, elements( %ql, 5, | )), %r, 
+        action:, %b, setr( a, elements( %ql, 7, | )), 
+        reason:, %b, setr( r, elements( %ql, 8, | )), 
+        trait type:, %b, setr( y, titlestr( elements( %ql, 9, | ))), %r, 
+        trait name -> 'value':, %b, setr( n, strcat( 
+            statname( elements( %ql, 10, | )), %b, %[, %qy, %], 
+			%b', elements( %ql, 13, | ) ,' -> ', elements( %ql, 11, | ), ' 
+        )), %r, 
+		xp amt & type:, %b, 
+			setr( z, 
+//				if( not( strmatch( %qa, freebie )), 
+				if( t( elements( %ql, 6, | )), 
+					strcat( 
+						setq( z, elements( %ql, 12, | )), 
+						setq( z, 
+							if( not( strmatch( %qz, normal )), 
+								[capstr( %qz )]%b 
+							)
+						), 
+						u( .plural, 
+							fdiv( elements( %ql, 6, | ), v( d.beat-to-exp )), 
+							%qzExperience, %qzExperiences 
+						)
+					)
+				)
+			), %r, 
+    ); 
+
+// .. 'display' section - should be split in the future
+    @pemit %0=strcat( 
+        header( xp/log %1, %qw ), %r, 
+        ansi( h, Enactor ), :, %b, %qe, %r, 
+        ansi( h, Target ), :, %b, %qt, %r, 
+        ansi( h, Action ), :, %b, %qa, %r, 
+        ansi( h, Timestamp ), :, %b, %qx, %r, 
+        ansi( h, Trait ), :, %b, if( strlen( %qy ), %qn, ansi( xh, <none> )), 
+        %r, 
+		ansi( h, Amount ), :, %b, if( strlen( %qz ), %qz, ansi( xh, <n/a> )), 
+		%r, 
+        ansi( h, Reason ), :%b, if( strlen( %qr ), %qr, ansi( xh, <none> )), 
+		%r, 
+        footer( , %qw )
+    ); 
+
+
+/*
+--------------------------------------------------------------------------------
+-- Format One Line -------------------------------------------------------------
+
+input: 
+	entry_num|
+	enactor_objid|enactor_name|
+	timestamp|
+	beats|
+	action|reason|
+	trait_name|trait_value
+output: entry_num|who|when|amt|reason or stat -> 'value'|entry_num
+
+*/
+
+&format.xp/log.one-line [v( d.xpas )]=
+  strcat( 
+// entry_num
+		elements( %0, 1, | ), |, 
+// who
+		elements( %0, 3, | ), %b, %(, first( elements( %0, 2, | ), : ), %), |, 
+// when
+		timefmt( $m/$d/$g,  
+			u( f.time.sql2unix, elements( %0, 4, | ))
+		), |, 
+// amt
+		case( elements( %0, 6, | ), 
+			spend, -, 
+			freebie, -, 
+			unaward, - 
+		), 
+		trim( fdiv( floor( elements( %0, 5, | )), v( d.beat-to-exp )), l, 0 ), 
+		|, 
+// reason or stat -> 'value'
+		if( strlen( elements( %0, 8, | )), 
+			strcat( 
+				statname( elements( %0, 8, | )), 
+				%b, ->, %b, ', elements( %0, 9, | ), ' 
+			), 
+			strcat( 
+				elements( %0, 7, | )
+			)
+		), 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Display One Line ------------------------------------------------------------
+
+input: entry_num|who|when|amt|reason or stat -> 'value'
+output: Amt / Action or Stat / Entered By / Date
+
+Reason & Entered By are flexible to the viewer's screen width.
+
+*/
+
+&display.xp/log.header [v( d.xpas )]=
+  localize( strcat( 
+		setq( w, sub( width( %# ), 80 )), 
+		rjust( Exp, 5 ), %b%b, 
+		ljust( Reason, add( 27, ceil( fdiv( %qw, 2 ))) ), %b%b, 
+		ljust( Entered By, add( 20, floor( fdiv( %qw, 2 )))), %b, 
+		ljust( Date, 10 ), %b, 
+		Entry Num, %r, 
+		wdivider()
+	))
+
+
+&display.xp/log.one-line [v( d.xpas )]=
+	localize( strcat( 
+		setq( w, sub( width( %# ), 80 )), 
+		rjust( elements( %0, 4, | ), 5 ), %b%b, 
+		ljust( elements( %0, 5, | ), add( 27, ceil( fdiv( %qw, 2 ))) ), %b%b, 
+		ljust( elements( %0, 2, | ), add( 20, floor( fdiv( %qw, 2 ))) ), %b,
+		ljust( elements( %0, 3, | ), 10 ), %b, 
+		rjust( elements( %0, 1, | ), 9 )
+	))
+
+
+
+
+/* 
+################################################################################
+## XP AWARDING #################################################################
+
+Max 4 experience (20 beats) per week, aka:
+	20 - u( f.auto.beats.weekly, <character> )
+
+Store weekly earned on:
+	&_special.beats_earned.normal
+
+Valid award:
+	lte( 
+		add( <amt>, get( <character>/_special.beats_earned.normal )), 
+		u( f.weekly_beats.max_earnable, <character> )
+	)
+
+'Chargen' people can be awarded anything.
+
+
+
+================================================================================
+== Command: xp/award ===========================================================
+
+	xp/award <name>=<amt> for <reason> : give out dem generic goodies
+	xp/award <name>/<xp type>=<amt> for <reason> : give out dem specific goodies
+
+--
+
+	n: name passed
+	t: type passed (optional, default 'normal')
+	a: amt passed
+	r: reason passed
+
+	d: character dbref
+	x: current beats (for type) : _special.beats.<type>
+	b: current week's earned beats : _special.beats_earned.<type>
+	f: final weekly award attribute (for type)
+	e: total weekly earnable (for type)
+
+*/
+
+&c.xp/award [v( d.xpas )]=$^\+?xp/award(.+)$:
+	@assert isstaff( %# )={ 
+		@pemit %#=u( .msg, xp/award, Staff only )
+	}; 
+
+	@assert sql( select 1 )={ 
+		@pemit %#=
+			u( .msg, xp/award, SQL connection is down%; award not processed )
+	}; 
+
+//	@pemit %#=
+	think 
+	strcat( 
+		name (w/type):, %b, setr( n, first( %1, = )), %r, 
+		type:, %b, 
+		setr( t, if( t( setr( t, trim( rest( %qn, / )))), %qt, normal )), %r, 
+		name:, %b, setr( n, trim( first( %qn, / ))), %r, 
+		amt (w/reason):, %b, setr( a, rest( %1, = )), %r, 
+		reason:, %b, setr( r, trim( rest( %qa, %bfor%b ))), %r, 
+
+// converts '4 exp' -> '20', leaves 'beat' or blank as beats
+		value:, %b, setr( a, trim( first( %qa, %bfor%b ))), %r, 
+
+ 		value in beats:, %b, 
+ 		setr( a, 
+ 			switch( rest( %qa ), 
+ 				b*, first( %qa ), 
+ 				x*, mul( first( %qa ), v( d.beat-to-exp )), 
+ 				ex*, mul( first( %qa ), v( d.beat-to-exp )), 
+ 				, trim( %qa ), 
+ 				I don't know what you mean by '%qa'
+ 			)
+ 		), %r, 
+	); 
+
+	@assert hastype( setr( p, pmatch( %qn )), PLAYER )={ 
+		@pemit %#=u( .msg, xp/award, Could not find '%qn' )
+	}; 
+
+	@assert cor( isapproved( %qp ), isapproved( %qp, chargen ))={ 
+		@pemit %#=u( .msg, 
+			xp/award, 
+			'[name( %qp )]' is not approved nor in chargen 
+		)
+	}; 
+
+	@assert isint( %qa )={ 
+		@pemit %#=u( .msg, xp/award, %qa )
+	}; 
+
+	@assert strlen( %qr )={ 
+		@pemit %#=u( .msg, xp/award, Must include reason )
+	}; 
+
+	@break cor( strmatch( %qr, *|* ), strmatch( %qr, *`* ))={ 
+		@pemit %#=u( .msg, xp/award, May not use | or ` in reason )
+	}; 
+
+	@assert t( match( v( d.xp_types ), %qt ))={ 
+		@pemit %#=u( .msg, xp/award, I can't find the '%qt' type )
+	}; 
+
+//	@pemit %#=
+	think 
+	strcat( 
+		experience:, setr( x, get( %qp/_special.beats.%qt )), %r, 
+		beats earned:, 
+			setr( b, 
+				udefault( f.beats_earned.%qt, 
+					get( %qp/_special.beats_earned.%qt ), 
+					%qp 
+				)
+			), %r, 
+		final award attribute:, setr( f, add( %qa, %qb )), %r, 
+		total weekly earnable:, setr( e, u( f.weekly_beats.max_earnable, %qp ))
+	); 
+
+	@assert cor( lte( %qf, %qe ), isapproved( %qp, chargen ))={
+		@pemit %#=u( .msg, 
+			xp/award, 
+			'[name( %qp )]' cannot take that many %qt beats. 
+			They can only take '[floor( sub( %qe, %qb ))]' more beats 
+			for the rest of their week.
+		)
+	}; 
+
+// add to '_special.beats.<type>'
+	@set/quiet %qp=
+		_special.beats.%qt:
+		[add( first( %qx ), %qa )] [rest( %qx )];
+
+// if approved, add to '_special.beats_earned.<type>'
+	@set/quiet %qp=
+		_special.beats_earned.%qt:
+		[if( isapproved( %qp ), %qf )]; 
+
+// add to xp_log (sql)
+
+//	@pemit %#=
+	think 
+	strcat( 
+		tranaction begin, u( f.transaction.begin ), %r, 
+		sanitized reason:, setr( s, u( f.sql.escape, %qr )), %r, 
+		add to xp_log (null is good):, 
+		sql( u( sql.insert.award, %qp, %#, %qt, %qa, %qs )), %r, 
+		tranaction end, u( f.transaction.end )
+	); 
+
+// notify enactor and target
+	@pemit %#=u( .msg, 
+		xp/award, 
+		You have awarded '[name( %qp )]' 
+		[u( .plural, %qa, Beat, Beats )] 
+		[if( not( strmatch( %qt, normal )), %(%qt%)%b )]
+		for '%qr' 
+	); 
+
+	@pemit %qp=u( .msg, 
+		xp/award, 
+		[moniker( %# )] has just awarded you 
+		[u( .plural, %qa, Beat, Beats )] 
+		[if( not( strmatch( %qt, normal )), %(%qt%)%b )]
+		for '%qr' 
+	); 
+
+
+// -- 
+
+@set v( d.xpas )/c.xp/award=regexp
+@set v( d.xpas )/c.xp/award=no_parse
+
+
+
+
+/* 
+################################################################################
+## XP PURCHASING ###############################################################
+
+
+
+================================================================================
+== SETUP =======================================================================
+*/
+
+&d.beat-to-exp [v( d.xpas )]=5
+
+&d.xp_types [v( d.xpas )]=normal player
+&d.log_types [v( d.xpas )]=gain spend freebie auto unspend unaward
+
+&default.special.beats.normal [v( d.dd )]=0 0
+
+
+/*
+--------------------------------------------------------------------------------
+-- Restricted Stats ------------------------------------------------------------
+
+These are stats and stat categories that cannot be purchased by players via 
+'xp/spend' but can be purchased by staff on their behalf.
+
+If a stat has XP value of 'null' or '0', it cannot be purchased by anyone.
+
+* Restricted Types: Stat categories that may not be purchased by players
+* Restricted Stats: Specific traits (full statpath) that etc.
+
+This is set up in such a way that restricted types and stats may be added by any 
+new template package. e.g.:
+	&d.restricted.types.vampire [v( d.xpas )]=discipline
+
+*/
+
+&d.restricted.types [v( d.xpas )]=
+	iter( lattr( %!/d.restricted.types.* ), u( %i0 ))
+&d.restricted.types.default [v( d.xpas )]=bio
+
+&d.restricted.stats [v( d.xpas )]=
+	iter( lattr( %!/d.restricted.stats.* ), u( %i0 ))
+&d.restricted.stats.default [v( d.xpas )]=
+	advantage.integrity merit.status_(*) 
+
+/* 
+Eldritch is also restricting all template-specific merits.
+
+If you'd like to use this, run the code below:
+
+&d.restricted.stats [v( d.xpas )]=
+	cat( 
+		iter( lattr( %!/d.restricted.stats.*, u( %i0 ))), 
+		edit( 
+			filter( 
+				v( d.sfp )/f.hastag?.workhorse, 
+				lattr( v( d.dd )/merit.* ), , , 
+				get( v( d.dd )/bio.template ) 
+			), 
+			%(%), %(*%) 
+		)
+	)
+
+*/
+
+
+/* CHECK XP COST
+
+--------------------------------------------------------------------------------
+-- XP Cost Calculator ----------------------------------------------------------
+
+Brings the formulas and the formula finder together.
+
+0: dbref of sheet (qw)
+1: stat-from (Even if it's not used) (qt)
+2: stat-to (qv)
+3: statpath (qs)
+
+i: instance, if applicable
+s: statpath without instance
+v: main.value.list
+f: formula's attribute name
+
+*/
+
+&f.cost.calculator [v( d.xpas )]=
+	localize( strcat( 
+		setq( i, crumple( before( rest( trim( %3, l, _ ), %( ), %) ))), 
+		setq( s, u( v( d.sfp )/f.statpath-without-instance, trim( %3, l, _ ))), 
+		setq( f, u( f.formula_finder, %qs, %0 )), 
+		setq( v, first( get( v( d.dd )/%qs ), | )), 
+
+		if( t( %qf ), 
+			u( 
+				v( d.xpcd )/%qf, 
+				%0, %1, %2, %qs, %qv, %qi 
+			), 
+
+			%qf
+		)
+	))
+
+
+/*
+--------------------------------------------------------------------------------
+-- XP Formula Finder -----------------------------------------------------------
+
+This code is meant to find out which of the xp.<blah> function to look up for any given statpath. It only finds the name.
+
+>>> XP FORMULAS ARE STORED ON THE XPCD <<<
+
+Below is the ?.?.?[~<template>] finder test.
+
+--
+
+&xp.skill.?.?~[get( %#/_bio.template)] xpcd=1
+
+think 
+	[setq( z, get( %#/_bio.template ))]
+	[setr( t, setr( s, skill.academics.history ))] --> 
+	[setr( n, lnum( words( %qs, . ), 2 ))] --> 
+	[setr( n, iter( %qn, setr( t, replace( %qt, %i0, ?, . ))))] --> 
+	[setr( n, [iter( %qn, %i0~%qz )] %qn )] --> 
+	[first( filter( v( d.xpas )/fil.formula_finder, %qn, , , xp ))]
+
+&xp.skill.?.?~[get( %#/_bio.template)] xpcd=
+
+--
+
+0: dd.statpath_(without instance)
+1: dbref of sheet
+
+t: sheet template
+
+s: temp statpaths for the ? wildcard
+x: temp statpaths for the degrading search
+
+*/
+
+&f.formula_finder [v( d.xpas )]=
+	localize( strcat( 
+
+// set registers
+		setq( t, get( %1/_bio.template )), 
+
+		setq( s, %0 ), 
+		setq( s, 
+			filter( fil.formula_finder, 
+				iter( 
+					lnum( words( %0, . ), 2 ), 
+					setr( s, replace( %qs, %i0, ?, . ))
+				), , ,xp
+			)
+		), 
+		setq( s, 
+			cat( 
+				iter( %qs, %i0~%qt ), 
+				%qs
+			)
+		), 
+		setq( s, filter( fil.formula_finder, %qs, , , xp )), 
+
+		setq( x, %0 ), 
+		setq( x, 
+			filter( fil.formula_finder, 
+				iter( 
+					lnum( words( %0, . ), 1 ), 
+					setr( x, ldelete( %qx, %i0, . ))
+				), , , xp
+			)
+		), 
+		setq( x, 
+			cat( 
+				iter( %qx, %i0~%qt ), 
+				%qx
+			)
+		), 
+		setq( x, filter( fil.formula_finder, %qx, , , xp )), 
+
+// TEST
+		case( 1, 
+
+// xp.<statpath>~<template>
+			t( filter( fil.formula_finder, %0~%qt, , , xp )), 
+			xp.%0~%qt, 
+
+// xp.<statpath>
+			t( filter( fil.formula_finder, %0, , , xp )), 
+			xp.%0, 
+
+// xp.<type>.?[~<template>]
+			t( %qs ), 
+			xp.[first( %qs )], 
+
+// xp.<type>[~<template>], like above but without the ? involved
+			t( %qx ), 
+			xp.[first( %qx )], 
+
+// else: error
+			#-1 No Experience costs found 
+		)
+	))
+
+// --
+
+&fil.formula_finder [v( d.xpas )]=hasattr( v( d.xpcd ), %1.%0 )
+
+// --
+// &xp.skill.?.?~[get( %#/_bio.template)] xpcd=1
+// think u( v( d.xpas )/f.formula_finder, skill.academics.history, %# )
+// &xp.skill.?.?~[get( %#/_bio.template)] xpcd=
+
+
+/*
+--------------------------------------------------------------------------------
+-- XP/COST ---------------------------------------------------------------------
+
+Cost (and therefore Spend) does a cheat I use in other places: Its support 
+functions pull directly from the set registers, instead of passing them. This 
+may cause problems in the future.
+
+0: [<player>/]<stat>[=<value>]
+p: player dbref
+n: stat name
+v: requested value (new)
+
+w: where's the sheet
+s: stat path
+t: trait's value (current, from the sheet)
+c: cost
+
+e: error message, if any
+x: current 'beats' attribute
+
+*/
+
+&f.xp/cost [v( d.xpas )]=
+	strcat( 
+
+// break %0 down to p, n, v
+		setq( p, first( %0, = )), 
+		setq( v, rest( %0, = )), 
+		setq( n, rest( %qp, / )), 
+		setq( p, first( %qp, / )), 
+		if( not( t( %qn )), 
+			strcat( setq( n, %qp ), setq( p, %# )),
+			setq( p, pmatch( %qp ))
+		), 
+
+// get sheet location, statpath
+		setq( w, ulocal( v( d.sfp )/f.find-sheet, %qp )),
+		setq( s, ulocal( v( d.sfp )/f.statpath.workhorse, %qn, %qp )), 
+
+// current value, next value, estimated cost
+		setq( t, ulocal( .value, %qw, %qs )), 
+		if( 
+			not( t( %qv )), 
+			setq( v, ulocal( f.stat.next_rank, %qw, _%qs ))
+		), 
+		setq( c, ulocal( f.cost.calculator, %qw, %qt, %qv, %qs )), 
+
+// current 'xp' attribute
+		setq( x, get( %qw/_special.beats.normal )), 
+
+		case( 1, 
+			t( setr( e, ulocal( validate.player, %qp, %qw, 1 ))), 
+			ulocal( .msg, xp/cost, %qe ), 
+
+			t( setr( e, ulocal( validate.stat, %qw, %qs, %qt, %qv ))), 
+			ulocal( .msg, xp/cost, %qe ), 
+
+			t( setr( e, ulocal( validate.value, %qs, %qt, %qv ))), 
+			ulocal( .msg, xp/cost, %qe ), 
+
+			t( setr( e, ulocal( validate.cost, %qc ))), 
+			ulocal( .msg, xp/cost, %qe ), 
+
+			ulocal( .msg, xp/cost, 
+				ulocal( display.xp/cost, %qp, %qn, %qs, %qv, %qt )
+			)
+		)
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Display: XP/Cost ------------------------------------------------------------
+
+0: player dbref (qp)
+1: stat name as entered (qn)
+2: statpath (qs)
+3: requested value (qv)
+4: trait's current value (qt)
+
+e: error check results
+f: other error check results
+
+*/
+
+&display.xp/cost [v( d.xpas )]=
+	strcat( 
+		The cost, %b,  
+
+		if( not( strmatch( %#, %0 )), 
+			cat( for, name( %0 ), )
+		), 
+
+		case( 
+			u( v( d.sfp )/f.get-class, %2 ), 
+
+			list, 
+			strcat( 
+				to add %3, %b, 
+				%(, u( u( d.dd )/.class_translate_list, %2, %3 ), %), 
+				%b, to, %b, 
+				statname( %0/%1 )
+			), 
+
+			flag, 
+			strcat( 
+				to add, %b', statname( %0/%1 ), '%b, 
+				%(, %3, %)
+			), 
+
+			cat( 
+				to raise, 
+				statname( %0/%1 ), 
+				from, 
+				if( strlen( %4 ), %4, 0 ), 
+				to %3 
+			)
+		), %b, 
+
+		is %qc Experience., 
+
+// .. player spend is on? inform staff as well
+		if( cor( 
+				strmatch( u( pref.player_spend ), off )
+			), 
+			%b%(Player spending is off.%)
+		), 
+
+// .. can't afford?
+		setq( e, u( validate.spend, %qc, %qx )), 
+		setq( f, u( validate.restricted, %qs, %qv )), 
+		case( 1, 
+			cand( %qe, %qf ), %b%(%qe%, %qf.%), 
+			t( %qe ), %b%(%qe.%), 
+			t( %qf ), %b%(%qf.%) 
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- XP Next Stat Rank -----------------------------------------------------------
+
+For our next trick, we'll take <sheet> and <stat> and return the next logical 
+value for that stat. For instance, a skill from 0 to 1, Stunning Looks from 2 
+to 4. It will return #-1 should the person be at the top of the list, as well 
+as other errors.
+
+If a stat whose value set is # can always be raised.
+
+Needs to handle specialties properly. The XP cost calculator does, too.
+
+0: sheet dbref
+1: _sheet.statpath_(with_instance)
+
+d: dd statpath, without instance
+c: stat class
+s: value of stat on sheet
+v: valid values
+n: next rank, if applicable
+*/
+
+&f.stat.next_rank [v( d.xpas )]=
+	localize( strcat( 
+		setq( d, 
+			ulocal( v( d.sfp )/f.statpath-without-instance, trim( %1, l, _ ))
+		), 
+		setq( s, first( udefault( %0/%1, 0 ), . )), 
+		setq( v, first( u( v( d.dd )/%qd ), | )), 
+		setq( n, extract( %qv, inc( match( %qv, %qs, . )), 1, . )), 
+
+		case( 1, 
+			strmatch( %qv, # ), inc( %qs ), 
+			strmatch( %1, _skill.*.* ), inc( %qs ), 
+			not( t( %qn )), #-1 That stat can't go any higher, 
+			gt( %qs, last( %qv, . )),  #-1 Stat Already Above Max Level, 
+			%qn 
+		 )
+	))
+
+
+/*
+================================================================================
+== XP/SPEND ====================================================================
+
+Extended form of 'xp/cost'
+
+	xp/spend [<player>/]<stat>[=<value>[/<xp type>]]
+
+	xp/spend <stat>
+	xp/spend <stat>=<value>
+	xp/spend <stat>=<value>/<xp type>
+	xp/spend <stat>=<value>/<xp type> <amt>/<xp type> <amt>/<xp type> <amt>
+	xp/spend/<xp_type>:<amt>/<xp_type>:<amt> <stat>=<value>
+
+--
+
+0: [<player>/]<stat>[=<value>[/<xp type>]]
+p: player dbref
+n: stat name
+v: requested value (new)
+
+w: where's the sheet
+s: stat path
+t: trait's value (current, from the sheet)
+c: cost
+
+e: error message, if any
+x: current 'beats' attribute
+
+n: statname
+
+*/
+
+&f.xp/spend [v( d.xpas )]=
+	strcat( 
+
+// break %0 down to p, n, v
+		setq( p, first( %0, = )), 
+		setq( v, rest( %0, = )), 
+		setq( n, rest( %qp, / )), 
+		setq( p, first( %qp, / )), 
+		if( not( t( %qn )), 
+			strcat( setq( n, %qp ), setq( p, %# )),
+			setq( p, pmatch( %qp ))
+		), 
+
+// get sheet location, statpath
+		setq( w, ulocal( v( d.sfp )/f.find-sheet, %qp )),
+		setq( s, ulocal( v( d.sfp )/f.statpath.workhorse, %qn, %qp )), 
+
+// current value, next value, estimated cost
+		setq( t, ulocal( .value, %qw, %qs )), 
+		if( 
+			not( t( %qv )), 
+			setq( v, ulocal( f.stat.next_rank, %qw, _%qs ))
+		), 
+		setq( c, ulocal( f.cost.calculator, %qw, %qt, %qv, %qs )), 
+
+// current 'xp' attribute
+		setq( x, get( %qw/_special.beats.normal )), 
+
+		case( 1, 
+
+// If you want to make 'xp/spend' Staff-Only
+			cand( 
+				strmatch( u( pref.player_spend ), off ), 
+				not( isstaff( %# ))
+			), 
+			u( .msg, xp/spend, 
+				Player spending is off. Ask staff to spend your stats. 
+			), 
+
+// normal checks
+			t( setr( e, ulocal( validate.player, %qp, %qw, 1 ))), 
+			u( .msg, xp/spend, %qe ), 
+
+			t( setr( e, ulocal( validate.stat, %qw, %qs, %qt, %qv ))), 
+			u( .msg, xp/spend, %qe ), 
+
+			t( setr( e, ulocal( validate.value, %qs, %qt, %qv ))), 
+			u( .msg, xp/spend, %qe ), 
+
+			t( setr( e, ulocal( validate.cost, %qc ))), 
+			u( .msg, xp/spend, %qe ), 
+
+			t( setr( e, ulocal( validate.spend, %qc, %qx ))), 
+			u( .msg, xp/spend, %qe ), 
+
+			t( setr( e, ulocal( validate.restricted, %qs, %qv ))), 
+			u( .msg, xp/spend, %qe ), 
+
+
+// spend 1: log to sql and check - stop if failed
+			strmatch( 
+				setr( e, 
+					sql( u( sql.insert.spend, 
+						%qp, %#, normal, mul( %qc, v( d.beat-to-exp )), 
+						u( f.sql.escape, %qs ), 
+//						u( f.sql.escape, 
+//							[statname( %qp/%qn )] '%qt' -> '%qv' 
+//						), 
+						@@( null ), 
+						%qv, %qt 
+					))
+				), 
+				#-* 
+			), 
+			u( .msg, xp/spend, SQL connection is down%; spend not processed ), 
+
+// spend 2: run setstat and check - stop if failed
+			strmatch( 
+				setr( e, 
+					ulocal( v( d.sfp )/f.setstat.workhorse, %qw, %qs, %qv )
+				), 
+				#-* 
+			), 
+			u( .msg, xp/spend, Error from Setstat: %qe ), 
+
+			strcat( 
+
+// spend 3: adjust xp and check - process even if failed
+				setq( e, set( %qw, 
+					_special.beats.normal:
+					[first( %qx )] 
+					[sub( rest( %qx ), mul( %qc, v( d.beat-to-exp )))] 
+				)), 
+				if( strmatch( %qe, #-* ), 
+					u( .msg, xp/spend, 
+						Error while setting new xp: %qe %r
+						%(Original XP attribute: %qx%) 
+					)
+				), 
+
+// spend 4: message to enactor
+				setq( n, statname( %qp/%qn )), 
+				u( .msg, xp/spend, 
+					strcat( 
+						if( strmatch( %qp, %# ), 
+							Your, 
+							[name( %qp )]'s
+						), %b, 
+						%qn, %b, 
+						has been set, 
+						case( u( v( d.sfp )/f.get-class, %qs ), 
+							list, , 
+							%bto '%qv' 
+						), %b, 
+						for %qc Experience.
+					)
+				), 
+			)
+		)
+	)
+
+
+
+/*
+================================================================================
+== XP/FREEBIE ==================================================================
+
+	xp/freebie <player>/<stat>[=<value>] for <reason>
+
+This is 'xp/spend' without spending any xp.
+
+This is important, for now, for some spends that grant other items, 
+such as Professional Training.
+
+&testreg me=(.+)/(.+?)(=(.+))? for (.+)
+think regmatchi( <player>/<stat>=<value> for <reason>, v( testreg ), -1 p s -1 v r 5 ) -- [iter( p s v r, r( %i0 ), , %b--%b )]
+
+think regmatchi( <player>/<stat> for <reason>, v( testreg ), -1 p n -1 v r ) -- [iter( p n v r, r( %i0 ), , %b--%b )]
+
+--
+
+NOTE: 
+
+We added transaction control in here to try and solve a 'database not available' 
+error when you throw multiple spends (or in this case freebies) at the same 
+time. It didn't help. 
+
+I'm leaving it in the 'freebie' code in case it resolves a different issue later 
+on.
+
+*/
+
+&d.regex.freebie [v( d.xpas )]=(.+)/(.+?)(=(.+))? for (.+)
+
+// -- 
+
+&f.xp/freebie [v( d.xpas )]=
+	strcat( 
+
+// break %0 down to <player>, <name of stat>, [<value>], <reason>
+		setq( 0, regmatchi( %0, v( d.regex.freebie ), -1 p n -1 v r )), 
+		setq( p, pmatch( %qp )), 
+
+// get sheet location, statpath
+		setq( w, ulocal( v( d.sfp )/f.find-sheet, %qp )),
+		setq( s, ulocal( v( d.sfp )/f.statpath.workhorse, %qn, %qp )), 
+
+// current value, next value
+		setq( t, ulocal( .value, %qw, %qs )), 
+		if( not( %qv ), 
+			setq( v, ulocal( f.stat.next_rank, %qw, _%qs ))
+		), 
+
+		case( 1, 
+			not( isstaff( %# )), 
+			u( .msg, xp/freebie, Staff only ), 
+
+// normal checks
+			not( strlen( %qr )), 
+			u( .msg, xp/freebie, Must provide a reason this is free ), 
+
+			t( setr( e, ulocal( validate.player, %qp, %qw, 1 ))), 
+			u( .msg, xp/freebie, %qe ), 
+
+			t( setr( e, ulocal( validate.stat, %qw, %qs, %qt, %qv ))), 
+			u( .msg, xp/freebie, %qe ), 
+
+			t( setr( e, ulocal( validate.value, %qs, %qt, %qv ))), 
+			u( .msg, xp/freebie, %qe ), 
+
+			t( setr( e, ulocal( validate.restricted, %qs, %qv ))), 
+			u( .msg, xp/freebie, %qe ), 
+
+// tranaction begin
+
+			strmatch( v( d.transaction.begin ), *#-* ), 
+			u( .msg, xp/freebie, 
+				Transaction begin failed%; freebie not processed 
+			), 
+
+// spend 1: log to sql and check - stop if failed
+
+			strmatch( 
+				setr( e, 
+					sql( u( sql.insert.spend, 
+						%qp, %#, normal, 0, u( f.sql.escape, %qs ), 
+//						u( f.sql.escape, 
+//							[statname( %qp/%qn )] '%qt' -> '%qv' 
+//							for reason '%qr' 
+//						), 
+						%qr, 
+						%qv, %qt 
+					))
+				), 
+				#-* 
+			), 
+			u( .msg, xp/freebie, 
+				Unable to connect to database%; freebie not processed
+				[null( v( f.transaction.end ))] 
+			), 
+
+// spend 2: run setstat and check - stop if failed
+			strmatch( 
+				setr( e, 
+					ulocal( v( d.sfp )/f.setstat.workhorse, %qw, %qs, %qv )
+				), 
+				#-* 
+			), 
+			u( .msg, xp/freebie, Error from Setstat: %qe 
+				[null( v( f.transaction.end ))] 
+			), 
+
+			strcat( 
+
+// spend 3: ignored; we're not spending xp
+
+// spend 4: message to enactor
+				setq( n, statname( %qp/%qn )), 
+				u( .msg, xp/freebie, 
+					strcat( 
+						if( strmatch( %qp, %# ), 
+							Your, 
+							[name( %qp )]'s
+						), %b, 
+						%qn, %b, 
+						has been set to '%qv' for Free 
+						because '%qr'
+					)
+				), 
+				null( v( f.transaction.end ))
+			)
+		)
+	)
+
+
+
+
+/*
+================================================================================
+== XP/CONVERT ==================================================================
+
+An unusual fringe case. Rather than creating a system to dump Player Experience 
+on an object shared by alts, each character object stores their own Player 
+Experience and these beats can be converted into spendable Normal Experience 
+on an alt object.
+
+Requires: '9e - Alt Registration.txt'.
+
+	xp/convert <number> from <name>
+	xp/convert all from <name>
+	xp/convert <number> beats|xp|experience from <name>
+
+*/
+
+@fo me=&d.ars [v( d.xpas )]=[search( name=Alt Registration <ars> )]
+
+// -- 
+
+/*
+	a: amt (in beats)
+	t: type (beats|experience|xp)
+
+	n: target name
+	d: target dbref
+	o: target objid
+	x: target's _special.beats.player
+
+	l: enactor's _special.beats.normal
+
+	r: 'reason' for xp_log
+*/
+
+&c.xp/convert [v( d.xpas )]=$^\+?xp/convert (.+) from (.+)$:
+	@assert sql( select 1 )={ 
+		@pemit %#=
+			u( .msg, xp/convert, 
+				SQL connection is down%; conversion not processed 
+			)
+	}; 
+
+	think strcat( 
+		** initial registers **, %r, 
+		-- target --, %r, 
+		name:, %b, setr( n, trim( %2 )), %r, 
+		dbref:, %b, setr( d, if( strmatch( %qn, me ), %#, pmatch( %qn ))), %r, 
+		objid:, %b, setr( o, u( .objid, %qd )), %r, 
+		player xp:, %b, setr( x, get( %qd/_special.beats.player )), %r, 
+		-- enactor --, %r, 
+		normal xp:, %b, setr( l, get( %#/_special.beats.normal )), %r, 
+		-- amt/type --, %r, 
+		type:, %b, setr( t, grab( beats|experience|xp, [rest( %1 )]*, | )), %r, 
+		amt if 'all':, %b, 
+			setr( a, 
+				case( setr( a, first( %1 )),
+					 all, ladd( %qx ), 
+					 %qa 
+				)
+			)
+		amt in beats:, %b, 
+			setr( a, 
+				case( %qt, 
+					beats, %qa, 
+					experience, mul( %qa, v( d.beat-to-exp )), 
+					xp, mul( %qa, v( d.beat-to-exp )), 
+					0 
+				)
+			), 
+		%r, 
+	); 
+
+	@assert t( %qo )={ 
+		@pemit %#=u( .msg, xp/convert, Character '%qn' not found. ) 
+	}; 
+
+	@assert strlen( %qt )={ 
+		@pemit %#=u( .msg, xp/convert, 
+			If you're going to enter a type%, it must be 'beats'%, 
+			'experience'%, or 'xp'. Leave blank for 'beats'. 
+		) 
+	}; 
+
+	@assert cand( isint( %qa ), gt( %qa, 0 ))={ 
+		@pemit %#=u( .msg, xp/convert, 
+			Amount to transfer must be a non-zero integer 
+		) 
+	}; 
+
+	@assert u( v( d.ars )/f.has-alt, %#, %qo )={ 
+		@pemit %#=u( .msg, xp/convert, 
+			'[name( %qd )]' is not an alt of yours. 
+			If [subj( %qd )] should be%, see: +help alts 
+		) 
+	}; 
+
+	@assert gte( ladd( %qx ), %qa )={ 
+		@pemit %#=u( .msg, xp/convert, 
+			[name( %qd )] doesn't have that much Player Experience 
+		)
+	}; 
+
+// a little explanation here:
+// for some reason, this is the only way I can throw two INSERT statements
+// from the game at the same time. that is, if they are not at the same time.
+// I don't know why. it's very frustrating.
+
+	@trigger %!/trig.xp/convert.spend=%#, %qd, %qa; 
+	@wait 1=@trigger %!/trig.xp/convert.gain=%#, %qd, %qa; 
+
+	@pemit %#=u( .msg, xp/convert, 
+		cat( 
+			Converted, 
+			u( .plural, %qa, beat, beats ), 
+			from, 
+			if( strmatch( %qd, %# ), your, [name( %qd )]'s ), 
+			Player Experience to your Normal Experience 
+		)
+	); 
+
+
+@set v( d.xpas )/c.xp/convert=regexp
+
+
+/*
+--------------------------------------------------------------------------------
+-- Trigger: XP/CONVERT's spend player & gain normal beats ----------------------
+
+This is pretty ugly. I apologize.
+
+0: enactor dbref, %#
+1: target dbref, %qd
+2: amt, %qa
+
+p: target's player beats attribute
+n: enactor's normal beats attribute
+r: reason built and sent to sql log
+
+d: database 'set()' error
+s: sql error
+
+*/
+
+&trig.xp/convert.spend [v( d.xpas )]=
+	think strcat( 
+		## xp/convert: spend ##, %r, 
+		u( f.transaction.begin ), 
+		** set registers **, %r, 
+		target xp:, %b, setr( p, get( %1/_special.beats.player )), %r, 
+		reason:, %b, 
+			setr( r, Converted Player Experience to [name( %0 )] (%0) ), %r, 
+		sanitized reason:, %b, setr( r, u( f.sql.escape, %qr )), %r, 
+		** manipulate beats attributes **, %r, 
+		spend target's player beats:, %b, 
+			setr( d, 
+				set( %1, 
+					_special.beats.player:
+					[first( %qp )] [sub( rest( %qp ), %2 )] 
+				)
+			), %r, 
+		** enter SQL log: spend (target, player) **, %r, 
+		add spend (player) to xp_log:, %b, 
+			setr( s, 
+				sql( u( sql.xp_log.add, %1, %0, player, %2, %qr, spend ))
+			), 
+		%r, 
+		u( f.transaction.end ), 
+	); 
+
+	@if strlen( %qd%qs )={ 
+		@pemit %0=u( .msg, xp/convert, 
+			strcat( 
+				Spending from [name( %1 )] ran into some problems:, 
+				if( strlen( %qd ), 
+					%r* [name( %1 )]'s Player Beats was not set correctly! 
+					It should be: [first( %qp )] [sub( rest( %qp ), %2 )] 
+				), 
+				if( strlen( %qs ), 
+					%r* The xp/log for [name( %1 )]'s Player Beats was not set 
+				)
+			)
+		)
+	}; 
+
+
+// --
+
+&trig.xp/convert.gain [v( d.xpas )]=
+	think strcat( 
+		## xp/convert: gain ##, %r, 
+		** set registers **, %r, 
+		enactor xp:, %b, setr( n, get( %0/_special.beats.normal )), %r, 
+		reason:, %b, 
+			setr( r, Converted Player Experience from [name( %1 )] (%1) ), 
+			%r, 
+		sanitized reason:, %b, setr( r, u( f.sql.escape, %qr )), %r, 
+		** manipulate beats attributes **, %r, 
+		gain enactor's normal beats:, %b, 
+			setr( d, 
+				set( %0, 	
+					_special.beats.normal:
+					[add( first( %qn ), %2 )] [rest( %qn )] 
+				)
+			), %r, 
+
+		** enter SQL log: award (enactor, normal) **, %r, 
+		add gain (normal) to xp_log:, %b, 
+			setr( s, 
+				sql( u( sql.xp_log.add, %0, %0, normal, %2, %qr, gain ))
+			), 
+		%r, 
+	); 
+
+	@if strlen( %qd%qs )={ 
+		@pemit %0=u( .msg, xp/convert, 
+			strcat( 
+				Gaining to [name( %0 )] ran into some problems:, 
+				if( strlen( %qd ), 
+					%r* [name( %0 )]'s Normal Beats was not set correctly! 
+					It should be: [add( first( %qn ), %2 )] [rest( %qn )] 
+				), 
+				if( strlen( %qs ), 
+					%r* The xp/log for [name( %0 )]'s Normal Beats was not set 
+				)
+			)
+		)
+	}; 
+
+
+
+/*
+================================================================================
+== VALIDATIONS =================================================================
+
+
+--------------------------------------------------------------------------------
+-- Validate: Player ------------------------------------------------------------
+
+Everything there is to validate about a player. Sheet, approved, staff status, 
+etc. Staff can check or set non-approved players.
+
+0: character dbref (qp)
+1: sheet dbref (qw)
+2: 1 if we're just checking; allow unapproved players to check
+
+*/
+
+&validate.player [v( d.xpas )]=
+	case( 0, 
+		cor( isstaff( %# ), match( %0, %# )), 
+		Yourself only, 
+
+		t( %1 ), 
+		Could not find a sheet, 
+
+		cor( %2, isapproved( %0, approved ), isstaff( %# )), 
+		Must be approved for play to spend Experience 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Validate: Stat --------------------------------------------------------------
+
+Uses 'f.statcheck' for almost all of it.
+
+0: sheet dbref (qw)
+1: statpath (qs)
+2: trait's current sheet value (qt)
+3: requested value (new) (qv)
+
+v: chargen's stat validation
+
+*/
+
+&validate.stat [v( d.xpas )]=
+	localize( strcat( 
+
+		setq( v, 
+			u( v( d.cg )/f.statcheck, 
+				%0, _%1, 
+				case( 
+					u( v( d.sfp )/f.get-class, %1 ), 
+					numeric, sub( %3, %2 ), 
+					%3 
+				)
+			)
+		), 
+
+		case( 0, 
+// .. previous check passed error instead of stat
+			t( %1 ), 
+			Stat not found, 
+
+// .. previous check passed error instead of new value
+			not( strmatch( %3, #-* )), 
+			capstr( lcstr( rest( %3 ))), 
+
+// .. value check failed, unless the value is 'null' which is always ok
+			cor( t( first( %qv, . )), strmatch( %3, )), 
+			capstr( lcstr( rest( first( %qv, . )))), 
+
+// .. chargen check failed
+			t( elements( %qv, 2, . )), 
+			Can't set the stat outside character generation, 
+
+// .. template check failed
+			t( elements( %qv, 3, . )), 
+			Stat cannot be taken by your template, 
+
+// .. prerequisites check failed
+			t( elements( %qv, 4, . )), 
+			rest( elements( %qv, 4, . ))
+		)
+	))
+
+
+/*
+--------------------------------------------------------------------------------
+-- Validate: Cost --------------------------------------------------------------
+
+0: calculated cost (qc)
+
+*/
+
+&validate.cost [v( d.xpas )]=
+	case( 1, 
+		cand( isstaff( %# ), not( t( %0 ))), 
+		This stat has no Experience cost and must be set using 'stat/set', 
+
+		not( %0 ), 
+		This stat has no Experience cost and must be set by a staffer 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Validate: Value -------------------------------------------------------------
+
+
+0: full.statpath_(with_instance), %qs
+1: trait's value (current, from sheet), %qt
+2: requested value (new), %qv
+
+c: stat class
+returns: <null> if ok, otherwise error message
+
+*/
+
+&validate.value [v( d.xpas )]=
+	localize( strcat( 
+// .. get class
+		setq( c, ulocal( v( d.sfp )/f.get-class, %0 )), 
+
+// .. remove instance if it's there
+		setq( i, 
+			if( regmatch( %0, %(.*%)%\(%(.*%)%\), z a b ), 
+				[trim( %qa, b, _ )]_%(%), 
+				%0 
+			)
+		), 
+
+// .. pull valid values
+		setq( v, lcstr( first( get( v( d.dd )/%qi ), | ))), 
+
+// .. check if value passed is value based on data dictionary
+// .. (this really should be done with stat's check)
+		case( %qc, 
+			list, 
+			case( 0, 
+				t( %2 ), 
+				capstr( lcstr( rest( %2 ))), 
+
+				eq( 
+					words( setinter( %qv, lcstr( %2 ), . ), . ), 
+					words( %2, . )
+				), 
+				Value not in the list of values I can set, 
+
+				not( match( %1, %2, . )), 
+				You already have the stat at that level
+			), 
+
+			numeric, 
+			case( 0, 
+				t( %2 ), 
+				capstr( lcstr( rest( %2 ))), 
+
+				isint( %2 ), 
+				Raise must be numeric, 
+
+				gt( %2, %1 ), 
+				Stat must be raised
+			), 
+
+			string, 
+			Cannot raise string stats, 
+
+			flag, 
+			@@( all flags should be okay ),
+
+			Uncaptured stat class type in 'validate.value' 
+
+		)
+	))
+
+/*
+--------------------------------------------------------------------------------
+-- Validate: Spend -------------------------------------------------------------
+
+After we've validated everything else, can the person afford it?
+
+0: cost (qc), in experience
+1: experience attribute (qx), in beats
+2: xp type (optional)
+
+*/
+
+&validate.spend [v( d.xpas )]=
+	if( 
+		gt( %0, fdiv( ladd( %1 ), v( d.beat-to-exp ))), 
+		Not enough
+		[if( not( cor( strmatch( %2, ), strmatch( %2, normal ))), 
+			%bcapstr( %2 )
+		)] 
+		Experience 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Validate: Restricted --------------------------------------------------------
+
+Returns error if stat is "restricted", meaning that only staff may 
+buy it for them.
+
+ELDRITCH HOUSE-RULE: Numeric traits of 4+ are also restricted
+
+0: stat path (qs)
+1: requested value (qv)
+
+*/
+
+&validate.restricted [v( d.xpas )]=
+	localize(
+		case( 1, 
+			isstaff( %# ), @@( ignore entirely ), 
+
+			lor( iter( u( d.restricted.types ), match( first( %0, . ), %i0 ))), 
+			Stats of this type must be purchased for you by a staffer, 
+
+			lor( iter( u( d.restricted.stats ), match( %0, %i0 ))), 
+			This stat must be purchased for you by a staffer, 
+
+/* eldritch house rule; uncomment if you'd like this
+			cand( 
+				strmatch( u( v( d.sfp )/f.get-class, %0 ), numeric ), 
+				gte( %1, 4 )
+			), 
+			Stats 4+ must be set by staff 
+*/
+		)
+	)
+
+
+
+
+/*
+################################################################################
+## AUTO XP GAINING #############################################################
+
+
+&d.one-day [v( d.xpas )]=86400
+&d.one-week [v( d.xpas )]=604800
+&d.beats.max_weekly [v( d.xpas )]=20
+&d.period.weeks [v( d.xpas )]=26
+
+
+/*
+================================================================================
+== AUTO ========================================================================
+*/
+
+
+// Week's End calculation: 
+// Every 7th day after most recent Approval, reset the 'earned beats this week'.
+
+&f.at_weeks_end? [v( d.xpas )]=eq( u( f.day_in_approval_week, %0 ), 0 )
+
+&f.day_in_approval_week [v( d.xpas )]=
+	localize( strcat( 
+		setq( a, grab( revwords( get( %0/_approval.log ), | ), approved:*, | )), 
+		setq( a, elements( %qa, 2, : )), 
+		mod( idiv( sub( secs( ), %qa ), v( d.one-day )), 7 )
+	))
+
+
+
+// which << 26-week >> period is the character's approval time in? 
+// start at 1
+
+&f.current_period [v( d.xpas )]=
+	ceil( fdiv( 
+		u( [v( d.cg )]/f.total_secs_approved, %0 ), 
+		mul( v( d.one-week ), inc( v( d.period.weeks )))
+	))
+
+
+
+&f.auto.beats.weekly [v( d.xpas )]=
+	case( u( f.current_period, %0 ), 
+		0, 0, 
+		1, 10, 
+		2, 5, 
+		3, 3, 
+		1 
+	)
+	
+
+&f.auto.beats.daily [v( d.xpas )]=
+	fdiv( u( f.auto.beats.weekly, %0 ), 7 )
+
+
+// max beats per week = 20 - auto beats per week
+&f.weekly_beats.max_earnable [v( d.xpas )]=
+	sub( v( d.beats.max_weekly ), u( f.auto.beats.weekly, %0 ))
+
+
+// Yup! That works! That's the setup stuff. Now we can calculate 
+// everything we need to for xp awards, et al.
+
+
+
+
+&f.approved_characters [v( d.xpas )]=
+	search( eplayer=cand( isapproved( ## ),  not( isstaff( ## ))))
+
+
+	
+
+@daily [v( d.xpas )]=
+	@trigger %!/trig.daily.xp; 
+	@trigger %!/trig.weekly.reset; 
+
+
+
+/* 
+================================================================================
+== AUTO: ADD DAILY XP ==========================================================
+
+Go through everyone and do the thing.
+
+x: xp to give <character> today
+c: current normal xp attribute for <character>
+
+*/
+
+&trig.daily.xp [v( d.xpas )]=
+	@eval 
+	strcat( 
+		list( 1, sql( u( f.transaction.begin ))), 
+		list( 
+			search( eplayer=cand( isapproved( ## ), not( isstaff( ## )))), 
+			strcat( 
+				setq( x, u( f.auto.beats.daily, %i0 )), 
+				setq( c, get( %i0/_special.beats.normal )), 
+				set( %i0, 
+					_special.beats.normal:
+					[add( first( %qc ), %qx )] [rest( %qc )] 
+				), 
+				sql( u( sql.insert.daily-auto, %i0, %!, normal, %qx ))
+			)
+		), 
+		list( 1, sql( u( f.transaction.end )))
+	)
+
+
+
+// --
+
+&trig.weekly.reset [v( d.xpas )]=
+	think setr( m, header( xpas: clear weekly beat limits )); 
+
+	think setr( n, divider( normal beats ));
+	think setr( o, 
+		iter( 
+			search( eplayer=
+				cand( 
+					isapproved( ## ), 
+					hasattr( ##, _special.beats_earned.normal ), 
+					u( f.at_weeks_end?, ## )
+				)
+			), 
+			cat( 
+				name( %i0 ), %i0, ::, 
+				set( %i0, _special.beats_earned.normal: ), ::, 
+				if( strmatch( get( %i0/_special.beats_earned.normal ), ), 
+					ansi( hg, OK! ), 
+					ansi( n, error )
+				)
+			), , %r 
+		)
+	); 
+
+	think setr( p, divider( player beats )); 
+	think setr( q, 
+		iter( 
+			search( eplayer=
+				cand( 
+					isapproved( ## ), 
+					hasattr( ##, _special.beats_earned.player ), 
+					u( f.at_weeks_end?, ## )
+				)
+			), 
+			cat( 
+				name( %i0 ), %i0, ::, 
+				set( %i0, _special.beats_earned.player: ), ::, 
+				if( strmatch( get( %i0/_special.beats_earned.player ), ), 
+					ansi( hg, OK! ), 
+					ansi( n, error )
+				)
+			), , %r 
+		)
+	); 
+
+	think setr( r, footer()); 
+
+// .. debug ..
+// 	@mail/quick thenomain/Daily Beats Reset=iter( m n o p q r, r( %i0 ), , %r ); 
+
+// --
+
+&f.beats_earned.player [v( d.xpas )]=
+	ladd( 
+		iter( alts( %0 ), 
+			get( %i0/_special.beats_earned.player )
+		)
+	)
+
+&f.beats_earned.normal [v( d.xpas )]=
+	get( %0/_special.beats_earned.normal )
+
+
+/*
+================================================================================
+== NOTES AND OTHER RANDOM BITS =================================================
+
+Don't trust any code below this line.
+
+Beat Types:
+	Normal (default, general xp)
+	Player (can be shared among alts)
+	
+	Cover (for Demon, one per cover)
+
+	&_special.beats.normal <player object>=<total> -<spent>
+
+For each 6 months approved, excluding periods of freezing...
+    Period   Beats/Week    Beats/Day
+	   1         10         1.4285714285714286
+	   2         5          0.7142857142857143
+	   3         3          0.42857142857142855
+	   4+        1          0.14285714285714285
+
+Limitations of earning: 
+	20 Beats/week (normal)
+	10 Beats/week (player)
+
+
+--
+
+Total time active:
+	u( <cg>/f.total_secs_approved, <character dbref> )
+--
+
+&d.one-day xxx=86400
+
+--
+
+// Week's End calculation: 
+// Every 7th day after most recent Approval, reset the 'earned beats this week'.
+
+&f.at_weeks_end? xxx=
+	localize( strcat( 
+		setq( a, grab( revwords( get( %0/_approval.log ), | ), approved:*, | )), 
+		setq( a, elements( %qa, 2, : )), 
+
+		eq( 
+			mod( idiv( sub( secs( ), %qa ), v( d.one-day )), 7 ), 
+			0 
+		)
+	))
+
+--
+
+if 'u( f.at_weeks_end?, %0 )', reset the 'xp earned this week' attribute
+
+--
+
+&d.beats.max_weekly xxx=40
+
+--
+
+// how many weeks in a 'period' (nearest number to 6 months)
+&d.period.weeks xxx=26
+
+--
+
+// which << 26-week >> period is the character's approval time in? 
+// start a 1
+
+&f.current_period xxx=
+	...
+
+--
+
+&f.weekly_beats.auto xxx=
+	case( u( f.current_period, %0 ), 
+		0, 0, 
+		1, 10, 
+		2, 5, 
+		3, 3, 
+		1 
+	)
+	
+
+--
+
+// max beats per week = 40 - auto beats per week
+&f.weekly_beats.max_earned xxx=
+	sub( v( d.beats.max_weekly ), u( f.weekly_beats.auto, %0 ))
+
+--
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+--------------------------------------------------------------------------------
+-- SQL Select: Get all spends for '<statpath>' ---------------------------------
+
+All timestamps & xp spent on '<statpath>'; ignore freebies
+
+0: target dbref
+1: statpath (with instance)
+2: trait value (list only)
+
+*/
+
+&sql.select.spends-stat [v( d.xpas )]=
+	SELECT log_time, reason, xp_type, xp_amt 
+	FROM xp_log 
+	WHERE 
+		target_objid='[u( .objid, %0 )]' 
+		AND trait_category='[first( %1, . )]' 
+		AND trait_name='[rest( %1, . )]' 
+		[if( 
+			strmatch( ulocal( [u( d.sfp )]/f.get-class, %1 ), list ), 
+			AND trait_value='%2' 
+		)] 
+		AND (action='spend' OR action='freebie') 
+	ORDER BY log_time ASC
+
+// -- test --
+
+think sql( 
+		u( v( d.xpas )/sql.select.spends-stat, 
+			pmatch( hemi ), 
+			advantage.primal_urge 
+		), 
+		%r, | 
+	)
+
+
+
+
+// -- test --
+
+train :: [u( v( d.xpas )/f.xp/cost, *thenomain/strength )]
+think u( v( d.xpas )/f.xp/cost, %#/strength=1 )
+

@@ -1,0 +1,394 @@
+/*
+cg/approve extras for chicago: city of shadows
+
+
+================================================================================
+== SYSTEMS =====================================================================
+
+Each 'system/<sys_name>' is run, passed the following arguments:
+
+0: enactor dbref
+1: target dbref
+2: switch name from 'cg/<switch>
+3: target's template
+
+
+--------------------------------------------------------------------------------
+-- System: Aether Factions -----------------------------------------------------
+
+On unapprovals, remove from all factions.
+
+On approval, do nothing; leave that up to the template triggers.
+*/
+
+@fo me=&d.afo [v( d.cg )]=[search( name=Aether Faction Object <afo> )]
+
+// --
+
+&trig.approval.system/factions [v( d.cg )]=
+	@switch/first 1=
+// .. approve: add to factions: handle in 'template/<template_name>'
+		t( match( approve npc storyteller, %2 )), 
+		think 
+		<add things - should that depend on template should go there>, 
+	
+// .. unapprove: remove from all factions
+		t( match( unapprove freeze kill chargen, %2 )), 
+		{ 
+			@dolist/delim | [get( %1/_faction-member )]=
+				{ 
+					@wipe [rest( ##, ! )]/*-%1; 
+					@wipe [rest( ##, ! )]/*-%1-*; 
+				}; 
+			&_faction-member %1=
+		}, 
+
+// .. else: do nothing
+		think <trig factions: do nothing>; 
+
+
+// @fo me=@trig [v( d.cg )]/trig.approval.system/factions=%#, %#, unapprove
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- System: Starting XP ---------------------------------------------------------
+
+Only give people starting XP if they don't already have any.
+Do not do anything on unapprove.
+
+*/
+
+&trig.approval.system/starting_xp [v( d.cg )]=
+	@switch/first 1=
+// .. approve: give 50 beats only if they have 0.
+		t( match( approve, %2 )), { 
+			@switch/first 1=
+				not( hasattr( %1, _special.beats.normal )), 
+				{ 
+					@fo %0=+xp/award %1=50 for CG XP;
+				}, { 
+					@pemit %0=u( .msg, cg/approve, 
+						Target had XP already\; 
+						didn't add any more
+					)
+				}
+		}, 
+	
+// .. everything else: do nothing
+		{
+			@pemit %0=<trig starting xp: do nothing - switch: %2 >; 
+		}; 
+
+
+// @trig [v( d.cg )]/trig.approval.system/starting_xp=#197, #1573, approve
+
+/*
+--------------------------------------------------------------------------------
+-- System: Starting Coins ------------------------------------------------------
+
+2 Starting Coins (Favor)
+
+*/
+
+@fo me=&d.fc [v( d.cg )]=search( name=Favor Coins <fc> )
+
+&trig.approval.system/starting_coins [v( d.cg )]=
+	@switch/first 1=
+// .. approve: give 2 coins if they have 0 & are !human
+		t( match( approve, %2 )), 
+		{ 
+// .. .. no log: do something
+			@ifelse not( lattr( %1/_favor.log.* ))=
+			{ 
+// .. .. .. and is !Human: Give coins. Else, leave it up to the approver.
+				@ifelse 
+					not( strmatch( 
+						get( [u( v( d.sfp )/f.find-sheet, %1 )]/_bio.template ), 
+						Human 
+					))=
+				{
+					@pemit %0=
+						u( v( d.fc )/f.favor/give.staff, 
+							%0, 
+							%1, 
+							2, 
+							Free Favor Coins from Chargen. Welcome aboard!
+						)
+				}, 
+				{ 
+					@pemit %0=u( .msg, cg/approve, 
+						Target is Human and may get 2 Favor Coins. 
+						That's up to you. 
+					)
+				}
+			}
+		}, 
+
+// .. everything else: do nothing
+		think <trig starting xp: do nothing>; 
+
+
+
+
+/*
+================================================================================
+== TEMPLATES ===================================================================
+
+One 'template/<target_template>' is run, passed the following arguments:
+
+0: enactor dbref
+1: target dbref
+2: switch name from 'cg/<switch>
+
+
+--------------------------------------------------------------------------------
+-- Template: Human -------------------------------------------------------------
+*/
+
+&trig.approval.template/human [v( d.cg )]=
+	@switch/first 1=
+// .. approve: set reality levels & add to factions
+		t( match( approve npc storyteller, %2 )), 
+		{
+			@dolist/delim | 
+				Mortal/+=
+			{ 
+				@pemit %0=
+					[ulocal( v( d.afo )/c.faction/add, 
+						##=[name( %1 )] 
+					)];
+			}; 
+		}, 
+		
+// .. unapprove: do nothing
+		t( match( unapprove freeze kill chargen, %2 )), 
+		{ 
+			think <trig unapprove: remove all factions on system/faction>; 
+		}, 
+
+// .. else: do nothing
+		@@ do nothing; 
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Template: Changeling --------------------------------------------------------
+*/
+
+&trig.approval.template/changeling [v( d.cg )]=
+	@switch/first 1=
+// .. approve: set reality levels & add to factions
+		t( match( approve npc storyteller, %2 )), 
+		{
+			@rxlevel %1=Fae; 
+			@txlevel %1=Fae; 
+			@dolist/delim | 
+				Changeling|
+				[get( [u( v( d.sfp )/f.find-sheet, %1 )]/_bio.court )]=
+			{ 
+				@pemit %0=
+					[ulocal( v( d.afo )/c.faction/add, 
+						##=[name( %1 )] 
+					)];
+			}; 
+		}, 
+		
+// .. unapprove: unset reality levels - but be careful of someone with 'all'.
+		t( match( unapprove freeze kill chargen, %2 )), 
+		{ 
+			@rxlevel %1=!Fae [setdiff( rxlevel( %1 ), Fae )]; 
+			@txlevel %1=!Fae [setdiff( txlevel( %1 ), Fae )]; 
+			@@ remove all factions on system/faction; 
+		}, 
+
+// .. else: do nothing
+		think <trig changeling: do nothing>; 
+
+
+// @fo me=@trig [v( d.cg )]/trig.approval.template/changeling=%#, %#, unapprove
+
+
+/*
+--------------------------------------------------------------------------------
+-- Template: Fae-Touched -------------------------------------------------------
+*/
+
+&trig.approval.template/fae-touched [v( d.cg )]=
+	@switch/first 1=
+// .. approve: set reality levels & add to factions
+		t( match( approve npc storyteller, %2 )), 
+		{
+			@rxlevel %1=Fae; 
+			@txlevel %1=Fae; 
+			@dolist/delim | 
+				Fae-Touched=
+			{ 
+				@pemit %0=
+					[ulocal( v( d.afo )/c.faction/add, 
+						##=[name( %1 )] 
+					)];
+			}; 
+		}, 
+		
+// .. unapprove: unset reality levels - but be careful of someone with 'all'.
+		t( match( unapprove freeze kill chargen, %2 )), 
+		{ 
+			@rxlevel %1=!Fae [setdiff( rxlevel( %1 ), Fae )]; 
+			@txlevel %1=!Fae [setdiff( txlevel( %1 ), Fae )]; 
+			@@ remove all factions on system/faction>; 
+		}, 
+
+// .. else: do nothing
+		@@ do nothing; 
+
+
+/*
+--------------------------------------------------------------------------------
+-- Template: Werewolf ----------------------------------------------------------
+*/
+
+&trig.approval.template/werewolf [v( d.cg )]=
+	@switch/first 1=
+// .. approve: set reality levels & add to factions
+		t( match( approve npc storyteller, %2 )), 
+		{
+			@dolist/delim | 
+				Werewolf|
+				[get( [u( v( d.sfp )/f.find-sheet, %1 )]/_bio.tribe )]|
+				[get( [u( v( d.sfp )/f.find-sheet, %1 )]/_bio.auspice )]=
+			{ 
+				@pemit %0=
+					[ulocal( v( d.afo )/c.faction/add, 
+						##=[name( %1 )] 
+					)];
+			}; 
+		}, 
+		
+// .. unapprove: do nothing
+		t( match( unapprove freeze kill chargen, %2 )), 
+		{ 
+			think <trig unapprove: remove all factions on system/faction>; 
+		}, 
+
+// .. else: do nothing
+		@@ do nothing; 
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Template: Wolf-Blooded ------------------------------------------------------
+*/
+
+&trig.approval.template/wolf-blooded [v( d.cg )]=
+	@switch/first 1=
+// .. approve: set reality levels & add to factions
+		t( match( approve npc storyteller, %2 )), 
+		{
+			@dolist/delim | 
+				Wolf-Blooded=
+			{ 
+				@pemit %0=
+					[ulocal( v( d.afo )/c.faction/add, 
+						##=[name( %1 )] 
+					)];
+			}; 
+		}, 
+		
+// .. unapprove: do nothing
+		t( match( unapprove freeze kill chargen, %2 )), 
+		{ 
+			think <trig unapprove: remove all factions on system/faction>; 
+		}, 
+
+// .. else: do nothing
+		@@ do nothing; 
+
+
+/*
+--------------------------------------------------------------------------------
+-- Template: Vampire  ----------------------------------------------------------
+*/
+
+&trig.approval.template/vampire [v( d.cg )]=
+	@switch/first 1=
+// .. approve: set reality levels & add to factions
+		t( match( approve npc storyteller, %2 )), 
+		{
+			@dolist/delim | 
+				Vampire|
+				[get( [u( v( d.sfp )/f.find-sheet, %1 )]/_bio.clan )]|
+				[get( [u( v( d.sfp )/f.find-sheet, %1 )]/_bio.covenant )]=
+			{ 
+				@pemit %0=
+					[ulocal( v( d.afo )/c.faction/add, 
+						##=[name( %1 )] 
+					)];
+			}; 
+// .. .. add praxis
+			@dolist/delim | 
+				North Praxis|
+				South Praxis|
+				Underworld=
+			{ 
+				@ifelse 
+					[t( setr( p, 
+						get( 
+						[u( v( d.sfp )/f.find-sheet, %1 )]/
+						_merit.status_(##) 
+						)
+					))]=
+					@pemit %0=[ulocal( 
+						v( d.afo )/c.faction/add, 
+						[first( ## )] Praxis=[name( %1 )] 
+					)]
+				{ 
+				}; 
+			}; 
+		}, 
+		
+// .. unapprove: do nothing
+		t( match( unapprove freeze kill chargen, %2 )), 
+		{ 
+			think <trig unapprove: remove all factions on system/faction>; 
+		}, 
+
+// .. else: do nothing
+		@@ do nothing; 
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Template: Ghoul -------------------------------------------------------------
+*/
+
+&trig.approval.template/ghoul [v( d.cg )]=
+	@switch/first 1=
+// .. approve: set reality levels & add to factions
+		t( match( approve npc storyteller, %2 )), 
+		{
+			@dolist/delim | 
+				Ghoul|
+				[get( [u( v( d.sfp )/f.find-sheet, %1 )]/_bio.clan )]=
+			{ 
+				@pemit %0=
+					[ulocal( v( d.afo )/c.faction/add, 
+						##=[name( %1 )] 
+					)];
+			}; 
+
+		}, 
+		
+// .. unapprove: do nothing
+		t( match( unapprove freeze kill chargen, %2 )), 
+		{ 
+			think <trig unapprove: remove all factions on system/faction>; 
+		}, 
+
+// .. else: do nothing
+		@@ do nothing; 
+

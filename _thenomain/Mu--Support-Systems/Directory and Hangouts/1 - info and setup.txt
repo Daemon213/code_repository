@@ -1,0 +1,127 @@
+/* 
+================================================================================
+== INFO ========================================================================
+
+Originally set up for TinyMUX 2.4, sometime 1996.
+Updated for TinyMUX 2.10, 2013.
+
+Hangouts Command: Where all the commands are stored
+Hangouts Data: Where all the hangouts are stored
+
+Core data structure: 
+	&hangout-<main dbref>: 
+		<name>~<dbrefs of rooms, main first>~<map loc>~<description>
+
+We are shifting this to:
+	&loc.<attribute>.<main dbref>
+
+	<attribute>:
+		info: <name>|<type>|<rooms>|<owner>
+		desc: <description of location>
+		lock: <returns '1' if viewer, %0, can see this location>
+
+
+
+================================================================================
+== SETUP =======================================================================
+*/
+
+@create Directory and Hangouts <dah>=10
+@fo me=&d.dah me=[search( name=Directory and Hangouts <dah> )]
+@set Directory and Hangouts <dah>=inherit safe
+
+@create Locations Data=10
+@set Locations Data=inherit safe
+@fo me=&d.data [v( d.dah )]=[num( Locations Data )]
+@tel Locations Data=[v( d.dah )]
+
+@fo me=@parent [v( d.dah )]=[search( name=Code Object Data Parent <codp> )]
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Data ------------------------------------------------------------------------
+*/
+
+// .. ansi color for accents & titles
+@vc [v( d.dah )]=c
+
+// .. how long is the 'map location'?
+&d.len.maploc [v( d.dah )]=4
+
+// .. element index
+// .. <name of element>:<attribute>:<index location in 'attribute'>
+// .. '0' means 'entire attribute'
+
+&d.index.elements [v( d.dah )]=
+	name:info:1 
+	type:info:2 
+	rooms:info:3 
+	owner:info:4 
+	availability:info:5 
+//	description:desc:0 
+	lock:lock:0 
+
+
+// Sort by population, and then what?
+&d.sort.elements [v( d.dah )]=name type
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Support Functions -----------------------------------------------------------
+*/
+
+&.header [v( d.dah )]=header( %0 )
+&.footer [v( d.dah )]=footer( %0 )
+
+&.footer [v( d.dah )]=
+	localize( strcat( 
+		setq( w, 78 ), 
+		setq( c, m ), 
+		ansi( %qc, + ), 
+		if( gte( setr( t, strlen( %0 )), 1 ), 
+			strcat( 
+				setq( w, sub( %qw, add( %qt, 4 ))), 
+				ansi( 
+					%qc, repeat( -, %qw ), 
+					xh, %b%0%b, 
+					%qc, -- 
+				)
+			), 
+			ansi( %qc, repeat( -, %qw ))
+		), 
+		ansi( %qc, + )
+	))
+
+&.divider [v( d.dah )]=divider( %0 )
+
+&.divider [v( d.dah )]=
+	localize( strcat( 
+		setq( w, 78 ), 
+		setq( c, m ), 
+		%b, 
+		if( gte( strlen( %0 ), 1 ), 
+			center( ansi( xh, %b%0%b ), %qw, ansi( %qc, - )), 
+			ansi( %qc, repeat( -, %qw ))
+		), 
+		%b 
+	))
+
+
+&.wheader [v( d.dah )]=wheader( %0 )
+&.wfooter [v( d.dah )]=wfooter( %0 )
+&.wdivider [v( d.dah )]=wdivider( %0 )
+
+&.isstaff [v( d.dah )]=isstaff( %0 )
+&.msg [v( d.dah )]=ansi( h, <%0>, n, %b%1 )
+&.plural [v( d.dah )]=if( eq( %0, 1 ), %1, %2 )
+
+// .. isdbref() only passes if the dbref exists. we want anything dbref-ish
+&.dbreflike [v( d.dah )]=
+	cand( strmatch( %0, #* ), isint( rest( %0, # )))
+
+// .. pull dbref from the attribute; a quick place to change it if needed
+&.attr2dbref [v( d.dah )]=elements( %0, 2, . )
+
+

@@ -1,0 +1,1616 @@
+/*
+################################################################################
+## DEMON: THE DESCENT ##########################################################
+
+This file includes all additions to the system for Demon: The Descent core rules
+
+
+--------------------------------------------------------------------------------
+-- Pre-Setting Attributes ------------------------------------------------------
+
+If you don't have the attributes set on yourself, run this code:
+
+@fo me=&d.sfp me=search( name=Stat Functions Prototype <sfp> )
+@fo me=&d.dd me=search( name=Data Dictionary <dd> )
+@fo me=&d.dt me=search( name=Data Tags <d:t> )
+
+@fo me=&d.xpas me=search( name=XP Advancement System <xpas> )
+@fo me=&d.xpcd me=search( name=XP Cost Database <xpcd> )
+
+@fo me=&d.cg me=search( name=GMC Chargen <cg> )
+@fo me=&d.sheet me=search( name=Sheet: Rows )
+
+@fo me=&d.psrs me=search( name=Pool Spend Regain System <psrs> )
+
+
+
+################################################################################
+## DEMON: STAT FUNCTIONS #######################################################
+
+--------------------------------------------------------------------------------
+-- SFP: Search Order -----------------------------------------------------------
+
+Level 2 for powers 
+Level 3 for very minor items
+*/
+
+&d.search-order-02-demon [v( d.sfp )]=embed exploit
+&d.search-order-03-demon [v( d.sfp )]=demonic_form
+
+
+
+/*
+################################################################################
+## DEMON: DATA DICTIONARY ######################################################
+
+
+
+================================================================================
+== DD: SETUP ===================================================================
+*/
+
+// CODP prefixes
+&prefix.demon_-_embeds [v( d.dd )]=embed.
+&prefix.demon_-_exploits [v( d.dd )]=exploit.
+&prefix.demon_-_demonic_forms [v( d.dd )]=demonic_form.
+
+&prefix.demon_-_embeds [v( d.dt )]=tags.embed.
+&prefix.demon_-_exploits [v( d.dt )]=tags.exploit.
+&prefix.demon_-_demonic_forms [v( d.dt )]=tags.demonic_form.
+
+
+// add to templates
+@fo me=&bio.template [v( d.dd )]=[get( v( d.dd )/bio.template )].Demon.Stigmatic
+
+
+// register "max trait" statpath
+&.max_trait.demon [v( d.dd )]=advantage.primum
+
+
+// register "sphere"'s templates (could this be folded into 'templates'?)
+&.sphere.demon [v( d.dd )]=Demon Stigmatic
+
+
+/*
+--------------------------------------------------------------------------------
+-- DD: Agendas -----------------------------------------------------------------
+
+List all agendas that a demon has.
+
+*/
+
+&.demon.agendas [v( d.dd )]=
+	setunion( 
+		u( .value_full, %0, bio.agenda ), 
+		first(
+			rest( 
+				lattr( %0/merit.multiple_agendas_%(*%) ), 
+				%(
+			), 
+			%) 
+		), 
+		. 
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- D:T: Tags for Stigmatics ----------------------------------------------------
+
+(Edit `human.supernatural` -> `human.<minor template>.<major template>`)
+
+*/
+
+@dolist 
+	[filter( sfp/f.hastag?.workhorse, 
+		lattr( v( d.dd )/merit.* ), , , human.supernatural, 1 
+	)]=
+	@edit v( d.dt )/tags.##=human, human.stigmatic
+
+@edit v( d.dt )/tags.advantage.integrity=$, .stigmatic
+
+
+// == DEMON BIO ================================================================
+
+&bio.incarnation [v( d.dd )]=Destroyer.Guardian.Messenger.Psychopomp
+&tags.bio.incarnation [v( d.dt )]=demon
+
+&bio.agenda [v( d.dd )]=Inquisitor.Integrator.Saboteur.Tempter.Uncalled
+&tags.bio.agenda [v( d.dt )]=demon
+
+&bio.agency [v( d.dd )]=*
+&tags.bio.agency [v( d.dt )]=demon.stigmatic
+
+&bio.ring [v( d.dd )]=*
+&tags.bio.ring [v( d.dt )]=demon.stigmatic.clique
+
+
+
+// == DEMON ADVANTAGES =========================================================
+
+// -- Cover: The Integrity stat for Demons -------------------------------------
+
+&advantage.cover_() [v( d.dd )]=1.2.3.4.5.6.7.8.9.10|*
+&tags.advantage.cover_() [v( d.dt )]=integrity.demon
+
+&advantage.aether [v( d.dd )]=ladd( u( .value_full, %0, advantage.aether_maximum ), . )
+&tags.advantage.aether [v( d.dt )]=derived.pool.demon
+&default.advantage.aether [v( d.dd )]=derived
+
+&advantage.aether_maximum [v( d.dd )]=
+	elements( 10 11 12 13 14 15 20 30 50 100, u( .value, %0, advantage.primum ))
+&tags.advantage.aether_maximum [v( d.dt )]=derived.pool.demon
+&default.advantage.aether_maximum [v( d.dd )]=derived
+
+&advantage.primum [v( d.dd )]=1.2.3.4.5.6.7.8.9.10
+&default.advantage.primum [v( d.dd )]=1
+&tags.advantage.primum [v( d.dt )]=power.demon
+
+// Cover experiences need to be one-per-cover. This won't work.
+// 
+// &special.cover_experiences [v( d.dd )]=#
+// &default.special.cover_experiences [v( d.dd )]=0 0
+// &tags.special.cover_experiences [v( d.dt )]=demon
+
+
+// -- Merits: Cross-Sphere -----------------------------------------------------
+
+// Merit.Producer, from Vampire Core
+
+@if hasattr( v( d.dd ), merit.producer )={ 
+		&tags.merit.producer [v( d.dt )]=
+			[get( v( d.dt )/tags.merit.producer )].stigmatic 
+	}
+
+
+
+// == DEMON MERITS =============================================================
+
+&merit.bolthole_-_arsenal_() [v( d.dd )]=1.2.3.4.5|*
+&tags.merit.bolthole_-_arsenal_() [v( d.dt )]=demon.location
+
+&merit.bolthole_-_easy_access_() [v( d.dd )]=1.2.3.4.5|*
+&tags.merit.bolthole_-_easy_access_() [v( d.dt )]=demon.location
+
+&merit.bolthole_-_no_twilight_() [v( d.dd )]=1|*
+&tags.merit.bolthole_-_no_twilight_() [v( d.dt )]=demon.location
+
+&merit.bolthole_-_self_destruct_() [v( d.dd )]=1|*
+&tags.merit.bolthole_-_self_destruct_() [v( d.dt )]=demon.location
+
+&merit.bolthole_-_cover-linked_() [v( d.dd )]=2|*|*
+&tags.merit.bolthole_-_cover-linked_() [v( d.dt )]=demon.location
+
+&merit.bolthole_-_trap_door_() [v( d.dd )]=2|*|*
+&tags.merit.bolthole_-_trap_door_() [v( d.dt )]=demon.location
+
+&merit.consummate_professional_() [v( d.dd )]=2|Inquisitor.Integrator.Saboteur.Tempter
+&prerequisite.merit.consummate_professional_() [v( d.dd )]=
+	t( match( 
+		setdiff( u( v( d.dd )/.demon.agendas, %0 ), Uncalled, . ), 
+		%1, .
+	))
+&prereq-text.merit.consummate_professional_() [v( d.dd )]=Must belong to that agenda
+&tags.merit.consummate_professional [v( d.dt )]=demon.mental
+
+&merit.cultists [v( d.dd )]=2.3.4.5
+&tags.merit.cultists [v( d.dt )]=demon.social
+
+&merit.multiple_agendas_() [v( d.dd )]=2|Inquisitor.Integrator.Saboteur.Tempter
+&prerequisite.merit.multiple_agendas_() [v( d.dd )]=
+	cor( 
+		not( match( 
+			setdiff( u( v( d.dd )/.demon.agendas, %0 ), Uncalled, . ), 
+			%1, . 
+		)), 
+		not( lattr( %0/_merit.multiple_agendas_(*) )
+	)
+&prereq-text.merit.multiple_agendas_() [v( d.dd )]=Must be different than current agenda, 
+	may not have this merit more than once, may not take if Uncalled
+&tags.merit.multiple_agendas_() [v( d.dt )]=demon.mental
+
+&merit.suborned_infrastructure_() [v( d.dd )]=1.2.3
+&tags.merit.suborned_infrastructure_() [v( d.dt )]=demon.location
+
+&merit.terrible_form [v( d.dd )]=1.2.3.4
+&tags.merit.terrible_form [v( d.dt )]=demon.style.physical
+
+&merit.versatile_transformation [v( d.dd )]=1
+&tags.merit.versatile_transformation [v( d.dt )]=demon.physical
+
+
+
+// == DEMON EMBEDS =============================================================
+
+&class.embed.? [v( d.dd )]=flag
+
+
+// -- EMBED: CACOPHANY ---------------------------------------------------------
+
+&embed.bystander_effect [v( d.dd )]=Manipulation + Intimidation
+&tags.embed.bystander_effect [v( d.dt )]=demon.cacophony
+
+&embed.cause_and_effect [v( d.dd )]=Wits + <<self:Skill>>
+&tags.embed.cause_and_effect [v( d.dt )]=demon.cacophony
+
+&embed.combustion [v( d.dd )]=Wits + Science
+&tags.embed.combustion [v( d.dt )]=demon.cacophony
+
+&embed.cool_heads_prevail [v( d.dd )]=Manipulation + Empathy - <<room:Composure>>
+&tags.embed.cool_heads_prevail [v( d.dt )]=demon.cacophony
+
+&embed.deafen [v( d.dd )]=Manipulation + Medicine - <<target:Stamina>>
+&tags.embed.deafen [v( d.dt )]=demon.cacophony
+
+&embed.devil's_advocate [v( d.dd )]=Manipulation + Subterfuge - <<room:Resolve>>
+&tags.embed.devil's_advocate [v( d.dt )]=demon.cacophony
+
+&embed.hesitation [v( d.dd )]=Manipulation + Intimidation - <<target:Resolve>>
+&tags.embed.hesitation [v( d.dt )]=demon.cacophony
+
+&embed.hush [v( d.dd )]=Dexterity + Brawl - <<target:Defense>>
+&tags.embed.hush [v( d.dt )]=demon.cacophony
+
+&embed.just_bruised [v( d.dd )]=Wits + Medicine
+&tags.embed.just_bruised [v( d.dt )]=demon.cacophony
+
+&embed.knockout_punch [v( d.dd )]=Dexterity + Brawl - <<target:Defense>>
+&tags.embed.knockout_punch [v( d.dt )]=demon.cacophony
+
+&embed.left_or_right? [v( d.dd )]=Manipulation + Science
+&tags.embed.left_or_right? [v( d.dt )]=demon.cacophony
+
+&embed.lucky_break [v( d.dd )]=Manipulation + Occult
+&tags.embed.lucky_break [v( d.dt )]=demon.cacophony
+
+&embed.merciless_gunman [v( d.dd )]=Dexterity + Firearms
+&tags.embed.merciless_gunman [v( d.dt )]=demon.cacophony
+
+&embed.no_quarter [v( d.dd )]=Manipulation + Brawl vs. <<target:Resolve>>
+&tags.embed.no_quarter [v( d.dt )]=demon.cacophony
+
+&embed.on_the_mend [v( d.dd )]=Wits + Medicine
+&tags.embed.on_the_mend [v( d.dt )]=demon.cacophony
+
+&embed.raw_materials [v( d.dd )]=Manipulation + Crafts
+&tags.embed.raw_materials [v( d.dt )]=demon.cacophony
+
+&embed.sabotage [v( d.dd )]=Dexterity + Crafts
+&tags.embed.sabotage [v( d.dt )]=demon.cacophony
+
+&embed.shatter [v( d.dd )]=Wits + Crafts
+&tags.embed.shatter [v( d.dt )]=demon.cacophony
+
+&embed.shifty_eyes [v( d.dd )]=Manipulation + Subterfuge - <<target:Resolve>>
+&tags.embed.shifty_eyes [v( d.dt )]=demon.cacophony
+
+&embed.special_someone [v( d.dd )]=Wits + Empathy
+&tags.embed.special_someone [v( d.dt )]=demon.cacophony
+
+
+// -- EMBED: INSTRUMENTAL ------------------------------------------------------
+
+&embed.ambush [v( d.dd )]=Wits + Stealth
+&tags.embed.ambush [v( d.dt )]=demon.instrumental
+
+&embed.check_backdrop [v( d.dd )]=Manipulation + Firearms
+&tags.embed.check_backdrop [v( d.dt )]=demon.instrumental
+
+&embed.download_knowledge [v( d.dd )]=Wits + Computers
+&tags.embed.download_knowledge [v( d.dt )]=demon.instrumental
+
+&embed.efficiency [v( d.dd )]=Wits+Academics
+&tags.embed.efficiency [v( d.dt )]=demon.instrumental
+
+&embed.ellipses [v( d.dd )]=Manipulation + Expression
+&tags.embed.ellipses [v( d.dt )]=demon.instrumental
+
+&embed.freeze_assets [v( d.dd )]=Manipulation + Academics - <<target:Resources>>
+&tags.embed.freeze_assets [v( d.dt )]=demon.instrumental
+
+&embed.fulcrum_point [v( d.dd )]=Wits + Science
+&tags.embed.fulcrum_point [v( d.dt )]=demon.instrumental
+
+&embed.fungible_knowledge [v( d.dd )]=Wits + Academics
+&tags.embed.fungible_knowledge [v( d.dt )]=demon.instrumental
+
+&embed.like_i_built_it [v( d.dd )]=Wits + Crafts
+&tags.embed.like_i_built_it [v( d.dt )]=demon.instrumental
+
+&embed.the_map_is_not_the_territory [v( d.dd )]=Manipulation + Academics - 
+	<<target:Intelligence>>
+&tags.embed.the_map_is_not_the_territory [v( d.dt )]=demon.instrumental
+
+&embed.miles_away [v( d.dd )]=Wits + Expression
+&tags.embed.miles_away [v( d.dt )]=demon.instrumental
+
+&embed.momentum [v( d.dd )]=Wits + Science
+&tags.embed.momentum [v( d.dt )]=demon.instrumental
+
+&embed.read_hostility [v( d.dd )]=Wits + Subterfuge
+&tags.embed.read_hostility [v( d.dt )]=demon.instrumental
+
+&embed.right_tools_right_job [v( d.dd )]=WIts + Crafts
+&tags.embed.right_tools_right_job [v( d.dt )]=demon.instrumental
+
+&embed.shift_consequences [v( d.dd )]=Manipulation + Occult - 
+	<<target:Resolve|target:Composure|target:Stamina>>
+&tags.embed.shift_consequences [v( d.dt )]=demon.instrumental
+
+&embed.strike_first [v( d.dd )]=Wits + Brawl
+&tags.embed.strike_first [v( d.dt )]=demon.instrumental
+
+&embed.synthesis [v( d.dd )]=Wits + Investigation
+&tags.embed.synthesis [v( d.dt )]=demon.instrumental
+
+&embed.tag_and_release [v( d.dd )]=Dexterity + Expression
+&tags.embed.tag_and_release [v( d.dt )]=demon.instrumental
+
+&embed.tools_into_toys [v( d.dd )]=Manipulation + Crafts
+&tags.embed.tools_into_toys [v( d.dt )]=demon.instrumental
+
+&embed.turn_blade [v( d.dd )]=Wits + Weaponry
+&tags.embed.turn_blade [v( d.dt )]=demon.instrumental
+
+
+// -- EMBED: MUNDANE -----------------------------------------------------------
+
+&embed.alibi [v( d.dd )]=Manipulation + Stealth
+&tags.embed.alibi [v( d.dt )]=demon.mundane
+
+&embed.authorize [v( d.dd )]=Manipulation + Intimidation - <<target:Intelligence>>
+&tags.embed.authorize [v( d.dt )]=demon.mundane
+
+&embed.cuckoo's_egg [v( d.dd )]=Dexterity + Larceny
+&tags.embed.cuckoo's_egg [v( d.dt )]=demon.mundane
+
+&embed.diversion [v( d.dd )]=Manipulation + Expression
+&tags.embed.diversion [v( d.dt )]=demon.mundane
+
+&embed.don't_i_know_you? [v( d.dd )]=Manipulation + Subterfuge - <<target:Resolve>>
+&tags.embed.don't_i_know_you? [v( d.dt )]=demon.mundane
+
+&embed.earworm [v( d.dd )]=Manipulation+Expression-Composure
+&tags.embed.earworm [v( d.dt )]=demon.mundane
+
+&embed.homogenous_memory [v( d.dd )]=Manipulation + Subterfuge - <<target:Resolve>>
+&tags.embed.homogenous_memory [v( d.dt )]=demon.mundane
+
+&embed.identity_theft [v( d.dd )]=Manipulation + Subterfuge
+&tags.embed.identity_theft [v( d.dt )]=demon.mundane
+
+&embed.idle_conversation [v( d.dd )]=Manipulation + Socialize
+&tags.embed.idle_conversation [v( d.dt )]=demon.mundane
+
+&embed.in_my_pocket [v( d.dd )]=Dexterity + Larceny
+&tags.embed.in_my_pocket [v( d.dt )]=demon.mundane
+
+&embed.interference [v( d.dd )]=Manipulation + Subterfuge
+&tags.embed.interference [v( d.dt )]=demon.mundane
+
+&embed.last_place_you_look [v( d.dd )]=Wits + Larceny
+&tags.embed.last_place_you_look [v( d.dt )]=demon.mundane
+
+&embed.living_recorder [v( d.dd )]=Manipulation + Investigation
+&tags.embed.living_recorder [v( d.dt )]=demon.mundane
+
+&embed.lost_in_the_crowd [v( d.dd )]=Wits + Stealth
+&tags.embed.lost_in_the_crowd [v( d.dt )]=demon.mundane
+
+&embed.meaninglessness [v( d.dd )]=Manipulation + Academics
+&tags.embed.meaninglessness [v( d.dt )]=demon.mundane
+
+&embed.never_here [v( d.dd )]=Manipulation + Stealth - <<target:Resolve>>
+&tags.embed.never_here [v( d.dt )]=demon.mundane
+
+&embed.occam's_razor [v( d.dd )]=Manipulation + Persuasion
+&tags.embed.occam's_razor [v( d.dt )]=demon.mundane
+
+&embed.quick_change [v( d.dd )]=Manipulation + Subterfuge
+&tags.embed.quick_change [v( d.dt )]=demon.mundane
+
+&embed.unperson [v( d.dd )]=Manipulation + Subterfuge - <<target:Composure>>
+&tags.embed.unperson [v( d.dt )]=demon.mundane
+
+&embed.without_a_trace [v( d.dd )]=Manipulation + Investigation
+&tags.embed.without_a_trace [v( d.dt )]=demon.mundane
+
+
+// -- EMBED: VOCAL -------------------------------------------------------------
+
+&embed.across_a_crowded_room [v( d.dd )]=Manipulation + Subterfuge
+&tags.embed.across_a_crowded_room [v( d.dt )]=demon.vocal
+
+&embed.animal_communication [v( d.dd )]=Manipulation + Animal Ken
+&tags.embed.animal_communication [v( d.dt )]=demon.vocal
+
+&embed.animal_messenger [v( d.dd )]=Manipulation + Animal Ken
+&tags.embed.animal_messenger [v( d.dt )]=demon.vocal
+
+&embed.borrowed_expertise [v( d.dd )]=Manipulation + <<Skill Granted>>
+&tags.embed.borrowed_expertise [v( d.dt )]=demon.vocal
+
+&embed.common_misconception [v( d.dd )]=Manipulation + Science
+&tags.embed.common_misconception [v( d.dt )]=demon.vocal
+
+&embed.eavesdrop [v( d.dd )]=Wits + Empathy
+&tags.embed.eavesdrop [v( d.dt )]=demon.vocal
+
+&embed.everybody_knows [v( d.dd )]=Manipulation + Subterfuge
+&tags.embed.everybody_knows [v( d.dt )]=demon.vocal
+
+&embed.find_the_leak [v( d.dd )]=Wits + Empathy
+&tags.embed.find_the_leak [v( d.dt )]=demon.vocal
+
+&embed.freudian_slip [v( d.dd )]=Manipulation + Empathy
+&tags.embed.freudian_slip [v( d.dt )]=demon.vocal
+
+&embed.heart's_desire [v( d.dd )]=Wits + Empathy - <<target:Composure>>
+&tags.embed.heart's_desire [v( d.dt )]=demon.vocal
+
+&embed.marco_polo [v( d.dd )]=Manipulation + Persuasion - <<target:Composure>>
+&tags.embed. [v( d.dd )]=demon.vocal
+
+&embed.mercury_retrograde [v( d.dd )]=Manipulation + Subterfuge - <<room:Wits>>
+&tags.embed.mercury_retrograde [v( d.dt )]=demon.vocal
+
+&embed.muse [v( d.dd )]=Manipulation + Expression - <<target:Resolve>>
+&tags.embed.muse [v( d.dt )]=demon.vocal
+
+&embed.recurring_hallucinations [v( d.dd )]=Manipulations + Occult - Resolve
+&tags.embed.recurring_hallucinations [v( d.dt )]=demon.vocal
+
+&embed.social_dynamics [v( d.dd )]=Wits + Socialize
+&tags.embed.social_dynamics [v( d.dt )]=demon.vocal
+
+&embed.special_message [v( d.dd )]=Manipulation + Expression
+&tags.embed.special_message [v( d.dt )]=demon.vocal
+
+&embed.tower_of_babel [v( d.dd )]=Manipulation + Socialize
+&tags.embed.tower_of_babel [v( d.dt )]=demon.vocal
+
+&embed.trick_of_the_light [v( d.dd )]=Manipulation + Investigation - <<target:Wits>>
+&tags.embed.trick_of_the_light [v( d.dt )]=demon.vocal
+
+&embed.trust_no_one [v( d.dd )]=Manipulation + Subterfuge - <<target:Resolve>>
+&tags.embed.trust_no_one [v( d.dt )]=demon.vocal
+
+&embed.voice_of_the_machine [v( d.dd )]=Wits + Crafts
+&tags.embed.voice_of_the_machine [v( d.dt )]=demon.vocal
+
+
+
+// == DEMON EXPLOITS ===========================================================
+
+&class.exploit.? [v( d.dd )]=flag
+
+// -----------------------------------------------------------------------------
+
+&exploit.addictive_presence [v( d.dd )]=Presence + Socialize + Primum
+&tags.exploit.addictive_presence [v( d.dt )]=demon
+
+&exploit.affliction [v( d.dd )]=Strength + Medicine + Primum vs. 
+	<<target:Stamina|target:Resolve>> + <<target:Supernatural Tolerance>>
+&tags.exploit.affliction [v( d.dt )]=demon
+
+&exploit.allies_into_gold [v( d.dd )]=Intelligence + Socialize + Primum
+&tags.exploit.allies_into_gold [v( d.dt )]=demon
+
+&exploit.animate [v( d.dd )]=Presence + Crafts + Primum
+&tags.exploit.animate [v( d.dt )]=demon
+
+&exploit.behind_the_curtain [v( d.dd )]=Intelligence + Computes + Primum
+&tags.exploit.behind_the_curtain [v( d.dt )]=demon
+
+&exploit.break_to_heal [v( d.dd )]=Strength + Medicine + Primum
+&tags.exploit.break_to_heal [v( d.dt )]=demon
+
+&exploit.deep_pockets [v( d.dd )]=Strength + Larceny + Primum
+&tags.exploit.deep_pockets [v( d.dt )]=demon
+
+&exploit.demon_house [v( d.dd )]=Presence + Stealth + Primum
+&tags.exploit.demon_house [v( d.dt )]=demon
+
+&exploit.disintegrate [v( d.dd )]=Strength + Brawl + Primum
+&tags.exploit.disintegrate [v( d.dt )]=demon
+
+&exploit.echoing_death [v( d.dd )]=Strength + Brawl + Primum
+&tags.exploit.echoing_death [v( d.dt )]=demon
+
+&exploit.ephemeral_cover [v( d.dd )]=Strength + Occult + Primum - Defense
+&tags.exploit.ephemeral_cover [v( d.dt )]=demon
+
+&exploit.everybody_hates_him [v( d.dd )]=Intelligence + Intimidation + Primum
+&tags.exploit.everybody_hates_him [v( d.dt )]=demon
+
+&exploit.extispicy [v( d.dd )]=Intelligence + Occult + Primum
+&tags.exploit.extispicy [v( d.dt )]=demon
+
+&exploit.force_relationship [v( d.dd )]=Presence + Empathy + Primum
+&tags.exploit.force_relationship [v( d.dt )]=demon
+
+&exploit.four_minutes_ago [v( d.dd )]=Intelligence + Stealth + Primum
+&tags.exploit.four_minutes_ago [v( d.dt )]=demon
+
+&exploit.frozen_in_time [v( d.dd )]=Intelligence + Science + Primum - Stamina
+&tags.exploit.frozen_in_time [v( d.dt )]=demon
+
+&exploit.halo [v( d.dd )]=Presence + Medicine + Primum
+&tags.exploit.halo [v( d.dt )]=demon
+
+&exploit.hellfire [v( d.dd )]=Presence + Firearms + Primum
+&tags.exploit.hellfire [v( d.dt )]=demon
+
+&exploit.hellhounds [v( d.dd )]=Intelligence + Animal Ken + Primum
+&tags.exploit.hellhounds [v( d.dt )]=demon
+
+&exploit.incendiary [v( d.dd )]=Strength + Science + Primum
+&tags.exploit.incendiary [v( d.dt )]=demon
+
+&exploit.inflict_stigamata [v( d.dd )]=Presence + Occult + Primum
+&tags.exploit.inflict_stigamata [v( d.dt )]=demon
+
+&exploit.living_shadow [v( d.dd )]=Intelligence + Stealth + Primum
+&tags.exploit.living_shadow [v( d.dt )]=demon
+
+&exploit.merge [v( d.dd )]=Strength + Occult + Primum
+&tags.exploit.merge [v( d.dt )]=demon
+
+&exploit.murder_by_improbability [v( d.dd )]=Intelligence + Academics + Primum vs. 
+	Presence + Supernatural Tolerance
+&tags.exploit.murder_by_improbability [v( d.dt )]=demon
+
+&exploit.play_on_words [v( d.dd )]=Presence + Expression + Primum
+&tags.exploit.play_on_words [v( d.dt )]=demon
+
+&exploit.possession [v( d.dd )]=Intelligence + Persuasion + Primum - Resolve
+&tags.exploit.possession [v( d.dt )]=demon
+
+&exploit.rain_of_blood [v( d.dd )]=Strength + Occult + Primum
+&tags.exploit.rain_of_blood [v( d.dt )]=demon
+
+&exploit.raise_dead [v( d.dd )]=Presence + Medicine + Primum
+&tags.exploit.raise_dead [v( d.dt )]=demon
+
+&exploit.raze_infrastructure [v( d.dd )]=Presence + Streetwise + Primum
+&tags.exploit.raze_infrastructure [v( d.dt )]=demon
+
+&exploit.reality_enforcement [v( d.dd )]=Presence + Academics + Primum
+&tags.exploit.reality_enforcement [v( d.dt )]=demon
+
+&exploit.riot [v( d.dd )]=Presence + Persuasion + Primum
+&tags.exploit.riot [v( d.dt )]=demon
+
+&exploit.rip_the_gates [v( d.dd )]=Strength + Occult + Primum
+&tags.exploit.rip_the_gates [v( d.dt )]=demon
+
+&exploit.sermon [v( d.dd )]=Presence + Persuasion + Primum
+&tags.exploit.sermon [v( d.dt )]=demon
+
+&exploit.solitary_confinement [v( d.dd )]=Strength + Occult + Primum - Resolve + 
+	Supernatural Tolerance
+&tags.exploit.solitary_confinement [v( d.dt )]=demon
+
+&exploit.stalking_horse [v( d.dd )]=Presence + Expression + Primum vs. Composure + 
+	Supernatural Tolerance
+&tags.exploit.stalking_horse [v( d.dt )]=demon
+
+&exploit.stimulus/response [v( d.dd )]=Intelligence + Empathy + Primum vs. Resolve + 
+	Supernatural Tolerance
+&tags.exploit.stimulus/response [v( d.dt )]=demon
+
+&exploit.summon [v( d.dd )]=Presence + Streetwise + Primum
+&tags.exploit.summon [v( d.dt )]=demon
+
+&exploit.swarm [v( d.dd )]=Presence + Animal Ken + Primum
+&tags.exploit.swarm [v( d.dt )]=demon
+
+&exploit.swift_resolution [v( d.dd )]=Intelligence + Academics + Primum
+&tags.exploit.swift_resolution [v( d.dt )]=demon
+
+&exploit.the_word [v( d.dd )]=Presence + Intimidation + Primum - Resolve
+&tags.exploit.the_word [v( d.dt )]=demon
+
+
+
+// == DEMONIC FORM =============================================================
+
+&class.demonic_form.? [v( d.dd )]=flag
+
+// -- FORM: MODIFICATIONS ------------------------------------------------------
+
+&demonic_form.armored_plates [v( d.dd )]=1
+&tags.demonic_form.armored_plates [v( d.dt )]=demon.modification
+
+&demonic_form.blade_hand [v( d.dd )]=1
+&tags.demonic_form.blade_hand [v( d.dt )]=demon.modification
+
+&demonic_form.claws_and_fangs [v( d.dd )]=1
+&tags.demonic_form.claws_and_fangs [v( d.dt )]=demon.modification
+
+&demonic_form.electrical_sight [v( d.dd )]=1
+&tags.demonic_form.electrical_sight [v( d.dt )]=demon.modification
+
+&demonic_form.EMP_field [v( d.dd )]=1
+&tags.demonic_form.EMP_field [v( d.dt )]=demon.modification
+
+&demonic_form.fast_attack [v( d.dd )]=1
+&tags.demonic_form.fast_attack [v( d.dt )]=demon.modification
+
+&demonic_form.huge_size [v( d.dd )]=1
+&tags.demonic_form.huge_size [v( d.dt )]=demon.modification
+
+&demonic_form.inhuman_intelligence [v( d.dd )]=1
+&tags.demonic_form.inhuman_intelligence [v( d.dt )]=demon.modification
+
+&demonic_form.inhuman_strength [v( d.dd )]=1
+&tags.demonic_form.inhuman_strength [v( d.dt )]=demon.modification
+
+&demonic_form.inhuman_reflexes [v( d.dd )]=1
+&tags.demonic_form.inhuman_reflexes [v( d.dt )]=demon.modification
+
+&demonic_form.mental_resistance [v( d.dd )]=1
+&tags.demonic_form.mental_resistance [v( d.dt )]=demon.modification
+
+&demonic_form.night_vision [v( d.dd )]=1
+&tags.demonic_form.night_vision [v( d.dt )]=demon.modification
+
+&demonic_form.rivet_arm [v( d.dd )]=1
+&tags.demonic_form.rivet_arm [v( d.dt )]=demon.modification
+
+&demonic_form.sense_the_angelic [v( d.dd )]=1
+&tags.demonic_form.sense_the_angelic [v( d.dt )]=demon.modification
+
+&demonic_form.slippery_body [v( d.dd )]=1
+&tags.demonic_form.slippery_body [v( d.dt )]=demon.modification
+
+&demonic_form.sonic_acuity [v( d.dd )]=1
+&tags.demonic_form.sonic_acuity [v( d.dt )]=demon.modification
+
+&demonic_form.spurs [v( d.dd )]=1
+&tags.demonic_form.spurs [v( d.dt )]=demon.modification
+
+&demonic_form.tough_as_stone [v( d.dd )]=1
+&tags.demonic_form.tough_as_stone [v( d.dt )]=demon.modification
+
+
+// -- FORM: TECHNOLOGIES -------------------------------------------------------
+
+&demonic_form.acidic_spit [v( d.dd )]=1
+&tags.demonic_form.acidic_spit [v( d.dt )]=demon.technology
+
+&demonic_form.aura_sight [v( d.dd )]=1
+&tags.demonic_form.aura_sight [v( d.dt )]=demon.technology
+
+&demonic_form.barbed_tail [v( d.dd )]=1
+&tags.demonic_form.barbed_tail [v( d.dt )]=demon.technology
+
+&demonic_form.blind_sense [v( d.dd )]=1
+&tags.demonic_form.blind_sense [v( d.dt )]=demon.technology
+
+&demonic_form.clairvoyant_sight [v( d.dd )]=1
+&tags.demonic_form.clairvoyant_sight [v( d.dt )]=demon.technology
+
+&demonic_form.demonic_horns [v( d.dd )]=1
+&tags.demonic_form.demonic_horns [v( d.dt )]=demon.technology
+
+&demonic_form.electric_jolt [v( d.dd )]=1
+&tags.demonic_form.electric_jolt [v( d.dt )]=demon.technology
+
+&demonic_form.electrical_resistance [v( d.dd )]=1
+&tags.demonic_form.electrical_resistance [v( d.dt )]=demon.technology
+
+&demonic_form.environmental_resistance [v( d.dd )]=1
+&tags.demonic_form.environmental_resistance [v( d.dt )]=demon.technology
+
+&demonic_form.essence_drain [v( d.dd )]=1
+&tags.demonic_form.essence_drain [v( d.dt )]=demon.technology
+
+&demonic_form.fire_resistance [v( d.dd )]=1
+&tags.demonic_form.fire_resistance [v( d.dt )]=demon.technology
+
+&demonic_form.frost_aura [v( d.dd )]=1
+&tags.demonic_form.frost_aura [v( d.dt )]=demon.technology
+
+&demonic_form.fluid_form [v( d.dd )]=1
+&tags.demonic_form.fluid_form [v( d.dt )]=demon.technology
+
+&demonic_form.inhuman_beauty [v( d.dd )]=1
+&tags.demonic_form.inhuman_beauty [v( d.dt )]=demon.technology
+
+&demonic_form.glory_and_terror [v( d.dd )]=1
+&tags.demonic_form.glory_and_terror [v( d.dt )]=demon.technology
+
+&demonic_form.mind_reading [v( d.dd )]=1
+&tags.demonic_form.mind_reading [v( d.dt )]=demon.technology
+
+&demonic_form.mirrored_skin [v( d.dd )]=1
+&tags.demonic_form.mirrored_skin [v( d.dt )]=demon.technology
+
+
+// -- FORM: PROPULSIONS --------------------------------------------------------
+
+&demonic_form.long_limbs [v( d.dd )]=1
+&tags.demonic_form.long_limbs [v( d.dt )]=demon.propulsion
+
+&demonic_form.phasing [v( d.dd )]=1
+&tags.demonic_form.phasing [v( d.dt )]=demon.propulsion
+
+&demonic_form.plasma_drive [v( d.dd )]=1
+&tags.demonic_form.plasma_drive [v( d.dt )]=demon.propulsion
+
+&demonic_form.spatial_distortion [v( d.dd )]=1
+&tags.demonic_form.spatial_distortion [v( d.dt )]=demon.propulsion
+
+&demonic_form.teleportation [v( d.dd )]=1
+&tags.demonic_form.teleportation [v( d.dt )]=demon.propulsion
+
+&demonic_form.tether [v( d.dd )]=1
+&tags.demonic_form.tether [v( d.dt )]=demon.propulsion
+
+&demonic_form.wings [v( d.dd )]=1
+&tags.demonic_form.wings [v( d.dt )]=demon.propulsion
+
+
+// -- FORM: PROCESSES ----------------------------------------------------------
+
+&demonic_form.aegis_protocol [v( d.dd )]=1
+&tags.demonic_form.aegis_protocol [v( d.dt )]=demon.process
+
+&demonic_form.body_modification [v( d.dd )]=1
+&tags.demonic_form.body_modification [v( d.dt )]=demon.process
+
+&demonic_form.cavernous_maw [v( d.dd )]=1
+&tags.demonic_form.cavernous_maw [v( d.dt )]=demon.process
+
+&demonic_form.corruption_aura [v( d.dd )]=1
+&tags.demonic_form.corruption_aura [v( d.dt )]=demon.process
+
+&demonic_form.extra_mechanical_limbs [v( d.dd )]=1
+&tags.demonic_form.extra_mechanical_limbs [v( d.dt )]=demon.process
+
+&demonic_form.insect_swarm [v( d.dd )]=1
+&tags.demonic_form.insect_swarm [v( d.dt )]=demon.process
+
+&demonic_form.magnesium_flare [v( d.dd )]=1
+&tags.demonic_form.magnesium_flare [v( d.dt )]=demon.process
+
+&demonic_form.memory_theft [v( d.dd )]=1
+&tags.demonic_form.memory_theft [v( d.dt )]=demon.process
+
+&demonic_form.multiple_images [v( d.dd )]=1
+&tags.demonic_form.multiple_images [v( d.dt )]=demon.process
+
+&demonic_form.quill_burst [v( d.dd )]=1
+&tags.demonic_form.quill_burst [v( d.dt )]=demon.process
+
+&demonic_form.rain_of_fire [v( d.dd )]=1
+&tags.demonic_form.rain_of_fire [v( d.dt )]=demon.process
+
+&demonic_form.voice_of_the_angel [v( d.dd )]=1
+&tags.demonic_form.voice_of_the_angel [v( d.dt )]=demon.process
+
+&demonic_form.wound_healing [v( d.dd )]=1
+&tags.demonic_form.wound_healing [v( d.dt )]=demon.process
+
+
+
+
+/* 
+################################################################################
+## DEMON CHARGEN ###############################################################
+
+
+
+================================================================================
+== CHARGEN: BIO ================================================================
+
+incarnation
+agenda
+
+
+--------------------------------------------------------------------------------
+-- Bio Check -------------------------------------------------------------------
+*/
+
+&check.bio.stigmatic [v( d.cg )]=virtue vice
+&check.bio.demon [v( d.cg )]=virtue vice incarnation agenda
+
+
+
+/*
+================================================================================
+== CHARGEN: MERITS =============================================================
+
+Stigmatics get +3 dots for Supernatural Merits only.
+
+
+--------------------------------------------------------------------------------
+-- Merits: Point Count, Stigmatic ----------------------------------------------
+
+0: sheet dbref
+
+*/
+
+&f.allocated.merits.stigmatic [v( d.cg )]=
+	ladd( iter( 
+		elements( 
+			u( f.list-stats-tags, %0, merit, supernatural ), 
+			1 2 3 
+		), 
+		get( %0/_%i0 )
+	))
+
+
+
+/*
+================================================================================
+== CHARGEN: ADVANTAGES =========================================================
+
+cover ()
+aether
+primum
+
+*/
+
+
+/*
+--------------------------------------------------------------------------------
+-- Aether: Point Count ---------------------------------------------------------
+
+Counting Merit points for Aether.
+We are also adding 1 merit point per extra Cover, here, to be clarified in 
+the cg/check text.
+
+*/
+
+&f.allocated.power-trait.demon [v( d.cg )]=
+	add( 
+// primum dots
+		mul( 
+			5, 
+			max( dec( u( v( d.dd )/.value, %0, advantage.primum )), 0 )
+		), 
+// extra covers 
+		max( 
+			0, 
+			dec( words( u( f.allocated.integrity.demon, %0 ), | ))
+		)
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Integrity, Demon: Allocations -----------------------------------------------
+
+Cover()
+
+*/
+
+&f.allocated.integrity.demon [v( d.cg )]=
+	edit( 
+		iter( 
+			setdiff( 
+				lattr( %0/_advantage.cover_* ), 
+				lattr( %0/_advantage.cover_*.* ), 
+			), 
+			strcat( %i0, :%b, get( %0/%i0 )), 
+			, | 
+		), 
+		_ADVANTAGE., , 
+		_, %b
+	)
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Integrity, Demon: Point Count -----------------------------------------------
+
+Character with Primum 1 can opt to have only 1 Cover
+
+*/
+
+&f.pts-valid?.integrity.demon [v( d.cg )]=
+	cand( 
+		gte( 
+			lte( 
+				words( setr( z, u( f.allocated.integrity.demon, %0 )), | ), 
+				setr( p, u( v( d.dd )/.value, %0, advantage.primum ))
+			), 
+			1 
+		)
+		land( 
+			iter( %qz, eq( last( %i0, : ), 7 ), | )
+		)
+/* -- we don't care if a cover matches bio.full_name --
+		, 
+		eq( 
+			words( 
+				graball( 
+					%qz, 
+					cover %([get( %0/_bio.full_name )]%):*, 
+					|, | 
+				), 
+				| 
+			), 
+			1 
+		)
+*/ 
+	)
+
+// -- 
+
+// think u( v( d.cg )/f.pts-valid?.integrity.demon, #220 )
+
+
+/* 
+================================================================================
+== CHARGEN: SPECIALTIES ========================================================
+
+Unchained characters start with four Skill Specialties, one of which must be 
+something that would threaten Cover if a human discovered it.
+
+
+--------------------------------------------------------------------------------
+-- Specialties: Allocations ----------------------------------------------------
+
+Demons and stigmatics get 4 specialties, no special allocations.
+
+We're doing this by assuming the last specialty is the Demon specialty.
+
+0: dbref of sheet
+1: current list of specialties (_full.stat.path)
+
+*/
+
+&f.allocated.specialties.demon [v( d.cg )]=last( %1 )
+
+
+// -----------------------------------------------------------------------------
+// -- Specialties: Point Count -------------------------------------------------
+
+// %0: list of specialties: template specs[`others]
+
+// --
+
+&f.pts-valid?.specialties.demon [v( d.cg )]=eq( words( elements( %0, 1, ` )), 1 )
+
+
+// -----------------------------------------------------------------------------
+// -- Specialties: 'Check' output ----------------------------------------------
+
+&check.specialties.demon [v( d.cg )]=
+	cat( 
+		%r%b %b Demon (fourth specialty):, 
+		u( u( d.sfp )/f.statname.workhorse, rest( first( %0, ` ), . ))
+	)
+
+
+
+/* 
+================================================================================
+== CHARGEN: EMBEDS & EXPLOITS ==================================================
+
+4 Embeds or Explots, at least one Embed from their Incarnation:
+Cacophony (Destroyer), Instrumental (Guardian), Vocal (Messenger), 
+Psychopomp (Mundane). 
+
+
+--------------------------------------------------------------------------------
+-- Embeds & Explots: Allocated -------------------------------------------------
+
+returns: <embeds & explots>`<first embeds based on Incarnation>
+(expecting: 3 things`1 thing)
+
+i: incarnation
+e: incarnation's embed
+a: all embeds and exploits
+
+*/
+
+&allocated.embeds_and_exploits [v( d.cg )]=
+	strcat( 
+		setq( i, get( %0/_bio.incarnation )), 
+		setq( a, 
+			cat( 
+				edit( lattr( %0/_embed.* ), _EMBED., EMBED. ), 
+				edit( lattr( %0/_exploit.* ), _EXPLOIT., EXPLOIT. )
+			)
+		), 
+
+// this is faster than 'f.list-stats-tags' in '8a - Setup'
+		setq( e, 
+			first( filter( 
+				u( d.sfp )/f.hastag?.workhorse, 
+				%qa, , , 
+				u( allocated.embeds_and_exploits.%qi ) 
+			))
+		), 
+
+		setdiff( %qa, %qe ), `, %qe 
+	)
+
+// --
+
+&allocated.embeds_and_exploits.destroyer [v( d.cg )]=cacophony
+&allocated.embeds_and_exploits.guardian [v( d.cg )]=instrumental
+&allocated.embeds_and_exploits.messenger [v( d.cg )]=vocal
+&allocated.embeds_and_exploits.psychopomp [v( d.cg )]=mundane
+
+// --
+
+//think u( v( d.cg )/allocated.embeds_and_exploits, #220 )
+
+
+// -----------------------------------------------------------------------------
+// -- Embeds & Explots: Point Count --------------------------------------------
+
+&f.pts-valid?.embeds_and_exploits [v( d.cg )]=
+	strcat( 
+		setq( e, u( allocated.embeds_and_exploits, %0 )), 
+		cand( 
+			eq( words( elements( %qe, 1, ` )), 3 ), 
+			eq( words( elements( %qe, 2, ` )), 1 )
+		)
+	)
+
+
+
+/* 
+================================================================================
+== CHARGEN: DEMONIC FORM =======================================================
+
+
+--------------------------------------------------------------------------------
+-- Demonic Form: Allocations ---------------------------------------------------
+
+output: <modifications>`<technologies>`<propulsions>`<processes>
+
+f: all demonic form foo
+
+Still faster than 'f.list-stats-tags'
+
+*/
+
+&allocated.demonic_form [v( d.cg )]=
+	strcat( 
+		setq( f, 
+			edit( lattr( %0/_demonic_form.* ), _DEMONIC_FORM., DEMONIC_FORM. 
+		)), 
+		iter( 
+			modification technology propulsion process, 
+			filter( u( d.sfp )/f.hastag?.workhorse, %qf, , , %i0 ), 
+			, ` 
+		)
+	)
+
+
+// -----------------------------------------------------------------------------
+// -- Demonic Form: Point Count ------------------------------------------------
+
+/*
+At character creation, a demon has three Modifications, two Technologies, one 
+Propulsion, and one Process.
+
+The merit 'Terrible Form' alters these as well:
+	*: +1 Modification
+	**: +1 Technology
+	***: +1 Propulsion
+	****: +1 Process
+
+The merit 'Advance Form' allows you to swap one Modification or Technology 
+for one Propulsion or Process.
+
+*/
+
+&f.pts-valid?.demonic_form.modification [v( d.cg )]=
+	add( 3, 
+		u( v( d.dd )/.at_least, %0, merit.terrible_form, 1 ), 
+		u( v( d.dd )/.at_least, %0, advantage.primum, 3 )
+	)
+&f.pts-valid?.demonic_form.technology [v( d.cg )]=
+	add( 2, u( v( d.dd )/.at_least, %0, merit.terrible_form, 2 ))
+&f.pts-valid?.demonic_form.propulsion [v( d.cg )]=
+	add( 1, u( v( d.dd )/.at_least, %0, merit.terrible_form, 3 ))
+&f.pts-valid?.demonic_form.process [v( d.cg )]=
+	add( 1, u( v( d.dd )/.at_least, %0, merit.terrible_form, 4 ))
+
+&f.pts-valid?.demonic_form [v( d.cg )]=
+	eq( %1, u( f.pts-valid?.demonic_form.%0, %2 ))
+
+/*
+================================================================================
+== CHARGEN CHECK: DEMON ========================================================
+
+p. 79: A character begins with one Cover at rank 7 and may buy an additional one 
+for a single Merit dot.
+
+* TO BE ADDED LATER *
+For each Merit a player buys, he should consider whether that Merit specifically 
+describes one of his character’s Covers or the Demon’s Unchained identity. Of 
+particular note are Social Merits — many of these tie heavily into the 
+character’s Covers. Players and Storytellers need to exercise judgment in this 
+regard, as situations exist where most Merits could be Cover- specific. Cover 
+Merits are written down in the specific Cover’s section of the Cover sheet.
+
+*/
+
+&check.chargen.demon [v( d.cg )]=
+	strcat( 
+		setq( c, u( f.allocated.integrity.demon, %0 )), 
+		setq( f, u( allocated.demonic_form, %0 )), 
+		setq( p, u( v( d.dd )/.value, %0, advantage.primum )), 
+
+// extra covers costs 1 Merit dot each
+		if( gt( words( %qc, | ), 1 ), 
+			cat( 
+				%b, %b, 
+				Extra covers account for, 
+				u( .plural, dec( words( %qc, | )), dot, dots ), 
+				%r
+			)
+		), 
+
+		%b, %b, ansi( h, Embeds & Exploits ), :, %b, 
+		setr( 9, 
+			iter( u( allocated.embeds_and_exploits, %0 ), words( %i0 ), `, / )
+		), %b, %(3 general/1 incarnation%), %b, 
+		u( display.check.ok-no, u( f.pts-valid?.embeds_and_exploits, %0 )), %b, 
+		%r,
+
+		%b, %b, ansi( h, Demonic Form ), :, %b, 
+		if( 
+			u( v( d.dd )/.has, %0, merit.advance_form ), 
+			ansi( xh, %(Advance Form may affect two by +/-1%) )
+		), 
+		%r, 
+		iter( modification technology propulsion process, 
+			strcat( 
+				%b%b %b, 
+				ansi( h, titlestr( %i0 )), :, %b, 
+				setr( x, words( elements( %qf, inum(0), ` ))), /, 
+				u( f.pts-valid?.demonic_form.%i0, %0 ), %b, 
+				u( display.check.ok-no, 
+					u( f.pts-valid?.demonic_form, %i0, %qx, %0 )
+				)
+			), , %r 
+		), %r, 
+
+// Covers: <primum>, each at 7
+		%b%b, ansi( h, rest( u( .plural, words( %qc, | ), Cover, Covers ))), :, 
+		%r, %b%b %b, 
+		iter( %qc, titlestr( %i0 ), |, %r%b%b %b ), %r, 
+		%b%b %b, 
+		%(, 
+		if( lte( %qp, 1 ), 
+			1, 
+			up to %qp
+		), 
+		%b, at level 7%), %b, 
+		u( display.check.ok-no, u( f.pts-valid?.integrity.demon, %0 )), %r,
+	)
+
+
+
+/*
+--------------------------------------------------------------------------------
+-- Virtue/Vice -----------------------------------------------------------------
+*/
+
+&bio.virtue.demon [v( d.dd )]=[get( bio.virtue )].[get( bio.vice )]
+&bio.vice.demon [v( d.dd )]=[get( bio.vice )].[get( bio.virtue )]
+
+/* -- if you need to add virtue/vice, do it here --
+&bio.virtue [v( d.dd )]=
+	Ambitious.Courageous.Generous.Honest.Hopeful.Humble.Just.Loving.
+	Loyal.Patient.Peaceful.Righteous.Trustworthy
+
+&bio.vice [v( d.dd )]=
+	Ambitious.Arrogant.Corrupt.Cowardly.Cruel.Deceitful.Greedy.
+	Hasty.Hateful.Pessimistic.Treacherous.Untrustworthy.Violent
+*/
+
+
+/*
+================================================================================
+== CHARGEN CHECK: STIGMATIC ====================================================
+
+When I can, replace the in-line display-check with a discrete attribute 
+to check from
+
+*/
+
+&check.chargen.stigmatic [v( d.cg )]=
+	strcat( 
+		%b, %b, ansi( h, Stigmatic Merits ), :, %b, 
+		setr( 9, u( f.allocated.merits.stigmatic, %0 )), /3%b, 
+		u( display.check.ok-no, eq( %q9, 3 )), %b, %r, 
+	)
+
+
+
+
+/*
+################################################################################
+## DEMON: XP COSTS #############################################################
+*/
+
+&xp.advantage.primum [v( d.xpcd )]=u( cost.standard, 5, %1, %2 )
+
+&xp.advantage.cover_() [v( d.xpcd )]=u( cost.standard, 2, %1, %2 )
+
+// [Staff] Eerie says, “And immediately following that is xp/spend not working 
+// for imbeds and exploits.”
+// <xp/cost> I don't know how to process flags yet
+
+&xp.embed [v( d.xpcd )]=2
+&xp.exploit [v( d.xpcd )]=2
+
+&d.restricted.types.demon [v( d.xpas )]=exploit embed
+&d.restricted.stats.demon [v( d.xpas )]=advantage.cover_(*) advantage.aether
+
+
+/*
+################################################################################
+## DEMON: SHEET ################################################################
+*/
+
+// -- Bio ----------------------------------------------------------------------
+
+&bio.default.demon [v( d.nsc )]=
+	birthdate concept virtue vice template incarnation agenda agency ring
+
+&bio.default.stigmatic [v( d.nsc )]=
+	birthdate concept agency template virtue vice ring
+
+
+// -- Powers -------------------------------------------------------------------
+
+&powers.embeds [v( d.nsc )]=
+	iter( sort( edit( lattr( %0/_embed.* ), _EMBED., )), 
+		ulocal( f.cheat_getstat.name_only, %0, embed.%i0, flag ), 
+		, | 
+	)
+
+
+&powers.exploits [v( d.nsc )]=
+	iter( sort( edit( lattr( %0/_exploit.* ), _EXPLOIT., )), 
+		ulocal( f.cheat_getstat.name_only, %0, exploit.%i0, flag ), 
+		, | 
+	)
+
+
+&block.powers.demon [v( d.sheet )]=
+	strcat( 
+		setq( w, 79 ), 
+
+		setq( e, u( powers.embeds, %0 )), 
+		setq( x, u( powers.exploits, %0 )), 
+
+		setq( t, inc( lmax( iter( %qe, strlen( %i0 ), | )))), 
+		divider( Embeds ), %r, 
+		table( %qe, %qt, %qw, | ), %r, 
+
+		setq( t, inc( lmax( iter( %qx, strlen( %i0 ), | )))), 
+		divider( Exploits ), %r, 
+		table( %qx, %qt, %qw, | ), %r, 
+
+		u( block.demonic-forms, %0 ), %r, 
+	)
+
+
+// -- Powers: Demonic Forms ----------------------------------------------------
+
+
+&powers.demonic-forms [v( d.nsc )]=
+	iter( 
+		modification technology propulsion process, 
+		strcat( 
+			# [capstr( %i0 )], |, 
+			ulocal( powers.demonic-forms.%i0, %0 )
+		), 
+		, | 
+	)
+
+&powers.demonic-forms.modification [v( d.nsc )]=
+	iter( 
+		u( v( d.cg )/f.list-stats-tags, %0, demonic_form, modification ), 
+		u( f.cheat_getstat.name_only, %0, %i0, flag ), 
+		, | 
+	)
+
+&powers.demonic-forms.technology [v( d.nsc )]=
+	iter( 
+		u( v( d.cg )/f.list-stats-tags, %0, demonic_form, technology ), 
+		u( f.cheat_getstat.name_only, %0, %i0, flag ), 
+		, | 
+	)
+
+&powers.demonic-forms.propulsion [v( d.nsc )]=
+	iter( 
+		u( v( d.cg )/f.list-stats-tags, %0, demonic_form, propulsion ), 
+		u( f.cheat_getstat.name_only, %0, %i0, flag ), 
+		, | 
+	)
+
+&powers.demonic-forms.process [v( d.nsc )]=
+	iter( 
+		u( v( d.cg )/f.list-stats-tags, %0, demonic_form, process ), 
+		u( f.cheat_getstat.name_only, %0, %i0, flag ), 
+		, | 
+	)
+
+&block.demonic-forms [v( d.sheet )]=
+	strcat( 
+		setq( w, 26 ), 
+		setq( t, 26 ), 
+		setq( m, 
+			iter( #Modification|
+				[ulocal( powers.demonic-forms.modification, %0 )], 
+				u( display.trait-name-only, %i0, %qt, %qw, flag ), 
+				|, | 
+			)
+		), 
+		setq( k, 
+			iter( #Technology|
+				[ulocal( powers.demonic-forms.technology, %0 )], 
+				u( display.trait-name-only, %i0, %qt, dec( %qw ), flag ), 
+				|, | 
+			)
+		), 
+		setq( p, 
+			iter( #Propulsion|
+				[ulocal( powers.demonic-forms.propulsion, %0 )], 
+				u( display.trait-name-only, %i0, %qt, %qw, flag ), 
+				|, | 
+			)
+		), 
+		setq( r, 
+			iter( #Process|
+				[ulocal( powers.demonic-forms.process, %0 )], 
+				u( display.trait-name-only, %i0, %qt, %qw, flag ), 
+				|, | 
+			)
+		), 
+		divider( Demonic Forms ), %r, 
+		vcolumns( 
+			%qw:%qm, 
+			[dec( %qw )]:%qk, 
+			%qw:%qp|%qr, 
+			|, 
+			%b 
+		)
+	)
+
+
+// -- Traits -------------------------------------------------------------------
+
+&traits.morality.demon [v( d.nsc )]=
+	strcat( 
+		setr( 9, iter( 
+			edit( 
+				setdiff( 
+					lattr( %0/_advantage.cover_* ), 
+					lattr( %0/_advantage.cover_*.* )
+				), 
+				_ADVANTAGE., 
+			), 
+			ulocal( f.cheat_getstat.morality, %0, %i0 ), 
+			, | 
+		)), 
+// we're changing the 'text field' width in the middle
+// (I don't like this, but it will do for now)
+		setq( t, 
+			max( 
+				lmax( iter( %q9, strlen( %i0 ), | )), 
+				%qt 
+			)
+		), 
+	)
+
+
+// --
+
+&block.traits.demon [v( d.sheet )]=
+	strcat( 
+		setq( w, 38 ), 
+		setq( t, 10 ), 
+
+// .. aether (power pool)
+		setq( x, ulocal( traits.power_pool, %0 )), 
+		setq( c, rest( setr( y, first( %qx, | )), : )), 
+		setq( p, last( %qx, : )), 
+		setq( r, u( display.trait-and-value, %qy, %qt, %qw, pool, %b, %qp )), 
+
+// .. primum (supernatural resistance)
+		setq( z, 
+			u( display.trait-and-value, 
+				u( traits.supernatural_resistance, %0 ), 
+				%qt, %qw, numeric 
+			)
+		), 
+
+// .. display
+		vcolumns( 
+			%qw:%qr, 
+			%qw:%qz, 
+			|, 
+			%b 
+		), %r, 
+	)
+
+
+
+
+/* 
+################################################################################
+## DEMON: NOTES TO SELF ########################################################
+
+
+STIGMATIC CHARACTER CREATION
+
+Stigmatics follow the same rules for mortal character creation found in the 
+World of Darkness Rulebook and this book. In addition, a few extra character 
+traits and options are added to the process.
+
+• Stigmatic characters begin play with the Unseen Sense (God-Machine) Merit (p. 
+302) for free. Characters who become stigmatic during play gain the Merit at no 
+cost. Additionally, like demons, stigmatics can see the gears and structures of 
+the God-Machine unveiled.
+
+• Every stigmatic character suffers visions, much like those from the Omen 
+Sensitivity merit (p. 299) but completely beyond the stigmatic’s control. Once 
+per chapter, the Storyteller may spontaneously subject a stigmatic character to 
+one such vision, in which case the character gains the Stunned tilt (p. 333) for 
+a single turn and the Spooked Condition (p. 310) in regards to the vision.
+
+• Stigmatic characters gain a single glitch (a major brand or tell; see p. 184 
+for more details) that cannot be cured, removed, or changed by any means, 
+although it may be suppressed for a scene with a Willpower point. This trait is 
+called stigmata.
+
+• Stigmatic characters begin play with three extra Merit dots to distribute into 
+any of the supernatural Merits on pages 298-302 of this book. They may also use 
+Experiences during play to increase these Merits or purchase new ones.
+
+*/
+
+
+
+
+
+
+/*
+================================================================================
+== SPEND/REGAIN ESSENCE ========================================================
+
+expands: 9c - Spend and Regain
+
+	spend aether=<amt/method> for <reason>
+
+spend limit per Primum: 
+	1 2 3 4 5 6 7 8 10 15
+
+regain methods:
+	suckin' da blood
+
+
+--------------------------------------------------------------------------------
+-- Spend/Regain Methods --------------------------------------------------------
+*/
+
+&regain.methods.vitae [v( d.psrs )]=|all
+&spend.methods.vitae [v( d.psrs )]=[@@( nothing but numeric allowed here )]
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Spend/Regain Vitae Amts -----------------------------------------------------
+*/
+
+&amt.spend.numeric.aether [v( d.psrs )]=
+	if( t( u( amt.spend.numeric.default, %0, %1, %2 )), 
+		if( 
+			lte( %2, 
+				elements( 
+					1 2 3 4 5 6 7 8 10 15, 
+					getstat( %0/Primum )
+				)
+			), 
+			mul( %2, -1 ), 
+			#-1 You can't spend that much at one time 
+		), 
+		u( amt.spend.numeric.default, %0, %1, %2 )
+	)
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Spend Aether Trigger -------------------------------------------------------
+*/
+
+&spend.trigger.aether [v( d.psrs )]=
+	think strcat( 
+		m:, %b, setr( m, u( f.match_method, %1, spend, aether, %2 )), %r, 
+		a:, %b, setr( a, u( amt.spend, %1, aether, %qm )), %r, 
+		u:, %b, setr( u, hasattr( %1, _advantage.Primum )), %r, 
+		s:, %b, setr( s, hasattr( %1, _advantage.Aether_Maximum )), %r, 
+	); 
+
+	@assert cand( %qu, %qs )={ 
+		@pemit %0=u( .msg, aether/spend, 
+			cat( 
+				if( strmatch( %0, %1 ), You, name( %1 )), 
+				must have both Primum and an Aether pool 
+			)
+		) 
+	}; 
+
+	@assert strlen( %qm )={ 
+		@pemit %0=u( .msg, aether/spend, I could not find the method '%2' ) 
+	}; 
+
+	@assert t( %qa )={ 
+		@pemit %0=u( .msg, aether/spend, rest( %qa )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.canchange, %1, Aether, %qa )))={ 
+		@pemit %0=u( .msg, aether/spend, rest( %qe )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.changestat, %1, aether, %qa )))={ 
+		@pemit %0=u( .msg, aether/spend, rest( %qe )) 
+	}; 
+
+	think e: 
+		[setr( e, 
+			u( display.number, %0, %1, aether, spend, %qa, %qm, %4 )
+		)]; 
+	@eval u( f.announcement, %0, %1, spend, %qe ); 
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Regain Vitae Trigger --------------------------------------------------------
+*/
+
+&regain.trigger.aether [v( d.psrs )]=
+	think strcat( 
+		m:, %b, setr( m, u( f.match_method, %1, regain, aether, %2 )), %r, 
+		a:, %b, setr( a, u( amt.regain, %1, aether, %qm )), %r, 
+		u:, %b, setr( u, hasattr( %1, _advantage.Primum )), %r, 
+		s:, %b, setr( s, hasattr( %1, _advantage.Aether_Maximum )), %r, 
+	); 
+
+	@assert cand( %qu, %qs )={ 
+		@pemit %0=u( .msg, aether/regain, 
+			cat( 
+				if( strmatch( %0, %1 ), You, name( %1 )), 
+				must have both Primum and an Aether pool 
+			)
+		) 
+	}; 
+
+	@assert strlen( %qm )={ 
+		@pemit %0=u( .msg, aether/regain, I could not find the method '%2' ) 
+	}; 
+
+	@assert t( %qa )={ 
+		@pemit %0=u( .msg, aether/regain, rest( %qa )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.canchange, %1, Aether, %qa )))={ 
+		@pemit %0=u( .msg, aether/regain, rest( %qe )) 
+	}; 
+
+	@assert t( setr( e, u( f.pool.changestat, %1, aether, %qa )))={ 
+		@pemit %0=u( .msg, aether/regain, rest( %qe )) 
+	}; 
+
+	think e: 
+		[setr( e, 
+			u( display.number, %0, %1, aether, regain, %qa, %qm, %4 )
+		)]; 
+	@eval u( f.announcement, %0, %1, regain, %qe ); 
+

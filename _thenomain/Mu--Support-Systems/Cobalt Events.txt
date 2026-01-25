@@ -1,0 +1,698 @@
+@create [v( d.eco )]=10
+@fo me=&d.eco me=[search( name=Events Command Object <ECO> )]
+@set [v( d.eco )]=inherit safe
+
+
+
+&.HEADER [v( d.eco )]=header( %0 )
+&.FOOTER [v( d.eco )]=footer( %0 )
+&.DIVIDER [v( d.eco )]=divider( %0 )
+&.ALERT [v( d.eco )]=ansi( r, >, h, %b%0%b, r, < )
+&.ISSTAFF [v( d.eco )]=isstaff( %0 )
+&.ISAPPROVED [v( d.eco )]=isapproved( %0 )
+
+
+
+&D.BBOARD.EVENTS [v( d.eco )]=2
+
+
+
+&C.+EVENTS [v( d.eco )]=$^\+?events?$:
+	@pemit %#=
+		[u( .header, Current [mudname()] Events )]%r
+		[u( display.events.header )]%r
+		[iter( lattr( v( edb )/event.* ), 
+			u( display.events.one-line, rest( %i0, . )), 
+			, %r 
+		)]%r
+		[u( .footer, words( lattr( v( edb )/event.* )))]
+
+@set v( d.eco )/c.+events=regexp
+
+
+
+&C.+EVENT_LOOKUP [v( d.eco )]=$^\+?events? (.+):
+	@pemit %#=
+		case( 0, 
+// .. errors
+			isnum( %1 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			hasattr( v( edb ), event.%1 ), 
+			[u( .alert, +Events )] There is no +Event %1., 
+
+// show that event!
+			strcat( 
+				setq( e, get( v( edb )/event.%1 )), 
+				setq( s, lattr( v( edb )/summary.%1.* )), 
+
+				u( .header, 
+					[extract( %qe, 3, 1, | )] - 
+					[u( fn.time, EVENT.%1 )] 
+				), %r, 
+				u( v( edb )/summary.%1 ), %r%r, 
+
+				ansi( h, Storyteller ), :, %b, name( first( %qe, | )), %r, 
+
+				ansi( h, Genre ), :, %b, extract( %qe, 2, 1, | ), 
+
+				if( t( %qs ), %r ), 
+				iter( %qs, 
+					strcat( 
+						ansi( h, last( %i0, . )), 
+						:, %b, 
+						get( v( edb )/%i0 )
+					), 
+					, %r 
+				), 
+
+				%r, 
+
+				ansi( h, Signups ), :, %b, 
+				itemize( 
+					iter( get( v( edb )/signups.%1 ), 
+						name( %i0 ), 
+						, | 
+					), 
+					| 
+				), %r, 
+
+				u( .footer, 
+					strcat( 
+						%1:, %b, 
+						extract( %qe, 3, 1, | ), %b, -, %b, 
+						u( fn.time, EVENT.%1 ), %b, -, %b, 
+						words( get( v( edb )/signups.%1 ))
+					)
+				)
+			)
+		)
+
+@set v( d.eco )/c.+event_lookup=regexp
+
+
+
+&C.+EVENT/CREATE [v( d.eco )]=$^\+?Events?/create (.+)=(.+)/(.+)/(.+):
+	@pemit %#=
+		case( 0, 
+// .. errors
+			t( setr( t, convtime( %2 ))), 
+			[u( .alert, +Events )] '%2' is not a proper datestamp. 
+			For an example%, see 'help time'., 
+
+			lte( secs(), convtime( %2 )), 
+			[u( .alert, +Events )] '%2' has already passed., 
+
+			cor( u( .isstaff, %# ), u( .isapproved, %# )), 
+			[u( .alert, +Events )] Sorry%, only staff or approved characters 
+			can use this command!, 
+
+// .. make that event
+			strcat( 
+				setq( 0, inc( get( v( edb )/eventtotal ))), 
+				set( v( edb ), eventtotal:%q0 ), 
+				set( v( edb ), 
+					event.%q0:%#|%3|%1|%qt 
+				), 
+				set( v( edb ), summary.%q0:%4 ), 
+				set( v( edb ), remindday.%q0:[sub( convtime( %2 ), 86400 )] ), 
+				
+				[u( .alert, +Events )] You have setup +event %q0. 
+				Please check to make certain all of the details are correct!
+				[trigger( %!/trig_post, %1, %4, %2, %q0, %3 )], 
+			), 
+
+		)
+
+@set v( d.eco )/c.+event/create=regexp
+
+
+&TRIG_POST [v( d.eco )]=
+	+bbpost [v( d.bboard.events )]/Event %3: %0=
+	[ansi( h, Summary )]: %1%r
+	%r
+	[ansi( h, Time )]: %2%r
+	%r
+	[ansi( h, Posted As )]: +event %3%r
+	%r
+	[ansi( h, Genre )]: %4
+
+
+&C.+EVENT/CHANGEDATE [v( d.eco )]=$+event/changedate *=*:
+	@pemit %#=
+		case( 0, 
+// .. errors
+			isnum( %0 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			hasattr( v( edb ), event.%0 ), 
+			[u( .alert, +Events )] There is no +Event %0., 
+
+			cor( 
+				u( .isstaff, %# ), 
+				strmatch( first( get( v( edb )/event.%0 ), | ), %# )
+			), 
+			[u( .alert, +Events )] Only 
+			[name( first( get( v( edb )/event.%0 ), | ))] or Staff can change 
+			this event's date. 
+
+// .. set!
+			[set( v( edb ), 
+				event.%0:
+				[extract( get( v( edb )/event.%0 ), 1, 3, | )]|
+				[convtime( %1 )] 
+			)]
+			[set( v( edb ), remindday.%0:[sub( convtime( %1 ), 86400 )] )]
+			[u( .alert, +Events )] You change the date of %0 to %1.
+			[trigger( %!/trig.mail, 
+				[get( v( edb )/signups.%0 )], 
+				Event Reschedule, [name( %# )] has rescheduled +Event %0 
+				%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%) to %1. 
+			)]
+		)
+
+
+&C.+EVENT/SIGNUP [v( d.eco )]=$+Event/signup *:
+	@pemit %#=
+		case( 0, 
+// .. errors
+			isnum( %0 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			cor( u( .isapproved, %# ), u( .isstaff, %# )), 
+			[u( .alert, +Events )] Sorry%, only approved players and staff can 
+			+Event/signup., 
+
+			hasattr( v( edb ), event.%0 ), 
+			[u( .alert, +Events )] Sorry%, %0 is not an event. Check +events 
+			for the list of current events., 
+
+			t( grab( get( v( edb )/signups.%0 ), [pmatch( %# )] )), 
+			[u( .alert, +Events )] You are already signed up for +Event %0., 
+
+// .. sign me up!
+			[set( v( edb ), 
+				signups.%0:
+				[trim( cat( get( v( edb )/signups.%0 ), pmatch( %# )))]
+			)]
+			[u( .alert, +Events )] You have been signed up for +Event %0.
+			[trigger( %!/trig.mail, 
+				[first( get( v( edb )/event.%0 ), | )], 
+				New Event Signup, 
+				[name( %# )] has signed up for your +Event %0 
+				%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%). 
+			)] 
+		)
+
+&TRIG.MAIL [v( d.eco )]=@mail/quick %0/%1=%2
+
+&C.+EVENT/UNSIGNUP [v( d.eco )]=$+event/unsignup *:
+	@pemit %#=
+		case( 0, 
+// .. errors
+			isnum( %0 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			hasattr( v( edb ), event.%0 ), 
+			[u( .alert, +Events )] Sorry%, %0 is not an event. Check +events 
+			for the list of current events., 
+
+			not( grab( get( v( edb )/signups.%0 ), [pmatch( %# )] )), 
+			[u( .alert, +Events )] You aren't signed up for +Event %0., 
+
+// .. unsign me up!
+			[set( v( edb ), 
+				signups.%0:
+				[setdiff( get( v( edb )/signups.%0 ), [pmatch( %# )] )] 
+			)]
+			[u( .alert, +Events )] You have been removed from +Event %0.
+			[trigger( %!/trig.mail, 
+				[first( get( v( edb )/event.%0 ), | )], 
+				New Event Cancellation, 
+				[name( %# )] has unsigned up for your +Event %0 
+				%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%). 
+			)] 
+		)
+
+&C.+EVENT/CANCEL [v( d.eco )]=$+event/cancel *:
+	@pemit %#=
+		case( 0, 
+// .. errors
+			isnum( %0 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			hasattr( v( edb ), event.%0 ), 
+			[u( .alert, +Events )] Sorry%, %0 is not an event. Check +events 
+			for the list of current events., 
+
+			cor( 
+				u( .isstaff, %# ), 
+				strmatch( first( get( v( edb )/event.%0 ), | ), %# )
+			), 
+			[u( .alert, +Events )] Only 
+			[name( first( get( v( edb )/event.%0 ), | ))] or Staff can cancel 
+			this event., 
+
+// .. cancel this event!
+			[trigger( %!/trig.mail, 
+				[get( v( edb )/signups.%0 )], 
+				Event Cancellation, 
+				[name( %# )] has canceled +Event %0 
+				%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%). 
+			)]
+			[set( v( edb ), event.%0: )]
+			[set( v( edb ), summary.%0: )]
+			[set( v( edb ), signups.%0: )]
+			[set( v( edb ), remindday.%0: )]
+			[u( .alert, +Events )] You have canceled +Event %0. 
+		)
+
+
+
+
+&C.+EVENT/REMOVE [v( d.eco )]=$+event/remove *=*:
+	@pemit %#=
+		[setq( p, pmatch( %1 ))]
+		[case( 0, 
+// .. errors
+			isnum( %0 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			hasattr( v( edb ), event.%0 ), 
+			[u( .alert, +Events )] Sorry%, %0 is not an event. Check +events 
+			for the list of current events., 
+
+			cor( 
+				u( .isstaff, %# ), 
+				strmatch( first( get( v( edb )/event.%0 ), | ), %# )
+			), 
+			[u( .alert, +Events )] Only 
+			[name( first( get( v( edb )/event.%0 ), | ))] or Staff can remove 
+			players from +Event %0., 
+
+			t( grab( get( v( edb )/signups.%0 ), %qp )), 
+			[u( .alert, +Events )] %1 is not signed up for +Event %0., 
+
+// .. remove someone from the event!
+			[set( v( edb ), 
+				signups.%0:
+				[setdiff( get( v( edb )/signups.%0 ), %qp )] 
+			)]
+			[u( .alert, +Events )] You've removed [name( %qp )] from +Event %0.
+			[trigger( %!/trig.mail, 
+				%qp, 
+				Event Removal, 
+				You have been removed from +Event %0 
+				%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%). 
+			)] 
+		)]
+
+
+
+&TRIG.DAILY [v( d.eco )]=
+// .. clear old events
+	[iter( lattr( v( edb )/event.* ), 
+		[if( lte( [last( get( v( edb )/%i0 ), | )], [secs()] ), 
+		[set( v( edb ), %i0: )]
+		[set( v( edb ), summary.[last( %i0, . )]: )]
+		[set( v( edb ), remindday.[last( %i0, . )]: )]
+		[set( v( edb ), signups.[last( %i0, . )]: )] 
+		)] 
+	)] 
+// .. remind people
+	[iter( lattr( v( edb )/remindday.* ), 
+		[if( lte( [last( get( v( edb )/%i0 ), | )], secs()), 
+			[trigger( %!/trig.mail, 
+				[get( v( edb )/signups.[last( %i0, . )] )], 
+				Event Reminder, 
+				You are signed up for +Event [last( %i0, . )] 
+				%([extract( get( v( edb )/event.[last( %i0, . )] ), 3, 1, | )]%) 
+				which will be held on 
+				[convsecs( last( get( v( edb )/event.[last( %i0, . )] ), | ))]
+				[get( v( edb )/TIMEZONE.[last( %i0, . )] )]. 
+			)] 
+			[trigger( %!/trig.mail, 
+				[first( get( v( edb )/event.[last( %i0, . )] ), | )], 
+				ST Event Reminder, 
+				You are scheduled to run +Event [last( %i0, . )] 
+				%([extract( get( v( edb )/event.[last( %i0, . )] ), 3, 1, | )]%) 
+				which will be held on 
+				[convsecs( last( get( v( edb )/event.[last( %i0, . )] ), | ))]. 
+			)], 
+			This is an error message. 
+		)] 
+	)]
+
+&C.+EVENT/TIMEZONE [v( d.eco )]=$+event/timezone *=*:
+	@pemit %#=
+		[case( 0, 
+// .. errors
+			isnum( %0 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			hasattr( v( edb ), event.%0 ), 
+			[u( .alert, +Events )] Sorry%, %0 is not an event. Check +events 
+			for the list of current events., 
+
+			cor( 
+				u( .isstaff, %# ), 
+				strmatch( first( get( v( edb )/event.%0 ), | ), %# )
+			), 
+			[u( .alert, +Events )] Only 
+			[name( first( get( v( edb )/event.%0 ), | ))] or Staff can change 
+			this event's timezone., 
+
+// .. change that timezone!
+			[set( v( edb ), timezone.%0:%1 )]
+			[u( .alert, +Events )] You set the timezone for +event %0 
+			to %1%.
+			[trigger( %!/trig.mail, 
+				[get( v( edb )/signups.%0 )], 
+				Event Timzone Change, 
+				[name( %# )] has changed the timezone of +Event %0 
+				%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%) 
+				to %1. 
+			)] 
+		)]
+
+
+
+/*
++event/addsum #=Thing=<Stuff>/Thing2=<Stuff2>/Thing3=<Stuff3>/...
+    Create different type of summaries (threat, reward, etc.) to event #.
+
+i: illegal attr names
+*/
+
+&C.+EVENT/ADDSUM [v( d.eco )]=$+event/addsum *=*:
+	@pemit %#=
+		[case( 0, 
+// .. errors
+			isnum( %0 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			hasattr( v( edb ), event.%0 ), 
+			[u( .alert, +Events )] Sorry%, %0 is not an event. Check +events 
+			for the list of current events., 
+
+			cor( 
+				u( .isstaff, %# ), 
+				strmatch( first( get( v( edb )/event.%0 ), | ), %# )
+			), 
+			[u( .alert, +Events )] 
+			Only [name( first( get( v( edb )/event.%0 ), | ))] or Staff 
+			can change this event's summaries., 
+
+			not( setr( i, filter( %!/fil.attrname, %1, / ))), 
+			[u( .alert, Events, alert )] The following items cannot be set 
+			because they do not have appropriate attribute names%, make sure you 
+			are using one word and no numbers:%r
+			[iter( %qi, 
+				edit( %i0, =, :%b ), 
+				/, %r 
+			)], 
+
+// .. add non-standard summaries
+			[u( .alert, Events )] Setting the following attributes to 
+			+event %0: %r
+			[iter( %1, 
+				[edit( %i0, =, :%b )]
+				[set( v( edb ), 
+					Summary.%0.[first( %i0, = )]:
+					[rest( %i0, = )] 
+				)], /, %r 
+			)]
+			[trigger( %!/trig.mail, 
+				[get( v( edb )/signups.%0 )], 
+				Event Summary Addition, 
+				[name( %# )] has added to the summary of +Event %0 
+				%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%)%r
+				%r
+				[iter( %1, edit( %i0, =, :%b ), /, %r )]. 
+			)] 
+		)]
+
+
+&FIL.ATTRNAME [v( d.eco )]=not( valid( attrname, first( %0, = )))
+
+
+&DEFAULT.TIMEZONE [v( d.eco )]=ET
+
+
+&SORTBY.EVENT-DATE [v( d.eco )]=
+	comp( 
+		extract( get( v( edb )/event.[last( %0, . )] ), 4, 1, | ), 
+		extract( get( v( edb )/event.[last( %1, . )] ), 4, 1, | )
+	)
+
+&C.+EVENTS/DATE [v( d.eco )]=$+events/date:
+	@pemit %#=
+		[u( .header, [mudname()] Current Events )]%r
+		[u( display.events.header )]%r
+		[iter( 
+			edit( 
+				sortby( %!/sortby.event-date, lattr( v( edb )/event.* )), 
+				EVENT., 
+			), 
+			u( display.events.one-line, %i0 ), 
+			, %r 
+		)]%r
+		[u( .footer, words( lattr( v( edb )/event.* )))]
+
+
+
+&C.+EVENT/CHANGESUM [v( d.eco )]=$+event/changesum *=*:
+	@pemit %#=
+		[case( 0, 
+// .. errors
+			isnum( %0 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			hasattr( v( edb ), event.%0 ), 
+			[u( .alert, +Events )] Sorry%, %0 is not an event. Check +events 
+			for the list of current events., 
+
+			cor( 
+				u( .isstaff, %# ), 
+				strmatch( first( get( v( edb )/event.%0 ), | ), %# )
+			), 
+			[u( .alert, +Events )] 
+			Only [name( first( get( v( edb )/event.%0 ), | ))] or Staff 
+			can change this event's summaries., 
+
+// .. change summaries
+			[set( v( edb ), summary.%0:%1 )]
+			[u( .alert, +Events )] You change the Summary of %0 to %1. 
+			Note this does not remove any summary items added with 
+			+Events/addsum!
+			[trigger( %!/trig.mail, 
+				[get( v( edb )/signups.%0 )], 
+				Event Summary Change, 
+				[name( %# )] has changed the summary of +Event %0 
+				%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%)%r
+				%r
+				%1. 
+			)] 
+		)]
+
+
+&C.+EVENT/LEAVE [v( d.eco )]=$+Event/leave *=@force %#=+Events/unsignup %0
+
+
+&C.+EVENT/RESIGN [v( d.eco )]=$+Event/resign *=@force %#=+Events/unsignup %0
+
+
+&C.+EVENTS/MINE [v( d.eco )]=$+Events/mine:
+	@pemit %#=
+		[setq( 1, 
+			edit( 
+				filter( fil.signed_up_for, 
+					lattr( v( edb )/signups.* ), 
+					, , %# 
+				), 
+				SIGNUPS., 
+			)
+		)]
+		[setq( 2, 
+			edit( 
+				filter( fil.is_st_for, lattr( v( edb )/event.* ), , , %# ), 
+				EVENT., 
+			)
+		)]
+
+		[u( .header, [name( %# )]'s Current +Events )]%r
+		[u( display.events.header )]%r
+		[iter( sortby( sortby.event-date, %q1 %q2 ), 
+			u( display.events.one-line, %i0 ), 
+			, %r 
+		)]%r
+		[u( .footer, 
+			[words( %q1 )] of [words( lattr( v( edb )/event.* ))] events 
+		)]
+
+
+&C.+EVENT/MAIL [v( d.eco )]=$+event/mail *=*:
+	@pemit %#=
+		[case( 0, 
+// .. errors
+			isnum( %0 ), 
+			[u( .alert, Events )] Please use a number. Such as +Event 1., 
+
+			hasattr( v( edb ), event.%0 ), 
+			[u( .alert, +Events )] Sorry%, %0 is not an event. Check +events 
+			for the list of current events., 
+
+			hasattr( v( edb ), signups.%0 ), 
+			[u( .alert, +Events )] 
+			Event %0 has no sign-ups to @mail%, yet., 
+
+			cor( 
+				u( .isstaff, %# ), 
+				strmatch( first( get( v( edb )/event.%0 ), | ), %# )
+			), 
+			[u( .alert, +Events )] 
+			Only [name( first( get( v( edb )/event.%0 ), | ))] or Staff 
+			can @mail about this event., 
+
+// .. mail some mails!
+			[u( .alert, Events )] 
+			@mailing 
+			[itemize( 
+				[iter( get( v( edb )/signups.%0 ), name( %i0 ), , | )], 
+				| 
+			)] 
+			about Event %0 
+			%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%).
+			[trigger( %!/trig.mail, 
+				[get( v( edb )/signups.%0 )], 
+				Event %0 - Mail, 
+				[name( %# )] is mailing about +Event %0 
+				%([extract( get( v( edb )/event.%0 ), 3, 1, | )]%)%r
+				[u( .divider, )]%r
+				%1. 
+			)] 
+		)]
+
+
+
+
+
+&FN.TIME [v( d.eco )]=
+	[if( hasattr( %#, event.hours ), 
+		[ljust( 
+			convsecs( 
+				add( 
+					extract( get( v( edb )/%0 ), 4, 1, | ), 
+					mul( 3600, get( %#/event.hours ))
+				)
+			), 
+			16 
+		)]
+		[ljust( [get( %#/event.timezone )], 3 )], 
+		[ljust( convsecs( extract( get( v( edb )/%0 ), 4, 1, | )), 16 )] 
+		[ljust( 
+			[if( get( v( edb )/timezone.[last( %0, . )] ), 
+				[get( v( edb )/timezone.[last( %0, . )] )], 
+				[get( v( edb )/default.timezone )] 
+			)], 
+			3 
+		)] 
+	)]
+
+
+&C.+EVENT/ST [v( d.eco )]=$+events/st *:
+	@pemit %#=
+		[if( pmatch( %0 ), 
+			[setq( 2, 
+				iter( lattr( v( edb )/event.* ), 
+					if( 
+						strmatch( 
+							first( get( v( edb )/%i0 ), | ), 
+							pmatch( %0 )
+						), 
+						after( %i0, . )
+					)
+				)
+			)]
+			[u( .header, Current [mudname()] Events )]%r
+			[u( display.events.header )]%r
+			[iter( sortby( sortby.event-date, %q2 ), 
+				u( display.events.one-line, %i0 ), 
+				, %r 
+			)]%r
+			[u( .footer, 
+				[words( %q1 )] of [words( lattr( v( edb )/event.* ))] events 
+			)], 
+			[u( .alert, +Events )] I cannot find %0 as a player. 
+		)]
+
+
+
+&FIL.IS_ST_FOR [v( d.eco )]=strmatch( first( get( v( edb )/%0 ), | ), %1 )
+
+
+
+&FIL.SIGNED_UP_FOR [v( d.eco )]=t( match( get( v( edb )/%0 ), %1 ))
+
+
+
+
+
+
+
+
+&display.events.header [v( d.eco )]=
+	localize( strcat( 
+		setq( l, strlen( get( v( edb )/eventtotal ))), 
+		ansi( h, 
+			strcat( 
+				ljust( NUM, 3 ), %b, 
+				ljust( ST, 09 ), %b, 
+				ljust( Genre, 10 ), %b, 
+				ljust( Title, sub( 31, %ql )), %b, 
+				ljust( Date, 18 ), %b, 
+				ljust( Sgnps, 5 ) 
+			)
+		)
+	))
+
+
+
+&display.events.one-line [v( d.eco )]=
+	localize( strcat( 
+		setq( e, get( v( edb )/event.%0 )), 
+		setq( l, strlen( get( v( edb )/eventtotal ))), 
+		ljust( %0, %ql ), %b, 
+		ljust( moniker( first( %qe, | )), 09 ), %b, 
+		ljust( elements( %qe, 2, | ), 10 ), %b, 
+		ljust( elements( %qe, 3, | ), sub( 31, %ql )), %b, 
+		u( fn.time, event.%0 ), %b, 
+		words( get( v( edb )/signups.%0 ))
+	))
+
+
+
+
+
+
+
+
+
+
+
+@@ ---------------------------------------
+
+@create Events Database <EDB>=10
+
+&REMINDDAY. Events Database <EDB>=-86400
+
+&EVENTTOTAL Events Database <EDB>=1667
+
+&DEFAULT.TIMEZONE Events Database <EDB>=est
+
+
+@@ ---------------------------------------
+
+@force me=&EDB [v( d.eco )]=num( Events Database <EDB> )
+
+@daily [v( d.eco )]=@trigger %!/TRIG.DAILY

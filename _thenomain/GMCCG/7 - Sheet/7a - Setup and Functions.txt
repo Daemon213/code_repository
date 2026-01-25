@@ -1,0 +1,284 @@
+/*
+Sheet v4
+
+One of the things I was asked for in the new sheet system was the ability to 
+show two different currently popular layouts. This meant a stat lookup 
+divorced from the display, which should have been done from the start.
+
+Traits are pulled up in blocks, a single line of output in a format that makes 
+the most sense for what is being displayed.
+
+Most output will be '<trait>:<value>[.<offset(s)>]|...', but some will be 
+different. Notably: Skill specialties, willpower, and health.
+
+Blocks examples:
+	Bio
+	Attributes.Mental
+	Skills.Social
+	Merits
+
+So a block is formatted '&<block>.<template>'. If there is no <template>, 
+use 'default'.
+
+A complete list of blocks is in '7b - Blocks'
+
+--
+
+We also are going to use a very light markup system. Super-light. This system 
+does not have the ability to handle nesting.
+
+# <block>.<sub-block>
+	A sub-divider. If we are in 'attributes', then '#attributes.mental'.
+
+* <text>
+	Indented text. Almost certainly used for sub-stats such as specialties.
+
+<trait>:<value(s)>
+	A stat to display. We don't process this, so '4.-1' is valid.
+	Let the sheet process it.
+
+
+
+================================================================================
+== SETUP & DATA ================================================================
+*/
+
+@create Newest Sheet Code <nsc>=10
+@fo me=&d.nsc me=[num( Newest Sheet Code <nsc> )]
+@set Newest Sheet Code <nsc>=inherit safe
+
+// --
+
+@fo me=&d.sfp [v( d.nsc )]=search( name=Stat Functions Prototype <sfp> )
+@fo me=&d.health [v( d.nsc )]=search( name=WoD Health System <whs> )
+@fo me=&d.dd [v( d.nsc )]=search( name=Data Dictionary <dd> )
+
+// below happens before cg is installed: moving it to Chargen Setup, '8a'
+// @fo me=&d.cg [v( d.nsc )]=search( name=GMC Chargen <cg> )
+
+
+// --
+
+// Code Parent formatting
+@fo me=@parent [v( d.nsc )]=[v( d.codp )]
+&prefix.dot-functions [v( d.nsc )]=.
+&prefix.block_bio [v( d.nsc )]=bio.
+&prefix.block_attribute [v( d.nsc )]=attributes.
+&prefix.block_skill [v( d.nsc )]=skills.
+&prefix.block_merit [v( d.nsc )]=merits.
+&prefix.block_traits [v( d.nsc )]=traits.
+&prefix.block_advantages [v( d.nsc )]=advantages.
+&prefix.block_health [v( d.nsc )]=health.
+&prefix.block_powers [v( d.nsc )]=powers.
+
+
+
+/*
+================================================================================
+== CROSS-PLATFORM FUNCTIONS ====================================================
+*/
+
+&.titlestr [v( d.nsc )]=titlestr( edit( %0, _, %b ))
+&.isstaff [v( d.nsc )]=isstaff( %0 )
+
+
+
+/*
+================================================================================
+== COMMAND: SHEET ==============================================================
+
+We're putting this at the start, as it does a little checking and calls the 
+specific sheet object's '&display.sheet' attribute.
+
+Here we're starting to use '.sheet.<pref>' as a way to set preferences.
+
+*/
+
+&c.sheet [v( d.nsc )]=$^\+?sheet( [\s\S]+)?$:
+	think cat( 
+		target:, setr( t, if( t( %1 ), trim( %1 ), %# )), %r, 
+		pmatch:, setr( p, pmatch( %qt )), %r, 
+		sheet loc:, setr( s, u( v( d.sfp )/f.find-sheet, %qp )), %r, 
+		which sheet?:, setr( w, default( %#/.sheet.display, rows )), %r, 
+		where sheet display:, setr( a, locate( %!, Sheet: %qw, i ))
+	); 
+
+	@assert t( %qp )={ @pemit %#=Player not found. }; 
+
+	@assert isdbref( %qs )={ @pemit %#=Sheet not found. }; 
+
+	@assert cor( u( .isstaff, %# ), not( %qt ), strmatch( %qp, %# ))={ 
+		@pemit %#=Staff only. 
+	}; 
+
+	@assert t( %qa )={ 
+		@pemit %#=I can't find the sheet display type you want me to find. 
+		This is a lame error. 
+	}; 
+
+	@pemit %#=u( %qw/display.sheet, %qs, %qp, get( %qs/_bio.template )); 
+
+// --
+
+@set v( d.nsc )/c.sheet=regex
+
+
+/*
+================================================================================
+== CHEATING AT GETSTATS ========================================================
+
+This system is designed to use the getstat system as efficiently as possible
+in order to save function invocation cycles.
+
+
+--------------------------------------------------------------------------------
+-- The Basics: Numeric & String ------------------------------------------------
+
+0: sheet dbref
+1: stat.path_(full)
+output: <value>, but if lookup is null then return something
+
+*/
+
+&f.cheat_getstat.numeric [v( d.nsc )]=
+	if( 
+		comp( 
+			setr( t, ulocal( v( d.sfp )/f.getstat.workhorse.numeric, %0, _%1 )), 
+			@@( null )
+		), 
+		%qt, 
+		0 
+	)
+	
+
+// --
+
+&f.cheat_getstat.string [v( d.nsc )]=
+	default( %0/_%1, <not set> )
+
+// --
+// Output: <value>.<detail>:<value>.<detail>:<etc.>
+
+&f.cheat_getstat.list [v( d.nsc )]=
+	localize( strcat( 
+		setq( 1, u( v( d.sfp )/f.statpath-without-instance, %1 )), 
+		setq( v, get( v( d.dd )/%q1 )), 
+		setq( s, elements( %qv, 2, | )), 
+		setq( v, elements( %qv, 1, | )), 
+		iter( get( %0/_%1 ), 
+			strcat( %i0, ., elements( %qs, match( %qv, %i0, . ), . )), 
+			., : 
+		)
+	))
+
+
+/*
+--------------------------------------------------------------------------------
+-- The Basics: Get Name:Value --------------------------------------------------
+
+0: sheet dbref
+1: stat.path_(full)
+2: what 'cheat_getstat.*' type (stat class)
+
+*/
+
+&f.cheat_getstat.with_name [v( d.nsc )]=
+	strcat( 
+		u( .titlestr, rest( %1, . )), :, 
+		ulocal( f.cheat_getstat.%2, %0, %1 )
+	)
+
+// --
+
+&f.cheat_getstat.name_only [v( d.nsc )]=
+	u( .titlestr, rest( %1, . ))
+
+
+/*
+--------------------------------------------------------------------------------
+-- Cheat Getstat Trait and Subtraits -------------------------------------------
+
+Mostly for skills, where a skill can have a specialty, do this to list them all 
+in-line. However, some merits can have sub-traits, so we have set it up to be 
+more generic.
+
+0: sheet dbref
+1: trait_name (e.g., animal_ken)
+2: trait category (e.g., skill)
+
+*/
+
+
+&f.cheat_getstat.trait-n-subtrait [v( d.nsc )]=
+	strcat( 
+		ulocal( f.cheat_getstat.with_name, %0, %2.%1, numeric ), 
+		if( words( setr( s, sort( lattr( %0/_%2.%1.* )))), 
+			|[iter( %qs, 
+				* [u( .titlestr, edit( %i0, ucstr( _%2.%1. ), ))], 
+				, | 
+			)] 
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Cheat Getstat Skill and Specs -----------------------------------------------
+
+For backwards compatibility.
+
+*/
+
+&f.cheat_getstat.skill-n-specs [v( d.nsc )]=
+	u( f.cheat_getstat.trait-n-subtrait, %0, %1, skill )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Cheat Getstat: Pool ---------------------------------------------------------
+
+0: sheet dbref
+1: pool name (main; we know to add 'maximum' on the end)
+	e.g., willpower, vitae, etc.
+
+*/
+
+&f.cheat_getstat.pool [v( d.nsc )]=
+	strcat( 
+		titlestr( edit( %1, _, %b )), :, 
+		ulocal( f.cheat_getstat.numeric, %0, advantage.%1 ), |, 
+
+		titlestr( edit( %1, _, %b )), %b, Maximum:, 
+		ulocal( f.cheat_getstat.numeric, %0, advantage.%1_maximum )
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Cheat Getstat: Morality -----------------------------------------------------
+
+0: sheet dbref
+1: morality type (morality, humanity, etc.)
+
+*/
+
+/* This was for a different implementation of Cover. Trying something else. 
+&f.cheat_getstat.morality [v( d.nsc )]=
+	strcat( 
+		ulocal( f.cheat_getstat.with_name, %0, advantage.%1, numeric ), 
+		iter( edit( lattr( %0/_advantage.%1.* ), _ADVANTAGE.[ucstr( %1 )]., ), 
+			strcat( 
+				|*, %b, 
+				(%i0), %b, 
+				u( f.cheat_getstat.string, %0, advantage.%1.%i0 )
+			), , @@ 
+		)
+	)
+*/
+
+&f.cheat_getstat.morality [v( d.nsc )]=
+  if( strlen( %2 ), 
+		%2:[ulocal( f.cheat_getstat.numeric, %0, advantage.%1, numeric )], 
+		ulocal( f.cheat_getstat.with_name, %0, advantage.%1, numeric )
+	)
+

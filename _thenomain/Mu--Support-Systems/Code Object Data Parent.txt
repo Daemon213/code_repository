@@ -1,0 +1,120 @@
+/*
+CODE OBJECT DATA PARENT
+
+The purpose of this is to @parent any code object to in order to give you a 
+rundown of its attributes in an organized manner.
+
+Usage:
+	@parent <object>=codp
+
+Configuration:
+	&prefix.<header_name> <object>=<a list of attribute prefixes>
+
+If you use a <header_name> that is by default on the Code Object Data Parent, 
+it will override its prefixes.
+
+Because this object uses @descformat, you may @desc your object as normal.
+
+Requires:
+	header(<text>): Game's "pretty" output header
+	footer(<text>): Game's "pretty" output footer
+	divider(<text>): Game's "pretty" output divider
+	vtable(): Chime's vertical table layout system
+	titlestr(): String edit to prettify a title
+
+
+--------------------------------------------------------------------------------
+-- Setup -----------------------------------------------------------------------
+*/
+@create Code Object Data Parent <codp>=10
+
+@fo me=&d.codp me=[search( name=Code Object Data Parent <codp> )]
+
+@set Code Object Data Parent <codp>=INHERIT PARENT_OK SAFE VISUAL
+
+&ABOUT [v( d.codp )]=This object is for all other code objects to parent to. 
+	It will format the attributes without clobbering a useful @desc.
+
+/*
+--------------------------------------------------------------------------------
+-- Default Prefixes ------------------------------------------------------------
+*/
+
+&PREFIX.SERVER_COMMANDS [v( d.codp )]=
+	startup shutdown connect aconnect disconnect adisconnect listen ahear aahear 
+	amhear amove
+
+&PREFIX.DATA [v( d.codp )]=d. data.
+
+&PREFIX.COMMANDS [v( d.codp )]=c. cmd.
+
+&PREFIX.FUNCTIONS [v( d.codp )]=f. fn. fnc. fct.
+
+&PREFIX.FILTERS [v( d.codp )]=fil. filter.
+
+&PREFIX.TRIGGERS [v( d.codp )]=tr. trig.
+
+&PREFIX.SORTS [v( d.codp )]=sort. sortby.
+
+&PREFIX.DISPLAYS [v( d.codp )]=display. format.
+
+&PREFIX.USER_FUNCTIONS [v( d.codp )]=
+	ufunc. ufunc-switch. ufunc/
+
+&PREFIX.@V_ATTRIBUTES [v( d.codp )]=
+	VA VB VC VD VE VF VG VH VI VJ VK VL VM VN VO VP VQ VR VS VT VU VV VW VX 
+	VY VZ
+
+&PREFIX.DOT_ATTRS [v( d.codp )]=.
+
+
+/*
+--------------------------------------------------------------------------------
+-- Descformat ------------------------------------------------------------------
+
+0: @desc 
+
+ql: list of 'prefix_title prefix prefix prefix', |-delimited 
+qc: attribute count
+
+--
+*/
+
+@DescFormat [v( d.codp )]=
+	localize( strcat( 
+		setq( l, 
+			iter( 
+				lattrp( %!/prefix.* ), 
+				cat( 
+					rest( %i0, . ), 
+					iter( 
+						get( %!/%i0 ), 
+						lcstr( sort( lattr( %!/%i0* ))))
+					), 
+				%b, 
+				| 
+			)
+		), 
+// >> count actual attributes
+		setq( c, 
+			words( setunion( iter( %ql, rest( %i0 ), | ), ))
+		), 
+// >> Check for @Desc
+		header( name( %! ))%r, 
+		if( strlen( %0 ), 
+			%r%0%r%r, 
+			%rDesc is null for this code object.%r%r 
+		), 
+// >> only list headers if they have attributes to list
+		iter( %ql, 
+			if( words( rest( %i0 )), 
+				strcat( 
+					divider( titlestr( edit( first( %i0 ), _, %b )))%r, 
+					vtable( rest( %i0 ))%r 
+				)
+			), 
+			|, 
+			@@ 
+		), 
+		footer( cat( %qc, if( eq( %qc, 1 ), attribute, attributes )))
+	))

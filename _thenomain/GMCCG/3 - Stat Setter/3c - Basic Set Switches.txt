@@ -1,0 +1,203 @@
+/*
+
+These are switches for the basic trait-setting commands.
+
+
+
+================================================================================
+== /SET ========================================================================
+
+	stat/set [<player>/]<trait> =+- <value>
+
+
+--------------------------------------------------------------------------------
+-- Splitting the /Set input ----------------------------------------------------
+
+0: The thing to match. player/stat =+- value 
+q0: Target
+q1: Stat 
+q2: Operator
+q3: Value (allowed to be null)
+returns: the above, through registers, 1 if all registers are full
+
+I hate having to do it like this. Wanted a regexp, didn't work.
+
+*/
+
+&d.regmatch-stat [v( d.ss )]=
+	strcat( 
+		if( gte( words( %0, / ), 2 ), 
+			setq( 0, trim( first( %0, / ))), 
+			setq( 0, %1 )
+		), 
+
+		if( gte( words( %0, / ), 2 ), 
+			setq( 1, rest( %0, / )), 
+			setq( 1, %0 )
+		), 
+
+		setq( 2, 
+			case( 1, 
+				strmatch( %q1, *=* ), =, 
+				strmatch( %q1, *+* ), +, 
+				strmatch( %q1, *-* ), -
+			)
+		), 
+
+		setq( 3, trim( rest( %q1, %q2 ))), 
+
+		setq( 1, trim( first( %q1, %q2 ))), 
+
+		cand( t( %q0 ), t( %q1 ), t( %q2 ))
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- /SET ------------------------------------------------------------------------
+
+The main switch.
+
+0: [<target>/]<stat> +-= <value>
+1: (null) | offset | override, as passed by the other switches
+
+q0: target
+q1: stat
+q2: +-=
+q3: value
+
+qm: regmatch-stat (fills q0-q1, above)
+qp: player
+qx: player[:sub-sheet] (if any)
+qn: result from validate-name
+qs: result from shift-/setstat
+
+uses: setstat() and shiftstat().
+(stat-setting functions find the sheet for us)
+
+*/
+
+&f.stat/set [v( d.ss )]=
+	strcat( 
+		setq( m, u( d.regmatch-stat, %0, %# )), 
+		setq( p, 
+			if( isstaff( %# ), 
+				u( .pmatch, first( %q0, : )), 
+				%# 
+			)
+		), 
+		setq( x, 
+			if( isstaff( %# ), 
+				%qp:[rest( %q0, : )], 
+				%#:[rest( %q0, : )] 
+			)
+		), 
+		case( 0, 
+
+// .. check that /set input makes sense
+			t( %qm ), 
+			I couldn't tell what you typed. 
+			The format is: stat/set %[<target>/%]<stat> <operator> <value>, 
+
+// .. players can only /set on themselves if they're 'in chargen'
+			cor( 
+				isstaff( %# ), 
+				isapproved( %#, chargen )
+			), 
+			u( .msg, stat/set, Must be Staff or be In-Chargen ), 
+
+// .. player not found
+			t( %qp ), 
+			u( .msg, stat/set, Player '%qp' not found ), 
+
+// .. template not there
+			t( getstat( %qp/template )), 
+			u( .msg, stat/set, 
+				No Template set; use 'stat/template <template>' 
+			), 
+
+// .. no multi-stat setting here
+			strcat( 
+				setq( n, 
+					ulocal( u( d.stat-funcs )/f.statpath-validate-name, %q1 )
+				), 
+				cor( 
+					lte( words( %qn ), 1 ), 
+					not( %qn )
+				)
+			), 
+			u( .msg, stat/set, 
+				cat( 
+					Can only set one stat at a time. I'm matching:, 
+					itemize( 
+						iter( %qn, 
+							ansi( 
+								n, u( v( d.stat-funcs )/f.statname.workhorse, 
+									rest( %i0, . )
+								), 
+								n, %b, 
+								xh, %[, 
+								xh, u( v( d.stat-funcs )/f.statname.workhorse, 
+									first( %i0, . )
+								), 
+								xh, %] 
+							), 
+							, | 
+						), 
+						| 
+					)
+				)
+			), 
+
+
+// >> SET THAT STAT!
+// .. .. =, setstat
+			comp( %q2, = ), 
+			if( 
+				t( setr( s, setstat( %qx/%q1, %q3, %1 ))), 
+				%qs, 
+				u( .msg, stat/set, Error from setstat(): %qs )
+			), 
+
+// .. .. +/-, shiftstat
+			not( xor( comp( %q2, + ), comp( %q2, - ))), 
+			if( 
+				t( setr( s, shiftstat( %qx/%q1, %q2%q3, %1 ))), 
+				%qs, 
+				u( .msg, stat/set, Error from shiftstat(): %qs )
+			), 
+
+// .. uncaught error (it happens)
+			u( .msg, stat/set, 
+				I couldn't tell what you typed. 
+				The format is: 'stat/set <target>/<stat> <operator> <value>' 
+			)
+		)
+	)
+
+
+
+/*
+=============================================================================
+== /OFFSET ==================================================================
+
+Stat-specific, but numerics only.
+
+*/
+
+&f.stat/offset [v( d.ss )]=u( f.stat/set, %0, offset )
+
+
+
+/*
+=============================================================================
+== /OVERRIDE ================================================================
+
+Stat-specific, override everything
+
+*/
+
+&f.stat/override [v( d.ss )]=u( f.stat/set, %0, override )
+
+
+

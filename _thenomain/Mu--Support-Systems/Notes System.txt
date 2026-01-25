@@ -1,0 +1,953 @@
+/*
+Notes Setter <ns>
+
+================================================================================
+== SETUP =======================================================================
+*/
+
+@create Notes Setter <ns>=10
+@set Notes Setter <ns>=INHERIT SAFE
+
+@parent Notes Setter <ns>=codp
+
+
+/*
+================================================================================
+== DATA ========================================================================
+*/
+
+// None
+
+
+/*
+================================================================================
+== FUNCTIONS ===================================================================
+*/
+
+&.msg Notes Setter <ns>=ansi( h, <%0%>, n, %b%1 )
+
+&F.SCRUB-NAME Notes Setter <ns>=strip( %0, %%%, ; <>%[%]~* )
+
+&F.APPROVED-NOTE Notes Setter <ns>=t( extract( get( %0/%1 ), 1, 1, ~ ))
+
+&F.LIST.NOTES Notes Setter <ns>=
+	localize( trim( strcat( 
+		setq( l, 
+			edit( 
+				filter( fil.not-hidden, lattr( %0/_note~%1*~%2* ), , , %0, %# ), 
+				_NOTE~, 
+			)
+		), 
+		setq( g, filter( fil.cagegory.general, %ql )), 
+		setq( l, setdiff( %ql, %qg )), 
+		%qg %ql 
+	)))
+
+
+&F.ABOUT-TARGET Notes Setter <ns>=
+	case( 1, 
+		t( pmatch( %0 )), pmatch( %0 ), 
+		strmatch( %0, me ), %#, 
+		strmatch( %0, here ), loc( %# ), 
+		t( objeval( %#, num( %0 ))), objeval( %#, num( %0 )), 
+		#-1 
+	)
+
+
+&F.PLAYER.TO-LIST Notes Setter <ns>=
+	if( strmatch( %0, *%,* ), 
+		iter( %0, if( pmatch( trim( %i0 )), pmatch( trim( %i0 ))), %, ), 
+		iter( %0, if( pmatch( trim( %i0 )), pmatch( trim( %i0 ))))
+	)
+
+&F.NOTE.GET Notes Setter <ns>=extract( get( %0/_note~%1~%2 ), 3, 1, ~ )
+&F.NOTE.STAMP Notes Setter <ns>=extract( get( %0/_note~%1~%2 ), 2, 1, ~ )
+
+/* 
+================================================================================
+== FORMAT/DISPLAY ==============================================================
+*/
+
+&FORMAT.NOTE Notes Setter <ns>=
+	wrap( s( edit( %0, \[, \\\[, \], \\\] )), dec( width( %# )))
+&FORMAT.STAMP Notes Setter <ns>=%0
+&FORMAT.MAKESTAMP Notes Setter <ns>=%N %(%#%) [time( )]
+
+&FORMAT.TITLE Notes Setter <ns>=
+	titlestr( edit( [first( %0, ~ )] / [last( %0, ~ )], _, %b ))
+
+&FORMAT.NAME Notes Setter <ns>=
+	titlestr( 
+		edit( 
+			if( strmatch( flags( %0/%1 ), *M* ), 
+				%[ [last( %1, ~ )] %], 
+				last( %1, ~ )
+			), 
+			_, %b 
+		)
+	)
+
+
+&FORMAT.ALL-NOTES Notes Setter <ns>=
+	strcat( 
+		wheader( 
+			[name( %0 )]'s Notes
+			[if( isstaff( %# ), %b%(%0%) )] 
+		), %r, 
+		u( display.all-notes, %0 ), %r, 
+		wfooter( )
+	)
+
+
+&FORMAT.ONE-NOTE Notes Setter <ns>=
+	strcat( 
+		wheader( [name( %0 )]'s Note: [u( format.title, %qa )] ), %r, 
+		u( format.note, extract( get( %0/_NOTE~%1 ), 3, 1, ~ )), %r, 
+		if( t( setr( 9, extract( get( %0/_NOTE~%1 ), 1, 1, ~ ))), 
+			%r[ansi( h, Approved By )]: %q9%r 
+		), 
+		wfooter( u( format.stamp, extract( get( %0/_NOTE~%1 ), 2, 1, ~ )))
+	)
+
+&DISPLAY.ALL-NOTES Notes Setter <ns>=
+	strcat( 
+		setq( i, ), 
+		setq( l, u( f.list.notes, %0 )), 
+		setq( c, setunion( iter( %ql, first( %i0, ~ )), )), 
+ 		iter( %qc, 
+ 			strcat( 
+ 				wdivider( titlestr( edit( %i0, _, %b ))), %r, 
+				setq( i, 
+					iter( graball( %ql, %i0~* ), 
+						cat( %b, u( format.name, %0, _note~%i0 )), 
+						, | 
+					)
+				), 
+				table( %qi, 25, width( %# ), | )
+ 			), , %r  
+ 		)
+	)
+
+
+/*
+================================================================================
+== FILTERS =====================================================================
+*/
+
+&FIL.CAGEGORY.GENERAL Notes Setter <ns>=strmatch( %0, general~* )
+
+&FIL.NOT-HIDDEN Notes Setter <ns>=
+	cor( isstaff( %2 ), not( strmatch( flags( %1/%0 ), *M* )))
+
+
+/*
+================================================================================
+== COMMANDS ====================================================================
+
+--------------------------------------------------------------------------------
+-- Command: Mistress -----------------------------------------------------------
+
+Ahh, mistress system, how we adore thee.
+
+*/
+
+&C.NOTE Notes Setter <ns>=$^\+?notes?(.*)$:@pemit %#=
+	switch( %1, 
+		@@( <null> ), u( c.note.default, %qs ), 
+		/*, u( c.note.switched, first( after( %1, / )), rest( %1 )), 
+		%b*, u( c.note.specific, trim( %1 ), %qs ), 
+		u( .msg, note, Format is `note or `note%[/<switch>%] <topic>  )
+	)
+
+@set Notes Setter <ns>/C.NOTE=regexp
+@set Notes Setter <ns>/C.NOTE=no_parse
+
+
+&C.NOTE.SWITCHED Notes Setter <ns>=
+	case( 0, 
+		words( lattr( %!/c.note/* )), 
+		u( .msg, note, This command not take switches ), 
+
+		neq( words( setr( m, lattr( %!/c.note/%0* ))), 1 ), 
+		u( %qm, %1 ), 
+		
+		u( .msg, note, 
+			strcat( 
+				case( 1, 
+					gt( words( %qm ), 1 ), Too many matches, 
+					lt( words( %qm ), 1 ), No match, 
+					Unknown error
+				), %;%b, 
+				possible switches:, %b, 
+				lcstr( iter( lattr( %!/c.note/* ), rest( %i0, / ), , %,%b ))
+			)
+		)
+	)
+
+
+&C.NOTE.DEFAULT Notes Setter <ns>=
+	u( format.all-notes, %# )
+
+
+&C.NOTE.SPECIFIC Notes Setter <ns>=
+	case( 1, 
+		strmatch( %0, */* ), u( c.note/view, %0 ), 
+
+		strmatch( %0, here ), u( c.note/view, loc( %# )), 
+
+		cand( isstaff( %# ), t( pmatch( %0 ))), u( c.note/view, %0 ), 
+
+		cand( 
+			hastype( %0, ROOM ), 
+			cor( isstaff( %# ), strmatch( loc( %# ), %0 ))
+		), 
+		u( c.note/view, %0 ), 
+
+		u( c.note/view, %#/%0 )
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Switch: View ----------------------------------------------------------------
+*/
+
+&C.NOTE/VIEW Notes Setter <ns>=
+	strcat( 
+		setq( d, u( f.about-target, trim( first( %0, / )))), 
+		setq( n, edit( trim( rest( %0, / )), %b, _ )), 
+		case( 0, 
+			cor( 
+				isstaff( %# ), 
+				strmatch( owner( %qd ), %# ), 
+				strmatch( %qd, loc( %# )), 
+				strmatch( loc( %qd ), loc( %# ))
+			), 
+			u( .msg, note, Staff only ), 
+
+			t( %qd ), u( .msg, note, Target not found ), 
+
+			t( lattr( %qd/_note~* )), u( .msg, note, No notes to display ), 
+
+			t( %qn ), u( format.all-notes, %qd ), 
+
+			neq( words( setr( a, u( f.list.notes, %qd, , %qn ))), 0 ), 
+			u( .msg, note, Couldn't find that note ), 
+
+			u( format.one-note, %qd, first( %qa ))
+		)
+	)
+
+/*
+--------------------------------------------------------------------------------
+-- Switch: Add -----------------------------------------------------------------
+
+	note/add [<target person>/][<category>=]<title>/<note>
+*/
+
+&C.NOTE/ADD Notes Setter <ns>=
+	strcat( 
+		setq( x, first( %0, = )), 
+		setq( y, rest( %0, = )), 
+		case( 1, 
+			cand( strmatch( %qx, */* ), strlen( %qy )), 
+			strcat( 
+				setq( d, u( f.about-target, first( %qx, / ))), 
+				setq( c, trim( rest( %qx, / ))), 
+				setq( t, trim( first( %qy, / ))), 
+				setq( n, trim( rest( %qy, / ))), 
+			), 
+
+			cand( strlen( %qx ), strlen( %qy )), 
+			strcat( 
+				setq( d, %# ), 
+				setq( c, trim( %qx )), 
+				setq( t, trim( first( %qy, / ))), 
+				setq( n, trim( rest( %qy, / )))
+			), 
+
+			strcat( 
+				setq( d, %# ), 
+				setq( c, general ), 
+				setq( t, trim( first( %qx, / ))), 
+				setq( n, trim( rest( %qx, / )))
+			)
+		), 
+		setq( t, u( f.scrub-name, edit( %qt, %b, _  ))), 
+		setq( c, if( t( %qc ), u( f.scrub-name, edit( %qc, %b, _ )), general )), 
+		setq( s, u( format.makestamp )), 
+
+		case( 0, 
+			cor( 
+				isstaff( %# ), 
+				strmatch( %#, owner( %qd ))
+			), 
+			u( .msg, note/add, 
+				You may add notes only to yourself and your own 
+				objects and rooms 
+			), 
+
+			t( %qd ), 
+			u( .msg, note/add, Can't find that target ), 
+
+			strlen( %qc ), 
+			u( .msg, note/add, Must have a category ), 
+
+			strlen( %qt ), 
+			u( .msg, note/add, Must have a title ), 
+
+			strlen( %qn ), 
+			u( .msg, note/add, Must have content ), 
+
+			not( words( 
+				setdiff( 
+					lattr( %qd/_NOTE~*~%qt ), 
+					ucstr( _NOTE~%qc~%qt )
+				)
+			)), 
+			u( .msg, note/add, 
+				That note name exists under a different category%; 
+				please choose different name
+			), 
+
+			not( first( get( %qd/_NOTE~%qc~%qt ), ~ )), 
+			u( .msg, note/add, 
+				That note name exists as an approved note 
+				and cannot be overwritten
+			), 
+
+			strcat( 
+				wheader( strcat( 
+					ADDING, %b, name( %qd ), 's Note:, %b, 
+					titlestr( [edit( %qc, _, %b )] / [edit( %qt, _, %b )] )
+				)), %r, 
+
+				if( hasattr( %qd, _note~%qc~%qt ), 
+					strcat( 
+						wdivider( 
+							Old Value%, 
+							[u( format.stamp, 
+								u( f.note.stamp, %qd, %qc, %qt )
+							)] 
+						), %r, 
+						u( format.note, u( f.note.get, %qd, %qc, %qt )), %r, 
+						wdivider( New Value ), %r 
+					)
+				), 
+
+				if( 
+					strmatch( 
+						setr( e, set( %qd, _NOTE~%qc~%qt:~%qs~%qn )), 
+						#-* 
+					), 
+					%b ERROR WHILE SETTING: %qe, 
+					u( format.note, %qn )
+				), %r, 
+				wfooter( u( format.stamp, %qs )), 
+			)
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Switch: Delete --------------------------------------------------------------
+*/
+
+&C.NOTE/DELETE Notes Setter <ns>=
+	strcat( 
+		if( 
+			t( setr( n, rest( %0, / ))), 
+			setq( d, first( %0, / )), 
+			[setq( d, %# )][setq( n, %0 )] 
+		), 
+		if( 
+			gte( words( %qn, / ), 2 ), 
+			[setq( c, first( %qn, / ))][setq( n, rest( %qn, / ))], 
+			setq( c, * )
+		), 
+		setq( y, trim( rest( %qn, = ))), 
+		setq( n, trim( first( %qn, = ))), 
+		setq( d, u( f.about-target, %qd )), 
+		setq( l, 
+			filter( fil.not-hidden, 
+				lattr( %qd/_NOTE~%qc~[edit( %qn, %b, _ )]* ), 
+				, , %qd, %# 
+			)
+		), 
+
+		case( 0, 
+
+			cor( 
+				isstaff( %# ), 
+				strmatch( %#, owner( %qd ))
+			), 
+			u( .msg, note/delete, 
+				You may delete notes only to yourself and your own 
+				objects and rooms 
+			), 
+
+			t( lattr( %qd/_note~* )), 
+			u( .msg, note/delete, Target has no notes ), 
+
+			lte( words( %ql ), 1 ), 
+			u( .msg, note/delete, 
+				More than one note matches that name%; please be more specific 
+			), 
+
+			gte( words( %ql ), 1 ), 
+			u( .msg, note/delete, A note by that name could not be found ), 
+			
+			cor( isstaff( %# ), not( u( f.approved-note, %qd, %ql ))), 
+			u( .msg, note/delete, 
+				You may not delete that note because it has been approved and 
+				locked by a staff member
+			), 
+
+			comp( %qy, ), 
+			u( .msg, note/delete, 
+				WARNING: You are about to delete the note: 
+				[titlestr( last( edit( %ql, _, %b ), ~ ))]%r
+				[space( 5 )] If you are sure%, type: `note/delete %0=YES 
+			), 
+
+			not( t( comp( %qy, YES ))), 
+			u( .msg, note/delete, 
+				If you want to delete the note%, you need to use YES
+			), 
+
+			strcat( 
+				wheader( 
+					DELETING [name( %qd )]'s Note: 
+					[u( format.title, rest( %ql, ~ ))] 
+				), %r, 
+				u( format.note, extract( u( %qd/%ql ), 3, 1, ~ )), %r, 
+				wfooter( u( format.stamp, extract( u( %qd/%ql ), 2, 1, ~ ))), 
+				set( %qd, %ql: ) 
+			)
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Switch: [!]Dark -------------------------------------------------------------
+*/
+
+&C.NOTE/DARK Notes Setter <ns>=
+	strcat( 
+		setq( d, u( f.about-target, first( %0, / ))), 
+		setq( n, trim( rest( %0, / ))), 
+
+		setq( r, if( hastype( %qd, ROOM ), _ )), 
+		setq( l, lattr( %qd/_NOTE~*~[edit( %qn, %b, _ )]* )), 
+
+		case( 0, 
+
+			cor( not( strlen( %1 )), not( comp( %1, ! ))), 
+			u( .msg, note/dark, To undark%, ! must be passed ), 
+
+			isstaff( %# ), 
+			u( .msg, note/dark, Only staff can set notes %1dark. ), 
+
+			t( lattr( %qd/_note~* )), 
+			u( .msg, note/dark, Target has no notes ), 
+
+			lte( words( %ql ), 1 ), 
+			u( .msg, note/dark, 
+				More than one note matches that name%; please be more specific 
+			), 
+
+			gte( words( %ql ), 1 ), 
+			Error: A note by that name could not be found., 
+			strcat( 
+				set( %qd/%ql, %1hidden ), 
+				u( .msg, note/dark, 
+					strcat( 
+						Set, %b, name( %qd ), 's, %b, 
+						u( format.title, %ql ), %b, %1dark..., %b, 
+						if( t( %1 ), 
+							if( 
+								strmatch( flags( %qd/%ql ), M ), 
+								Failed, Success 
+							), 
+							if( 
+								strmatch( flags( %qd/%ql ), M ), 
+								Success, Failed 
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+
+
+&C.NOTE/!DARK Notes Setter <ns>=u( c.note/dark, %0, ! )
+
+
+/* 
+--------------------------------------------------------------------------------
+-- Switch: Staffnote -----------------------------------------------------------
+
+Merges '/add' and '/dark' into one command.
+
+*/
+
+&c.note/staffnote [v( d.ns )]=
+	strcat( 
+		setq( x, first( %0, = )), 
+		setq( y, rest( %0, = )), 
+		setq( d, u( f.about-target, first( %qx, / ))), 
+		setq( c, trim( rest( %qx, / ))), 
+		setq( t, trim( first( %qy, / ))), 
+		setq( n, trim( rest( %qy, / ))), 
+
+		setq( t, u( f.scrub-name, edit( %qt, %b, _  ))), 
+		setq( c, if( t( %qc ), u( f.scrub-name, edit( %qc, %b, _ )), general )), 
+		setq( s, u( format.makestamp )), 
+
+		case( 0, 
+			isstaff( %# ), 
+			u( .msg, note/staffnote, Staff only ), 
+
+			t( %qd ), 
+			u( .msg, note/staffnote, Can't find that target ), 
+
+			strlen( %qc ), 
+			u( .msg, note/staffnote, Must have a category ), 
+
+			strlen( %qt ), 
+			u( .msg, note/staffnote, Must have a title ), 
+
+			strlen( %qn ), 
+			u( .msg, note/staffnote, Must have content ), 
+
+			not( words( 
+				setdiff( 
+					lattr( %qd/_NOTE~*~%qt ), 
+					ucstr( _NOTE~%qc~%qt )
+				)
+			)), 
+			u( .msg, note/staffnote, 
+				That note name exists under a different category%; 
+				please choose different name
+			), 
+
+			not( first( get( %qd/_NOTE~%qc~%qt ), ~ )), 
+			u( .msg, note/staffnote, 
+				That note name exists as an approved note 
+				and cannot be overwritten
+			), 
+
+			strcat( 
+				wheader( strcat( 
+					ADDING DARK (staffnote), %b, name( %qd ), 's Note:, %b, 
+					titlestr( [edit( %qc, _, %b )] / [edit( %qt, _, %b )] )
+				)), %r, 
+
+				if( hasattr( %qd, _note~%qc~%qt ), 
+					strcat( 
+						wdivider( 
+							Old Value%, 
+							[u( format.stamp, 
+								u( f.note.stamp, %qd, %qc, %qt )
+							)] 
+						), %r, 
+						u( format.note, u( f.note.get, %qd, %qc, %qt )), %r, 
+						wdivider( New Value ), %r 
+					)
+				), 
+
+				if( 
+					strmatch( 
+						setr( e, set( %qd, _NOTE~%qc~%qt:~%qs~%qn )), 
+						#-* 
+					), 
+					%b ERROR WHILE SETTING: %qe%r, 
+					u( format.note, %qn )
+				), %r, 
+
+				if( 
+					strmatch( setr( e, set( %qd/_NOTE~%qc~%qt, hidden )), #-* ), 
+					%b ERROR WHILE DARKENING: %qe%r
+				), 
+
+				if( 
+					not( hasflag( %qd/_NOTE~%qc~%qt, hidden )), 
+					%b NOTE NOT DARK%r
+				), 
+
+				wfooter( u( format.stamp, %qs )), 
+			)
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Switch: [!]Approve ----------------------------------------------------------
+*/
+
+&C.NOTE/APPROVE Notes Setter <ns>=
+	strcat( 
+		setq( d, u( f.about-target, first( %0, / ))), 
+		setq( n, trim( rest( %0, / ))), 
+		setq( l, lattr( %qd/_NOTE~*~[edit( %qn, %b, _ )]* )), 
+
+		case( 0, 
+			cor( not( strlen( %1 )), not( comp( %1, ! ))), 
+			u( .msg, note/approve, To unapprove%, ! must be passed ), 
+
+			isstaff( %# ), 
+			u( .msg, note/approve, Only staff can %1approve notes ), 
+
+			lte( words( %ql ), 1 ), 
+			u( .msg, note/approve, 
+				More than one note matches that name%; please be specific 
+			), 
+
+			gte( words( %ql ), 1 ), 
+			u( .msg, note/approve, A note by that name could not be found ), 
+
+			strcat( 
+				if( strmatch( %1, ! ), 
+					set( %qd, 
+						%ql:
+						~[extract( get( %qd/%ql ), 2, 1, ~ )]~
+						[extract( get( %qd/%ql ), 3, 1, ~ )] 
+					), 
+					set( %qd, 
+						%ql:
+						[u( format.makestamp )]~
+						[extract( get( %qd/%ql ), 2, 1, ~ )]~
+						[extract( get( %qd/%ql ), 3, 1, ~ )] 
+					)
+				), 
+				u( .msg, note/approve, 
+					Set [name( %qd )]'s [u( format.title, %ql )] %1approved 
+				), 
+			)
+		), 
+	)
+
+
+&C.NOTE/!APPROVE Notes Setter <ns>=u( c.note/approve, %0, ! )
+
+
+/*
+--------------------------------------------------------------------------------
+-- Switch: Show ----------------------------------------------------------------
+*/
+// +note/show [<target>/]<note name>=<player names>
+
+&C.NOTE/SHOW Notes Setter <ns>=
+	strcat( 
+		setq( t, first( %0, = )), 
+		setq( s, u( f.player.to-list, rest( %0, = ))), 
+
+		if( strmatch( %qt, */* ), 
+			strcat( 
+				setq( n, edit( trim( rest( %qt, / )), %b, _ )), 
+				setq( d, first( %qt, / ))
+			), 
+			strcat( 
+				setq( n, edit( trim( %qt ), %b, _ )), 
+				setq( d, %# )
+			)
+		), 
+		setq( d, u( f.about-target, %qd )), 
+		setq( n, u( f.scrub-name, %qn )), 
+		setq( c, * ), 
+
+		setq( l, 
+			filter( fil.not-hidden, 
+				lattr( %qd/_NOTE~%qc~[edit( %qn, %b, _ )]* ), , , 
+				%qd, %# 
+			)
+		), 
+
+		case( 0, 
+			t( %qd ), 
+			u( .msg, note/show, Could not find that target ), 
+
+			cor( 
+				isstaff( %# ), 
+				strmatch( %#, owner( %qd ))
+			), 
+			u( .msg, note/show, 
+				You may show notes only from yourself and your own 
+				objects and rooms 
+			), 
+
+			lte( words( %ql ), 1 ), 
+			u( .msg, note/show, 
+				More than one note matches that name%; 
+				please be more specific 
+			), 
+
+			gte( words( %ql ), 1 ), 
+			u( .msg, note/show, A note by that name could not be found ), 
+
+			t( %qs ), 
+			u( .msg, note/show, 
+				The 'to list' must be valid player names or aliases 
+				in a comma-separated list 
+			), 
+
+			strcat( 
+				You show, %b, iter( %qs, name( %i0 ), , %,%b ), %b, 
+				if( strmatch( %qd, %# ), your, [name( %qd )]'s ), %b, 
+				note:, %b, u( format.title, rest( %ql, ~ )), 
+
+				null( iter( 
+					%qs, 
+					pemit( %i0, 
+						strcat( 
+							wheader( strcat( 
+								SHOWN, %b, name( %qd ), 's note:, %b, 
+								u( format.title, rest( %ql, ~ )), %b, 
+								%[from, %b, name( %# ), %]
+							)), %r, 
+							u( format.note, 
+								extract( u( %qd/%ql ), 3, 1, ~ )
+							), %r, 
+							wfooter( 
+								u( format.stamp, 
+									extract( u( %qd/%ql ), 2, 1, ~ )
+								)
+							)
+						)
+					)
+				)), 
+			)
+		)
+	)
+
+
+/*
+--------------------------------------------------------------------------------
+-- Switch: Move ----------------------------------------------------------------
+
+	note/move [<target>/]<note name>=<category>[/<new name>]
+*/
+
+&C.NOTE/MOVE Notes Setter <ns>=
+	strcat( 
+
+		setq( x, first( %0, = )), 
+		if( strmatch( %qx, */* ), 
+			strcat( setq( d, first( %qx, / )), setq( n, rest( %qx, / ))), 
+			strcat( setq( d, %# ), setq( n, %qx ))
+		), 
+		setq( d, u( f.about-target, %qd )), 
+		setq( n, u( f.scrub-name, trim( edit( %qn, %b, _  )))), 
+
+		setq( y, rest( %0, = )), 
+		setq( c, u( f.scrub-name, trim( first( %qy, / )))), 
+		setq( t, 
+			u( f.scrub-name, 
+				if( strmatch( %qy, */* ), trim( rest( %qy, / )), %qn )
+			)
+		), 
+
+		setq( l, 
+			filter( fil.not-hidden, lattr( %qd/_NOTE~*~%qn* ), , , %qd, %# )
+		), 
+		setq( s, get( %qd/%ql )), 
+
+		case( 0, 
+			cor( isstaff( %# ), strmatch( %#, owner( %qd ))), 
+			u( .msg, note/move, 
+				You may move notes only on yourself and your own 
+				objects and rooms 
+			), 
+
+			t( lattr( %qd/_note~* )), 
+			u( .msg, note/move, Target has no notes ), 
+
+			lte( words( %ql ), 1 ), 
+			u( .msg, note/move, 
+				More than one note matches that name%; please be more specific 
+			), 
+
+			gte( words( %ql ), 1 ), 
+			u( .msg, note/move, A note by that name could not be found ), 
+
+			cor( isstaff( %# ), not( u( f.approved-note, %qd, %ql ))), 
+			u( .msg, note/move, Only staff may move an approved note ), 
+
+			strlen( %qc ), 
+			u( .msg, note/move, Must have a new category ), 
+
+			strlen( %qt ), 
+			u( .msg, note/move, Must have a new title ), 
+
+			not( hasattr( %qd, _NOTE~%qc~%qt )), 
+			u( .msg, note/move, You can't move a note on top of another note ), 
+
+			not( words( 
+				setdiff( 
+					lattr( %qd/_NOTE~*~%qt ), 
+					cat( ucstr( _NOTE~%qc~%qt ), %ql )
+				)
+			)), 
+			u( .msg, note/move, 
+				That note name exists under a different category%; 
+				please choose different name
+			), 
+
+			strcat( 
+				wheader( strcat( 
+					MOVING, %b, name( %qd ), 's Note:, %b, 
+					u( format.title, rest( %ql, ~ )), 
+				)), %r, 
+
+				u( format.note, 
+					u( f.note.get, 
+						%qd, elements( %ql, 2, ~ ), elements( %ql, 3, ~ )
+					)
+				), %r, 
+				wheader( strcat( TO:, %b, u( format.title, %qc~%qt ))), %r, 
+
+				switch( #-*, 
+					setr( e, set( %qd, %ql: )), 
+					ansi( h, %b ERROR WHILE REMOVING OLD NOTE: %qe ), 
+
+					setr( e, set( %qd, _NOTE~%qc~%qt:%qs )), 
+					ansi( h, %b ERROR WHILE SETTING NEW NOTE: %qe ), 
+
+					Move complete. We hope. Please check. 
+				), %r, 
+				wfooter( u( format.stamp, elements( %qs, 2, ~ ))), 
+			)
+		)
+	)
+
+
+
+/*
+================================================================================
+== RAW HELP FILES ==============================================================
+
+
+............................| Notes of All Types |.............................
+ 
+  The notes system is a pared down, portable version of the +help and news  
+  systems complete with categories. For all commands, you may use +note or  
+  +notes. Staff is able to set invisible (dark) notes that you shouldn't be 
+  able to access.                                                           
+                                                                            
+  +notes: Show your notes.                                                  
+                                                                            
+  +note <note>: Show that specific note.                                    
+                                                                            
+  +note/add [here/][<category>=]<title>/<note>: Set up a <note> with the    
+  name <title>, if <category> is not given it will go under the 'general'   
+  category. Notes of the same name are overwritten. If setting a note to    
+  'here', you must own the room.                                            
+                                                                            
+  +note/delete [here/]<note>: Delete a note of yours or at a location you   
+  own. Use only if you mean it. You won't be able to delete notes that have 
+  been approved by staff and locked.                                        
+                                                                            
+  +note here: List notes in your current location. Read a specific note with
+  +note here/<name>                                                         
+                                                                            
+  +note/show <note name>=<player name>: Show your <note name> to <player    
+  name>                                                                     
+
+  +note/move <note>=<category>[/<new name>]: Move a note unless it's been 
+  approved by staff.
+                                                                            
+  See Also: +shelp +notes
+ 
+..............................................................................
+............................| Notes of All Types |.............................
+ 
+  This file is an extension of +help notes. For all commands, you may use   
+  +note or +notes. Player notes are stored on objects related to the        
+  character object and part of the Note ZMO (#310) inside the Note Storage  
+  Bin (#315). Rooms store the notes on the room on a &_attribute. <target>  
+  below must be a player, room dbref, or here.                              
+                                                                            
+  +note <target>[/<title>]                                                  
+  +note/view <target>[/<title>]: View <target>'s notes, or view a specific  
+  <title>. Note names surrounded by [..] are dark to the player.            
+                                                                            
+  +note/add <target>[/<category>]=<title>/<note>: Set up a <note> with the  
+  name <title>, if <category> is not given it will go under the 'general'   
+  category. Notes of the same name are overwritten.                         
+                                                                            
+  +note/!approve <target>/<note>: Sets a note approved or unapproved.       
+  Approved notes are locked from being deleted by the player.               
+                                                                            
+  +note/delete <target>/<note>: Delete a note.                              
+                                                                            
+  +note/delete <target>/<category>/<note>: Delete a note from a specific    
+  category.                                                                 
+                                                                            
+  +note/[!]dark <target>/<note>: Sets a note dark (invisible to the player) 
+  or sets it visible again.                                                 
+
+  +note/move <note>=<category>[/<new name>]: Move a note even if it's 
+  approved.
+                                                                            
+  See Also: +help +notes
+ 
+..............................................................................
+
+*/
+
+
+/*
+-=-=-=-=-=-=-=
+
+EBLA TO DARKWATER NOTE CONVERSION PROJECT AHOY 
+
+-=-=-=-=-=-=-=
+
+
+An Ebla Note:
+	_NOTE_TEST [#3]: 
+		1427827197|#7|
+		Not Approved|
+		1427827197|#7|
+		Unlocked|			<-- Could be 'Wizlocked'
+		1427827197|#7|
+		Hello.%rHello
+
+
+
+&trig.convert_all_notes me=
+	@dolist lattr( %0/_note_* )=@trigger me/trig.convert_a_note=%0,##
+
+&trig.convert_a_note me=
+	@eval strcat( 
+		setq( n, get( %0/%1 )), 
+		setr( a, strcat( _NOTE~GENERAL~, ucstr(rest( rest( %1, _ ), _ )))), 
+		%b::%b, 
+		setr( c, 
+			strcat( 
+				if( strmatch( elements( %qn, 6, | ), Wizlocked ), 
+					strcat( 
+						name( elements( %qn, 5, | )), %b%(, 
+						elements( %qn, 5, | ), %), 
+						%b, convsecs(elements( %qn, 4, | ))
+					)
+				), 
+				~, 
+				name( elements( %qn, 8, | )), %b%(, elements( %qn, 8, | ), %), 
+				%b, convsecs(elements( %qn, 7, | )), 
+				~, 
+				translate( first( revwords( %qn, | ), | ), 1 )
+			)
+		)
+	); 
+	@set/quiet %0=%qa:%qc;
+	
+@dolist search( eplayer=t( lattr( ##/_note_* )))=
+	@trigger me/trig.convert_all_notes=##
+
+This appears to work!
+
+*/
